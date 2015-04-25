@@ -1,6 +1,0 @@
-#!/bin/bash
-set -e
-
-service mysqld start
-service httpd start
-tail -f /opt/alminium/log/production.log
