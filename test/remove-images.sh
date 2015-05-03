@@ -8,11 +8,11 @@ remove()
     fi
 }
 
-remove ototadana/jenkins-slave-iojs
-remove ototadana/jenkins-slave-nodejs
-remove ototadana/jenkins-slave-java
-remove ototadana/jenkins-slave-base
-remove ototadana/jenkins
-remove ototadana/openldap
-remove ototadana/phpldapadmin
-remove ototadana/sonarqube
+remove xpfriend/jenkins-slave-iojs
+remove xpfriend/jenkins-slave-nodejs
+remove xpfriend/jenkins-slave-java
+remove xpfriend/jenkins-slave-base
+remove xpfriend/jenkins
+remove xpfriend/openldap
+remove xpfriend/phpldapadmin
+remove xpfriend/sonarqube

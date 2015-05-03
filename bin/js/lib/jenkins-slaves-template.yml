@@ -1,5 +1,5 @@
 __NAME:
-  image: ototadana/jenkins-slave-__NAME
+  image: xpfriend/jenkins-slave-__NAME
   volumes:
     - /var/jenkins_home
   env_file:

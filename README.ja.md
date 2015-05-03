@@ -19,7 +19,7 @@ Docker コンテナを使った CIサービス構築の試作。
 2.  このリポジトリをクローンする。
 
     ```bash
-    git clone https://github.com/ototadana/pocci.git pocci
+    git clone https://github.com/xpfriend/pocci.git pocci
     cd pocci
     ```
 

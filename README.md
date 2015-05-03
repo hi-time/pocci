@@ -19,7 +19,7 @@ Usage
 2.  Clone this repository.
 
     ```bash
-    git clone https://github.com/ototadana/pocci.git pocci
+    git clone https://github.com/xpfriend/pocci.git pocci
     cd pocci
     ```
 

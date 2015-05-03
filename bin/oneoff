@@ -29,7 +29,7 @@ shift
 CONTAINER_NAME=poccir_${CONTAINER_TYPE}
 
 set +e
-docker run --name ${CONTAINER_NAME} --privileged -w /app -v ${PWD}:/app ${POCCIR_OPTS} --rm ${TTY_OPTION} ototadana/jenkins-slave-${CONTAINER_TYPE} "$@"
+docker run --name ${CONTAINER_NAME} --privileged -w /app -v ${PWD}:/app ${POCCIR_OPTS} --rm ${TTY_OPTION} xpfriend/jenkins-slave-${CONTAINER_TYPE} "$@"
 RC=$?
 
 set -e

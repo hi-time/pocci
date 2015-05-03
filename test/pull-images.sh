@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-docker pull ototadana/openldap
-docker pull ototadana/phpldapadmin
-docker pull ototadana/sonarqube
-docker pull ototadana/jenkins
-docker pull ototadana/jenkins-slave-base
-docker pull ototadana/jenkins-slave-nodejs
-docker pull ototadana/jenkins-slave-iojs
-docker pull ototadana/jenkins-slave-java
+docker pull xpfriend/openldap
+docker pull xpfriend/phpldapadmin
+docker pull xpfriend/sonarqube
+docker pull xpfriend/jenkins
+docker pull xpfriend/jenkins-slave-base
+docker pull xpfriend/jenkins-slave-nodejs
+docker pull xpfriend/jenkins-slave-iojs
+docker pull xpfriend/jenkins-slave-java

@@ -22,9 +22,9 @@ for i in ${CONTAINERS}; do
     VOLUMES=`docker inspect --format='{{range $key, $value := .VolumesRW}}{{print $key " " }}{{end}}' $i`
     echo "backup : $i:${VOLUMES}"
     if [ "${VOLUMES}" != "" ];then
-        docker run --name poccir_backup --volumes-from $i -v ${BACKUP_DIR}:/backup --rm ototadana/jenkins-slave-base sudo tar cfz /backup/$i.tar.gz ${VOLUMES}
+        docker run --name poccir_backup --volumes-from $i -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base sudo tar cfz /backup/$i.tar.gz ${VOLUMES}
         RESTORE_SCRIPT=${BACKUP_DIR}/restore-$i.sh
-        RESTORE_COMMAND='docker run --name poccir_restore --volumes-from '$i' -v ${BACKUP_DIR}:/backup --rm ototadana/jenkins-slave-base sudo bash -c "cd /;find '${VOLUMES}' -mindepth 1 -delete;tar xfz /backup/'$i'.tar.gz"'
+        RESTORE_COMMAND='docker run --name poccir_restore --volumes-from '$i' -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base sudo bash -c "cd /;find '${VOLUMES}' -mindepth 1 -delete;tar xfz /backup/'$i'.tar.gz"'
         echo '#!/bin/bash' >${RESTORE_SCRIPT}
         echo 'set -ex' >>${RESTORE_SCRIPT}
         echo 'BACKUP_DIR=$(cd $(dirname $0); pwd)' >>${RESTORE_SCRIPT}

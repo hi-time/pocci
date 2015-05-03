@@ -39,7 +39,7 @@ assertEntries = (options) ->
   for node, i in options.nodes
     console.log("#{node} : #{nodes[i]}")
     assert.equal(node, nodes[i])
-    assert.equal(config[node].image, "ototadana/jenkins-slave-#{node}")
+    assert.equal(config[node].image, "xpfriend/jenkins-slave-#{node}")
 
 
 destroyNodes = ->

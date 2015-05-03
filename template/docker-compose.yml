@@ -1,5 +1,5 @@
 openldap:
-  image: ototadana/openldap
+  image: xpfriend/openldap
   env_file:
     - ./.env
   volumes:
@@ -19,7 +19,7 @@ sonarqubedb:
     - DB_NAME=sonarqubedb
 
 jenkins:
-  image: ototadana/jenkins
+  image: xpfriend/jenkins
   env_file:
     - ./.env
   environment:
@@ -32,7 +32,7 @@ jenkins:
     - "50000:50000"
 
 phpldapadmin:
-  image: ototadana/phpldapadmin
+  image: xpfriend/phpldapadmin
   env_file:
     - ./.env
   links:
@@ -41,7 +41,7 @@ phpldapadmin:
     - LDAP_HOST=ldap
 
 sonarqube:
-  image: ototadana/sonarqube
+  image: xpfriend/sonarqube
   env_file:
     - ./.env
   environment:
