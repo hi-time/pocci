@@ -33,9 +33,6 @@ module.exports = function(grunt) {
       ldap: {
         src: ['test/ldapTest.js']
       },
-      alminium: {
-        src: ['test/alminiumTest.js']
-      },
       gitlab: {
         src: ['test/gitlabTest.js']
       },
@@ -64,7 +61,6 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['basic']);
   grunt.registerTask('smokeTest', ['basic', 'mochaTest:smokeTest']);
   grunt.registerTask('ldap', ['basic', 'mochaTest:ldap']);
-  grunt.registerTask('alminium', ['basic', 'mochaTest:alminium']);
   grunt.registerTask('gitlab', ['basic', 'mochaTest:gitlab']);
   grunt.registerTask('jenkins', ['basic', 'mochaTest:jenkins']);
   grunt.registerTask('git', ['basic', 'mochaTest:git']);

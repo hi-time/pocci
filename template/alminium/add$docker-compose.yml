@@ -1,8 +1,0 @@
-
-portal:
-  image: ototadana/alminium
-  env_file:
-    - ./.env
-  links:
-    - openldap:ldap
-

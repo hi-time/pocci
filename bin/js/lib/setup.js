@@ -2,7 +2,6 @@
 var git = require('./git.js');
 var gitlab = require('./gitlab.js');
 var jenkins = require('./jenkins.js');
-var alminium = require('./alminium.js');
 var ldap = require('./ldap.js');
 var yaml = require('./yaml.js');
 var webdriver = require('./webdriver.js');
@@ -23,15 +22,10 @@ var setup = function*(yamlFile, keepOpenBrowser) {
   }
 
   var browser;
-  if(options.gitlab || options.alminium || options.jenkins) {
+  if(options.gitlab || options.jenkins) {
     console.log('*** Start Selenium Webdriver...');
     yield initBrowser();
     browser = module.exports.browser;
-  }
-
-  if(options.alminium) {
-    console.log('*** Setup ALMinium...');
-    yield alminium.setup(browser, options.alminium, options.ldap);
   }
 
   if(options.gitlab) {
@@ -57,7 +51,6 @@ var setup = function*(yamlFile, keepOpenBrowser) {
 
 module.exports.setup = setup;
 module.exports.initBrowser = initBrowser;
-module.exports.alminium = alminium;
 module.exports.gitlab = gitlab;
 module.exports.git = git;
 module.exports.jenkins = jenkins;

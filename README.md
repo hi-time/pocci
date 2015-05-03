@@ -54,7 +54,7 @@ Usage
 
 7.  Use the services.
 
-    *   http://localhost/ ... GitLab / ALMinium (Redmine)
+    *   http://localhost/ ... GitLab
     *   http://localhost/jenkins ... Jenkins
     *   http://localhost/sonar ... SonarQube
     *   http://localhost/ldap ... phpLDAPadmin
@@ -65,7 +65,6 @@ Users
 Service      | User name                  | Password
 ------------ | -------------------------- | --------
 GitLab       | root                       | 5iveL!fe
-ALMinium     | admin                      | admin
 SonarQube    | admin                      | admin
 phpLDAPadmin | cn=admin,dc=example,dc=com | admin
 

@@ -1,8 +1,0 @@
-alminium:
-  users:
-    uid:          jenkinsci
-    userPassword: password
-  projects:
-    projectId: example01
-    issues:    issue01
-    repositories: repo01

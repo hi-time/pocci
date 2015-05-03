@@ -54,7 +54,7 @@ Docker コンテナを使った CIサービス構築の試作。
 
 7.  以下の URL にアクセスしてサービスを利用する。
 
-    *   http://localhost/ ... GitLab / ALMinium (Redmine)
+    *   http://localhost/ ... GitLab
     *   http://localhost/jenkins ... Jenkins
     *   http://localhost/sonar ... SonarQube
     *   http://localhost/ldap ... phpLDAPadmin
@@ -66,7 +66,6 @@ Docker コンテナを使った CIサービス構築の試作。
 サービス     | ユーザー名                 | パスワード
 ------------ | -------------------------- | --------
 GitLab       | root                       | 5iveL!fe
-ALMinium     | admin                      | admin
 SonarQube    | admin                      | admin
 phpLDAPadmin | cn=admin,dc=example,dc=com | admin
 

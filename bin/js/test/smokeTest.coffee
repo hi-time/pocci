@@ -92,25 +92,9 @@ describe "Login", () ->
       text = (yield browser.yieldable.getValue("#user_name"))[0]
       assert.equal(text, "bouze")
 
-    loginALMinium = ->
-      browser
-        .url("http://server/login")
-        .setValue("#username", "bouze")
-        .setValue("#password", "password")
-        .submitForm("#login-form form")
-
-      yield browser.yieldable.call()
-
-      browser.url("http://server/")
-      text = (yield browser.yieldable.getText("#loggedas > a"))[0]
-      assert.equal(text, "bouze")
-
     test done,
       expect: ->
-        if process.env.TEMPLATE_NO is "1"
-          yield loginGitHub()
-        else
-          yield loginALMinium()
+        yield loginGitHub()
 
 
 describe "Jenkins Job", ->

@@ -8,7 +8,6 @@ remove()
     fi
 }
 
-remove ototadana/alminium
 remove ototadana/jenkins-slave-iojs
 remove ototadana/jenkins-slave-nodejs
 remove ototadana/jenkins-slave-java
