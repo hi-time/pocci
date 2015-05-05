@@ -11,7 +11,7 @@ LDAP=http://server/ldap
 
 echo "STEP 1: Create '${CONFIG_DIR}/.env'"
 ${BIN_DIR}/yaml2env
-${BIN_DIR}/save-config "create .env file from setup.yml"
+${BIN_DIR}/save-config "Create .env file from setup.yml"
 
 echo "STEP 2: Create & start services."
 ${BIN_DIR}/docker-service up -d
@@ -31,7 +31,7 @@ echo "STEP 6: Start Jenkins slaves."
 if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml ]; then
     cp ${TEMP_CONFIG_DIR}/jenkins-slaves.yml ${CONFIG_DIR}
     ${BIN_DIR}/jenkins-slave up -d
-    ${BIN_DIR}/save-config "add jenkins-slaves.yml"
+    ${BIN_DIR}/save-config "Add jenkins-slaves.yml"
 fi
 
 echo "Done."
