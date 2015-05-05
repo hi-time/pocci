@@ -14,6 +14,6 @@ fi
 
 cp -r ${BASE_DIR}/template/* ${CONFIG_DIR}
 
-cd ${CONFIG_DIR}
-
+${BASE_DIR}/bin/generate-docker-compose-yml-from-template ${CONFIG_DIR}
+rm ${CONFIG_DIR}/*.yml.template
 ${BASE_DIR}/bin/save-config "create from template"

@@ -19,3 +19,5 @@ fi
 assert ${BASE_DIR}
 assert ${BIN_DIR}
 assert ${JS_DIR}
+
+source ${BIN_DIR}/version

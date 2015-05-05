@@ -10,3 +10,4 @@ node_modules
 config/
 temp/
 backup/
+jenkins-slaves-version.json

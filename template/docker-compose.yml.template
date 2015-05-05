@@ -1,16 +1,15 @@
+cat << EOF
 openldap:
-  image: xpfriend/openldap
+  image: osixia/openldap:${VERSION_OPENLDAP}
   env_file:
     - ./.env
-  volumes:
-    - /var/lib/ldap
-    - /etc/ldap/slapd.d
-    - /etc/ldap/ssl
+  environment:
+    - USE_TLS=false
   ports:
     - "389:389"
 
 sonarqubedb:
-  image: sameersbn/postgresql:9.1-1
+  image: sameersbn/postgresql:${VERSION_POSTGRESQL}
   env_file:
     - ./.env
   environment:
@@ -19,7 +18,7 @@ sonarqubedb:
     - DB_NAME=sonarqubedb
 
 jenkins:
-  image: xpfriend/jenkins
+  image: xpfriend/jenkins:${VERSION_JENKINS}
   env_file:
     - ./.env
   environment:
@@ -32,16 +31,17 @@ jenkins:
     - "50000:50000"
 
 phpldapadmin:
-  image: xpfriend/phpldapadmin
+  image: osixia/phpldapadmin:${VERSION_PHPLDAPADMIN}
   env_file:
     - ./.env
   links:
    - openldap:ldap
   environment:
-    - LDAP_HOST=ldap
+    - LDAP_HOSTS=ldap
+    - HTTPS=false
 
 sonarqube:
-  image: xpfriend/sonarqube
+  image: xpfriend/sonarqube:${VERSION_SONARQUBE}
   env_file:
     - ./.env
   environment:
@@ -55,7 +55,7 @@ sonarqube:
     - openldap:ldap
 
 nginx:
-  image: nginx:1.7.9
+  image: nginx:${VERSION_NGINX}
   env_file:
     - ./.env
   links:
@@ -69,7 +69,7 @@ nginx:
     - "80:80"
 
 gitlabdb:
-  image: sameersbn/postgresql:9.1-1
+  image: sameersbn/postgresql:${VERSION_POSTGRESQL}
   env_file:
     - ./.env
   environment:
@@ -78,12 +78,12 @@ gitlabdb:
     - DB_NAME=gitlabhq_production
 
 redis:
-  image: sameersbn/redis:latest
+  image: sameersbn/redis:${VERSION_REDIS}
   env_file:
     - ./.env
 
 portal:
-  image: sameersbn/gitlab:7.7.2
+  image: sameersbn/gitlab:${VERSION_GITLAB}
   env_file:
     - ./.env
   environment:
@@ -97,3 +97,4 @@ portal:
     - redis:redisio
     - gitlabdb:postgresql
     - openldap:ldap
+EOF

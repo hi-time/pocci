@@ -5,6 +5,7 @@ var jenkinsLib = require('jenkins');
 var path = require('path');
 var ldapDefaults = require('./ldap.js').defaults;
 var util = require('./util.js');
+var version = require('./jenkins-slaves-version.json');
 
 var createJob = function*(jenkins, job) {
   var destroy = thunkify(jenkins.job.destroy.bind(jenkins.job));
@@ -58,7 +59,9 @@ var createJobs = function*(jenkins, jobs, gitOptions, scmUrl) {
 var writeNodeConf = function(node, secret) {
   var templateFilePath = path.resolve(__dirname, 'jenkins-slaves-template.yml');
   var text = fs.readFileSync(templateFilePath, 'utf8')
-              .replace(/__NAME/g, node).replace(/__SECRET/g, secret);
+              .replace(/__NAME/g, node)
+              .replace(/__VERSION/g, version[node])
+              .replace(/__SECRET/g, secret);
   fs.appendFileSync('./config/jenkins-slaves.yml', text);
 };
 

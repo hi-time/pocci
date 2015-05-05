@@ -56,10 +56,13 @@ describe "GitLab", ->
 
           group01Members:
             path:   "/groups/#{groupId}/members"
+            sort:   {target: "body", keys: "id"}
             expected:
-              "body.length":          1
-              "body[0].username":     "jenkinsci"
+              "body.length":          2
+              "body[0].username":     "root"
               "body[0].access_level": 50
+              "body[1].username":     "jenkinsci"
+              "body[1].access_level": 50
 
     test(done, spec01)
 
@@ -123,15 +126,20 @@ describe "GitLab", ->
             path:   "/groups/#{@groupId}/members"
             sort:   {target: "body", keys: "id"}
             expected:
-              "body.length":          2
-              "body[0].username":     "jenkinsci"
+              "body.length":          3
+              "body[0].username":     "root"
               "body[0].access_level": 50
-              "body[1].username":     "bouze"
+              "body[1].username":     "jenkinsci"
               "body[1].access_level": 50
+              "body[2].username":     "bouze"
+              "body[2].access_level": 50
 
           group02Members:
             path:   "/groups/#{group02Id}/members"
+            sort:   {target: "body", keys: "id"}
             expected:
-              "body.length":          1
-              "body[0].username":     "bouze"
+              "body.length":          2
+              "body[0].username":     "root"
               "body[0].access_level": 50
+              "body[1].username":     "bouze"
+              "body[1].access_level": 50

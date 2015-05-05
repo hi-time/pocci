@@ -3,9 +3,9 @@ set -ex
 
 remove()
 {
-    if [ `docker images | grep $1 | wc -l` -gt 0 ]; then
-      docker rmi $1
-    fi
+    for i in $(docker images |grep $1 |awk '{printf "%s:%s\n",$1,$2}'); do
+        docker rmi $i
+    done
 }
 
 remove xpfriend/jenkins-slave-iojs
@@ -13,6 +13,4 @@ remove xpfriend/jenkins-slave-nodejs
 remove xpfriend/jenkins-slave-java
 remove xpfriend/jenkins-slave-base
 remove xpfriend/jenkins
-remove xpfriend/openldap
-remove xpfriend/phpldapadmin
 remove xpfriend/sonarqube

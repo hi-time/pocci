@@ -11,6 +11,7 @@ jenkins = require("../lib/jenkins.js")
 yaml = require("../lib/yaml.js")
 webdriver = require("../lib/webdriver.js")
 test = require("./resq.js")
+version = require("../lib/jenkins-slaves-version.json")
 
 
 listNodes = ->
@@ -39,7 +40,7 @@ assertEntries = (options) ->
   for node, i in options.nodes
     console.log("#{node} : #{nodes[i]}")
     assert.equal(node, nodes[i])
-    assert.equal(config[node].image, "xpfriend/jenkins-slave-#{node}")
+    assert.equal(config[node].image, "xpfriend/jenkins-slave-#{node}:#{version[node]}")
 
 
 destroyNodes = ->
