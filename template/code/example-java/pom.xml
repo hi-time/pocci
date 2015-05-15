@@ -6,6 +6,13 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>example-java</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.jdbc.url>jdbc:postgresql://sonardb/${env.SONARDB_ENV_DB_NAME}</sonar.jdbc.url>
+    <sonar.jdbc.username>${env.SONARDB_ENV_DB_USER}</sonar.jdbc.username>
+    <sonar.jdbc.password>${env.SONARDB_ENV_DB_PASS}</sonar.jdbc.password>
+    <sonar.host.url>${env.SONAR_URL}</sonar.host.url>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

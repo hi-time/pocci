@@ -25,7 +25,7 @@ jenkins:
     - JENKINS_OPTS=--prefix=/jenkins
   links:
     - sonarqube:sonar
-    - portal:server
+    - server:server
     - openldap:ldap
   ports:
     - "50000:50000"
@@ -97,4 +97,12 @@ portal:
     - redis:redisio
     - gitlabdb:postgresql
     - openldap:ldap
+    - server:server
+
+server:
+  image: cpuguy83/docker-grand-ambassador:${VERSION_AMBASSADOR}
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock"
+  command: "-name poccis_nginx_1"
+
 EOF

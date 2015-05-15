@@ -5,7 +5,7 @@ BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/init-env
 
 if [ -z "${POCCIR_OPTS}" ]; then
-    POCCIR_OPTS="--link poccis_nginx_1:server  --link poccis_openldap_1:ldap --env-file ${CONFIG_DIR}/.env"
+    POCCIR_OPTS="--link poccis_server_1:server  --link poccis_openldap_1:ldap --env-file ${CONFIG_DIR}/.env"
 fi
 
 if [ -n "${POCCIR_OPTS_ADD}" ]; then

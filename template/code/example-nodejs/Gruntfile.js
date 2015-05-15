@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           separator: '\n',
           sonar: {
             host: {
-              url: 'http://sonar:9000/sonar'
+              url: process.env.SONAR_URL
             },
             jdbc: {
               url: 'jdbc:postgresql://sonardb/' + process.env.SONARDB_ENV_DB_NAME,
