@@ -159,7 +159,7 @@ var saveSecrets = function*(browser, url, nodes) {
 module.exports = {
   defaults: {
     url:    'http://server/jenkins',
-    scmUrl: 'http://server'
+    scmUrl: 'http://server/gitlab'
   },
   setup: function*(browser, options, ldapOptions, gitOptions) {
     var url = options.url || this.defaults.url;

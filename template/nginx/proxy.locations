@@ -1,5 +1,5 @@
-location / {
-    proxy_pass http://portal/;
+location /gitlab/ {
+    proxy_pass http://gitlab;
 }
 
 location /ldap/ {

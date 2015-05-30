@@ -78,17 +78,17 @@ describe "Login", () ->
         assert.ok(text.indexOf("jenkinsci") > -1)
 
 
-  it "portal", (done) ->
+  it "gitlab", (done) ->
     loginGitHub = ->
       browser
-        .url("http://server/users/sign_in")
+        .url("http://server/gitlab/users/sign_in")
         .setValue("#username", "bouze")
         .setValue("#password", "password")
         .submitForm("#new_ldap_user")
 
       yield browser.yieldable.call()
 
-      browser.url("http://server/profile/")
+      browser.url("http://server/gitlab/profile/")
       text = (yield browser.yieldable.getValue("#user_name"))[0]
       assert.equal(text, "bouze")
 

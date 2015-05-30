@@ -59,7 +59,7 @@ nginx:
   env_file:
     - ./.env
   links:
-   - portal:portal
+   - gitlab:gitlab
    - sonarqube:sonarqube
    - jenkins:jenkins
    - phpldapadmin:ldapadmin
@@ -82,7 +82,7 @@ redis:
   env_file:
     - ./.env
 
-portal:
+gitlab:
   image: sameersbn/gitlab:${VERSION_GITLAB}
   env_file:
     - ./.env
@@ -93,6 +93,7 @@ portal:
     - LDAP_UID=uid
     - LDAP_METHOD=plain
     - LDAP_ACTIVE_DIRECTORY=false
+    - GITLAB_RELATIVE_URL_ROOT=/gitlab
   links:
     - redis:redisio
     - gitlabdb:postgresql

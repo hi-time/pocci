@@ -45,7 +45,7 @@ parseurl "${https_proxy}" https >>./proxy.env
 parseurl "${ftp_proxy}" ftp >>./proxy.env
 
 if [ -n "${http_proxy}" ]; then
-    default_no_proxy=127.0.0.1,localhost,server,ldap,jenkins,sonar,portal,sonarqube,db,redisio,postgresql,ldapadmin
+    default_no_proxy=127.0.0.1,localhost,server,ldap,jenkins,sonar,gitlab,sonarqube,db,redisio,postgresql,ldapadmin
     if [ -n "${no_proxy}" ]; then
         echo "no_proxy=${no_proxy},${default_no_proxy}" >>./proxy.env
     else
