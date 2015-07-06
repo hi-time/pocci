@@ -1,9 +1,9 @@
-PoCCi
+Pocci
 =====
 
 Docker コンテナを使った CIサービス構築の試作。
 
-![Services](./services-gitlab.png)
+![Services](./pocci-service.png)
 
 [English](./README.md)
 
@@ -30,34 +30,35 @@ Docker コンテナを使った CIサービス構築の試作。
     bash ./build
     ```
 
-4.  `generate-config-from-template` を実行して `config` ディレクトリを作成する。
-
-    ```bash
-    ./generate-config-from-template
-    ```
-
-5.  `config` ディレクトリに作成されたファイルを確認し、必要に応じて編集する。
+4.  `config` ディレクトリに作成されたファイルを確認し、必要に応じて編集する。
 
     ```
     config/
       - code/               ... サンプルコード
-      - nginx/              ... Nginx リバースプロキシ設定
-      - docker-compose.yml  ... サービス構成 (Docker Compose 形式)
+      - services/           ... サービス定義
+        - nginx/            ... Nginx リバースプロキシ設定
       - setup.yml           ... ユーザー設定
     ```
 
-6.  `create-service` を実行してサービスの作成と開始を行う。
+5.  `create-service` を実行してサービスの作成と開始を行う。
 
     ```bash
     ./create-service
     ```
 
+6.  hosts ファイルを設定する。  
+    設定例:
+
+    ```
+    192.168.1.2 portal.pocci.test user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test
+    ```
+
 7.  以下の URL にアクセスしてサービスを利用する。
 
-    *   http://localhost/ ... GitLab
-    *   http://localhost/jenkins ... Jenkins
-    *   http://localhost/sonar ... SonarQube
-    *   http://localhost/ldap ... phpLDAPadmin
+    *   http://gitlab.pocci.test ... GitLab
+    *   http://jenkins.pocci.test ... Jenkins
+    *   http://sonar.pocci.test ... SonarQube
+    *   http://user.pocci.test ... phpLDAPadmin
 
 
 利用者

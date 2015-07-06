@@ -2,7 +2,7 @@
 set -e
 
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/init-env
+source ${BASE_DIR}/bin/lib/init-env
 
 ${BIN_DIR}/stop-service
 ${BIN_DIR}/up-service

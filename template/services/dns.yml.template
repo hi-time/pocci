@@ -1,0 +1,7 @@
+cat << EOF
+dns:
+  image: xpfriend/dnsmasq:${VERSION_DNSMASQ}
+  volumes:
+    - ${PWD}:/altetc
+
+EOF

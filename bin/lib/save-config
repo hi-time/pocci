@@ -7,8 +7,8 @@ else
     COMMIT_COMMENT="commit commit"
 fi
 
-BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/init-env
+BASE_DIR=$(cd $(dirname $0)/../..; pwd)
+source ${BASE_DIR}/bin/lib/init-env
 
 cd ${CONFIG_DIR}
 

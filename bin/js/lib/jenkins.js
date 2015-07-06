@@ -3,7 +3,8 @@ var fs = require('fs');
 var thunkify = require('thunkify');
 var jenkinsLib = require('jenkins');
 var path = require('path');
-var ldapDefaults = require('./ldap.js').defaults;
+var ldap = require('./ldap.js');
+var ldapDefaults = ldap.defaults;
 var util = require('./util.js');
 var version = require('./jenkins-slaves-version.json');
 
@@ -62,7 +63,7 @@ var writeNodeConf = function(node, secret) {
               .replace(/__NAME/g, node)
               .replace(/__VERSION/g, version[node])
               .replace(/__SECRET/g, secret);
-  fs.appendFileSync('./config/jenkins-slaves.yml', text);
+  fs.appendFileSync('./config/jenkins-slaves.yml.template', text);
 };
 
 var createNode = function*(jenkins, nodeName, ldapOptions) {
@@ -158,8 +159,8 @@ var saveSecrets = function*(browser, url, nodes) {
 
 module.exports = {
   defaults: {
-    url:    'http://server/jenkins',
-    scmUrl: 'http://server/gitlab'
+    url:    process.env.JENKINS_URL,
+    scmUrl: process.env.GITLAB_URL
   },
   setup: function*(browser, options, ldapOptions, gitOptions) {
     var url = options.url || this.defaults.url;
@@ -178,7 +179,7 @@ module.exports = {
     }
 
     if(ldapOptions) {
-      var ldapUrl = options.ldapUrl || ldapOptions.url || ldapDefaults.url;
+      var ldapUrl = options.ldapUrl || ldap.url(ldapOptions);
       yield enableLdap(browser, url, ldapOptions, ldapUrl, options.user);
     }
 

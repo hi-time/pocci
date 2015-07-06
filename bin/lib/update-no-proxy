@@ -1,0 +1,38 @@
+
+replace_no_proxy() {
+    if [ -f $1 ]; then
+        if [ `grep no_proxy= $1 |wc -l` -gt 0 ]; then
+            sed -i "s/no_proxy=.*/no_proxy=${updated_no_proxy}/" $1
+        else
+            echo "no_proxy=${updated_no_proxy}" >>$1
+        fi
+    fi
+}
+
+if [ -n ${no_proxy} ]; then
+    no_proxy_env=${no_proxy}
+fi
+
+source ${LIB_DIR}/export-env ${RUNTIME_DIR}/.env
+
+default_no_proxy="127.0.0.1,localhost,portal${POCCI_DOMAIN_NAME}"
+for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' -e 'EOF' ${CONFIG_DIR}/services/*.yml.template | sed -e 's/://'); do
+    default_no_proxy="${default_no_proxy},$i,$i.internal${POCCI_DOMAIN_NAME}"
+done
+
+for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/services/nginx/*); do
+    CONTAINER_NAME=`basename ${i%.conf.*}`
+    default_no_proxy="${default_no_proxy},${CONTAINER_NAME}${POCCI_DOMAIN_NAME}"
+done
+
+if [ -n "${no_proxy_env}" ]; then
+    updated_no_proxy="${no_proxy_env},${default_no_proxy}"
+else
+    updated_no_proxy="${default_no_proxy}"
+fi
+
+
+SED_SCRIPT="s/no_proxy=.*/no_proxy=${updated_no_proxy}/"
+
+replace_no_proxy ${BIN_DIR}/proxy.env
+replace_no_proxy ${RUNTIME_DIR}/.env

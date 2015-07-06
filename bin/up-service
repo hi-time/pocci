@@ -2,15 +2,24 @@
 set -e
 
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/init-env
+source ${BASE_DIR}/bin/lib/init-env
 
-GITLAB=http://server/gitlab
-JENKINS=http://server/jenkins
-SONAR=http://server/sonar
-LDAP=http://server/ldap
+if [ ! -d ${RUNTIME_DIR} ]; then
+    mkdir ${RUNTIME_DIR}
+fi
 
-${BIN_DIR}/docker-service up -d
-${BIN_DIR}/waitfor ${JENKINS}
+echo "Create '${RUNTIME_DIR}/.env...'"
+${LIB_DIR}/yaml2env
+source ${LIB_DIR}/update-no-proxy
+${LIB_DIR}/save-config "Create .env file from setup.yml"
 
-${BIN_DIR}/jenkins-slave up -d
-${BIN_DIR}/waitfor ${GITLAB} ${JENKINS} ${SONAR} ${LDAP}
+echo "Start services..."
+${LIB_DIR}/docker-service up -d
+
+source ${LIB_DIR}/export-env ${RUNTIME_DIR}/service-names.env
+if [ -n "${JENKINS_URL}" ]; then
+    ${LIB_DIR}/waitfor ${JENKINS_URL}
+    ${LIB_DIR}/jenkins-slave up -d
+fi
+
+${LIB_DIR}/waitfor ${ALL_SERVICE_URL}

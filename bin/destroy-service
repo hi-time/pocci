@@ -2,9 +2,19 @@
 set -e
 
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/init-env
+source ${BASE_DIR}/bin/lib/init-env
+
+echo "Going to destroy all services."
+echo "Are you sure? [yN]"
+read yesno
+
+case ${yesno} in
+    "Y" | "y" )
+        echo "";;
+    * )
+        exit ;;
+esac
 
 ${BIN_DIR}/stop-service
-
-${BIN_DIR}/docker-service rm -v
-${BIN_DIR}/jenkins-slave rm -v --force
+${LIB_DIR}/docker-service rm -v --force
+${LIB_DIR}/jenkins-slave rm -v --force

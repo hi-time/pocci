@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-BASE_DIR=$(cd $(dirname $0)/..; pwd)
+BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 CONFIG_DIR=${BASE_DIR}/config
 
 if [ -d ${CONFIG_DIR} ]; then
@@ -13,7 +13,6 @@ else
 fi
 
 cp -r ${BASE_DIR}/template/* ${CONFIG_DIR}
+echo "rt/" >${CONFIG_DIR}/.gitignore
 
-${BASE_DIR}/bin/generate-docker-compose-yml-from-template ${CONFIG_DIR}
-rm ${CONFIG_DIR}/*.yml.template
-${BASE_DIR}/bin/save-config "Create from template"
+${BASE_DIR}/bin/lib/save-config "Create from template"

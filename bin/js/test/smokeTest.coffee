@@ -11,7 +11,7 @@ webdriver = require("../lib/webdriver.js")
 test = require("./resq.js")
 
 describe "Login", () ->
-  @timeout(60000)
+  @timeout(120000)
   browser = null
 
   before (done) ->
@@ -31,7 +31,7 @@ describe "Login", () ->
     test done,
       when: ->
         browser
-          .url("http://server/ldap/cmd.php?cmd=login_form")
+          .url(process.env.USER_URL + "/cmd.php?cmd=login_form")
           .setValue("#login", "cn=admin,dc=example,dc=com")
           .setValue("#password", "admin")
           .submitForm("form")
@@ -39,7 +39,7 @@ describe "Login", () ->
         yield browser.yieldable.call()
 
       then: ->
-        browser.url("http://server/ldap/")
+        browser.url(process.env.USER_URL + "/")
         text = (yield browser.yieldable.getText("td.logged_in"))[0]
         assert.equal(text, "Logged in as: cn=admin")
 
@@ -48,7 +48,7 @@ describe "Login", () ->
     test done,
       when: ->
         browser
-          .url("http://server/jenkins/login")
+          .url(process.env.JENKINS_URL + "/login")
           .setValue("#j_username", "bouze")
           .setValue("input[type='password'][name='j_password']", "password")
 
@@ -56,8 +56,8 @@ describe "Login", () ->
         yield browser.yieldable.click("button")
 
       then: ->
-        browser.url("http://server/jenkins/")
-        text = (yield browser.yieldable.getText("#header div.login a[href='/jenkins/user/bouze'] > b"))[0]
+        browser.url(process.env.JENKINS_URL + "/")
+        text = (yield browser.yieldable.getText("#header div.login a[href='/user/bouze'] > b"))[0]
         assert.equal(text, "bouze")
 
 
@@ -65,14 +65,14 @@ describe "Login", () ->
     test done,
       when: ->
         browser
-          .url("http://server/sonar/sessions/new")
+          .url(process.env.SONAR_URL + "/sessions/new")
           .setValue("#login", "jenkinsci")
           .setValue("#password", "password")
           .submitForm("form")
 
         yield browser.yieldable.call()
       then: ->
-        browser.url("http://server/sonar/")
+        browser.url(process.env.SONAR_URL + "/")
         browser.pause(1000)
         text = (yield browser.yieldable.getText("nav"))[0]
         assert.ok(text.indexOf("jenkinsci") > -1)
@@ -81,14 +81,14 @@ describe "Login", () ->
   it "gitlab", (done) ->
     loginGitHub = ->
       browser
-        .url("http://server/gitlab/users/sign_in")
+        .url(process.env.GITLAB_URL + "/users/sign_in")
         .setValue("#username", "bouze")
         .setValue("#password", "password")
         .submitForm("#new_ldap_user")
 
       yield browser.yieldable.call()
 
-      browser.url("http://server/gitlab/profile/")
+      browser.url(process.env.GITLAB_URL + "/profile/")
       text = (yield browser.yieldable.getValue("#user_name"))[0]
       assert.equal(text, "bouze")
 
@@ -101,7 +101,7 @@ describe "Jenkins Job", ->
 
   it "build", (done) ->
     @timeout(30 * 60 * 1000)
-    jenkins = jenkinsLib("http://jenkinsci:password@server/jenkins")
+    jenkins = jenkinsLib("http://jenkinsci:password@" + process.env.JENKINS_HOST)
     build = thunkify(jenkins.job.build.bind(jenkins.job))
     get = thunkify(jenkins.job.get.bind(jenkins.job))
 

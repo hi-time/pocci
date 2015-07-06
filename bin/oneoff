@@ -2,10 +2,20 @@
 set -e
 
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/init-env
+source ${BASE_DIR}/bin/lib/init-env
 
 if [ -z "${POCCIR_OPTS}" ]; then
-    POCCIR_OPTS="--link poccis_server_1:server  --link poccis_openldap_1:ldap --env-file ${CONFIG_DIR}/.env"
+    if [ -f "${RUNTIME_DIR}/.env" ]; then
+        POCCIR_OPTS="--env-file ${RUNTIME_DIR}/.env"
+    fi
+    if [ -f "${RUNTIME_DIR}/service-names.env" ]; then
+        POCCIR_OPTS="${POCCIR_OPTS} --env-file ${RUNTIME_DIR}/service-names.env"
+    fi
+
+    export POCCI_DNS_ADDRESS=`source ${LIB_DIR}/get-dns-address`
+    if [ -n "${POCCI_DNS_ADDRESS}" ]; then
+        POCCIR_OPTS="${POCCIR_OPTS} --dns ${POCCI_DNS_ADDRESS}"
+    fi
 fi
 
 if [ -n "${POCCIR_OPTS_ADD}" ]; then
@@ -27,7 +37,7 @@ fi
 CONTAINER_TYPE="$1"
 shift
 CONTAINER_NAME=poccir_${CONTAINER_TYPE}
-CONTAINER_VERSION=$(grep JENKINS_SLAVE_`echo ${CONTAINER_TYPE} |tr '[:lower:]' '[:upper:]'` ${BASE_DIR}/bin/version |cut -d '=' -f 2)
+CONTAINER_VERSION=$(grep JENKINS_SLAVE_`echo ${CONTAINER_TYPE} |tr '[:lower:]' '[:upper:]'` ${BASE_DIR}/bin/lib/version |cut -d '=' -f 2)
 
 set +e
 docker run --name ${CONTAINER_NAME} --privileged -w /app -v ${PWD}:/app ${POCCIR_OPTS} --rm ${TTY_OPTION} xpfriend/jenkins-slave-${CONTAINER_TYPE}:${CONTAINER_VERSION} "$@"

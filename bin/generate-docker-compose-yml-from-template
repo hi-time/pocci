@@ -1,9 +1,0 @@
-#!/bin/bash
-set -eu
-
-BIN_DIR=$(cd $(dirname $0); pwd)
-source ${BIN_DIR}/version
-cd ${1}
-for i in $(ls *.yml.template); do
-    source $i >${i%.*}
-done

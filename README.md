@@ -1,9 +1,9 @@
-PoCCi
+Pocci
 =====
 
 A try of CI Services by Docker containers.
 
-![Services](./services-gitlab.png)
+![Services](./pocci-service.png)
 
 [日本語](./README.ja.md)
 
@@ -30,34 +30,34 @@ Usage
     bash ./build
     ```
 
-4.  Create `config` directory from template by `generate-config-from-template`.
-
-    ```bash
-    ./generate-config-from-template
-    ```
-
-5.  Check and edit the files in `config` directory.
+4.  Check and edit the files in `config` directory.
 
     ```
     config/
       - code/               ... Example codes
-      - nginx/              ... Nginx reverse proxy configuration
-      - docker-compose.yml  ... Service composition (Docker Compose file)
+      - services/           ... Service definitions
+        - nginx/              ... Nginx reverse proxy configuration
       - setup.yml           ... User settings
     ```
 
-6.  Create and start services by `create-service`.
+5.  Create and start services by `create-service`.
 
     ```bash
     ./create-service
     ```
 
+6.  Add a line to your `hosts` file, like this:
+
+    ```
+    192.168.1.2 portal.pocci.test user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test
+    ```
+
 7.  Use the services.
 
-    *   http://localhost/ ... GitLab
-    *   http://localhost/jenkins ... Jenkins
-    *   http://localhost/sonar ... SonarQube
-    *   http://localhost/ldap ... phpLDAPadmin
+    *   http://gitlab.pocci.test ... GitLab
+    *   http://jenkins.pocci.test ... Jenkins
+    *   http://sonar.pocci.test ... SonarQube
+    *   http://user.pocci.test ... phpLDAPadmin
 
 Users
 --------------

@@ -21,7 +21,7 @@ var importCode = function*(url, options, ldapUsers) {
 
 module.exports = {
   defaults: {
-    url: 'http://server/gitlab',
+    url: process.env.GITLAB_URL,
   },
   import: function*(options, ldapOptions) {
     var url = options.url || this.defaults.url;

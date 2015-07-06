@@ -1,0 +1,28 @@
+cat << EOF
+# SonarQube
+sonarqubedb:
+  image: sameersbn/postgresql:${VERSION_POSTGRESQL}
+  env_file:
+    - ./.env
+    - ./service-names.env
+  environment:
+    - DB_USER=sonarqube
+    - DB_PASS=sonarqubepass
+    - DB_NAME=sonarqubedb
+
+sonar:
+  image: xpfriend/sonarqube:${VERSION_SONARQUBE}
+  env_file:
+    - ./.env
+    - ./service-names.env
+  dns: ${POCCI_DNS_ADDRESS}
+  environment:
+    - SONAR_SECURITY_REALM=LDAP
+    - LDAP_UID=uid
+    - LDAP_REAL_NAME=cn
+    - LDAP_MAIL=mail
+  links:
+    - sonarqubedb:db
+    - ldap:${LDAP_HOST}
+
+EOF

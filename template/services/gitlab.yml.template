@@ -1,0 +1,35 @@
+cat << EOF
+# GitLab
+gitlabdb:
+  image: sameersbn/postgresql:${VERSION_POSTGRESQL}
+  env_file:
+    - ./.env
+    - ./service-names.env
+  environment:
+    - DB_USER=gitlab
+    - DB_PASS=secretpassword
+    - DB_NAME=gitlabhq_production
+
+gitlabredis:
+  image: sameersbn/redis:${VERSION_REDIS}
+  env_file:
+    - ./.env
+    - ./service-names.env
+
+gitlab:
+  image: sameersbn/gitlab:${VERSION_GITLAB}
+  env_file:
+    - ./.env
+    - ./service-names.env
+  dns: ${POCCI_DNS_ADDRESS}
+  environment:
+    - GITLAB_HOST=gitlab${POCCI_DOMAIN_NAME}
+    - LDAP_ENABLED=true
+    - LDAP_UID=uid
+    - LDAP_METHOD=plain
+    - LDAP_ACTIVE_DIRECTORY=false
+  links:
+    - gitlabredis:redisio
+    - gitlabdb:postgresql
+
+EOF

@@ -3,14 +3,18 @@ set -e
 
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 BIN_DIR=${BASE_DIR}/bin
+LIB_DIR=${BIN_DIR}/lib
 JS_DIR=${BIN_DIR}/js
 
 cd ${BIN_DIR}
 chmod +x *
-./create-proxy-env
+chmod +x ${LIB_DIR}/*
+${LIB_DIR}/create-proxy-env
 
 cd ${JS_DIR}
 POCCIR_OPTS="--env-file=../proxy.env" ${BIN_DIR}/oneoff nodejs npm install --no-bin-links
 POCCIR_OPTS="--env-file=../proxy.env" ${BIN_DIR}/oneoff nodejs /app/node_modules/selenium-standalone/bin/selenium-standalone install
 
-grep JENKINS_SLAVE ${BIN_DIR}/version |cut -d _ -f 4 |awk -F '=' 'BEGIN{printf "{"}NR!=1{printf ","}{printf "\"%s\":\"%s\"",tolower($1),$2}END{print "}"}' >${JS_DIR}/lib/jenkins-slaves-version.json
+grep JENKINS_SLAVE ${LIB_DIR}/version |cut -d _ -f 4 |awk -F '=' 'BEGIN{printf "{"}NR!=1{printf ","}{printf "\"%s\":\"%s\"",tolower($1),$2}END{print "}"}' >${JS_DIR}/lib/jenkins-slaves-version.json
+
+${LIB_DIR}/generate-config-from-template

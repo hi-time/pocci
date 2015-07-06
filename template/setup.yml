@@ -1,5 +1,11 @@
-environment:
-  - TZ=Asia/Tokyo
+pocci:
+  domain: pocci.test
+  services:
+    - user
+    - jenkins
+    - sonar
+  environment:
+    - TZ=Asia/Tokyo
 
 ldap:
   users:

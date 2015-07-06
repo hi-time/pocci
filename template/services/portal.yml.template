@@ -1,0 +1,15 @@
+cat << EOF
+# nginx
+nginx:
+  image: nginx:${VERSION_NGINX}
+  env_file:
+    - ./.env
+    - ./service-names.env
+  dns: ${POCCI_DNS_ADDRESS}
+  links: [ ${POCCI_PUBLIC_CONTAINERS} ]
+  volumes:
+   - ./nginx:/etc/nginx/conf.d
+  ports:
+    - "80:80"
+
+EOF

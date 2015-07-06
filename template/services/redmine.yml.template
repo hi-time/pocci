@@ -1,0 +1,24 @@
+cat << EOF
+# Redmine
+redminedb:
+  image: sameersbn/postgresql:${VERSION_POSTGRESQL}
+  env_file:
+    - ./.env
+    - ./service-names.env
+  environment:
+    - DB_USER=redmine
+    - DB_PASS=password
+    - DB_NAME=redmine_production
+
+redmine:
+  image: sameersbn/redmine:${VERSION_REDMINE}
+  env_file:
+    - ./.env
+    - ./service-names.env
+  dns: ${POCCI_DNS_ADDRESS}
+  environment:
+    - SMTP_ENABLED=false
+  links:
+    - redminedb:postgresql
+
+EOF

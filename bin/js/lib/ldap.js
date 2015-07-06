@@ -45,7 +45,7 @@ var delUsers = function*(client, users, baseDn) {
 
 module.exports = {
   defaults: {
-    url:            'ldap://ldap',
+    host:           'ldap.internal',
     organisation:   'Example Inc.',
     domain:         'example.com',
     bindDn:         'cn=admin,dc=example,dc=com',
@@ -56,8 +56,12 @@ module.exports = {
     attrLastName:   'sn',
     attrMail:       'mail'
   },
+  url : function(options) {
+    var host = options.host || process.env.INTERNAL_LDAP_HOST;
+    return options.url || 'ldap://' + host;
+  },
   bind: function*(options) {
-    var url = options.url || this.defaults.url;
+    var url = this.url(options);
     var bindDn = options.bindDn || this.defaults.bindDn;
     var bindPassword = options.bindPassword || this.defaults.bindPassword;
     var client = ldap.createClient({url: url});

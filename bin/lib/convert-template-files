@@ -1,0 +1,27 @@
+
+if [ -d ${RUNTIME_DIR}/nginx ]; then
+    rm -fr ${RUNTIME_DIR}/nginx
+fi
+
+mkdir ${RUNTIME_DIR}/nginx
+for i in ${POCCI_SERVICES}; do
+    source ${CONFIG_DIR}/services/nginx/$i.conf.template >${RUNTIME_DIR}/nginx/$i.conf
+done
+
+POCCI_PUBLIC_CONTAINERS=""
+for i in $(grep -lE "proxy_pass\s+http://" ${RUNTIME_DIR}/nginx/*); do
+    if [ "${POCCI_PUBLIC_CONTAINERS}" != "" ]; then
+        POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS}, "
+    fi
+    PUBLIC_CONTAINER_NAME=`basename ${i%.*}`
+    POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS} ${PUBLIC_CONTAINER_NAME}"
+done
+
+if [ -f ${RUNTIME_DIR}/docker-compose.yml ]; then
+    rm ${RUNTIME_DIR}/docker-compose.yml
+fi
+
+for i in ${POCCI_SERVICES}; do
+    source ${CONFIG_DIR}/services/$i.yml.template >>${RUNTIME_DIR}/docker-compose.yml
+done
+

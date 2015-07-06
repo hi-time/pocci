@@ -1,0 +1,8 @@
+
+DEFAULT_IFS="${IFS}"
+IFS=$'\n'
+
+for i in $(cat $1 |tr -d '\r'); do
+    export $i
+done
+IFS="${DEFAULT_IFS}"

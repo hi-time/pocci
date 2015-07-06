@@ -241,7 +241,7 @@ var addUsers = function*(browser, url, users) {
 
 module.exports = {
   defaults: {
-    url: 'http://server/gitlab'
+    url: process.env.GITLAB_URL
   },
   setup: function*(browser, options, ldapOptions) {
     var url = options.url || this.defaults.url;

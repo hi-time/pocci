@@ -1,0 +1,5 @@
+
+for i in $(docker ps |grep "poccis_dns" |awk '{print $1}'); do
+    docker inspect --format='{{ .NetworkSettings.IPAddress }}' $i
+    break
+done

@@ -15,7 +15,7 @@ version = require("../lib/jenkins-slaves-version.json")
 
 
 listNodes = ->
-  jenkinsLibObj = jenkinsLib("http://jenkinsci:password@server/jenkins")
+  jenkinsLibObj = jenkinsLib("http://jenkinsci:password@" + process.env.JENKINS_HOST)
   listJenkinsNodes = thunkify(jenkinsLibObj.node.list.bind(jenkinsLibObj.node))
 
   nodes = yield listJenkinsNodes()
@@ -44,7 +44,7 @@ assertEntries = (options) ->
 
 
 destroyNodes = ->
-  jenkinsLibObj = jenkinsLib("http://jenkinsci:password@server/jenkins")
+  jenkinsLibObj = jenkinsLib("http://jenkinsci:password@" + process.env.JENKINS_HOST)
   destroyNode = thunkify(jenkinsLibObj.node.destroy.bind(jenkinsLibObj.node))
   nodes = yield listNodes()
   for node in nodes

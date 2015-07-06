@@ -1,0 +1,10 @@
+cat << EOF
+# Jenkins
+jenkins:
+  image: xpfriend/jenkins:${VERSION_JENKINS}
+  env_file:
+    - ./.env
+    - ./service-names.env
+  dns: ${POCCI_DNS_ADDRESS}
+
+EOF

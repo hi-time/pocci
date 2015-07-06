@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+if [ -t 0 ];then
+    TTY_OPTION="-it"
+else
+    TTY_OPTION=" "
+fi
+
+docker exec ${TTY_OPTION} "$@"

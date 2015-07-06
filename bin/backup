@@ -2,10 +2,10 @@
 set -e
 
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/init-env
+source ${BASE_DIR}/bin/lib/init-env
 BACKUP_DIR=${BASE_DIR}/backup/$(date +%Y%m%d-%H%M)
 
-${BIN_DIR}/save-config "Backup: ${BACKUP_DIR}"
+${LIB_DIR}/save-config "Backup: ${BACKUP_DIR}"
 git clone ${CONFIG_DIR}/.git ${BACKUP_DIR}/config
 
 ${BIN_DIR}/stop-service

@@ -2,7 +2,7 @@
 set -e
 
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/init-env
+source ${BASE_DIR}/bin/lib/init-env
 
 BACKUP_DIR=$1
 if [ -z "${BACKUP_DIR}" -o ! -f "${BACKUP_DIR}"/restore-all.sh ]; then

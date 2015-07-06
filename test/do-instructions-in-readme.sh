@@ -17,5 +17,4 @@ git clone ${POCCI_REPO} pocci
 cd pocci
 cd bin
 bash ./build
-./generate-config-from-template
 ./create-service

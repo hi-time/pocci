@@ -1,21 +1,42 @@
 'use strict';
 var yaml = require('./yaml.js');
 var ldapDefaults = require('./ldap.js').defaults;
+var pocciDefaults = require('./pocci.js').defaults;
+
+var getServices = function(option) {
+  var services = 'portal gitlab';
+  if(!option) {
+    return services;
+  }
+  option.forEach(function(value) {
+    if(value !== 'portal' && value !== 'gitlab') {
+      services += ' ' + value;
+    }
+  });
+  return services;
+};
 
 module.exports = function(yamlFile) {
   var options = yaml(yamlFile);
 
-  if(!options.ldap) {
-    options.ldap = {};
-  }
+  options.ldap = options.ldap || {};
+  options.pocci = options.pocci || {};
 
-  var domain = options.ldap.domain || ldapDefaults.domain;
+  var pocciDomain = options.pocci.domain || pocciDefaults.domain;
+  if(pocciDomain && pocciDomain[0] !== '.') {
+    pocciDomain = '.' + pocciDomain;
+  }
+  var ldapHost = options.ldap.host || ldapDefaults.host + pocciDomain;
+  var ldapDomain = options.ldap.domain || ldapDefaults.domain;
   var organisation = options.ldap.organisation || ldapDefaults.organisation;
   var bindDn = options.ldap.bindDn || ldapDefaults.bindDn;
   var bindPassword = options.ldap.bindPassword || ldapDefaults.bindPassword;
   var baseDn = options.ldap.baseDn || ldapDefaults.baseDn;
 
-  console.log('LDAP_DOMAIN=' + domain);
+  console.log('POCCI_DOMAIN_NAME=' + pocciDomain);
+  console.log('POCCI_SERVICES=' + getServices(options.pocci.services));
+  console.log('LDAP_HOST=' + ldapHost);
+  console.log('LDAP_DOMAIN=' + ldapDomain);
   console.log('LDAP_ORGANISATION=' + organisation);
   console.log('LDAP_LOGIN_DN=' + bindDn);
   console.log('LDAP_BIND_DN=' + bindDn);
@@ -25,9 +46,9 @@ module.exports = function(yamlFile) {
   console.log('LDAP_BASE_DN=' + baseDn);
   console.log('LDAP_BASE=' + baseDn);
 
-  if(options.environment) {
-    for(var i = 0; i < options.environment.length; i++) {
-      console.log(options.environment[i]);
+  if(options.pocci.environment) {
+    for(var i = 0; i < options.pocci.environment.length; i++) {
+      console.log(options.pocci.environment[i]);
     }
   }
 
