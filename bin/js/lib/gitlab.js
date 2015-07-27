@@ -182,10 +182,20 @@ var createIssues = function*(request, projectId, issues) {
   }
 };
 
-var setupProject = function*(request, options, groupId) {
-  var projectId = yield getProjectId(request, options.projectName);
+var setupProject = function*(request, options, groupId, repositories, groupName) {
+  var projectName = options.projectName;
+  var projectId = yield getProjectId(request, projectName);
   if(!projectId) {
-    projectId = yield createProject(request, options.projectName, groupId);
+    projectId = yield createProject(request, projectName, groupId);
+  }
+
+  if(options.localPath) {
+    var repository = {
+      localPath: options.localPath,
+      commitMessage: options.commitMessage || 'Initial commit',
+      remotePath: '/' + groupName + '/' + projectName + '.git'
+    };
+    repositories.push(repository);
   }
 
   if(options.issues) {
@@ -193,9 +203,9 @@ var setupProject = function*(request, options, groupId) {
   }
 };
 
-var setupProjects = function*(request, projects, groupId) {
+var setupProjects = function*(request, projects, groupId, repositories, groupName) {
   for(var i = 0; i < projects.length; i++) {
-    yield setupProject(request, projects[i], groupId);
+    yield setupProject(request, projects[i], groupId, repositories, groupName);
   }
 };
 
@@ -211,10 +221,11 @@ var createGroup = function*(request, groupName) {
   return response.body.id;
 };
 
-var setupGroup = function*(request, options, users) {
-  var groupId = yield getGroupId(request, options.groupName);
+var setupGroup = function*(request, options, users, repositories) {
+  var groupName = options.groupName;
+  var groupId = yield getGroupId(request, groupName);
   if(!groupId) {
-    groupId = yield createGroup(request, options.groupName);
+    groupId = yield createGroup(request, groupName);
   }
   var members = options.members || addDefaultMembers(users);
   if(members) {
@@ -222,13 +233,13 @@ var setupGroup = function*(request, options, users) {
   }
 
   if(options.projects) {
-    yield setupProjects(request, toArray(options.projects), groupId);
+    yield setupProjects(request, toArray(options.projects), groupId, repositories, groupName);
   }
 };
 
-var setupGroups = function*(browser, url, request, groups, users) {
+var setupGroups = function*(browser, url, request, groups, users, repositories) {
   for(var i = 0; i < groups.length; i++) {
-    yield setupGroup(request, groups[i], users);
+    yield setupGroup(request, groups[i], users, repositories);
   }
 };
 
@@ -243,7 +254,7 @@ module.exports = {
   defaults: {
     url: process.env.GITLAB_URL
   },
-  setup: function*(browser, options, ldapOptions) {
+  setup: function*(browser, options, ldapOptions, repositories) {
     var url = options.url || this.defaults.url;
     var users = toArray(options.users || ldapOptions.users);
 
@@ -254,7 +265,7 @@ module.exports = {
     if(options.groups) {
       yield firstLoginByAdmin(browser, url);
       this.request = yield createRequest(browser, url);
-      yield setupGroups(browser, url, this.request, toArray(options.groups), users);
+      yield setupGroups(browser, url, this.request, toArray(options.groups), users, repositories);
       yield logout(browser);
     }
   },

@@ -23,10 +23,8 @@ module.exports = {
   defaults: {
     url: process.env.GITLAB_URL,
   },
-  import: function*(options, ldapOptions) {
-    var url = options.url || this.defaults.url;
-    var repos = util.toArray(options.repositories);
-
+  import: function*(repos, ldapOptions) {
+    var url = this.defaults.url;
     for(var i = 0; i < repos.length; i++) {
       yield importCode(url, repos[i], ldapOptions.users);
     }

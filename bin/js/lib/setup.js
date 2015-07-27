@@ -28,19 +28,21 @@ var setup = function*(yamlFile, keepOpenBrowser) {
     browser = module.exports.browser;
   }
 
+  var repositories = [];
+
   if(options.gitlab) {
     console.log('*** Setup GitLab...');
-    yield gitlab.setup(browser, options.gitlab, options.ldap);
+    yield gitlab.setup(browser, options.gitlab, options.ldap, repositories);
   }
 
-  if(options.git) {
+  if(repositories.length > 0) {
     console.log('*** Import codes to Git repository...');
-    yield git.import(options.git, options.ldap);
+    yield git.import(repositories, options.ldap);
   }
 
   if(options.jenkins) {
     console.log('*** Setup Jenkins...');
-    yield jenkins.setup(browser, options.jenkins, options.ldap, options.git);
+    yield jenkins.setup(browser, options.jenkins, options.ldap, repositories);
   }
 
   if(browser && !keepOpenBrowser) {

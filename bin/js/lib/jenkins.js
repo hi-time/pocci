@@ -26,7 +26,7 @@ var createJob = function*(jenkins, job) {
   yield create(job.jobName, replaceRepositoryUrl(configXml, job.repositoryUrl));
 };
 
-var createJobs = function*(jenkins, jobs, gitOptions, scmUrl) {
+var createJobs = function*(jenkins, jobs, repositories, scmUrl) {
   var toUrl = function(path) {
     return util.getURL(scmUrl, null, path);
   };
@@ -50,8 +50,7 @@ var createJobs = function*(jenkins, jobs, gitOptions, scmUrl) {
     return util.toArray(jobs);
   };
 
-  var repositories = (gitOptions)? gitOptions.repositories : [];
-  jobs = normalize(util.toArray(repositories));
+  jobs = normalize(repositories);
   for(var i = 0; i < jobs.length; i++) {
     yield createJob(jenkins, jobs[i]);
   }
@@ -162,7 +161,7 @@ module.exports = {
     url:    process.env.JENKINS_URL,
     scmUrl: process.env.GITLAB_URL
   },
-  setup: function*(browser, options, ldapOptions, gitOptions) {
+  setup: function*(browser, options, ldapOptions, repositories) {
     var url = options.url || this.defaults.url;
     var getJenkins = function() {
       if(ldapOptions) {
@@ -189,7 +188,7 @@ module.exports = {
 
     if(options.jobs) {
       var scmUrl = options.scmUrl || this.defaults.scmUrl;
-      yield createJobs(jenkins, options.jobs, gitOptions, scmUrl);
+      yield createJobs(jenkins, options.jobs, repositories, scmUrl);
     }
   }
 };
