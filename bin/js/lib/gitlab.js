@@ -268,11 +268,67 @@ var addUsers = function*(browser, url, users) {
   }
 };
 
+var setupRedmineSerivce = function*(browser, url, groupName, project) {
+  var projectName = project.projectName;
+  var id = groupName + '_' + projectName;
+
+  browser.url(url + '/' + groupName + '/' + projectName + '/services');
+  yield browser.yieldable.save('gitlab-before-setupRedmineSerivce-' + id);
+
+  browser.url(url + '/' + groupName + '/' + projectName + '/services/redmine/edit');
+  yield browser.yieldable.save('gitlab-before-setupRedmineSerivce-' + id);
+
+  var isSelected = (yield browser.yieldable.isSelected('#service_active'))[0];
+  if (!isSelected) {
+    yield browser.yieldable.click('#service_active');
+  }
+
+  browser
+    .setValue('#service_project_url', process.env.REDMINE_URL + '/projects/' + groupName)
+    .setValue('#service_issues_url', process.env.REDMINE_URL + '/issues/:id')
+    .setValue('#service_new_issue_url', process.env.REDMINE_URL + '/projects/' + groupName + '/issues/new');
+
+  yield browser.yieldable.save('gitlab-doing-setupRedmineSerivce-' + id);
+  browser.submitForm('#edit_service');
+  yield browser.yieldable.save('gitlab-after-setupRedmineSerivce-' + id);
+};
+
+var setupRedmineSerivceForProjects = function*(browser, url, groupName, projects) {
+  for(var i = 0; i < projects.length; i++) {
+    yield setupRedmineSerivce(browser, url, groupName, projects[i]);
+  }
+};
+
+var getRedmineProject = function(redmineOptions, groupName) {
+  if(!redmineOptions || !redmineOptions.projects) {
+    return null;
+  }
+
+  var projects = toArray(redmineOptions.projects);
+  for(var i = 0; i < projects.length; i++) {
+    if(projects[i].projectId === groupName) {
+      return projects[i];
+    }
+  }
+  return null;
+};
+
+var setupRedmineSerivceForGroups = function*(browser, url, groups, redmineOptions) {
+  for(var i = 0; i < groups.length; i++) {
+    var groupName = groups[i].groupName;
+    var redmineProject = getRedmineProject(redmineOptions, groupName);
+    if(redmineProject) {
+      var projects = toArray(groups[i].projects);
+      yield setupRedmineSerivceForProjects(browser, url, groupName, projects);
+    }
+  }
+};
+
 module.exports = {
   defaults: {
     url: process.env.GITLAB_URL
   },
-  setup: function*(browser, options, ldapOptions, repositories) {
+  setup: function*(browser, options, ldapOptions, repositories, redmineOptions) {
     var url = options.url || this.defaults.url;
     var users = toArray(options.users || ldapOptions.users);
 
@@ -283,7 +339,9 @@ module.exports = {
     if(options.groups) {
       yield firstLoginByAdmin(browser, url);
       this.request = yield createRequest(browser, url);
-      yield setupGroups(this.request, toArray(options.groups), users, repositories);
+      var groups = toArray(options.groups);
+      yield setupGroups(this.request, groups, users, repositories);
+      yield setupRedmineSerivceForGroups(browser, url, groups, redmineOptions);
       yield logout(browser);
     }
   },

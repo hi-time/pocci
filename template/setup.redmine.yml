@@ -1,0 +1,52 @@
+pocci:
+  domain: pocci.test
+  services:
+    - user
+    - jenkins
+    - sonar
+    - redmine
+  environment:
+    - TZ=Asia/Tokyo
+
+ldap:
+  users:
+    -
+      uid:          jenkinsci
+      givenName:    Jenkins
+      sn:           CI
+      mail:         jenkins-ci@example.com
+      userPassword: password
+    -
+      uid:          bouze
+      givenName:    Taro
+      sn:           BOUZE
+      mail:         bouze@example.com
+      userPassword: password
+
+jenkins:
+  jobs: repositories
+  nodes:
+    - java
+    - nodejs
+
+gitlab:
+  groups:
+    -
+      groupName: example
+      projects:
+        -
+          projectName:    example-java
+          localPath:      ./config/code/example-java
+          commitMessage:  "refs #1 (import example codes)"
+        -
+          projectName:    example-nodejs
+          localPath:      ./config/code/example-nodejs
+          commitMessage:  "refs #1 (import example codes)"
+
+redmine:
+  lang: ja
+  projects:
+    -
+      projectId: example
+      issues:
+        - import example codes

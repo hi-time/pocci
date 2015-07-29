@@ -3,6 +3,7 @@ var git = require('./git.js');
 var gitlab = require('./gitlab.js');
 var jenkins = require('./jenkins.js');
 var ldap = require('./ldap.js');
+var redmine = require('./redmine.js');
 var yaml = require('./yaml.js');
 var webdriver = require('./webdriver.js');
 
@@ -22,7 +23,7 @@ var setup = function*(yamlFile, keepOpenBrowser) {
   }
 
   var browser;
-  if(options.gitlab || options.jenkins) {
+  if(options.gitlab || options.jenkins || options.redmine) {
     console.log('*** Start Selenium Webdriver...');
     yield initBrowser();
     browser = module.exports.browser;
@@ -32,7 +33,12 @@ var setup = function*(yamlFile, keepOpenBrowser) {
 
   if(options.gitlab) {
     console.log('*** Setup GitLab...');
-    yield gitlab.setup(browser, options.gitlab, options.ldap, repositories);
+    yield gitlab.setup(browser, options.gitlab, options.ldap, repositories, options.redmine);
+  }
+
+  if(options.redmine) {
+    console.log('*** Setup Redmine...');
+    yield redmine.setup(browser, options.redmine, options.ldap, options.gitlab);
   }
 
   if(repositories.length > 0) {
@@ -56,3 +62,4 @@ module.exports.initBrowser = initBrowser;
 module.exports.gitlab = gitlab;
 module.exports.git = git;
 module.exports.jenkins = jenkins;
+module.exports.redmine = redmine;

@@ -20,5 +20,7 @@ redmine:
     - SMTP_ENABLED=false
   links:
     - redminedb:postgresql
+  volumes_from:
+    - gitlab
 
 EOF
