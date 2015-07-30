@@ -5,7 +5,9 @@ var assertStatus = require('./util.js').assertStatus;
 var adminPassword = '5iveL!fe';
 
 var logout = function*(browser) {
-  browser.click('a[href="/users/sign_out"]');
+  browser
+    .click('a[href="/users/sign_out"]')
+    .pause(1000);
   yield browser.yieldable.call();
 };
 
