@@ -46,12 +46,19 @@ Docker コンテナを使った CIサービス構築の試作。
     ./create-service
     ```
 
-6.  hosts ファイルを設定する。  
-    設定例:
+6.  CIサービスに接続するマシンの hosts ファイルを設定する。  
+    設定例 (IPアドレスは利用環境に合わせて修正してください) :
 
     ```
     192.168.1.2 portal.pocci.test user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test
     ```
+
+    あるいは
+
+    ```
+    192.168.1.2 portal user gitlab jenkins sonar
+    ```
+
 
 7.  以下の URL にアクセスしてサービスを利用する。
 
@@ -59,6 +66,13 @@ Docker コンテナを使った CIサービス構築の試作。
     *   http://jenkins.pocci.test ... Jenkins
     *   http://sonar.pocci.test ... SonarQube
     *   http://user.pocci.test ... phpLDAPadmin
+
+    あるいは
+
+    *   http://gitlab/ ... GitLab
+    *   http://jenkins/ ... Jenkins
+    *   http://sonar/ ... SonarQube
+    *   http://user/ ... phpLDAPadmin
 
 
 利用者

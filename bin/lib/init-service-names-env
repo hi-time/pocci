@@ -3,18 +3,18 @@ if [ ! -d ${RUNTIME_DIR}/nginx ]; then
     return
 fi
 
-ALL_SERVICE_URL="http://portal${POCCI_DOMAIN_NAME}"
+ALL_SERVICE_URL="http://portal.${POCCI_DOMAIN_NAME}"
 echo "" >${RUNTIME_DIR}/service-names.env
 
 for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' ${RUNTIME_DIR}/docker-compose.yml | sed -e 's/://'); do
-    CONTAINER_HOST="$i.internal${POCCI_DOMAIN_NAME}"
+    CONTAINER_HOST="$i.internal.test"
     CONTAINER_KEY=`echo $i |tr '[:lower:]' '[:upper:]'`
     echo "INTERNAL_${CONTAINER_KEY}_HOST=${CONTAINER_HOST}" >>${RUNTIME_DIR}/service-names.env
 done
 
 for i in $(grep -lE "proxy_pass\s+http://" ${RUNTIME_DIR}/nginx/*); do
     CONTAINER_NAME=`basename ${i%.*}`
-    CONTAINER_HOST="${CONTAINER_NAME}${POCCI_DOMAIN_NAME}"
+    CONTAINER_HOST="${CONTAINER_NAME}.${POCCI_DOMAIN_NAME}"
     CONTAINER_URL="http://${CONTAINER_HOST}"
     CONTAINER_KEY=`echo ${CONTAINER_NAME} |tr '[:lower:]' '[:upper:]'`
     echo "${CONTAINER_KEY}_HOST=${CONTAINER_HOST}" >>${RUNTIME_DIR}/service-names.env

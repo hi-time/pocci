@@ -45,7 +45,7 @@ var delUsers = function*(client, users, baseDn) {
 
 module.exports = {
   defaults: {
-    host:           'ldap.internal',
+    host:           'ldap.internal.test',
     organisation:   'Example Inc.',
     domain:         'example.com',
     bindDn:         'cn=admin,dc=example,dc=com',

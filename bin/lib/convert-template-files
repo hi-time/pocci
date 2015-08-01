@@ -5,7 +5,7 @@ fi
 
 mkdir ${RUNTIME_DIR}/nginx
 for i in ${POCCI_SERVICES}; do
-    source ${CONFIG_DIR}/services/nginx/$i.conf.template >${RUNTIME_DIR}/nginx/$i.conf
+    cp ${CONFIG_DIR}/services/nginx/$i.conf ${RUNTIME_DIR}/nginx
 done
 
 POCCI_PUBLIC_CONTAINERS=""

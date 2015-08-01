@@ -23,10 +23,7 @@ module.exports = function(yamlFile) {
   options.pocci = options.pocci || {};
 
   var pocciDomain = options.pocci.domain || pocciDefaults.domain;
-  if(pocciDomain && pocciDomain[0] !== '.') {
-    pocciDomain = '.' + pocciDomain;
-  }
-  var ldapHost = options.ldap.host || ldapDefaults.host + pocciDomain;
+  var ldapHost = options.ldap.host || ldapDefaults.host;
   var ldapDomain = options.ldap.domain || ldapDefaults.domain;
   var organisation = options.ldap.organisation || ldapDefaults.organisation;
   var bindDn = options.ldap.bindDn || ldapDefaults.bindDn;

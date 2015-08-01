@@ -2,6 +2,6 @@
 
 module.exports = {
   defaults: {
-    domain:     ''
+    domain:     'pocci.test'
   }
 };
