@@ -6,5 +6,7 @@ jenkins:
     - ./.env
     - ./service-names.env
   dns: ${POCCI_DNS_ADDRESS}
+  ports:
+    - "50000:50000"
 
 EOF
