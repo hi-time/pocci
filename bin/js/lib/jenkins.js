@@ -99,10 +99,13 @@ var enableLdap = function*(browser, url, ldapOptions, ldapUrl, user) {
   var enableSecurity = function*() {
     var isSelected = (yield browser.yieldable.isSelected(useSecuritySelector))[0];
     if (!isSelected) {
+      yield browser.yieldable.save('jenkins-doing-enableSecurity-1');
       yield browser.yieldable.click('input[type="checkbox"][name="_.useSecurity"]');
     }
 
+      yield browser.yieldable.save('jenkins-doing-enableSecurity-2');
     yield browser.yieldable.click('#radio-block-2');
+      yield browser.yieldable.save('jenkins-doing-enableSecurity-3');
     yield browser.yieldable.click('#yui-gen1-button');
 
     var uid = ldapOptions.attrLogin || ldapDefaults.attrLogin;
@@ -114,11 +117,14 @@ var enableLdap = function*(browser, url, ldapOptions, ldapUrl, user) {
       .setValue('input[type="password"][name="_.managerPasswordSecret"]', ldapOptions.bindPassword || ldapDefaults.bindPassword)
       .setValue('input[type="text"][name="_.displayNameAttributeName"]', ldapOptions.attrLogin || ldapDefaults.attrLogin);
 
-    yield browser.yieldable.call();
+    yield browser.yieldable.save('jenkins-doing-enableSecurity-4');
     yield browser.yieldable.click('#yui-gen6-button');
+    yield browser.yieldable.save('jenkins-after-enableSecurity');
   };
 
   browser.url(url + '/configureSecurity/');
+  yield browser.yieldable.save('jenkins-before-enableSecurity');
+
   var useSecuritySelector = 'input[type="checkbox"][name="_.useSecurity"]';
   var isDisabledSecurity = (yield browser.yieldable.isExisting(useSecuritySelector))[0];
 
@@ -127,23 +133,34 @@ var enableLdap = function*(browser, url, ldapOptions, ldapUrl, user) {
   }
 
   var loginUser = util.getUser(user, ldapOptions.users);
+  browser.url(url + '/login');
+  yield browser.yieldable.save('jenkins-before-login-by-' + loginUser.uid);
+
   browser
-    .url(url + '/login')
     .setValue('#j_username', loginUser.uid)
     .setValue('input[type="password"][name="j_password"]', loginUser.userPassword);
-  yield browser.yieldable.call();
+  yield browser.yieldable.save('jenkins-doing-login-by-' + loginUser.uid);
+
   yield browser.yieldable.click('button');
+  yield browser.yieldable.save('jenkins-after-login-by-' + loginUser.uid);
 
   if(isDisabledSecurity) {
     browser.url(url + '/configureSecurity/');
+    yield browser.yieldable.save('jenkins-before-configureSecurity');
+
     yield browser.yieldable.click('#radio-block-8');
+    yield browser.yieldable.save('jenkins-doing-configureSecurity-1');
     yield browser.yieldable.click('input[type="checkbox"][name="_.masterToSlaveAccessControl"]');
+    yield browser.yieldable.save('jenkins-doing-configureSecurity-2');
     yield browser.yieldable.click('#yui-gen6-button');
+    yield browser.yieldable.save('jenkins-after-configureSecurity');
   }
 };
 
 var saveSecret = function*(browser, url, node) {
   browser.url(url + '/computer/' + node);
+  yield browser.yieldable.save('jenkins-saveSecret');
+
   var text = (yield browser.yieldable.getText('pre'))[0];
   var secret = text.replace(/.*-secret/,'-secret');
   writeNodeConf(node, secret);

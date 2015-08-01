@@ -5,41 +5,55 @@ var assertStatus = require('./util.js').assertStatus;
 var adminPassword = '5iveL!fe';
 
 var logout = function*(browser) {
+  yield browser.yieldable.save('gitlab-before-logout');
   browser
     .click('a[href="/users/sign_out"]')
     .pause(1000);
-  yield browser.yieldable.call();
+  yield browser.yieldable.save('gitlab-after-logout');
 };
 
 var login = function*(browser, url, user, password) {
+  browser.url(url + '/users/sign_in');
+  yield browser.yieldable.save('gitlab-before-login-by-' + user);
+
   browser
-    .url(url + '/users/sign_in')
     .setValue('#username', user)
-    .setValue('#password', password)
-    .submitForm('#new_ldap_user');
-  yield browser.yieldable.call();
+    .setValue('#password', password);
+  yield browser.yieldable.save('gitlab-doing-login-by-' + user);
+
+  browser.submitForm('#new_ldap_user');
+  yield browser.yieldable.save('gitlab-after-login-by-' + user);
 };
 
 var newPassword = function*(browser, url, password) {
+  browser.url(url + '/profile/password/new');
+  yield browser.yieldable.save('gitlab-before-newPassword');
+
   browser
-    .url(url + '/profile/password/new')
     .setValue('#user_current_password', password)
     .setValue('#user_password', password)
-    .setValue('#user_password_confirmation', password)
-    .submitForm('#edit_user_1');
-  yield browser.yieldable.call();
+    .setValue('#user_password_confirmation', password);
+  yield browser.yieldable.save('gitlab-doing-newPassword');
+
+  browser.submitForm('#edit_user_1');
+  yield browser.yieldable.save('gitlab-after-newPassword');
 };
 
 
 var loginByAdmin = function*(browser, url) {
   browser.url(url + '/users/sign_in');
-  yield browser.yieldable.call();
+  yield browser.yieldable.save('gitlab-before-loginByAdmin');
+
   yield browser.yieldable.click('a[href="#tab-signin"]');
+  yield browser.yieldable.save('gitlab-loginByAdmin-siginin-tab-clicked');
+
   browser
     .setValue('#user_login', 'root')
-    .setValue('#user_password', adminPassword)
-    .submitForm('#new_user');
-  yield browser.yieldable.call();
+    .setValue('#user_password', adminPassword);
+  yield browser.yieldable.save('gitlab-doing-loginByAdmin');
+
+  browser.submitForm('#new_user');
+  yield browser.yieldable.save('gitlab-after-loginByAdmin');
 };
 
 var firstLoginByAdmin = function*(browser, url) {
@@ -50,6 +64,8 @@ var firstLoginByAdmin = function*(browser, url) {
 
 var createRequest = function*(browser, url) {
   browser.url(url + '/profile/account');
+  yield browser.yieldable.save('gitlab-createRequest');
+
   var key = (yield browser.yieldable.getValue('#token'))[0];
 
   return function(path, body) {
@@ -239,7 +255,7 @@ var setupGroup = function*(request, options, users, repositories) {
   }
 };
 
-var setupGroups = function*(browser, url, request, groups, users, repositories) {
+var setupGroups = function*(request, groups, users, repositories) {
   for(var i = 0; i < groups.length; i++) {
     yield setupGroup(request, groups[i], users, repositories);
   }
@@ -267,7 +283,7 @@ module.exports = {
     if(options.groups) {
       yield firstLoginByAdmin(browser, url);
       this.request = yield createRequest(browser, url);
-      yield setupGroups(browser, url, this.request, toArray(options.groups), users, repositories);
+      yield setupGroups(this.request, toArray(options.groups), users, repositories);
       yield logout(browser);
     }
   },
