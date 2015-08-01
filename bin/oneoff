@@ -40,7 +40,7 @@ CONTAINER_NAME=poccir_${CONTAINER_TYPE}
 CONTAINER_VERSION=$(grep JENKINS_SLAVE_`echo ${CONTAINER_TYPE} |tr '[:lower:]' '[:upper:]'` ${BASE_DIR}/bin/lib/version |cut -d '=' -f 2)
 
 set +e
-docker run --name ${CONTAINER_NAME} --privileged -w /app -v ${PWD}:/app ${POCCIR_OPTS} --rm ${TTY_OPTION} xpfriend/jenkins-slave-${CONTAINER_TYPE}:${CONTAINER_VERSION} "$@"
+docker run --name ${CONTAINER_NAME} --privileged -w /app -v ${PWD}:/app ${POCCIR_OPTS} -v /dev/urandom:/dev/random --rm ${TTY_OPTION} xpfriend/jenkins-slave-${CONTAINER_TYPE}:${CONTAINER_VERSION} "$@"
 RC=$?
 
 set -e

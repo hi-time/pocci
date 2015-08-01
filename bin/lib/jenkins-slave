@@ -3,6 +3,7 @@ set -e
 
 BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
+source ${LIB_DIR}/export-env ${RUNTIME_DIR}/service-names.env
 
 if [ -f ${CONFIG_DIR}/jenkins-slaves.yml.template ]; then
     cd ${RUNTIME_DIR}

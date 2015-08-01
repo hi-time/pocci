@@ -5,25 +5,7 @@ BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
 ${BIN_DIR}/up-service
-
-source ${LIB_DIR}/export-env ${RUNTIME_DIR}/service-names.env
-if [ -n "${JENKINS_URL}" ]; then
-    echo "Update Jenkins plugins..."
-    ${LIB_DIR}/docker-exec poccis_jenkins_1 /config/update-plugins.sh
-    ${BIN_DIR}/oneoff iojs curl --noproxy jenkins -X POST ${JENKINS_URL}/restart
-    ${LIB_DIR}/waitfor ${JENKINS_URL}
-fi
-
-echo "Apply user settings..."
+${LIB_DIR}/update-jenkins-plugins
 ${LIB_DIR}/setup
-
-if [ -n "${JENKINS_URL}" ]; then
-    if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then
-        echo "Start Jenkins slave nodes..."
-        cp ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ${CONFIG_DIR}
-        ${LIB_DIR}/save-config "Add jenkins-slaves.yml.template"
-        ${LIB_DIR}/jenkins-slave up -d
-    fi
-fi
-
+${LIB_DIR}/start-jenkins-slave-nodes
 echo "Done."
