@@ -23,7 +23,7 @@ gitlab:
     - ./service-names.env
   dns: ${POCCI_DNS_ADDRESS}
   environment:
-    - GITLAB_HOST=gitlab${POCCI_DOMAIN_NAME}
+    - GITLAB_HOST=gitlab.${POCCI_DOMAIN_NAME}
     - LDAP_ENABLED=true
     - LDAP_UID=uid
     - LDAP_METHOD=plain
