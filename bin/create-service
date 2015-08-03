@@ -5,9 +5,9 @@ BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
 ${BIN_DIR}/destroy-service
-${LIB_DIR}/change-setup-file "$@"
+${LIB_DIR}/change-setup-file $1
 ${BIN_DIR}/up-service
 ${LIB_DIR}/update-jenkins-plugins
 ${LIB_DIR}/setup
-${LIB_DIR}/start-jenkins-slave-nodes
+${BIN_DIR}/restart-service
 echo "Done."

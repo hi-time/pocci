@@ -25,3 +25,14 @@ for i in ${POCCI_SERVICES}; do
     source ${CONFIG_DIR}/services/$i.yml.template >>${RUNTIME_DIR}/docker-compose.yml
 done
 
+
+if [ -d ${RUNTIME_DIR}/volumes ]; then
+    rm -fr ${RUNTIME_DIR}/volumes
+fi
+mkdir ${RUNTIME_DIR}/volumes
+
+for i in ${POCCI_SERVICES}; do
+    if [ -d ${CONFIG_DIR}/services/volumes/$i ]; then
+        cp -r ${CONFIG_DIR}/services/volumes/$i  ${RUNTIME_DIR}/volumes
+    fi
+done

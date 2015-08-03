@@ -6,6 +6,7 @@ var ldap = require('./ldap.js');
 var redmine = require('./redmine.js');
 var yaml = require('./yaml.js');
 var webdriver = require('./webdriver.js');
+var kanban = require('./kanban.js');
 
 var initBrowser = function*() {
   if(!module.exports.browser) {
@@ -51,6 +52,12 @@ var setup = function*(yamlFile, keepOpenBrowser) {
     yield jenkins.setup(browser, options.jenkins, options.ldap, repositories);
   }
 
+  if(options.pocci && options.pocci.services &&
+      options.pocci.services.indexOf('kanban') > -1) {
+    console.log('*** Setup Kanban...');
+    yield kanban.setup(browser, options, repositories);
+  }
+
   if(browser && !keepOpenBrowser) {
     console.log('*** Closing browser...');
     yield browser.yieldable.end();
@@ -63,3 +70,4 @@ module.exports.gitlab = gitlab;
 module.exports.git = git;
 module.exports.jenkins = jenkins;
 module.exports.redmine = redmine;
+module.exports.kanban = kanban;

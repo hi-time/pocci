@@ -66,21 +66,18 @@ Docker コンテナを使った CIサービス構築の試作。
     ```
 
 
-7.  以下の URL にアクセスしてサービスを利用する。
+URL
+---
+サービス                                                | URL
+------------------------------------------------------- | ----------------------------------------------
+[GitLab](https://gitlab.com/)                           | http://gitlab.pocci.test/ (http://gitlab/)
+[Jenkins](https://jenkins-ci.org/)                      | http://jenkins.pocci.test/ (http://jenkins/)
+[SonarQube](http://www.sonarqube.org/)                  | http://sonar.pocci.test/ (http://sonar/)
+[phpLDAPadmin](http://phpldapadmin.sourceforge.net/)    | http://user.pocci.test/ (http://user/)
+[GitLab Kanban Board](http://kanban.leanlabs.io/)       | http://kanban.pocci.test/ (http://kanban/)
+[Redmine](http://www.redmine.org/) (*)                  | http://redmine.pocci.test/ (http://redmine/)
 
-    *   http://gitlab.pocci.test ... GitLab
-    *   http://jenkins.pocci.test ... Jenkins
-    *   http://sonar.pocci.test ... SonarQube
-    *   http://user.pocci.test ... phpLDAPadmin
-    *   http://redmine.pocci.test ... Redmine
-
-    あるいは
-
-    *   http://gitlab/ ... GitLab
-    *   http://jenkins/ ... Jenkins
-    *   http://sonar/ ... SonarQube
-    *   http://user/ ... phpLDAPadmin
-    *   http://redmine/ ... Redmine
+(*) create-service で redmine を指定した場合。
 
 
 利用者

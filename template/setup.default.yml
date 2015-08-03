@@ -4,6 +4,7 @@ pocci:
     - user
     - jenkins
     - sonar
+    - kanban
   environment:
     - TZ=Asia/Tokyo
 

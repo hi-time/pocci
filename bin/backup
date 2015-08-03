@@ -19,9 +19,11 @@ echo 'cd $(dirname $0)' >>${RESTORE_ALL_SCRIPT}
 
 CONTAINERS=`docker ps -a |grep 'pocci[s|n]_' |sed -e 's/.*pocci/pocci/'`
 for i in ${CONTAINERS}; do
-    VOLUMES=`docker inspect --format='{{range $key, $value := .VolumesRW}}{{print $key " " }}{{end}}' $i`
-    echo "backup : $i:${VOLUMES}"
-    if [ "${VOLUMES}" != "" ];then
+    VOLUMES=`docker inspect --format='{{range $key, $value := .Volumes}}{{printf "%s:%s\n" $key $value }}{{end}}' $i |grep -E '/_data$' |sed -e 's/:.*$//' |tr '\n' ' '`
+    if [ -z "${VOLUMES}" ]; then
+        echo "skip backup : $i"
+    else
+        echo "backup : $i:${VOLUMES}"
         docker run --name poccir_backup --volumes-from $i -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base:${VERSION_JENKINS_SLAVE_BASE} sudo tar cfz /backup/$i.tar.gz ${VOLUMES}
         RESTORE_SCRIPT=${BACKUP_DIR}/restore-$i.sh
         RESTORE_COMMAND='docker run --name poccir_restore --volumes-from '$i' -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base:'${VERSION_JENKINS_SLAVE_BASE}' sudo bash -c "cd /;find '${VOLUMES}' -mindepth 1 -delete;tar xfz /backup/'$i'.tar.gz"'

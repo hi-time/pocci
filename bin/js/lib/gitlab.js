@@ -62,11 +62,14 @@ var firstLoginByAdmin = function*(browser, url) {
   yield loginByAdmin(browser, url);
 };
 
-var createRequest = function*(browser, url) {
+var getPrivateToken = function*(browser, url) {
   browser.url(url + '/profile/account');
-  yield browser.yieldable.save('gitlab-createRequest');
+  yield browser.yieldable.save('gitlab-getPrivateToken');
+  return (yield browser.yieldable.getValue('#token'))[0];
+};
 
-  var key = (yield browser.yieldable.getValue('#token'))[0];
+var createRequest = function*(browser, url) {
+  var key = yield getPrivateToken(browser, url);
 
   return function(path, body) {
     var request =  {
@@ -288,6 +291,7 @@ module.exports = {
       yield logout(browser);
     }
   },
+  getPrivateToken: getPrivateToken,
   loginByAdmin: loginByAdmin,
   logout: logout,
   createRequest: createRequest

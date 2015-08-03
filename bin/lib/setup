@@ -15,3 +15,13 @@ fi
 
 cd ${JS_DIR}
 ${BIN_DIR}/oneoff iojs node ./app.js
+
+if [ -n "${JENKINS_URL}" ]; then
+    if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then
+        cp ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ${CONFIG_DIR}
+    fi
+fi
+
+cp ${TEMP_CONFIG_DIR}/services/*.yml.template ${CONFIG_DIR}/services
+
+${LIB_DIR}/save-config "Update *.yml.template by setup.yml"

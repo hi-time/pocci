@@ -1,0 +1,34 @@
+#!/bin/bash
+set -e
+
+KANBAN_VERSION=1.1.4
+SERVICES_DIR=${CONFIG_DIR}/services
+KANBAN_DIR=${SERVICES_DIR}/volumes/kanban
+KANBAN_COMPOSE_FILE=${SERVICES_DIR}/kanban.yml.template
+TEMP_CONFIG_DIR=${BIN_DIR}/js/config
+
+if [ -d ${KANBAN_DIR} ]; then
+    rm -fr ${KANBAN_DIR}
+fi
+
+mkdir ${KANBAN_DIR}
+cd ${KANBAN_DIR}/..
+git clone https://github.com/leanlabsio/kanban.git
+cd ${KANBAN_DIR}
+git checkout ${KANBAN_VERSION}
+mv .git .git.backup
+echo ".git.backup" >>./.gitignore
+
+cd ${BIN_DIR}
+if [ ! -d ${TEMP_CONFIG_DIR} ]; then
+    mkdir ${TEMP_CONFIG_DIR}
+fi
+cp ${KANBAN_DIR}/docker-compose.yml ${TEMP_CONFIG_DIR}
+
+echo "cat << EOF" >${KANBAN_COMPOSE_FILE}
+echo "#Kanban" >>${KANBAN_COMPOSE_FILE}
+POCCIR_OPTS=" " \
+    ./oneoff iojs iojs \
+    -e "require('./js/lib/kanban.js').edit('./js/config/docker-compose.yml')" | \
+    tr -d '\r' >>${KANBAN_COMPOSE_FILE}
+echo "EOF" >>${KANBAN_COMPOSE_FILE}
