@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [ `docker ps -a |grep "pocci[s|n]_" |wc -l` -eq 0 ]; then
+    exit
+fi
+
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 

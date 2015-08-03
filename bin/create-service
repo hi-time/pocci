@@ -4,6 +4,7 @@ set -e
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
+${BIN_DIR}/destroy-service
 ${LIB_DIR}/change-setup-file "$@"
 ${BIN_DIR}/up-service
 ${LIB_DIR}/update-jenkins-plugins
