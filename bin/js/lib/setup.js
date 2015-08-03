@@ -33,7 +33,7 @@ var setup = function*(yamlFile, keepOpenBrowser) {
 
   if(options.gitlab) {
     console.log('*** Setup GitLab...');
-    yield gitlab.setup(browser, options.gitlab, options.ldap, repositories, options.redmine);
+    yield gitlab.setup(browser, options.gitlab, options.ldap, repositories);
   }
 
   if(options.redmine) {
