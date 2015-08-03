@@ -46,17 +46,23 @@ Docker コンテナを使った CIサービス構築の試作。
     ./create-service
     ```
 
+    Redmine を使用する場合は、以下のようにする。
+
+    ```bash
+    ./create-service redmine
+    ```
+
 6.  CIサービスに接続するマシンの hosts ファイルを設定する。  
     設定例 (IPアドレスは利用環境に合わせて修正してください) :
 
     ```
-    192.168.1.2 portal.pocci.test user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test
+    192.168.1.2 portal.pocci.test user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test redmine.pocci.test
     ```
 
     あるいは
 
     ```
-    192.168.1.2 portal user gitlab jenkins sonar
+    192.168.1.2 portal user gitlab jenkins sonar redmine
     ```
 
 
@@ -66,6 +72,7 @@ Docker コンテナを使った CIサービス構築の試作。
     *   http://jenkins.pocci.test ... Jenkins
     *   http://sonar.pocci.test ... SonarQube
     *   http://user.pocci.test ... phpLDAPadmin
+    *   http://redmine.pocci.test ... Redmine
 
     あるいは
 
@@ -73,6 +80,7 @@ Docker コンテナを使った CIサービス構築の試作。
     *   http://jenkins/ ... Jenkins
     *   http://sonar/ ... SonarQube
     *   http://user/ ... phpLDAPadmin
+    *   http://redmine/ ... Redmine
 
 
 利用者
@@ -82,6 +90,7 @@ Docker コンテナを使った CIサービス構築の試作。
 ------------ | -------------------------- | --------
 GitLab       | root                       | 5iveL!fe
 SonarQube    | admin                      | admin
+Redmine      | admin                      | admin
 phpLDAPadmin | cn=admin,dc=example,dc=com | admin
 
 ### 開発者
