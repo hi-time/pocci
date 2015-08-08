@@ -21,7 +21,7 @@ for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' -e 'EOF' ${CONFIG_DIR}/services
 done
 
 for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/services/nginx/*); do
-    CONTAINER_NAME=`basename ${i%.conf.*}`
+    CONTAINER_NAME=`basename ${i%.conf}`
     default_no_proxy="${default_no_proxy},${CONTAINER_NAME}.${POCCI_DOMAIN_NAME}"
 done
 
