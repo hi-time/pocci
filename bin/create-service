@@ -4,10 +4,29 @@ set -e
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
+echo ""
+echo "*** STEP 1 ***"
 ${BIN_DIR}/destroy-service
+
+echo ""
+echo "*** STEP 2 ***"
 ${LIB_DIR}/change-setup-file $1
+
+echo ""
+echo "*** STEP 3 ***"
 ${BIN_DIR}/up-service
+
+echo ""
+echo "*** STEP 4 ***"
 ${LIB_DIR}/update-jenkins-plugins
+
+echo ""
+echo "*** STEP 5 ***"
 ${LIB_DIR}/setup
+
+echo ""
+echo "*** STEP 6 ***"
 ${BIN_DIR}/restart-service
-echo "Done."
+
+echo ""
+echo "*** Done. ***"

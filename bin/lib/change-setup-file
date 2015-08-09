@@ -10,4 +10,5 @@ fi
 BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
+echo "${SETUP_FILE} --> setup.yml"
 cp ${CONFIG_DIR}/${SETUP_FILE} ${CONFIG_DIR}/setup.yml
