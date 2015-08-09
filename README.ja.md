@@ -56,13 +56,13 @@ Docker コンテナを使った CIサービス構築の試作。
     設定例 (IPアドレスは利用環境に合わせて修正してください) :
 
     ```
-    192.168.1.2 portal.pocci.test user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test redmine.pocci.test
+    192.168.1.2 portal.pocci.test user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test
     ```
 
     あるいは
 
     ```
-    192.168.1.2 portal user gitlab jenkins sonar redmine
+    192.168.1.2 portal user gitlab jenkins sonar kanban redmine
     ```
 
 

@@ -25,9 +25,9 @@ var registerOauth = function*(browser, url, keys) {
 var updateComposeFile = function(keys) {
   var file = './config/services/kanban.yml.template';
   var text = fs.readFileSync(file, 'utf8')
-              .replace(/__GITLAB_API_TOKEN/g, keys.apiToken)
-              .replace(/__GITLAB_OAUTH_CLIENT_ID/g, keys.clientId)
-              .replace(/__GITLAB_OAUTH_CLIENT_SECRET/g, keys.secret);
+              .replace(/GITLAB_API_TOKEN=.*/g, 'GITLAB_API_TOKEN=' + keys.apiToken)
+              .replace(/GITLAB_OAUTH_CLIENT_ID=.*/g, 'GITLAB_OAUTH_CLIENT_ID=' + keys.clientId)
+              .replace(/GITLAB_OAUTH_CLIENT_SECRET=.*/g, 'GITLAB_OAUTH_CLIENT_SECRET=' + keys.secret);
   fs.writeFileSync(file, text);
 };
 
@@ -46,10 +46,7 @@ module.exports = {
                   .replace(/wsserver:wsserver/g, 'kanbanwsserver:wsserver')
                   .replace(/redis:redis/g, 'kanbanredis:redis')
                   .replace(/rabbitmq:rabbitmq/g, 'kanbanrabbitmq:rabbitmq')
-                  .replace(/https:\/\/gitlab.com/g, 'http://gitlab.${POCCI_DOMAIN_NAME}')
-                  .replace('GITLAB_OAUTH_CLIENT_ID=qwerty', 'GITLAB_OAUTH_CLIENT_ID=__GITLAB_OAUTH_CLIENT_ID')
-                  .replace('GITLAB_OAUTH_CLIENT_SECRET=qwerty', 'GITLAB_OAUTH_CLIENT_SECRET=__GITLAB_OAUTH_CLIENT_SECRET')
-                  .replace('GITLAB_API_TOKEN=qwerty', 'GITLAB_API_TOKEN=__GITLAB_API_TOKEN');
+                  .replace(/https:\/\/gitlab.com/g, 'http://gitlab.${POCCI_DOMAIN_NAME}');
     var containers = yaml.safeLoad(yamlText);
     var names = Object.keys(containers);
     for(var i = 0; i < names.length; i++) {
