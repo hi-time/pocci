@@ -1,0 +1,33 @@
+pocci:
+  domain: pocci.test
+  services:
+    - user
+    - kanban
+  environment:
+    - TZ=Asia/Tokyo
+
+ldap:
+  users:
+    -
+      uid:          jenkinsci
+      givenName:    Jenkins
+      sn:           CI
+      mail:         jenkins-ci@example.com
+      userPassword: password
+    -
+      uid:          bouze
+      givenName:    Taro
+      sn:           BOUZE
+      mail:         bouze@example.com
+      userPassword: password
+
+gitlab:
+  groups:
+    -
+      groupName: example
+      projects:
+        -
+          projectName:    example-board
+          issues:
+            - task 1
+            - task 2
