@@ -8,14 +8,12 @@ pocci:
 
 ldap:
   users:
-    -
-      uid:          jenkinsci
+    - uid:          jenkinsci
       givenName:    Jenkins
       sn:           CI
       mail:         jenkins-ci@example.com
       userPassword: password
-    -
-      uid:          bouze
+    - uid:          bouze
       givenName:    Taro
       sn:           BOUZE
       mail:         bouze@example.com
@@ -23,11 +21,9 @@ ldap:
 
 gitlab:
   groups:
-    -
-      groupName: example
+    - groupName: example
       projects:
-        -
-          projectName:    example-board
+        - projectName:    example-board
           issues:
             - task 1
             - task 2

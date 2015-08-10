@@ -10,14 +10,12 @@ pocci:
 
 ldap:
   users:
-    -
-      uid:          jenkinsci
+    - uid:          jenkinsci
       givenName:    Jenkins
       sn:           CI
       mail:         jenkins-ci@example.com
       userPassword: password
-    -
-      uid:          bouze
+    - uid:          bouze
       givenName:    Taro
       sn:           BOUZE
       mail:         bouze@example.com
@@ -31,22 +29,18 @@ jenkins:
 
 gitlab:
   groups:
-    -
-      groupName: example
+    - groupName: example
       projects:
-        -
-          projectName:    example-java
+        - projectName:    example-java
           localPath:      ./config/code/example-java
           commitMessage:  "refs #1 (import example codes)"
-        -
-          projectName:    example-nodejs
+        - projectName:    example-nodejs
           localPath:      ./config/code/example-nodejs
           commitMessage:  "refs #1 (import example codes)"
 
 redmine:
   lang: ja
   projects:
-    -
-      projectId: example
+    - projectId: example
       issues:
         - import example codes
