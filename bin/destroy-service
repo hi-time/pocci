@@ -1,12 +1,9 @@
 #!/bin/bash
 set -e
 
-if [ `docker ps -a |grep "pocci[s|n]_" |wc -l` -eq 0 ]; then
+if [ `docker ps -a |grep "pocci[s|n|r]_" |wc -l` -eq 0 ]; then
     exit
 fi
-
-BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/lib/init-env
 
 echo "Going to destroy all services."
 echo "Are you sure? [yN]"
@@ -19,6 +16,10 @@ case ${yesno} in
         exit ;;
 esac
 
-${BIN_DIR}/stop-service
-${LIB_DIR}/docker-service rm -v --force
-${LIB_DIR}/jenkins-slave rm -v --force
+
+if [ `docker ps |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then
+    `docker ps |grep "pocci[s|n|r]_" |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
+fi
+if [ `docker ps -a |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then
+    `docker ps -a |grep "pocci[s|n|r]_" |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
+fi
