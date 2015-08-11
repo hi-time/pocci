@@ -124,7 +124,7 @@ describe "Jenkins Job", ->
       yield assertNotBuilt(name)
       yield build(name)
       console.log("    start : #{name}")
-      yield retry(assertBuilt.bind(this, name), {retries: 200, interval: 5000, factor : 1})
+      yield retry(assertBuilt.bind(this, name), {retries: 100, interval: 10000, factor : 1})
       console.log("    end   : #{name}")
       yield assertBlue(name)
 
