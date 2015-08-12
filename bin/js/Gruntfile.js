@@ -42,8 +42,14 @@ module.exports = function(grunt) {
       git: {
         src: ['test/gitTest.js']
       },
-      smokeTest: {
-        src: ['test/smokeTest.js']
+      login: {
+        src: ['test/loginTest.js']
+      },
+      jenkinsJavaBuild: {
+        src: ['test/jenkinsJavaBuildTest.js']
+      },
+      jenkinsNodeJSBuild: {
+        src: ['test/jenkinsNodeJSBuildTest.js']
       },
     }
   });
@@ -57,11 +63,10 @@ module.exports = function(grunt) {
     }
   );
 
-  grunt.registerTask('basic', ['coffee', 'jshint', 'clean', 'mkdir']);
-  grunt.registerTask('default', ['basic']);
-  grunt.registerTask('smokeTest', ['basic', 'mochaTest:smokeTest']);
+  grunt.registerTask('default', ['coffee', 'jshint']);
+  grunt.registerTask('prepare', ['clean', 'mkdir']);
+  grunt.registerTask('basic', ['default', 'prepare']);
   grunt.registerTask('ldap', ['basic', 'mochaTest:ldap']);
-  grunt.registerTask('gitlab', ['basic', 'mochaTest:gitlab']);
   grunt.registerTask('jenkins', ['basic', 'mochaTest:jenkins']);
   grunt.registerTask('git', ['basic', 'mochaTest:git']);
 };

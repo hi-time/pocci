@@ -3,10 +3,13 @@
 var webdriver = require('webdriverio');
 var selenium = require('selenium-standalone');
 var thunkify = require('thunkify');
+var fs = require('fs');
 
 module.exports.init = function*() {
   var ssdir = './config/screen';
-  require('fs').mkdirSync(ssdir);
+  if(!fs.existsSync(ssdir)) {
+    fs.mkdirSync(ssdir);
+  }
   var num = 0;
 
   yield thunkify(selenium.start.bind(selenium))({spawnOptions: {stdio: 'inherit'}});
