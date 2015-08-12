@@ -8,6 +8,4 @@ source ${LIB_DIR}/export-env ${RUNTIME_DIR}/service-names.env
 if [ -n "${JENKINS_URL}" ]; then
     echo "Update Jenkins plugins..."
     ${LIB_DIR}/docker-exec poccis_jenkins_1 /config/update-plugins.sh
-    ${BIN_DIR}/oneoff iojs curl --noproxy jenkins -X POST ${JENKINS_URL}/restart
-    ${LIB_DIR}/waitfor ${JENKINS_URL}
 fi
