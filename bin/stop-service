@@ -1,8 +1,18 @@
 #!/bin/bash
 set -e
 
+if [ `docker ps |grep "pocci[s|n|r]_" |wc -l` -eq 0 ]; then
+    exit
+fi
+
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
+set +e
 ${LIB_DIR}/docker-service stop
 ${LIB_DIR}/jenkins-slave stop
+
+set -e
+if [ `docker ps |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then
+    `docker ps |grep "pocci[s|n|r]_" |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
+fi

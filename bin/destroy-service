@@ -20,15 +20,13 @@ esac
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
-set +e
 ${BIN_DIR}/stop-service
+
+set +e
 ${LIB_DIR}/docker-service rm -v --force
 ${LIB_DIR}/jenkins-slave rm -v --force
 
 set -e
-if [ `docker ps |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then
-    `docker ps |grep "pocci[s|n|r]_" |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
-fi
 if [ `docker ps -a |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then
     `docker ps -a |grep "pocci[s|n|r]_" |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
 fi
