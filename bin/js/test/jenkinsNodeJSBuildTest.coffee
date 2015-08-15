@@ -5,7 +5,7 @@
 jenkinsBuild = require("./jenkinsBuild.js")
 test = require("./resq.js")
 
-describe "Jenkins Job (example-java)", ->
+describe "Jenkins Job (example-nodejs)", ->
 
   it "build", (done) ->
     @timeout(30 * 60 * 1000)
