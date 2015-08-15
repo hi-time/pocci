@@ -16,8 +16,17 @@ echo 'set -e' >>${RESTORE_ALL_SCRIPT}
 echo 'cd $(dirname $0)' >>${RESTORE_ALL_SCRIPT}
 
 CONTAINERS=`docker ps -a |grep 'pocci[s|n]_' |sed -e 's/.*pocci/pocci/'`
+FORMAT=""
 for i in ${CONTAINERS}; do
-    VOLUMES=`docker inspect --format='{{range $key, $value := .Volumes}}{{printf "%s:%s\n" $key $value }}{{end}}' $i |grep -E '/_data$' |sed -e 's/:.*$//' |tr '\n' ' '`
+    if [ -z "${FORMAT}" ]; then
+        if [ `docker inspect $i |grep \"Mounts\": |wc -l` -eq 0 ]; then
+            FORMAT='{{range $key, $value := .Volumes}}{{printf "%s:%s\n" $key $value }}{{end}}'
+        else
+            FORMAT='{{range $value := .Mounts}}{{printf "%s:%s\n" $value.Destination $value.Source }}{{end}}'
+        fi
+    fi
+
+    VOLUMES=`docker inspect --format="${FORMAT}" $i |grep -E '/_data$' |sed -e 's/:.*$//' |tr '\n' ' '`
     if [ -z "${VOLUMES}" ]; then
         echo "skip backup : $i"
     else
