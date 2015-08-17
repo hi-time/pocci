@@ -22,7 +22,9 @@ ldap:
       userPassword: password
 
 jenkins:
-  jobs: repositories
+  jobs:
+    - example/example-java
+    - example/example-nodejs
   nodes:
     - java
     - nodejs
@@ -34,7 +36,6 @@ gitlab:
       projects:
         - projectName:    example-document
           localPath:      ./config/code/example-document
-          commitMessage:  "import example documents"
         - projectName:    example-java
           localPath:      ./config/code/example-java
           commitMessage:  "import example codes (#1)"

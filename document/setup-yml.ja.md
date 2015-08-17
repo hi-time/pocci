@@ -208,7 +208,9 @@ Jenkins 関連の情報登録を行います。
 
 ```yaml
 jenkins:
-  jobs: repositories
+  jobs:
+    - example/example-java
+    - example/example-nodejs
   nodes:
     - java
     - nodejs
@@ -216,11 +218,10 @@ jenkins:
 
 *   **jobs:**   
     ビルドジョブ定義。
-    `repositories` と記述すると、**gitlab** の `localPath`
-    で指定したリポジトリをビルド対象とするジョブを作成します。
+    **gitlab** で指定した `groupName` と `projectName` を `/` で区切って指定します。
 *   **nodes:**  
     ビルド実行時に利用できるJenkinsスレーブノードの種類。
-    `java`, `nodejs`, `iojs`, `python27` が指定できます。
+    `java`, `nodejs`, `iojs` が指定できます。
 
 redmine:
 --------

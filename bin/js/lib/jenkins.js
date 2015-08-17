@@ -8,7 +8,11 @@ var ldapDefaults = ldap.defaults;
 var util = require('./util.js');
 var version = require('./jenkins-slaves-version.json');
 
-var createJob = function*(jenkins, job) {
+var createJob = function*(jenkins, job, scmUrl) {
+  var toUrl = function(path) {
+    return util.getURL(scmUrl, null, path);
+  };
+
   var destroy = thunkify(jenkins.job.destroy.bind(jenkins.job));
   var create = thunkify(jenkins.job.create.bind(jenkins.job));
   var replaceRepositoryUrl = function(text, repositoryUrl) {
@@ -23,36 +27,33 @@ var createJob = function*(jenkins, job) {
 
   var configXmlFilePath = path.resolve(__dirname, 'jenkins-job-config.xml');
   var configXml = fs.readFileSync(configXmlFilePath, 'utf8');
-  yield create(job.jobName, replaceRepositoryUrl(configXml, job.repositoryUrl));
+  var repositoryUrl = toUrl(job.repositoryPath);
+  yield create(job.jobName, replaceRepositoryUrl(configXml, repositoryUrl));
 };
 
 var createJobs = function*(jenkins, jobs, repositories, scmUrl) {
-  var toUrl = function(path) {
-    return util.getURL(scmUrl, null, path);
-  };
-
-  var toJobs = function(repositories) {
-    var jobs = [];
-    for(var i = 0; i < repositories.length; i++) {
-      var job = {
-        jobName:        path.basename(repositories[i].localPath),
-        repositoryUrl:  toUrl(repositories[i].remotePath)
+  var normalizeJob = function(job) {
+    if(typeof job === 'object') {
+      return job;
+    } else {
+      return {
+        jobName:        path.basename(job),
+        repositoryPath: job + '.git'
       };
-      jobs.push(job);
     }
-    return jobs;
   };
 
-  var normalize = function(repositories) {
-    if(jobs === 'repositories') {
-      return toJobs(repositories);
+  var normalizeJobs = function(jobs) {
+    var nomalizedJobs = [];
+    for(var i = 0; i < jobs.length; i++) {
+      nomalizedJobs.push(normalizeJob(jobs[i]));
     }
-    return util.toArray(jobs);
+    return nomalizedJobs;
   };
 
-  jobs = normalize(repositories);
+  jobs = normalizeJobs(util.toArray(jobs));
   for(var i = 0; i < jobs.length; i++) {
-    yield createJob(jenkins, jobs[i]);
+    yield createJob(jenkins, jobs[i], scmUrl);
   }
 };
 

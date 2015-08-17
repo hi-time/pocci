@@ -22,7 +22,9 @@ ldap:
       userPassword: password
 
 jenkins:
-  jobs: repositories
+  jobs:
+    - example/example-java
+    - example/example-nodejs
   nodes:
     - java
     - nodejs
