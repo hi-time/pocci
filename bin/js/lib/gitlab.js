@@ -275,7 +275,7 @@ var addUsers = function*(browser, url, users) {
 var updateNginxConfFile = function(topPage) {
   var file = './config/services/nginx/gitlab.conf';
   var text = fs.readFileSync(file, 'utf8');
-  text = text.replace(/__TOP_PAGE/, topPage).replace(/#rewrite/, 'rewrite');
+  text = text.replace(/__TOP_PAGE/, topPage).replace(/#location/, 'location');
   fs.writeFileSync(file, text);
 };
 

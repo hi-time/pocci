@@ -30,3 +30,5 @@ set -e
 if [ `docker ps -a |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then
     `docker ps -a |grep "pocci[s|n|r]_" |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
 fi
+
+${LIB_DIR}/generate-config-from-template
