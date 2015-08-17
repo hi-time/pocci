@@ -15,17 +15,9 @@ ${BASE_DIR}/temp/pocci/bin/backup
 ../oneoff iojs grunt basic
 ../oneoff iojs grunt prepare mochaTest:login
 ../oneoff iojs grunt prepare mochaTest:gitlab
-sleep 30
-../oneoff iojs grunt prepare mochaTest:jenkinsNodeJSBuild
-sleep 120
-../oneoff iojs grunt prepare mochaTest:jenkinsJavaBuild
 
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup/*
 
 ../oneoff iojs grunt basic
 ../oneoff iojs grunt prepare mochaTest:login
 ../oneoff iojs grunt prepare mochaTest:gitlab
-sleep 30
-../oneoff iojs grunt prepare mochaTest:jenkinsNodeJSBuild
-sleep 120
-../oneoff iojs grunt prepare mochaTest:jenkinsJavaBuild
