@@ -153,6 +153,7 @@ GitLab 関連情報の登録を行います。
 
 ```yaml
 gitlab:
+  topPage: /example/example-document/blob/master/README.md
   groups:
     -
       groupName: example
@@ -164,6 +165,7 @@ gitlab:
             - 初期コード登録
 ```
 
+*   **topPage:** ... ホスト名のみを指定した時に表示されるページ。デフォルトはログインページ
 *   **groups:** ... 登録するグループの情報
     *   **groupName:** ... グループ名
 *   **projects:** ... 登録するプロジェクトの情報

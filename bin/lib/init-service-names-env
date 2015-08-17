@@ -3,7 +3,7 @@ if [ ! -d ${RUNTIME_DIR}/nginx ]; then
     return
 fi
 
-ALL_SERVICE_URL="http://portal.${POCCI_DOMAIN_NAME}"
+ALL_SERVICE_URL=""
 echo "" >${RUNTIME_DIR}/service-names.env
 
 for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' ${RUNTIME_DIR}/docker-compose.yml | sed -e 's/://'); do

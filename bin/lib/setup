@@ -8,7 +8,7 @@ source ${LIB_DIR}/export-env ${RUNTIME_DIR}/service-names.env
 echo "Apply user settings..."
 rm -fr ${TEMP_CONFIG_DIR}
 mkdir ${TEMP_CONFIG_DIR}
-cp -r ${CONFIG_DIR}/* ${TEMP_CONFIG_DIR}
+cp -pr ${CONFIG_DIR}/* ${TEMP_CONFIG_DIR}
 if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml ]; then
     rm ${TEMP_CONFIG_DIR}/jenkins-slaves.yml
 fi
@@ -22,6 +22,6 @@ if [ -n "${JENKINS_URL}" ]; then
     fi
 fi
 
-cp ${TEMP_CONFIG_DIR}/services/*.yml.template ${CONFIG_DIR}/services
+cp -ur ${TEMP_CONFIG_DIR}/services ${CONFIG_DIR}
 
 ${LIB_DIR}/save-config "Update *.yml.template by setup.yml"

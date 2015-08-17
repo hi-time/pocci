@@ -17,9 +17,7 @@ for i in $(grep -lE "proxy_pass\s+http://" ${RUNTIME_DIR}/nginx/*); do
     POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS} ${PUBLIC_CONTAINER_NAME}"
 done
 
-if [ -f ${RUNTIME_DIR}/docker-compose.yml ]; then
-    rm ${RUNTIME_DIR}/docker-compose.yml
-fi
+source ${CONFIG_DIR}/services/nginx.yml.template >${RUNTIME_DIR}/docker-compose.yml
 
 for i in ${POCCI_SERVICES}; do
     source ${CONFIG_DIR}/services/$i.yml.template >>${RUNTIME_DIR}/docker-compose.yml

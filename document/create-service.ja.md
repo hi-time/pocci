@@ -22,19 +22,19 @@ cd bin
 ### 起動したサービスへのアクセス方法
 
 起動したCIサービスに接続するマシン（CIサービスのクライアントとなるマシン）の
-hosts ファイル (Windowsマシンの場合は `C:\Windows\System32\drivers\etc\hosts)
+hosts ファイル (Windowsマシンの場合は `C:\Windows\System32\drivers\etc\hosts`)
 に以下のような記述を追加してください。
 
 設定例 (実際のIPアドレスはCIサービスを起動したマシンのものを使用すること) :
 
 ```
-192.168.1.2 portal.pocci.test user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test
+192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test
 ```
 
 あるいは
 
 ```
-192.168.1.2 portal user gitlab jenkins sonar kanban redmine
+192.168.1.2 user gitlab jenkins sonar kanban redmine
 ```
 
 というふうにドメイン名を省略してもOKです
@@ -45,7 +45,6 @@ hosts ファイル (Windowsマシンの場合は `C:\Windows\System32\drivers\et
 
 URL                                                | サービス                                                | 主な用途
 -------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------
-http://portal.pocci.test/ (http://portal/)         | -                                                       | ポータル画面
 http://gitlab.pocci.test/ (http://gitlab/)         | [GitLab](https://gitlab.com/)                           | コードリポジトリ管理 / チケット (Issue) 管理
 http://jenkins.pocci.test/ (http://jenkins/)       | [Jenkins](https://jenkins-ci.org/)                      | CIジョブ管理
 http://sonar.pocci.test/ (http://sonar/)           | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析

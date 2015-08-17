@@ -1,4 +1,5 @@
 'use strict';
+var fs = require('fs');
 var server = require('co-request');
 var toArray = require('./util.js').toArray;
 var assertStatus = require('./util.js').assertStatus;
@@ -271,6 +272,13 @@ var addUsers = function*(browser, url, users) {
   }
 };
 
+var updateNginxConfFile = function(topPage) {
+  var file = './config/services/nginx/gitlab.conf';
+  var text = fs.readFileSync(file, 'utf8');
+  text = text.replace(/__TOP_PAGE/, topPage).replace(/#rewrite/, 'rewrite');
+  fs.writeFileSync(file, text);
+};
+
 module.exports = {
   defaults: {
     url: process.env.GITLAB_URL
@@ -289,6 +297,10 @@ module.exports = {
       var groups = toArray(options.groups);
       yield setupGroups(this.request, groups, users, repositories);
       yield logout(browser);
+    }
+
+    if(options.topPage) {
+      updateNginxConfFile(options.topPage);
     }
   },
   getPrivateToken: getPrivateToken,

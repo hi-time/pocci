@@ -7,7 +7,7 @@ for i in $(docker ps |grep "${SERVICE_NAME}_" |awk '{print $1}'); do
     IP_ADDRESS=`docker inspect --format='{{ .NetworkSettings.IPAddress }}' $i`
     DNS_ENTRY="${IP_ADDRESS} ${CONTAINER_NAME}.internal.test"
     if [ "${CONTAINER_NAME}" = "nginx" ]; then
-        PUBLIC_ADDRESS="${DNS_ENTRY} portal.${POCCI_DOMAIN_NAME}"
+        PUBLIC_ADDRESS="${DNS_ENTRY}"
     else
         echo ${DNS_ENTRY} >>${RUNTIME_DIR}/althosts
     fi
