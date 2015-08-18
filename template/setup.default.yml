@@ -31,7 +31,7 @@ jenkins:
     - nodejs
 
 gitlab:
-  topPage: /example/example-document/blob/master/README.ja.md
+  topPage: /example/example-document/blob/master/README.md
   groups:
     - groupName: example
       projects:

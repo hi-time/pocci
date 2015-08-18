@@ -94,8 +94,7 @@ pocci:
     サービスのドメイン名。  
     例えば、`domain : pocci.example.com` とすれば、
     `http://gitlab.pocci.example.com` や `http://jenkins.pocci.example.com`
-    というURLでサービスが利用できます。
-    hosts ファイルではなく、DNSでサービス利用を行う場合には定義してください。  
+    というURLでサービスが利用できます。  
     デフォルトは `pocci.test`。
 *   **services:**  
     利用するサービス。  

@@ -31,26 +31,17 @@ hosts ファイル (Windowsマシンの場合は `C:\Windows\System32\drivers\et
 192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test
 ```
 
-あるいは
-
-```
-192.168.1.2 user gitlab jenkins sonar kanban redmine
-```
-
-というふうにドメイン名を省略してもOKです
-(プロキシサーバを利用している環境の場合は、こっちのほうがうまくつながるかもしれません)。
-
 
 #### URL
 
-URL                                                | サービス                                                | 主な用途
--------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------
-http://gitlab.pocci.test/ (http://gitlab/)         | [GitLab](https://gitlab.com/)                           | コードリポジトリ管理 / チケット (Issue) 管理
-http://jenkins.pocci.test/ (http://jenkins/)       | [Jenkins](https://jenkins-ci.org/)                      | CIジョブ管理
-http://sonar.pocci.test/ (http://sonar/)           | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析
-http://user.pocci.test/ (http://user/)             | [phpLDAPadmin](http://phpldapadmin.sourceforge.net/)    | サービス利用者の登録
-http://kanban.pocci.test/ (http://kanban/)         | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | かんばんボード
-http://redmine.pocci.test/ (http://redmine/) (*)   | [Redmine](http://www.redmine.org/)                      | チケット (Issue) 管理
+URL                             | サービス                                                | 主な用途
+------------------------------- | ------------------------------------------------------- | ---------------------------------------------
+http://gitlab.pocci.test/       | [GitLab](https://gitlab.com/)                           | コードリポジトリ管理 / チケット (Issue) 管理
+http://jenkins.pocci.test/      | [Jenkins](https://jenkins-ci.org/)                      | CIジョブ管理
+http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析
+http://user.pocci.test/         | [phpLDAPadmin](http://phpldapadmin.sourceforge.net/)    | サービス利用者の登録
+http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | かんばんボード
+http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | チケット (Issue) 管理
 
 (*) デフォルトの構成を利用した場合は起動しないためアクセスできません。
 
@@ -65,6 +56,9 @@ SonarQube    | admin                      | admin       |
 Redmine      | admin                      | admin       |
 phpLDAPadmin | cn=admin,dc=example,dc=com | admin       |
 
+*   GitLab は **Standard**タブから Sign in します。
+
+
 ###### 開発者
 ユーザー名 | パスワード
 ---------- | --------
@@ -73,7 +67,7 @@ bouze      | password
 
 *   GitLab は **LDAP**タブから Sign in します。
 *   かんばんボードは `with http://gitlab.pocci.test/` をクリックすることで、
-    GitLab の OAuth 認証機能を利用し
+    GitLab の OAuth 認証機能を利用してユーザー名、パスワードの入力無しでログインできます。
 
 
 
