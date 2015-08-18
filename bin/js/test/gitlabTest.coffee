@@ -14,7 +14,7 @@ describe "GitLab", ->
     spec01 =
       setup: ->
         gitlab = setup.gitlab
-        url = gitlab.defaults.url
+        url = process.env.GITLAB_URL
         yield setup.initBrowser()
         yield gitlab.loginByAdmin(setup.browser, url)
         @request = yield gitlab.createRequest(setup.browser, url)

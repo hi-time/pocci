@@ -20,11 +20,8 @@ var importCode = function*(url, options, ldapUsers) {
 };
 
 module.exports = {
-  defaults: {
-    url: process.env.GITLAB_URL,
-  },
   import: function*(repos, ldapOptions) {
-    var url = this.defaults.url;
+    var url = process.env.GITLAB_URL;
     for(var i = 0; i < repos.length; i++) {
       yield importCode(url, repos[i], ldapOptions.users);
     }

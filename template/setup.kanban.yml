@@ -1,6 +1,7 @@
 pocci:
   domain: pocci.test
   services:
+    - gitlab
     - user
     - kanban
   environment:

@@ -55,7 +55,7 @@ var setup = function*(yamlFile, keepOpenBrowser) {
   if(options.pocci && options.pocci.services &&
       options.pocci.services.indexOf('kanban') > -1) {
     console.log('*** Setup Kanban...');
-    yield kanban.setup(browser, options, repositories);
+    yield kanban.setup(browser);
   }
 
   if(browser && !keepOpenBrowser) {

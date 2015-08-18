@@ -4,14 +4,16 @@ var ldapDefaults = require('./ldap.js').defaults;
 var pocciDefaults = require('./pocci.js').defaults;
 
 var getServices = function(option) {
-  var services = 'gitlab';
   if(!option) {
-    return services;
+    return 'gitlab';
   }
+
+  var services = '';
   option.forEach(function(value) {
-    if(value !== 'gitlab') {
-      services += ' ' + value;
+    if(services.length > 0) {
+      services += ' ';
     }
+    services += value;
   });
   return services;
 };

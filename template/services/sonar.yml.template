@@ -9,6 +9,8 @@ sonarqubedb:
     - DB_USER=sonarqube
     - DB_PASS=sonarqubepass
     - DB_NAME=sonarqubedb
+  ports:
+    - "5432:5432"
 
 sonar:
   image: xpfriend/sonarqube:${VERSION_SONARQUBE}

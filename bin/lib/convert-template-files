@@ -4,9 +4,14 @@ if [ -d ${RUNTIME_DIR}/nginx ]; then
 fi
 
 mkdir ${RUNTIME_DIR}/nginx
+DEFAULT_SERVICE=""
 for i in ${POCCI_SERVICES}; do
+    if [ -z ${DEFAULT_SERVICE} ]; then
+        DEFAULT_SERVICE=$i
+    fi
     cp ${CONFIG_DIR}/services/nginx/$i.conf ${RUNTIME_DIR}/nginx
 done
+sed -E 's/listen .+80;/listen 80 default_server;/' -i ${RUNTIME_DIR}/nginx/${DEFAULT_SERVICE}.conf
 
 POCCI_PUBLIC_CONTAINERS=""
 for i in $(grep -lE "proxy_pass\s+http://" ${RUNTIME_DIR}/nginx/*); do

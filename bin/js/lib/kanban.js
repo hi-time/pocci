@@ -63,8 +63,8 @@ module.exports = {
     }
     console.log(yaml.dump(containers));
   },
-  setup: function*(browser, options) {
-    var url = options.gitlab.url || gitlab.defaults.url;
+  setup: function*(browser) {
+    var url = process.env.GITLAB_URL;
     yield gitlab.loginByAdmin(browser, url);
 
     var token = yield gitlab.getPrivateToken(browser, url);

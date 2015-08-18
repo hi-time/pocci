@@ -280,11 +280,8 @@ var updateNginxConfFile = function(topPage) {
 };
 
 module.exports = {
-  defaults: {
-    url: process.env.GITLAB_URL
-  },
   setup: function*(browser, options, ldapOptions, repositories) {
-    var url = options.url || this.defaults.url;
+    var url = process.env.GITLAB_URL;
     var users = toArray(options.users || ldapOptions.users);
 
     if(users) {

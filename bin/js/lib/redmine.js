@@ -398,11 +398,8 @@ var setupGitLabForGroups = function*(browser, url, groups, options) {
 };
 
 module.exports = {
-  defaults: {
-    url: process.env.REDMINE_URL
-  },
   setup: function*(browser, options, ldapOptions, gitlabOptions) {
-    var url = options.url || this.defaults.url;
+    var url = process.env.REDMINE_URL;
     var users = toArray(options.users || ldapOptions.users);
 
     yield loginByAdmin(browser, url);
@@ -423,7 +420,7 @@ module.exports = {
       yield loginByAdmin(browser, url);
       this.request = yield createRequest(browser, url);
       yield setupProjects(browser, url, this.request, toArray(options.projects), users, gitlabOptions);
-      var gitlabUrl = gitlabOptions.url || gitlab.defaults.url;
+      var gitlabUrl = process.env.GITLAB_URL;
       yield gitlab.loginByAdmin(browser, gitlabUrl);
       yield setupGitLabForGroups(browser, gitlabUrl, toArray(gitlabOptions.groups), options);
       yield gitlab.logout(browser);

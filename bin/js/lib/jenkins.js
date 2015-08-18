@@ -175,12 +175,8 @@ var saveSecrets = function*(browser, url, nodes) {
 };
 
 module.exports = {
-  defaults: {
-    url:    process.env.JENKINS_URL,
-    scmUrl: process.env.GITLAB_URL
-  },
   setup: function*(browser, options, ldapOptions, repositories) {
-    var url = options.url || this.defaults.url;
+    var url = process.env.JENKINS_URL;
     var getJenkins = function() {
       if(ldapOptions) {
         var loginUser = util.getUser(options.user, ldapOptions.users);
@@ -205,7 +201,7 @@ module.exports = {
     }
 
     if(options.jobs) {
-      var scmUrl = options.scmUrl || this.defaults.scmUrl;
+      var scmUrl = process.env.GITLAB_URL;
       yield createJobs(jenkins, options.jobs, repositories, scmUrl);
     }
   }

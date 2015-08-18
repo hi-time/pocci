@@ -10,6 +10,7 @@
 pocci:
   domain: pocci.test
   services:
+    - gitlab
     - user
     - jenkins
     - sonar
@@ -80,6 +81,7 @@ pocci:
 pocci:
   domain: pocci.example.com
   services:
+    - gitlab
     - user
     - jenkins
     - sonar
@@ -97,10 +99,11 @@ pocci:
     デフォルトは `pocci.test`。
 *   **services:**  
     利用するサービス。  
-    jenkins (Jenkins), sonar (SonarQube), user (利用者登録), kanban (かんばんボード), redmine (Redmine)
+    gitlab, jenkins, sonar, user, kanban, redmine
     の中から利用したいものを選んでください。
-    *   GitLab およびポータル画面に関しては必須となるため、定義の必要はありません。
-    *   redmine と kanban は併用できません。
+    *   注意: redmine と kanban は併用できません。
+    *   IPアドレスを使って接続する場合（例：`http://192.168.0.2`）、
+        ここで先頭に指定したサービスに接続されます。
 *   **environment:**  
     サービスコンテナに設定する環境変数。
 
@@ -126,6 +129,7 @@ ldap:
 
 ```yaml
 services:
+  - gitlab
   - jenkins
   - sonar
   - redmine
