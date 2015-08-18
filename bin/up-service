@@ -4,6 +4,8 @@ set -e
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
+${LIB_DIR}/stop-document-server
+
 if [ ! -d ${RUNTIME_DIR} ]; then
     mkdir ${RUNTIME_DIR}
 fi

@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+BASE_DIR=$(cd $(dirname $0)/../..; pwd)
+source ${BASE_DIR}/bin/lib/init-env
+
+CONTAINER_NAME=poccir_document_server
+
+if [ `docker ps |grep ${CONTAINER_NAME} |wc -l` -gt 0 ]; then
+    echo "Stop document server..."
+    docker stop ${CONTAINER_NAME}
+fi
+if [ `docker ps -a |grep ${CONTAINER_NAME} |wc -l` -gt 0 ]; then
+    docker rm -v ${CONTAINER_NAME}
+fi

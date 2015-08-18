@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+BASE_DIR=$(cd $(dirname $0)/../..; pwd)
+source ${BASE_DIR}/bin/lib/init-env
+
+${LIB_DIR}/stop-document-server
+
+CONTAINER_NAME=poccir_document_server
+cd ${BASE_DIR}
+
+echo "Start document server..."
+docker run --name ${CONTAINER_NAME} --privileged -d -w /app -v ${PWD}:/app -p 80:9999 xpfriend/jenkins-slave-iojs:${VERSION_JENKINS_SLAVE_IOJS} grunt --gruntfile bin/js/DocumentServer.js

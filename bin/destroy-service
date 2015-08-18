@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+BASE_DIR=$(cd $(dirname $0)/..; pwd)
+source ${BASE_DIR}/bin/lib/init-env
+
+${LIB_DIR}/stop-document-server
+
 if [ `docker ps -a |grep "pocci[s|n|r]_" |wc -l` -eq 0 ]; then
     exit
 fi
@@ -15,10 +20,6 @@ case ${yesno} in
     * )
         exit ;;
 esac
-
-
-BASE_DIR=$(cd $(dirname $0)/..; pwd)
-source ${BASE_DIR}/bin/lib/init-env
 
 ${BIN_DIR}/stop-service
 

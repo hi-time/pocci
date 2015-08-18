@@ -16,7 +16,7 @@ cd bin
     とりあえず試してみたいときにはこの方法が一番簡単です。
 *   起動には少し時間がかかります。  
     特に初回はイメージのダウンロードを行うため、
-    ネットワーク環境によっては十分以上かかることもあります。
+    ネットワーク環境によっては10分以上かかることもあります。
 
 
 ### 起動したサービスへのアクセス方法
@@ -52,7 +52,7 @@ http://user.pocci.test/ (http://user/)             | [phpLDAPadmin](http://phpld
 http://kanban.pocci.test/ (http://kanban/)         | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | かんばんボード
 http://redmine.pocci.test/ (http://redmine/) (*)   | [Redmine](http://www.redmine.org/)                      | チケット (Issue) 管理
 
-(*) デフォルトの構成では起動しないのでアクセスできません。
+(*) デフォルトの構成を利用した場合は起動しないためアクセスできません。
 
 
 #### アカウント
