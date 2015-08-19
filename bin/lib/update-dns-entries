@@ -1,24 +1,12 @@
 
 echo "" >${RUNTIME_DIR}/althosts
 
-# Add internal addresses
-for i in $(docker ps |grep "${SERVICE_NAME}_" |awk '{print $1}'); do
-    CONTAINER_NAME=`docker inspect --format='{{ .Name }}' $i |sed -e "s|/${SERVICE_NAME}_||" -e 's|_[1-9]$||'`
-    IP_ADDRESS=`docker inspect --format='{{ .NetworkSettings.IPAddress }}' $i`
-    DNS_ENTRY="${IP_ADDRESS} ${CONTAINER_NAME}.internal.test"
-    if [ "${CONTAINER_NAME}" = "nginx" ]; then
-        PUBLIC_ADDRESS="${DNS_ENTRY}"
-    else
-        echo ${DNS_ENTRY} >>${RUNTIME_DIR}/althosts
-    fi
-done
-
-# Add public addresses
+PUBLIC_NAMES="172.17.42.1"
 for i in $(grep -lE "proxy_pass\s+http://" ${RUNTIME_DIR}/nginx/*); do
     PUBLIC_SERVICE_NAME=`basename ${i%.*}`
-    PUBLIC_ADDRESS="${PUBLIC_ADDRESS} ${PUBLIC_SERVICE_NAME}.${POCCI_DOMAIN_NAME}"
+    PUBLIC_NAMES="${PUBLIC_NAMES} ${PUBLIC_SERVICE_NAME}.${POCCI_DOMAIN_NAME}"
 done
 
-echo ${PUBLIC_ADDRESS} >>${RUNTIME_DIR}/althosts
+echo ${PUBLIC_NAMES} >>${RUNTIME_DIR}/althosts
 
 ${LIB_DIR}/docker-exec poccis_dns_1 kill -HUP 1

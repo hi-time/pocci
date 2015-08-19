@@ -19,9 +19,9 @@ module.exports = function(grunt) {
               url: process.env.SONAR_URL
             },
             jdbc: {
-              url: 'jdbc:postgresql://sonardb/' + process.env.SONARDB_ENV_DB_NAME,
-              username: process.env.SONARDB_ENV_DB_USER,
-              password: process.env.SONARDB_ENV_DB_PASS
+              url: 'jdbc:postgresql://' + process.env.SONARDB_HOST + '/' + process.env.SONARDB_NAME,
+              username: process.env.SONARDB_USER,
+              password: process.env.SONARDB_PASS
             },
             javascript: {
               lcov: {

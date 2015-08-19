@@ -17,7 +17,7 @@ source ${LIB_DIR}/export-env ${RUNTIME_DIR}/.env
 
 default_no_proxy="127.0.0.1,localhost"
 for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' -e 'EOF' ${CONFIG_DIR}/services/*.yml.template | sed -e 's/://'); do
-    default_no_proxy="${default_no_proxy},$i,$i.internal.test"
+    default_no_proxy="${default_no_proxy},$i"
 done
 
 for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/services/nginx/*); do

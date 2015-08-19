@@ -7,6 +7,8 @@ ldap:
     - ./service-names.env
   environment:
     - USE_TLS=false
+  ports:
+    - "389:389"
 
 user:
   image: osixia/phpldapadmin:${VERSION_PHPLDAPADMIN}

@@ -6,11 +6,13 @@ __NAME:
   env_file:
     - ./.env
     - ./service-names.env
-  external_links:
-    - poccis_sonarqubedb_1:sonardb
   dns: ${POCCI_DNS_ADDRESS}
   environment:
     - JENKINS_SLAVE_SECRET=__SECRET
-    - JENKINS_URL=http://${INTERNAL_JENKINS_HOST}:8080
+    - JENKINS_URL=${JENKINS_URL}
+    - SONARDB_HOST=${SONAR_HOST}
+    - SONARDB_USER=sonarqube
+    - SONARDB_PASS=sonarqubepass
+    - SONARDB_NAME=sonarqubedb
 
 EOF

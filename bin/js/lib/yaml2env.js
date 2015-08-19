@@ -25,7 +25,7 @@ module.exports = function(yamlFile) {
   options.pocci = options.pocci || {};
 
   var pocciDomain = options.pocci.domain || pocciDefaults.domain;
-  var ldapHost = options.ldap.host || ldapDefaults.host;
+  var ldapHost = options.ldap.host || 'user.' + pocciDomain;
   var ldapDomain = options.ldap.domain || ldapDefaults.domain;
   var organisation = options.ldap.organisation || ldapDefaults.organisation;
   var bindDn = options.ldap.bindDn || ldapDefaults.bindDn;
