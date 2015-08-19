@@ -24,10 +24,13 @@ gitlab:
   dns: ${POCCI_DNS_ADDRESS}
   environment:
     - GITLAB_HOST=gitlab.${POCCI_DOMAIN_NAME}
+    - GITLAB_SSH_PORT=10022
     - LDAP_ENABLED=true
     - LDAP_UID=uid
     - LDAP_METHOD=plain
     - LDAP_ACTIVE_DIRECTORY=false
+  ports:
+    - "10022:22"
   links:
     - gitlabredis:redisio
     - gitlabdb:postgresql
