@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+if [ `docker ps |grep "poccin_" |wc -l` -eq 0 ]; then
+    exit
+fi
+
+BASE_DIR=$(cd $(dirname $0)/..; pwd)
+source ${BASE_DIR}/bin/lib/init-env
+
+${LIB_DIR}/jenkins-slave stop

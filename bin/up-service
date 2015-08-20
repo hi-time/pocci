@@ -12,7 +12,7 @@ ${LIB_DIR}/docker-service up -d
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 if [ -n "${JENKINS_URL}" ]; then
     ${LIB_DIR}/waitfor ${JENKINS_URL}
-    ${LIB_DIR}/jenkins-slave up -d
+    ${BIN_DIR}/up-jenkins-slave
 fi
 
 ${LIB_DIR}/waitfor ${ALL_SERVICE_URL}

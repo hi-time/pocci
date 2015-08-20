@@ -10,7 +10,7 @@ source ${BASE_DIR}/bin/lib/init-env
 
 set +e
 ${LIB_DIR}/docker-service stop
-${LIB_DIR}/jenkins-slave stop
+${BIN_DIR}/stop-jenkins-slave
 
 set -e
 if [ `docker ps |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then

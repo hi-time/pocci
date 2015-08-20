@@ -19,13 +19,30 @@
 起動・停止
 ----------
 ### bin/up-service サービス起動
-サービスを起動します。
+サービスおよびJenkins スレーブを起動します。
 
 ### bin/stop-service サービス停止
-サービスを停止します。
+サービスおよびJenkins スレーブを停止します。
 
 ### bin/restart-service サービス再起動
-サービスを再起動します。
+サービスおよびJenkins スレーブを再起動します。
+
+### bin/clean-service サービス用コンテナのクリーン
+サービス用コンテナを初期状態に戻します。  
+サービス用コンテナ内のキャッシュデータ等をクリアしたい場合に利用します。
+
+### bin/up-jenkins-slave Jenkinsスレーブ起動
+Jenkins スレーブのみを起動します。
+
+### bin/stop-jenkins-slave Jenkinsスレーブ停止
+Jenkins スレーブのみを停止します。
+
+### bin/clean-jenkins-slave Jenkinsスレーブ用コンテナのクリーン
+Jenkinsスレーブ用コンテナを初期状態に戻します。  
+Jenkinsスレーブ用コンテナ内のキャッシュデータ等をクリアしたい場合に利用します。
+
+
+
 
 
 バックアップ・リストア
