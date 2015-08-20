@@ -32,7 +32,6 @@ ldap:
       userPassword: password
 
 jenkins:
-  jobs: repositories
   nodes:
     - java
     - nodejs
@@ -42,10 +41,8 @@ gitlab:
     - groupName: example
       projects:
         - projectName:    example-java
-          localPath:      ./config/code/example-java
           commitMessage:  "refs #1 (import example codes)"
         - projectName:    example-nodejs
-          localPath:      ./config/code/example-nodejs
           commitMessage:  "refs #1 (import example codes)"
 
 redmine:
@@ -156,13 +153,12 @@ GitLab 関連情報の登録を行います。
 
 ```yaml
 gitlab:
-  topPage: /example/example-document/blob/master/README.md
+  topPage: /example/example-java/blob/master/README.md
   groups:
     -
       groupName: example
       projects:
         - projectName:    example-java
-          localPath:      ./config/code/example-java
           commitMessage:  "初期コード登録 (#1)"
           issues:
             - 初期コード登録
@@ -172,9 +168,12 @@ gitlab:
 *   **groups:** ... 登録するグループの情報
     *   **groupName:** ... グループ名
 *   **projects:** ... 登録するプロジェクトの情報
-    *   **projectName:** ... グループ名
-    *   **localPath:** ... リポジトリに登録するソースコードの格納ディレクトリ
-    *   **commitMessage:** ... ソースコードをリポジトリに登録する際のコミットメッセージ
+    *   **projectName:** ... プロジェクト名
+    *   **commitMessage:**  
+        *   初期登録用のソースコードをリポジトリに登録する際のコミットメッセージ。
+        *   `template/code/グループ名/プロジェクト名` (上の設定例の場合は `template/code/example/example-java`)
+            ディレクトリが存在すれば、その中に格納されているファイルがリポジトリへ登録されます。
+        *   Jenkins を利用している場合、上のディレクトリ内に `jenkins-config.xml` が存在すれば、Jenkins へのジョブ登録が行われます。
     *   **issues:**  
         チケット。  
         以下のように記述するとタイトルのみが登録されますが、
@@ -199,8 +198,6 @@ gitlab:
 注意点:
 *   **ldap** で定義したユーザーは、ここで定義したグループの Owner として設定されます。
 *   Redmine を使用する場合、issues の定義はできません(**gitlab**ではなく**redmine**の方に定義する)。
-*   ソースコードのリポジトリ登録が不要な場合は、localPath, commitMessage の指定は不要です。
-
 
 
 jenkins:
@@ -211,20 +208,17 @@ Jenkins 関連の情報登録を行います。
 
 ```yaml
 jenkins:
-  jobs:
-    - example/example-java
-    - example/example-nodejs
   nodes:
     - java
     - nodejs
 ```
 
-*   **jobs:**   
-    ビルドジョブ定義。
-    **gitlab** で指定した `groupName` と `projectName` を `/` で区切って指定します。
 *   **nodes:**  
     ビルド実行時に利用できるJenkinsスレーブノードの種類。
     `java`, `nodejs`, `iojs` が指定できます。
+
+
+
 
 redmine:
 --------

@@ -23,9 +23,6 @@ ldap:
       userPassword: password
 
 jenkins:
-  jobs:
-    - example/example-java
-    - example/example-nodejs
   nodes:
     - java
     - nodejs
@@ -35,10 +32,8 @@ gitlab:
     - groupName: example
       projects:
         - projectName:    example-java
-          localPath:      ./config/code/example-java
           commitMessage:  "refs #1 (import example codes)"
         - projectName:    example-nodejs
-          localPath:      ./config/code/example-nodejs
           commitMessage:  "refs #1 (import example codes)"
 
 redmine:

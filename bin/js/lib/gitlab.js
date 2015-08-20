@@ -211,9 +211,10 @@ var setupProject = function*(request, options, groupId, repositories, groupName)
     projectId = yield createProject(request, projectName, groupId);
   }
 
-  if(options.localPath) {
+  var localPath = './config/code/' + groupName + '/' + projectName;
+  if(fs.existsSync(localPath)) {
     var repository = {
-      localPath: options.localPath,
+      localPath: localPath,
       commitMessage: options.commitMessage || 'Initial commit',
       remotePath: '/' + groupName + '/' + projectName + '.git'
     };

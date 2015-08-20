@@ -3,14 +3,57 @@ var fs = require('fs');
 var thunkify = require('thunkify');
 var jenkinsLib = require('jenkins');
 var path = require('path');
+var gitlab = require('./gitlab.js');
 var ldap = require('./ldap.js');
 var ldapDefaults = ldap.defaults;
 var util = require('./util.js');
 var version = require('./jenkins-slaves-version.json');
 
-var createJob = function*(jenkins, job, scmUrl) {
+var registerGitLab = function*(browser, url, job) {
+  var jenkinsJobUrl = process.env.JENKINS_URL + '/project/' + job.jobName;
+
+  browser.url(url + '/services');
+  yield browser.yieldable.save('jenkins-before-registerGitLab-1');
+
+  browser.url(url + '/services/gitlab_ci/edit');
+  yield browser.yieldable.save('jenkins-before-registerGitLab-1');
+
+  browser
+    .setValue('#service_token', 'jenkins')
+    .setValue('#service_project_url', jenkinsJobUrl);
+
+  var isSelected = (yield browser.yieldable.isSelected('#service_active'))[0];
+  if (!isSelected) {
+    yield browser.yieldable.click('#service_active');
+  }
+
+  yield browser.yieldable.save('jenkins-doing-registerGitLab-1');
+  browser.submitForm('#edit_service');
+  yield browser.yieldable.save('jenkins-after-registerGitLab-1');
+
+  browser.url(url + '/hooks');
+  yield browser.yieldable.save('jenkins-after-registerGitLab-2');
+
+  browser.setValue('#hook_url', jenkinsJobUrl);
+
+  isSelected = (yield browser.yieldable.isSelected('#hook_push_events'))[0];
+  if (isSelected) {
+    yield browser.yieldable.click('#hook_push_events');
+  }
+
+  isSelected = (yield browser.yieldable.isSelected('#hook_merge_requests_events'))[0];
+  if (!isSelected) {
+    yield browser.yieldable.click('#hook_merge_requests_events');
+  }
+
+  yield browser.yieldable.save('jenkins-doing-registerGitLab-2');
+  browser.submitForm('#new_hook');
+  yield browser.yieldable.save('jenkins-after-registerGitLab-2');
+};
+
+var createJob = function*(browser, jenkins, job, gitlabUrl) {
   var toUrl = function(path) {
-    return util.getURL(scmUrl, null, path);
+    return util.getURL(gitlabUrl, null, path);
   };
 
   var destroy = thunkify(jenkins.job.destroy.bind(jenkins.job));
@@ -25,35 +68,43 @@ var createJob = function*(jenkins, job, scmUrl) {
     // ignore
   }
 
-  var configXmlFilePath = path.resolve(__dirname, 'jenkins-job-config.xml');
-  var configXml = fs.readFileSync(configXmlFilePath, 'utf8');
+  var configXml = fs.readFileSync(job.configXmlFilePath, 'utf8');
   var repositoryUrl = toUrl(job.repositoryPath);
   yield create(job.jobName, replaceRepositoryUrl(configXml, repositoryUrl));
+
+  if(configXml.indexOf('GitLabPushTrigger') > -1) {
+    yield registerGitLab(browser, repositoryUrl.slice(0, -4), job);
+  }
 };
 
-var createJobs = function*(jenkins, jobs, repositories, scmUrl) {
-  var normalizeJob = function(job) {
-    if(typeof job === 'object') {
-      return job;
-    } else {
+var createJobs = function*(browser, jenkins, repositories, gitlabUrl) {
+  var normalizeJob = function(repo) {
+    var configXmlFilePath = path.resolve(repo.localPath, 'jenkins-config.xml');
+    if(fs.existsSync(configXmlFilePath)) {
       return {
-        jobName:        path.basename(job),
-        repositoryPath: job + '.git'
+        jobName:            path.basename(repo.localPath),
+        configXmlFilePath:  configXmlFilePath,
+        repositoryPath:     repo.remotePath
       };
+    } else {
+      return null;
     }
   };
 
-  var normalizeJobs = function(jobs) {
+  var normalizeJobs = function(repositories) {
     var nomalizedJobs = [];
-    for(var i = 0; i < jobs.length; i++) {
-      nomalizedJobs.push(normalizeJob(jobs[i]));
+    for(var i = 0; i < repositories.length; i++) {
+      var job = normalizeJob(repositories[i]);
+      if(job) {
+        nomalizedJobs.push(job);
+      }
     }
     return nomalizedJobs;
   };
 
-  jobs = normalizeJobs(util.toArray(jobs));
+  var jobs = normalizeJobs(repositories);
   for(var i = 0; i < jobs.length; i++) {
-    yield createJob(jenkins, jobs[i], scmUrl);
+    yield createJob(browser, jenkins, jobs[i], gitlabUrl);
   }
 };
 
@@ -174,6 +225,17 @@ var saveSecrets = function*(browser, url, nodes) {
   }
 };
 
+var configureGitLab = function*(browser, url, gitlabUrl, apiToken) {
+  browser.url(url + '/configure');
+  yield browser.yieldable.save('jenkins-before-configureGitLab');
+  browser
+    .setValue('input[type="text"][name="_.gitlabHostUrl"]', gitlabUrl)
+    .setValue('input[type="text"][name="_.gitlabApiToken"]', apiToken);
+  yield browser.yieldable.save('jenkins-doing-configureGitLab');
+  yield browser.yieldable.click('#yui-gen17-button');
+  yield browser.yieldable.save('jenkins-after-configureGitLab');
+};
+
 module.exports = {
   setup: function*(browser, options, ldapOptions, repositories) {
     var url = process.env.JENKINS_URL;
@@ -200,9 +262,13 @@ module.exports = {
       yield saveSecrets(browser, url, options.nodes);
     }
 
-    if(options.jobs) {
-      var scmUrl = process.env.GITLAB_URL;
-      yield createJobs(jenkins, options.jobs, repositories, scmUrl);
+    var gitlabUrl = process.env.GITLAB_URL;
+    if(gitlabUrl) {
+      yield gitlab.loginByAdmin(browser, gitlabUrl);
+      var apiToken = yield gitlab.getPrivateToken(browser, gitlabUrl);
+      yield configureGitLab(browser, url, gitlabUrl, apiToken);
+      yield createJobs(browser, jenkins, repositories, gitlabUrl);
+      yield gitlab.logout(browser);
     }
   }
 };
