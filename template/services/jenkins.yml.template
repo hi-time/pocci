@@ -5,7 +5,7 @@ jenkins:
   env_file:
     - ./.env
     - ./service-names.env
-  dns: ${POCCI_DNS_ADDRESS}
+  dns: 172.17.42.1
   ports:
     - "50000:50000"
 

@@ -6,7 +6,7 @@ __NAME:
   env_file:
     - ./.env
     - ./service-names.env
-  dns: ${POCCI_DNS_ADDRESS}
+  dns: 172.17.42.1
   environment:
     - JENKINS_SLAVE_SECRET=__SECRET
     - JENKINS_URL=${JENKINS_URL}

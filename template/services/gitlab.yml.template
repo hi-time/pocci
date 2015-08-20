@@ -21,7 +21,7 @@ gitlab:
   env_file:
     - ./.env
     - ./service-names.env
-  dns: ${POCCI_DNS_ADDRESS}
+  dns: 172.17.42.1
   environment:
     - GITLAB_HOST=gitlab.${POCCI_DOMAIN_NAME}
     - GITLAB_SSH_PORT=10022

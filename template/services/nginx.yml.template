@@ -5,7 +5,7 @@ nginx:
   env_file:
     - ./.env
     - ./service-names.env
-  dns: ${POCCI_DNS_ADDRESS}
+  dns: 172.17.42.1
   links: [ ${POCCI_PUBLIC_CONTAINERS} ]
   volumes:
    - ./nginx:/etc/nginx/conf.d

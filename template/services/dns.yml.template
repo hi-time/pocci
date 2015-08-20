@@ -3,5 +3,8 @@ dns:
   image: xpfriend/dnsmasq:${VERSION_DNSMASQ}
   volumes:
     - ${PWD}:/altetc
+  ports:
+    - "53:53"
+    - "53:53/udp"
 
 EOF
