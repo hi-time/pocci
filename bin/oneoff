@@ -5,16 +5,11 @@ BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
 if [ -z "${POCCIR_OPTS}" ]; then
-    if [ -f "${RUNTIME_DIR}/.env" ]; then
-        POCCIR_OPTS="--env-file ${RUNTIME_DIR}/.env"
+    if [ -f "${CONFIG_DIR}/.env" ]; then
+        POCCIR_OPTS="--env-file ${CONFIG_DIR}/.env"
     fi
-    if [ -f "${RUNTIME_DIR}/service-names.env" ]; then
-        POCCIR_OPTS="${POCCIR_OPTS} --env-file ${RUNTIME_DIR}/service-names.env"
-    fi
-
-    export POCCI_DNS_ADDRESS=`source ${LIB_DIR}/get-dns-address`
-    if [ -n "${POCCI_DNS_ADDRESS}" ]; then
-        POCCIR_OPTS="${POCCIR_OPTS} --dns ${POCCI_DNS_ADDRESS}"
+    if [ `docker ps |grep "poccis_dns_1" |wc -l` -ne 0 ]; then
+        POCCIR_OPTS="${POCCIR_OPTS} --dns 172.17.42.1"
     fi
 fi
 

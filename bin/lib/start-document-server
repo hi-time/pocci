@@ -6,7 +6,7 @@ source ${BASE_DIR}/bin/lib/init-env
 
 ${LIB_DIR}/stop-document-server
 
-CONTAINER_NAME=poccir_document_server
+CONTAINER_NAME=poccid_document_server
 cd ${BASE_DIR}
 
 echo "Start document server..."

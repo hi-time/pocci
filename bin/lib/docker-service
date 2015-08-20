@@ -3,36 +3,17 @@ set -e
 
 BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
-source ${LIB_DIR}/export-env ${RUNTIME_DIR}/.env
+source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 SERVICE_NAME=${SERVICE_NAME:-poccis}
 
-cd ${RUNTIME_DIR}
+cd ${CONFIG_DIR}
 
 if [ "$1" = "up" ]; then
-    source ${CONFIG_DIR}/services/dns.yml.template >${RUNTIME_DIR}/dns.yml
-    ${LIB_DIR}/pull-images dns.yml
     docker-compose -p poccis -f dns.yml up -d
-fi
-
-export POCCI_DNS_ADDRESS=`source ${LIB_DIR}/get-dns-address`
-
-if [ "${SERVICE_NAME}" = "poccis" ]; then
-    source ${LIB_DIR}/convert-template-files ${SERVICE_NAME}
-    source ${LIB_DIR}/init-service-names-env
-    ${LIB_DIR}/pull-images docker-compose.yml
-else
-    source ${CONFIG_DIR}/jenkins-slaves.yml.template >${RUNTIME_DIR}/jenkins-slaves.yml
-    ${LIB_DIR}/pull-images jenkins-slaves.yml
 fi
 
 docker-compose -p ${SERVICE_NAME} "$@"
 
-if [ "${SERVICE_NAME}" != "poccis" ]; then
-    exit
-fi
-
-if [ "$1" = "up" ]; then
-    source ${LIB_DIR}/update-dns-entries
-else
+if [ "${SERVICE_NAME}" = "poccis" -a "$1" != "up" ]; then
     docker-compose -p poccis -f dns.yml "$@"
 fi

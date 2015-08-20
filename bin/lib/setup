@@ -3,25 +3,15 @@ set -e
 
 BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
-source ${LIB_DIR}/export-env ${RUNTIME_DIR}/service-names.env
+source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
 echo "Apply user settings..."
-rm -fr ${TEMP_CONFIG_DIR}
-mkdir ${TEMP_CONFIG_DIR}
-cp -pr ${CONFIG_DIR}/* ${TEMP_CONFIG_DIR}
 if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml ]; then
     rm ${TEMP_CONFIG_DIR}/jenkins-slaves.yml
 fi
 
 cd ${JS_DIR}
 ${BIN_DIR}/oneoff iojs node ./app.js
+source ${LIB_DIR}/update-config-dir-by-temp-config-dir
 
-if [ -n "${JENKINS_URL}" ]; then
-    if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then
-        cp ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ${CONFIG_DIR}
-    fi
-fi
-
-cp -ur ${TEMP_CONFIG_DIR}/services ${CONFIG_DIR}
-
-${LIB_DIR}/save-config "Update *.yml.template by setup.yml"
+${LIB_DIR}/save-config "Update configuration files"

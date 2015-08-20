@@ -4,7 +4,6 @@ nginx:
   image: nginx:${VERSION_NGINX}
   env_file:
     - ./.env
-    - ./service-names.env
   dns: 172.17.42.1
   links: [ ${POCCI_PUBLIC_CONTAINERS} ]
   volumes:

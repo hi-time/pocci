@@ -5,7 +5,6 @@ __NAME:
     - /var/jenkins_home
   env_file:
     - ./.env
-    - ./service-names.env
   dns: 172.17.42.1
   environment:
     - JENKINS_SLAVE_SECRET=__SECRET

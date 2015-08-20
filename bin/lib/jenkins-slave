@@ -3,9 +3,9 @@ set -e
 
 BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
-source ${LIB_DIR}/export-env ${RUNTIME_DIR}/service-names.env
+source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
-if [ -f ${CONFIG_DIR}/jenkins-slaves.yml.template ]; then
-    cd ${RUNTIME_DIR}
+if [ -f ${CONFIG_DIR}/jenkins-slaves.yml ]; then
+    cd ${CONFIG_DIR}
     SERVICE_NAME=poccin ${LIB_DIR}/docker-service -f jenkins-slaves.yml "$@"
 fi

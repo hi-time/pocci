@@ -1,12 +1,10 @@
 
-echo "" >${RUNTIME_DIR}/althosts
+echo "" >${CONFIG_DIR}/althosts
 
 PUBLIC_NAMES="172.17.42.1"
-for i in $(grep -lE "proxy_pass\s+http://" ${RUNTIME_DIR}/nginx/*); do
+for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
     PUBLIC_SERVICE_NAME=`basename ${i%.*}`
     PUBLIC_NAMES="${PUBLIC_NAMES} ${PUBLIC_SERVICE_NAME}.${POCCI_DOMAIN_NAME}"
 done
 
-echo ${PUBLIC_NAMES} >>${RUNTIME_DIR}/althosts
-
-${LIB_DIR}/docker-exec poccis_dns_1 kill -HUP 1
+echo ${PUBLIC_NAMES} >>${CONFIG_DIR}/althosts

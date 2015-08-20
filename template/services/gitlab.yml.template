@@ -4,7 +4,6 @@ gitlabdb:
   image: sameersbn/postgresql:${VERSION_POSTGRESQL}
   env_file:
     - ./.env
-    - ./service-names.env
   environment:
     - DB_USER=gitlab
     - DB_PASS=secretpassword
@@ -14,13 +13,11 @@ gitlabredis:
   image: sameersbn/redis:${VERSION_REDIS}
   env_file:
     - ./.env
-    - ./service-names.env
 
 gitlab:
   image: sameersbn/gitlab:${VERSION_GITLAB}
   env_file:
     - ./.env
-    - ./service-names.env
   dns: 172.17.42.1
   environment:
     - GITLAB_HOST=gitlab.${POCCI_DOMAIN_NAME}

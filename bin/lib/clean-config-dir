@@ -1,0 +1,8 @@
+
+if [ -d ${CONFIG_DIR} ]; then
+    if [ `ls ${CONFIG_DIR} | wc -l` != "0" ]; then
+        rm -fr ${CONFIG_DIR}/*
+    fi
+else
+    mkdir ${CONFIG_DIR}
+fi

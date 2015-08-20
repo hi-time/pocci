@@ -17,4 +17,5 @@ git clone ${POCCI_REPO} pocci
 cd pocci
 cd bin
 bash ./build
-./create-service
+./create-config
+./up-service

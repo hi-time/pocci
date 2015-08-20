@@ -4,7 +4,6 @@ sonarqubedb:
   image: sameersbn/postgresql:${VERSION_POSTGRESQL}
   env_file:
     - ./.env
-    - ./service-names.env
   environment:
     - DB_USER=sonarqube
     - DB_PASS=sonarqubepass
@@ -16,7 +15,6 @@ sonar:
   image: xpfriend/sonarqube:${VERSION_SONARQUBE}
   env_file:
     - ./.env
-    - ./service-names.env
   dns: 172.17.42.1
   environment:
     - SONAR_SECURITY_REALM=LDAP

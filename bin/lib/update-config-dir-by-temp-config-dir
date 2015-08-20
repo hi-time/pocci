@@ -1,0 +1,55 @@
+
+source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
+
+if [ -d ${CONFIG_DIR}/nginx ]; then
+    rm -fr ${CONFIG_DIR}/nginx
+fi
+
+mkdir ${CONFIG_DIR}/nginx
+DEFAULT_SERVICE=""
+for i in ${POCCI_SERVICES}; do
+    if [ -z ${DEFAULT_SERVICE} ]; then
+        DEFAULT_SERVICE=$i
+    fi
+    cp ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ${CONFIG_DIR}/nginx
+done
+sed -E 's/listen .+80;/listen 80 default_server;/' -i ${CONFIG_DIR}/nginx/${DEFAULT_SERVICE}.conf
+
+POCCI_PUBLIC_CONTAINERS=""
+for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
+    if [ "${POCCI_PUBLIC_CONTAINERS}" != "" ]; then
+        POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS}, "
+    fi
+    PUBLIC_CONTAINER_NAME=`basename ${i%.*}`
+    POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS} ${PUBLIC_CONTAINER_NAME}"
+done
+
+source ${TEMP_CONFIG_DIR}/services/nginx.yml.template >${CONFIG_DIR}/docker-compose.yml
+
+for i in ${POCCI_SERVICES}; do
+    source ${TEMP_CONFIG_DIR}/services/$i.yml.template >>${CONFIG_DIR}/docker-compose.yml
+done
+
+
+if [ -d ${CONFIG_DIR}/volumes ]; then
+    rm -fr ${CONFIG_DIR}/volumes
+fi
+mkdir ${CONFIG_DIR}/volumes
+
+for i in ${POCCI_SERVICES}; do
+    if [ -d ${TEMP_CONFIG_DIR}/services/volumes/$i ]; then
+        cp -r ${TEMP_CONFIG_DIR}/services/volumes/$i  ${CONFIG_DIR}/volumes
+    fi
+done
+
+source ${LIB_DIR}/update-no-proxy
+source ${LIB_DIR}/update-env-file-by-config-dir
+source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
+
+source ${TEMP_CONFIG_DIR}/services/dns.yml.template >${CONFIG_DIR}/dns.yml
+source ${LIB_DIR}/update-dns-entries
+if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then
+    source ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template >${CONFIG_DIR}/jenkins-slaves.yml
+    ${LIB_DIR}/pull-images jenkins-slaves.yml
+fi
+

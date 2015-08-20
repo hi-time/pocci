@@ -4,7 +4,6 @@ redminedb:
   image: sameersbn/postgresql:${VERSION_POSTGRESQL}
   env_file:
     - ./.env
-    - ./service-names.env
   environment:
     - DB_USER=redmine
     - DB_PASS=password
@@ -14,7 +13,6 @@ redmine:
   image: sameersbn/redmine:${VERSION_REDMINE}
   env_file:
     - ./.env
-    - ./service-names.env
   dns: 172.17.42.1
   environment:
     - SMTP_ENABLED=false

@@ -10,7 +10,7 @@ ${BIN_DIR}/destroy-service
 
 echo ""
 echo "*** STEP 2 ***"
-${LIB_DIR}/change-setup-file $1
+${LIB_DIR}/init-config $1
 
 echo ""
 echo "*** STEP 3 ***"
@@ -26,7 +26,8 @@ ${LIB_DIR}/setup
 
 echo ""
 echo "*** STEP 6 ***"
-${BIN_DIR}/restart-service
+${BIN_DIR}/stop-service
+${LIB_DIR}/start-document-server
 
 echo ""
 echo "*** Done. ***"

@@ -52,8 +52,8 @@ module.exports = {
     for(var i = 0; i < names.length; i++) {
       var name = names[i];
       var container = containers[name];
-      container.dns = '${POCCI_DNS_ADDRESS}';
-      container.env_file = ['./.env', './service-names.env'];
+      container.dns = '172.17.42.1';
+      container.env_file = ['./.env'];
       if(name === 'kanban') {
         delete container.ports;
       }

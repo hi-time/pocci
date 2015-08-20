@@ -4,7 +4,6 @@ ldap:
   image: osixia/openldap:${VERSION_OPENLDAP}
   env_file:
     - ./.env
-    - ./service-names.env
   environment:
     - USE_TLS=false
   ports:
@@ -14,7 +13,6 @@ user:
   image: osixia/phpldapadmin:${VERSION_PHPLDAPADMIN}
   env_file:
     - ./.env
-    - ./service-names.env
   links:
    - ldap:ldap
   environment:
