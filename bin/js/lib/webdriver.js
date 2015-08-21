@@ -34,7 +34,9 @@ module.exports.init = function*() {
     isSelected: thunkify(browser.isSelected.bind(browser)),
     save: function*(name) {
       yield browser.yieldable.call();
-      browser.saveScreenshot(ssdir + '/' + ('00' + (++num)).slice(-3) + '-' + name + '.png');
+      var fileName = ('00' + (++num)).slice(-3) + '-' + name + '.png';
+      console.log('-   Take screenshot : ' + fileName);
+      browser.saveScreenshot(ssdir + '/' + fileName);
       yield browser.yieldable.call();
     }
   };
