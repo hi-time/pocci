@@ -3,63 +3,148 @@
 
 準備・設定
 ----------
-### bin/build ビルド
+### bin/build (ビルド)
 サービス利用環境を作成します。
 
-### bin/create-config サービスの初期設定
+```bash
+bash ./build
+```
+
+### bin/create-config (サービスの初期設定)
 `config` フォルダに設定ファイルを作成し、サービスを初期設定します。
+
+```bash
+./create-config
+```
 
 *   **注意：** このコマンドを実行すると、現在利用中のサービスは廃棄され、利用中のデータは消去されます。
 
-
 引数でサービス構成タイプを指定できます。
+
+```bash
+./create-config redmine
+```
+
 詳細については、[サービス開始・利用方法](./create-service.ja.md) を参照してください。
 
 
 起動・停止
 ----------
-### bin/up-service サービス起動
+### bin/up-service (サービス起動)
 サービスおよびJenkins スレーブを起動します。
 
-### bin/stop-service サービス停止
+```bash
+./up-service
+```
+
+
+### bin/stop-service (サービス停止)
 サービスおよびJenkins スレーブを停止します。
 
-### bin/restart-service サービス再起動
+```bash
+./stop-service
+```
+
+### bin/restart-service (サービス再起動)
 サービスおよびJenkins スレーブを再起動します。
 
-### bin/clean-service サービス用コンテナのクリーン
+```bash
+./restart-service
+```
+
+### bin/clean-service (サービス用コンテナのクリーン)
 サービス用コンテナを初期状態に戻します。  
 サービス用コンテナ内のキャッシュデータ等をクリアしたい場合に利用します。
 
-### bin/up-jenkins-slave Jenkinsスレーブ起動
+```bash
+./clean-service
+```
+
+### bin/up-jenkins-slave (Jenkinsスレーブ起動)
 Jenkins スレーブのみを起動します。
 
-### bin/stop-jenkins-slave Jenkinsスレーブ停止
+```bash
+./up-jenkins-slave
+```
+
+### bin/stop-jenkins-slave (Jenkinsスレーブ停止)
 Jenkins スレーブのみを停止します。
 
-### bin/clean-jenkins-slave Jenkinsスレーブ用コンテナのクリーン
+```bash
+./stop-jenkins-slave
+```
+
+### bin/clean-jenkins-slave (Jenkinsスレーブ用コンテナのクリーン)
 Jenkinsスレーブ用コンテナを初期状態に戻します。  
 Jenkinsスレーブ用コンテナ内のキャッシュデータ等をクリアしたい場合に利用します。
 
-
-
+```bash
+./clean-jenkins-slave
+```
 
 
 バックアップ・リストア
 ----------------------
-### bin/backup バックアップ
+### bin/backup (バックアップ)
 ボリュームデータを backup ディレクトリにバックアップします。
 
-### bin/restore リストア
+```bash
+./backup
+```
+
+### bin/restore (リストア)
 `bin/backup` でバックアップしたデータをリストアします。
 
+```bash
+./restore ../backup/20150821-2339/
+```
+
+*   引数でバックアップ先ディレクトリを指定します。
 *   **注意：** このコマンドを実行すると、現在利用中のサービスは廃棄され、利用中のデータは消去されます。
+
+
+ユーティリティコマンド
+----------------------
+### bin/oneoff (ワンオフコマンド実行)
+Jenkinsスレーブコンテナ用イメージから新しく作成したコンテナ上でコマンドを実行します。
+
+例えば、以下のコマンドを実行すると iojs スレーブ用コンテナ上で node インタプリタを起動します。
+
+```bash
+./oneoff iojs node
+```
+
+iojs コンテナ上で bash を起動する例:
+
+```bash
+./oneoff iojs bash
+```
+
+java コンテナ上で bash を起動する例:
+
+```bash
+./oneoff java bash
+```
+
+java コンテナ上で `java -version` を実行する例:
+
+```bash
+./oneoff java java -version
+```
+
+*   `oneoff` コマンドを利用すると、コマンド実行時のディレクトリがコンテナ上の `/app` 
+    ディレクトリとしてマウントされます。
+*   現在起動しているコンテナ上でコマンドを実行するわけではありません。
+    (現在起動しているコンテナ上でコマンド実行したい場合は `docker exec` を使用してください)
 
 
 廃棄
 ----
-### bin/destroy-service
+### bin/destroy-service (サービス廃棄)
 現在利用中のサービスおよびサービス設定を廃棄します。
 
-*   **注意：** このコマンドを実行すると、現在利用中のサービスは廃棄され、利用中のデータは消去されます。
+```bash
+./destroy-service
+```
 
+*   **注意：** このコマンドを実行すると、現在利用中のサービスは廃棄され、利用中のデータは消去されます。
