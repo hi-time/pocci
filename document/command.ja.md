@@ -52,14 +52,6 @@ bash ./build
 ./restart-service
 ```
 
-### bin/clean-service (サービス用コンテナのクリーン)
-サービス用コンテナを初期状態に戻します。  
-サービス用コンテナ内のキャッシュデータ等をクリアしたい場合に利用します。
-
-```bash
-./clean-service
-```
-
 ### bin/up-jenkins-slave (Jenkinsスレーブ起動)
 Jenkins スレーブのみを起動します。
 
@@ -74,13 +66,6 @@ Jenkins スレーブのみを停止します。
 ./stop-jenkins-slave
 ```
 
-### bin/clean-jenkins-slave (Jenkinsスレーブ用コンテナのクリーン)
-Jenkinsスレーブ用コンテナを初期状態に戻します。  
-Jenkinsスレーブ用コンテナ内のキャッシュデータ等をクリアしたい場合に利用します。
-
-```bash
-./clean-jenkins-slave
-```
 
 
 バックアップ・リストア
