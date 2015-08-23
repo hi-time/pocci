@@ -1,3 +1,7 @@
+pocci:
+  services:
+    - gitlab
+
 gitlab:
   users:
     - uid:          jenkinsci

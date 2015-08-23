@@ -10,6 +10,7 @@ function handle_error() {
     echo ""                 | tee -a ${LOG_FILE}
     echo ""                 | tee -a ${LOG_FILE}
     echo "*** ERROR!! ***"  | tee -a ${LOG_FILE}
+    ${BIN_DIR}/stop-service
     ${LIB_DIR}/start-document-server
     exit 1
   fi

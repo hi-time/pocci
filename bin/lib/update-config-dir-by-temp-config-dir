@@ -43,7 +43,6 @@ for i in ${POCCI_SERVICES}; do
 done
 
 source ${LIB_DIR}/update-no-proxy
-source ${LIB_DIR}/update-env-file-by-config-dir
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
 source ${TEMP_CONFIG_DIR}/services/dns.yml.template >${CONFIG_DIR}/dns.yml

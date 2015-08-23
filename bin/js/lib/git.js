@@ -20,10 +20,12 @@ var importCode = function*(url, options, ldapUsers) {
 };
 
 module.exports = {
-  import: function*(repos, ldapOptions) {
+  setup: function*(browser, options) {
+    var repos = options.repositories || [];
+    var userOptions = options.user || {};
     var url = process.env.GITLAB_URL;
     for(var i = 0; i < repos.length; i++) {
-      yield importCode(url, repos[i], ldapOptions.users);
+      yield importCode(url, repos[i], userOptions.users);
     }
   }
 };

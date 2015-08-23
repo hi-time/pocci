@@ -5,7 +5,7 @@ BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
-if [ -n "${JENKINS_HOST}" ]; then
+if [ `docker ps |grep poccis_jenkins_1 |wc -l` -gt 0 ]; then
     echo "Update Jenkins plugins..."
     ${LIB_DIR}/docker-exec poccis_jenkins_1 /config/update-plugins.sh
 fi

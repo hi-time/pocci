@@ -5,9 +5,9 @@ redminedb:
   env_file:
     - ./.env
   environment:
-    - DB_USER=redmine
-    - DB_PASS=password
-    - DB_NAME=redmine_production
+    - DB_USER=${REDMINE_DB_USER}
+    - DB_PASS=${REDMINE_DB_PASS}
+    - DB_NAME=${REDMINE_DB_NAME}
 
 redmine:
   image: sameersbn/redmine:${VERSION_REDMINE}
@@ -15,7 +15,7 @@ redmine:
     - ./.env
   dns: 172.17.42.1
   environment:
-    - SMTP_ENABLED=false
+    - SMTP_ENABLED=${REDMINE_SMTP_ENABLED}
   links:
     - redminedb:postgresql
   volumes_from:

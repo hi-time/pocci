@@ -1,54 +1,55 @@
+/*jshint camelcase: false */
 'use strict';
 var yaml = require('./yaml.js');
-var ldapDefaults = require('./ldap.js').defaults;
-var pocciDefaults = require('./pocci.js').defaults;
+var pocci = require('./pocci.js');
+var ldap = require('./ldap.js');
+var user = require('./user.js');
+var gitlab = require('./gitlab.js');
+var jenkins = require('./jenkins.js');
+var kanban = require('./kanban.js');
+var redmine = require('./redmine.js');
+var sonar = require('./sonar.js');
 
-var getServices = function(option) {
-  if(!option) {
-    return 'gitlab';
+var updateByUserEnvironment = function(environment, userEnvironment) {
+  var names = Object.keys(userEnvironment);
+  for(var i = 0; i < names.length; i++) {
+    var name = names[i];
+    environment[name] = userEnvironment[name];
   }
-
-  var services = '';
-  option.forEach(function(value) {
-    if(services.length > 0) {
-      services += ' ';
-    }
-    services += value;
-  });
-  return services;
 };
 
 module.exports = function(yamlFile) {
   var options = yaml(yamlFile);
+  var config = [pocci, ldap, user, gitlab, jenkins, kanban, redmine, sonar];
 
-  options.ldap = options.ldap || {};
-  options.pocci = options.pocci || {};
+  for(var i = 0; i < config.length; i++) {
+    config[i].addDefaults(options);
+  }
 
-  var pocciDomain = options.pocci.domain || pocciDefaults.domain;
-  var ldapHost = options.ldap.host || 'user.' + pocciDomain;
-  var ldapDomain = options.ldap.domain || ldapDefaults.domain;
-  var organisation = options.ldap.organisation || ldapDefaults.organisation;
-  var bindDn = options.ldap.bindDn || ldapDefaults.bindDn;
-  var bindPassword = options.ldap.bindPassword || ldapDefaults.bindPassword;
-  var baseDn = options.ldap.baseDn || ldapDefaults.baseDn;
+  var environment = {};
+  for(i = 0; i < config.length; i++) {
+    config[i].addEnvironment(options, environment);
+  }
 
-  console.log('POCCI_DOMAIN_NAME=' + pocciDomain);
-  console.log('POCCI_SERVICES=' + getServices(options.pocci.services));
-  console.log('LDAP_HOST=' + ldapHost);
-  console.log('LDAP_DOMAIN=' + ldapDomain);
-  console.log('LDAP_ORGANISATION=' + organisation);
-  console.log('LDAP_LOGIN_DN=' + bindDn);
-  console.log('LDAP_BIND_DN=' + bindDn);
-  console.log('LDAP_BIND_PASSWORD=' + bindPassword);
-  console.log('LDAP_ADMIN_PASSWORD=' + bindPassword);
-  console.log('LDAP_PASS=' + bindPassword);
-  console.log('LDAP_BASE_DN=' + baseDn);
-  console.log('LDAP_BASE=' + baseDn);
+  updateByUserEnvironment(environment, options.pocci.environment);
 
-  if(options.pocci.environment) {
-    for(var i = 0; i < options.pocci.environment.length; i++) {
-      console.log(options.pocci.environment[i]);
+  var names = Object.keys(environment);
+  for(i = 0; i < names.length; i++) {
+    var name = names[i];
+    console.log(name + '=' + environment[name]);
+  }
+
+  var allServiceUrl = '';
+  var services = options.pocci.services;
+  for(i = 0; i < services.length; i++) {
+    var key = services[i].toUpperCase() + '_URL';
+    if(environment[key]) {
+      if(allServiceUrl.length > 0) {
+        allServiceUrl += ' ';
+      }
+      allServiceUrl += environment[key];
     }
   }
 
+  console.log('ALL_SERVICE_URL=' + allServiceUrl);
 };

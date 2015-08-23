@@ -23,7 +23,7 @@ describe "Login", () ->
         yield browser.yieldable.end()
 
 
-  it "ldap", (done) ->
+  it "user", (done) ->
     test done,
       when: ->
         browser

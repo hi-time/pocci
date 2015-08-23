@@ -5,9 +5,9 @@ gitlabdb:
   env_file:
     - ./.env
   environment:
-    - DB_USER=gitlab
-    - DB_PASS=secretpassword
-    - DB_NAME=gitlabhq_production
+    - DB_USER=${GITLAB_DB_USER}
+    - DB_PASS=${GITLAB_DB_PASS}
+    - DB_NAME=${GITLAB_DB_NAME}
 
 gitlabredis:
   image: sameersbn/redis:${VERSION_REDIS}
@@ -20,12 +20,11 @@ gitlab:
     - ./.env
   dns: 172.17.42.1
   environment:
-    - GITLAB_HOST=gitlab.${POCCI_DOMAIN_NAME}
     - GITLAB_SSH_PORT=10022
-    - LDAP_ENABLED=true
-    - LDAP_UID=uid
-    - LDAP_METHOD=plain
-    - LDAP_ACTIVE_DIRECTORY=false
+    - LDAP_ENABLED=${GITLAB_LDAP_ENABLED}
+    - LDAP_UID=${LDAP_ATTR_LOGIN}
+    - LDAP_METHOD=${GITLAB_LDAP_METHOD}
+    - LDAP_ACTIVE_DIRECTORY=${GITLAB_LDAP_ACTIVE_DIRECTORY}
   ports:
     - "10022:22"
   links:

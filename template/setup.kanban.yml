@@ -5,9 +5,9 @@ pocci:
     - user
     - kanban
   environment:
-    - TZ=Asia/Tokyo
+    TZ: Asia/Tokyo
 
-ldap:
+user:
   users:
     - uid:          jenkinsci
       givenName:    Jenkins

@@ -7,14 +7,18 @@ source ${BASE_DIR}/bin/lib/init-env
 cd ${BASE_DIR}
 
 set +e
-POCCIR_OPTS=" " ${BIN_DIR}/oneoff iojs iojs -e "require('./bin/js/lib/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/.env
+POCCIR_OPTS=" " ${BIN_DIR}/oneoff iojs iojs -e "require('./bin/js/lib/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/tmp.env
 RC=$?
 
 set -e
 if [ $RC -ne 0 ]; then
-    cat ${CONFIG_DIR}/.env
+    cat ${CONFIG_DIR}/tmp.env
+    rm ${CONFIG_DIR}/tmp.env
     exit ${RC}
 fi
+
+cat ${CONFIG_DIR}/tmp.env | tr -d '\r' >${CONFIG_DIR}/.env
+rm ${CONFIG_DIR}/tmp.env
 
 if [ -f ${BIN_DIR}/proxy.env ]; then
     cat ${BIN_DIR}/proxy.env >>${CONFIG_DIR}/.env

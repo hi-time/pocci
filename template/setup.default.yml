@@ -7,9 +7,9 @@ pocci:
     - sonar
     - kanban
   environment:
-    - TZ=Asia/Tokyo
+    TZ: Asia/Tokyo
 
-ldap:
+user:
   users:
     - uid:          jenkinsci
       givenName:    Jenkins

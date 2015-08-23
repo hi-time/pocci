@@ -5,9 +5,9 @@ sonarqubedb:
   env_file:
     - ./.env
   environment:
-    - DB_USER=sonarqube
-    - DB_PASS=sonarqubepass
-    - DB_NAME=sonarqubedb
+    - DB_USER=${SONAR_DB_USER}
+    - DB_PASS=${SONAR_DB_PASS}
+    - DB_NAME=${SONAR_DB_NAME}
   ports:
     - "5432:5432"
 
@@ -17,10 +17,9 @@ sonar:
     - ./.env
   dns: 172.17.42.1
   environment:
-    - SONAR_SECURITY_REALM=LDAP
-    - LDAP_UID=uid
-    - LDAP_REAL_NAME=cn
-    - LDAP_MAIL=mail
+    - LDAP_UID=${LDAP_ATTR_LOGIN}
+    - LDAP_REAL_NAME=${SONAR_LDAP_REAL_NAME}
+    - LDAP_MAIL=${LDAP_ATTR_MAIL}
   links:
     - sonarqubedb:db
     - ldap:${LDAP_HOST}

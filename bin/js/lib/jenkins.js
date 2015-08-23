@@ -4,8 +4,6 @@ var thunkify = require('thunkify');
 var jenkinsLib = require('jenkins');
 var path = require('path');
 var gitlab = require('./gitlab.js');
-var ldap = require('./ldap.js');
-var ldapDefaults = ldap.defaults;
 var util = require('./util.js');
 var version = require('./jenkins-slaves-version.json');
 
@@ -117,7 +115,7 @@ var writeNodeConf = function(node, secret) {
   fs.appendFileSync('./config/jenkins-slaves.yml.template', text);
 };
 
-var createNode = function*(jenkins, nodeName, ldapOptions) {
+var createNode = function*(jenkins, nodeName) {
   var destroy = thunkify(jenkins.node.destroy.bind(jenkins.node));
   var create = thunkify(jenkins.node.create.bind(jenkins.node));
 
@@ -135,19 +133,16 @@ var createNode = function*(jenkins, nodeName, ldapOptions) {
   };
 
   yield create(options);
-  if(!ldapOptions) {
-    writeNodeConf(nodeName, '');
-  }
 };
 
-var createNodes = function*(jenkins, nodes, ldapOptions) {
+var createNodes = function*(jenkins, nodes) {
   nodes = util.toArray(nodes);
   for(var i = 0; i < nodes.length; i++) {
-    yield createNode(jenkins, nodes[i], ldapOptions);
+    yield createNode(jenkins, nodes[i]);
   }
 };
 
-var enableLdap = function*(browser, url, ldapOptions, ldapUrl, user) {
+var enableLdap = function*(browser, url, loginUser) {
   var enableSecurity = function*() {
     var isSelected = (yield browser.yieldable.isSelected(useSecuritySelector))[0];
     if (!isSelected) {
@@ -160,14 +155,14 @@ var enableLdap = function*(browser, url, ldapOptions, ldapUrl, user) {
       yield browser.yieldable.save('jenkins-doing-enableSecurity-3');
     yield browser.yieldable.click('#yui-gen1-button');
 
-    var uid = ldapOptions.attrLogin || ldapDefaults.attrLogin;
+    var uid = process.env.LDAP_ATTR_LOGIN;
     browser
-      .setValue('input[type="text"][name="_.server"]', ldapUrl)
-      .setValue('input[type="text"][name="_.rootDN"]', ldapOptions.baseDn || ldapDefaults.baseDn)
+      .setValue('input[type="text"][name="_.server"]', process.env.LDAP_URL)
+      .setValue('input[type="text"][name="_.rootDN"]', process.env.LDAP_BASE_DN)
       .setValue('input[type="text"][name="_.userSearch"]', uid + '={0}')
-      .setValue('input[type="text"][name="_.managerDN"]', ldapOptions.bindDn || ldapDefaults.bindDn)
-      .setValue('input[type="password"][name="_.managerPasswordSecret"]', ldapOptions.bindPassword || ldapDefaults.bindPassword)
-      .setValue('input[type="text"][name="_.displayNameAttributeName"]', ldapOptions.attrLogin || ldapDefaults.attrLogin);
+      .setValue('input[type="text"][name="_.managerDN"]', process.env.LDAP_BIND_DN)
+      .setValue('input[type="password"][name="_.managerPasswordSecret"]', process.env.LDAP_BIND_PASSWORD)
+      .setValue('input[type="text"][name="_.displayNameAttributeName"]', uid);
 
     yield browser.yieldable.save('jenkins-doing-enableSecurity-4');
     yield browser.yieldable.click('#yui-gen6-button');
@@ -184,7 +179,6 @@ var enableLdap = function*(browser, url, ldapOptions, ldapUrl, user) {
     yield enableSecurity();
   }
 
-  var loginUser = util.getUser(user, ldapOptions.users);
   browser.url(url + '/login');
   yield browser.yieldable.save('jenkins-before-login-by-' + loginUser.uid);
 
@@ -237,29 +231,37 @@ var configureGitLab = function*(browser, url, gitlabUrl, apiToken) {
 };
 
 module.exports = {
-  setup: function*(browser, options, ldapOptions, repositories) {
+  addDefaults: function(options) {
+    options.jenkins       = options.jenkins       || {};
+    options.jenkins.host  = options.jenkins.host  || 'jenkins.' + options.pocci.domain;
+    options.jenkins.url   = options.jenkins.url   || 'http://' + options.jenkins.host;
+    // options.jenkins.nodes = options.jenkins.nodes;
+    // options.jenkins.user = options.jenkins.user;
+  },
+  addEnvironment: function(options, environment) {
+    environment.JENKINS_HOST        = options.jenkins.host;
+    environment.JENKINS_URL         = options.jenkins.url;        // jenkins.js, jenkins-slaves.yml, shell scripts
+  },
+  setup: function*(browser, options) {
     var url = process.env.JENKINS_URL;
+    var jenkinsOptions = options.jenkins || {};
+    var userOptions = options.user || {};
+    var repositories = options.repositories || [];
+    var loginUser = util.getUser(jenkinsOptions.user, userOptions.users);
+
     var getJenkins = function() {
-      if(ldapOptions) {
-        var loginUser = util.getUser(options.user, ldapOptions.users);
-        return jenkinsLib(util.getURL(url, loginUser));
-      } else {
-        return jenkinsLib(url);
-      }
+      return jenkinsLib(util.getURL(url, loginUser));
     };
 
     var jenkins = getJenkins();
-    if(options.nodes) {
-      yield createNodes(jenkins, options.nodes, ldapOptions);
+    if(jenkinsOptions.nodes) {
+      yield createNodes(jenkins, jenkinsOptions.nodes);
     }
 
-    if(ldapOptions) {
-      var ldapUrl = options.ldapUrl || ldap.url(ldapOptions);
-      yield enableLdap(browser, url, ldapOptions, ldapUrl, options.user);
-    }
+    yield enableLdap(browser, url, loginUser);
 
-    if(options.nodes) {
-      yield saveSecrets(browser, url, options.nodes);
+    if(jenkinsOptions.nodes) {
+      yield saveSecrets(browser, url, jenkinsOptions.nodes);
     }
 
     var gitlabUrl = process.env.GITLAB_URL;

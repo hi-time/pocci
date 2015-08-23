@@ -3,7 +3,7 @@ var fs = require('fs');
 var server = require('co-request');
 var toArray = require('./util.js').toArray;
 var assertStatus = require('./util.js').assertStatus;
-var adminPassword = '5iveL!fe';
+var adminPassword = process.env.GITLAB_ROOT_PASSWORD;
 
 var logout = function*(browser) {
   yield browser.yieldable.save('gitlab-before-logout');
@@ -281,24 +281,56 @@ var updateNginxConfFile = function(topPage) {
 };
 
 module.exports = {
-  setup: function*(browser, options, ldapOptions, repositories) {
-    var url = process.env.GITLAB_URL;
-    var users = toArray(options.users || ldapOptions.users);
+  addDefaults: function(options) {
+    options.gitlab                      = options.gitlab      || {};
+    options.gitlab.host                 = options.gitlab.host || 'gitlab.' + options.pocci.domain;
+    options.gitlab.url                  = options.gitlab.url  || 'http://' + options.gitlab.host;
+    options.gitlab.adminPassword        = options.gitlab.adminPassword        || '5iveL!fe';
+    options.gitlab.ldapEnabled          = options.gitlab.ldapEnabled          || 'true';
+    options.gitlab.ldapMethod           = options.gitlab.ldapMethod           || 'plain';
+    options.gitlab.ldapActiveDirectory  = options.gitlab.ldapActiveDirectory  || 'false';
+    options.gitlab.dbUser               = options.gitlab.dbUser               || 'gitlab';
+    options.gitlab.dbPassword           = options.gitlab.dbPassword           || 'secretpassword';
+    options.gitlab.dbName               = options.gitlab.dbName               || 'gitlabhq_production';
 
+    // options.gitlab.topPage = options.gitlab.topPage;
+    // options.gitlab.users = options.gitlab.users;
+    // options.gitlab.groups = options.gitlab.groups;
+  },
+  addEnvironment: function(options, environment) {
+    environment.GITLAB_HOST           = options.gitlab.host;                        // sameersbn/gitlab
+    environment.GITLAB_URL            = options.gitlab.url;                         // gitlab.js, jenkins.js, kanban.js, redmine.js, git.js
+    environment.GITLAB_LDAP_ENABLED   = options.gitlab.ldapEnabled;                 // sameersbn/gitlab
+    environment.GITLAB_LDAP_METHOD    = options.gitlab.ldapMethod;                  // sameersbn/gitlab
+    environment.GITLAB_LDAP_ACTIVE_DIRECTORY = options.gitlab.ldapActiveDirectory;  // sameersbn/gitlab
+    environment.GITLAB_ROOT_PASSWORD  = options.gitlab.adminPassword;               // sameersbn/gitlab
+    environment.GITLAB_DB_USER        = options.gitlab.dbUser;                      // sameersbn/postgresql (gitlabdb)
+    environment.GITLAB_DB_PASS        = options.gitlab.dbPassword;                  // sameersbn/postgresql (gitlabdb)
+    environment.GITLAB_DB_NAME        = options.gitlab.dbName;                      // sameersbn/postgresql (gitlabdb)
+    environment.LDAP_PASS             = options.ldap.bindPassword;                  // sameersbn/gitlab
+    environment.LDAP_BASE             = options.ldap.baseDn;                        // sameersbn/gitlab
+  },
+  setup: function*(browser, options) {
+    var url = process.env.GITLAB_URL;
+    var repositories = options.repositories = options.repositories || [];
+    var gitlabOptions = options.gitlab || {};
+    var userOptions = options.user || {};
+
+    var users = toArray(gitlabOptions.users || userOptions.users);
     if(users) {
       yield addUsers(browser, url, users);
     }
 
-    if(options.groups) {
+    if(gitlabOptions.groups) {
       yield firstLoginByAdmin(browser, url);
       this.request = yield createRequest(browser, url);
-      var groups = toArray(options.groups);
+      var groups = toArray(gitlabOptions.groups);
       yield setupGroups(this.request, groups, users, repositories);
       yield logout(browser);
     }
 
-    if(options.topPage) {
-      updateNginxConfFile(options.topPage);
+    if(gitlabOptions.topPage) {
+      updateNginxConfFile(gitlabOptions.topPage);
     }
   },
   getPrivateToken: getPrivateToken,

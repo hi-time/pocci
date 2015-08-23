@@ -83,7 +83,7 @@ describe "Jenkins", ->
         @options = yaml(yamlFile)
         return
       when: ->
-        yield jenkins.setup(browser, @options.jenkins, @options.ldap)
+        yield jenkins.setup(browser, @options)
       then: ->
         yield assertEntries(@options.jenkins)
 
@@ -96,6 +96,6 @@ describe "Jenkins", ->
         return
       when: ->
         console.log(jenkins)
-        yield jenkins.setup(browser, @options.jenkins, @options.ldap)
+        yield jenkins.setup(browser, @options)
       then: ->
         yield assertEntries(@options.jenkins)

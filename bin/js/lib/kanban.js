@@ -32,6 +32,15 @@ var updateComposeFile = function(keys) {
 };
 
 module.exports = {
+  addDefaults: function(options) {
+    options.kanban      = options.kanban       || {};
+    options.kanban.host = options.kanban.host  || 'kanban.' + options.pocci.domain;
+    options.kanban.url  = options.kanban.url   || 'http://' + options.kanban.host;
+  },
+  addEnvironment: function(options, environment) {
+    environment.KANBAN_HOST = options.kanban.host;
+    environment.KANBAN_URL  = options.kanban.url;   // kanban.js
+  },
   edit: function(yamlFile) {
     var yamlText = fs.readFileSync(yamlFile, 'utf8')
                   .replace('proxy:', 'kanban:')

@@ -6,8 +6,6 @@ var assertStatus = require('./util.js').assertStatus;
 var toArray = require('./util.js').toArray;
 var copy = require('./util.js').copy;
 var urlparse = require('url').parse;
-var ldap = require('./ldap.js');
-var ldapDefaults = ldap.defaults;
 var gitlab = require('./gitlab.js');
 
 var logout = function*(browser, user) {
@@ -72,7 +70,7 @@ var enableWebService = function*(browser, url) {
   }
 };
 
-var enableLdap = function*(browser, url, ldapOptions, ldapUrl) {
+var enableLdap = function*(browser, url, ldapUrl) {
   browser.url(url + '/auth_sources/1/edit');
 
   if(!(yield exists(browser, '#auth_source_name'))) {
@@ -81,17 +79,17 @@ var enableLdap = function*(browser, url, ldapOptions, ldapUrl) {
 
   yield browser.yieldable.save('redmine-before-enableLdap');
   browser
-    .setValue('#auth_source_name', ldapOptions.name || 'ldap')
+    .setValue('#auth_source_name', 'ldap')
     .setValue('#auth_source_host', ldapUrl.hostname)
     .setValue('#auth_source_port', ldapUrl.port || '389')
-    .setValue('#auth_source_account', ldapOptions.bindDn || ldapDefaults.bindDn)
-    .setValue('#auth_source_account_password', ldapOptions.bindPassword || ldapDefaults.bindPassword)
-    .setValue('#auth_source_base_dn', ldapOptions.baseDn || ldapDefaults.baseDn)
+    .setValue('#auth_source_account', process.env.LDAP_BIND_DN)
+    .setValue('#auth_source_account_password', process.env.LDAP_BIND_PASSWORD)
+    .setValue('#auth_source_base_dn', process.env.LDAP_BASE_DN)
     .setValue('#auth_source_timeout', 60)
-    .setValue('#auth_source_attr_login', ldapOptions.attrLogin || ldapDefaults.attrLogin)
-    .setValue('#auth_source_attr_firstname', ldapOptions.attrFirstName || ldapDefaults.attrFirstName)
-    .setValue('#auth_source_attr_lastname', ldapOptions.attrLastName || ldapDefaults.attrLastName)
-    .setValue('#auth_source_attr_mail', ldapOptions.attrMail || ldapDefaults.attrMail);
+    .setValue('#auth_source_attr_login', process.env.LDAP_ATTR_LOGIN)
+    .setValue('#auth_source_attr_firstname', process.env.LDAP_ATTR_FIRST_NAME)
+    .setValue('#auth_source_attr_lastname', process.env.LDAP_ATTR_LAST_NAME)
+    .setValue('#auth_source_attr_mail', process.env.LDAP_ATTR_MAIL);
 
   var isSelected = (yield browser.yieldable.isSelected('#auth_source_onthefly_register'))[0];
   if (!isSelected) {
@@ -398,31 +396,50 @@ var setupGitLabForGroups = function*(browser, url, groups, options) {
 };
 
 module.exports = {
-  setup: function*(browser, options, ldapOptions, gitlabOptions) {
+  addDefaults: function(options) {
+    options.redmine             = options.redmine             || {};
+    options.redmine.host        = options.redmine.host        || 'redmine.' + options.pocci.domain;
+    options.redmine.url         = options.redmine.url         || 'http://' + options.redmine.host;
+    options.redmine.dbUser      = options.redmine.dbUser      || 'redmine';
+    options.redmine.dbPassword  = options.redmine.dbPassword  || 'password';
+    options.redmine.dbName      = options.redmine.dbName      || 'redmine_production';
+    options.redmine.smtpEnabled = options.redmine.smtpEnabled || 'false';
+    // options.redmine.users = options.redmine.users;
+    // options.redmine.projects = options.redmine.projects;
+    // options.redmine.lang = options.redmine.lang;
+  },
+  addEnvironment: function(options, environment) {
+    environment.REDMINE_HOST          = options.redmine.host;
+    environment.REDMINE_URL           = options.redmine.url;          // redmine.js
+    environment.REDMINE_DB_USER       = options.redmine.dbUser;       // sameersbn/postgresql (redminedb)
+    environment.REDMINE_DB_PASS       = options.redmine.dbPassword;   // sameersbn/postgresql (redminedb)
+    environment.REDMINE_DB_NAME       = options.redmine.dbName;       // sameersbn/postgresql (redminedb)
+    environment.REDMINE_SMTP_ENABLED  = options.redmine.smtpEnabled;  // sameersbn/redmine
+  },
+  setup: function*(browser, options) {
     var url = process.env.REDMINE_URL;
-    var users = toArray(options.users || ldapOptions.users);
+    var redmineOptions = options.redmine || {};
+    var userOptions = options.user || {};
+    var gitlabOptions = options.gitlab || {};
+    var users = toArray(redmineOptions.users || userOptions.users);
 
     yield loginByAdmin(browser, url);
-    yield loadDefaultConfiguration(browser, url, options.lang);
+    yield loadDefaultConfiguration(browser, url, redmineOptions.lang);
     yield enableWebService(browser, url);
-
-    if(ldapOptions) {
-      var ldapUrl = options.ldapUrl || ldap.url(ldapOptions);
-      yield enableLdap(browser, url, ldapOptions, urlparse(ldapUrl));
-    }
+    yield enableLdap(browser, url, urlparse(process.env.LDAP_URL));
 
     yield logout(browser, 'admin');
     if(users) {
       yield addUsers(browser, url, users);
     }
 
-    if(options.projects) {
+    if(redmineOptions.projects) {
       yield loginByAdmin(browser, url);
       this.request = yield createRequest(browser, url);
-      yield setupProjects(browser, url, this.request, toArray(options.projects), users, gitlabOptions);
+      yield setupProjects(browser, url, this.request, toArray(redmineOptions.projects), users, gitlabOptions);
       var gitlabUrl = process.env.GITLAB_URL;
       yield gitlab.loginByAdmin(browser, gitlabUrl);
-      yield setupGitLabForGroups(browser, gitlabUrl, toArray(gitlabOptions.groups), options);
+      yield setupGitLabForGroups(browser, gitlabUrl, toArray(gitlabOptions.groups), redmineOptions);
       yield gitlab.logout(browser);
     }
   },

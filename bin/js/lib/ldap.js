@@ -1,85 +1,31 @@
 'use strict';
-var ldap = require('ldapjs');
-var thunkify = require('thunkify');
-var ssha = require('ssha');
-var toArray = require('./util.js').toArray;
-
-var addUsers = function*(client, users, baseDn) {
-  var add = thunkify(client.add.bind(client));
-  var del = thunkify(client.del.bind(client));
-
-  for(var i = 0; i < users.length; i++) {
-    var user = users[i];
-    var plainPassword = user.userPassword;
-    user.cn = user.uid;
-    user.userPassword = ssha.create(plainPassword);
-    user.objectclass = ['inetOrgPerson', 'top'];
-    var dn = 'cn=' + user.cn + ',' + baseDn;
-    try {
-      yield del(dn);
-    } catch(err) {
-      if(err.name === 'NoSuchObjectError') {
-        console.log('  DELETE: ' + err.message + ' : ' + dn);
-      } else {
-        throw err;
-      }
-    }
-    yield add(dn, user);
-    user.userPassword = plainPassword;
-  }
-};
-
-var delUsers = function*(client, users, baseDn) {
-  var del = thunkify(client.del.bind(client));
-
-  for(var i = 0; i < users.length; i++) {
-    var dn = 'cn=' + users[i].uid + ',' + baseDn;
-    try {
-      yield del(dn);
-    } catch(err) {
-        // ignore
-        // console.log('  DELETE: ' + err.message + ' : ' + dn);
-    }
-  }
-};
 
 module.exports = {
-  defaults: {
-    organisation:   'Example Inc.',
-    domain:         'example.com',
-    bindDn:         'cn=admin,dc=example,dc=com',
-    bindPassword:   'admin',
-    baseDn:         'dc=example,dc=com',
-    attrLogin:      'uid',
-    attrFirstName:  'givenName',
-    attrLastName:   'sn',
-    attrMail:       'mail'
+  addDefaults: function(options) {
+    options.ldap                = options.ldap                || {};
+    options.ldap.host           = options.ldap.host           || 'user.' + options.pocci.domain;
+    options.ldap.url            = options.ldap.url            || 'ldap://' + options.ldap.host;
+    options.ldap.domain         = options.ldap.domain         || 'example.com';
+    options.ldap.baseDn         = options.ldap.baseDn         || 'dc=example,dc=com';
+    options.ldap.bindDn         = options.ldap.bindDn         || 'cn=admin,dc=example,dc=com';
+    options.ldap.bindPassword   = options.ldap.bindPassword   || 'admin';
+    options.ldap.organisation   = options.ldap.organisation   || 'Example Inc.';
+    options.ldap.attrLogin      = options.ldap.attrLogin      || 'uid';
+    options.ldap.attrFirstName  = options.ldap.attrFirstName  || 'givenName';
+    options.ldap.attrLastName   = options.ldap.attrLastName   || 'sn';
+    options.ldap.attrMail       = options.ldap.attrMail       || 'mail';
   },
-  url : function(options) {
-    var host = options.host || process.env.USER_HOST;
-    return options.url || 'ldap://' + host;
-  },
-  bind: function*(options) {
-    var url = this.url(options);
-    var bindDn = options.bindDn || this.defaults.bindDn;
-    var bindPassword = options.bindPassword || this.defaults.bindPassword;
-    var client = ldap.createClient({url: url});
-    var bind = thunkify(client.bind.bind(client));
-    yield bind(bindDn, bindPassword);
-    return client;
-  },
-  del: function*(options) {
-    if(!options.readOnly && options.users) {
-      var baseDn = options.baseDn || this.defaults.baseDn;
-      var client = yield this.bind(options);
-      yield delUsers(client, toArray(options.users), baseDn);
-    }
-  },
-  add: function*(options) {
-    if(!options.readOnly && options.users) {
-      var baseDn = options.baseDn || this.defaults.baseDn;
-      var client = yield this.bind(options);
-      yield addUsers(client, toArray(options.users), baseDn);
-    }
+  addEnvironment: function(options, environment) {
+    environment.LDAP_HOST             = options.ldap.host;          // xpfriend/sonarqube
+    environment.LDAP_URL              = options.ldap.url;           // user.js, jenkins.js, redmine.js
+    environment.LDAP_DOMAIN           = options.ldap.domain;        // osixia/openldap
+    environment.LDAP_BASE_DN          = options.ldap.baseDn;        // jenkins.js, redmine.js, user.js, xpfriend/sonarqube
+    environment.LDAP_BIND_DN          = options.ldap.bindDn;        // jenkins.js, redmine.js, user.js, xpfriend/sonarqube, sameersbn/gitlab
+    environment.LDAP_BIND_PASSWORD    = options.ldap.bindPassword;  // jenkins.js, redmine.js, xpfriend/sonarqube
+    environment.LDAP_ORGANISATION     = options.ldap.organisation;  // osixia/openldap
+    environment.LDAP_ATTR_LOGIN       = options.ldap.attrLogin;     // jenkins.js, redmine.js, xpfriend/sonarqube, sameersbn/gitlab
+    environment.LDAP_ATTR_FIRST_NAME  = options.ldap.attrFirstName; // redmine.js
+    environment.LDAP_ATTR_LAST_NAME   = options.ldap.attrLastName;  // redmine.js
+    environment.LDAP_ATTR_MAIL        = options.ldap.attrMail;      // redmine.js, xpfriend/sonarqube
   }
 };

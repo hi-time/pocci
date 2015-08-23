@@ -9,9 +9,6 @@ __NAME:
   environment:
     - JENKINS_SLAVE_SECRET=__SECRET
     - JENKINS_URL=${JENKINS_URL}
-    - SONARDB_HOST=${SONAR_HOST}
-    - SONARDB_USER=sonarqube
-    - SONARDB_PASS=sonarqubepass
-    - SONARDB_NAME=sonarqubedb
+    - SONAR_DB_HOST=${SONAR_HOST}
 
 EOF

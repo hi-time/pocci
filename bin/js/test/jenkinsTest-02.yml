@@ -1,5 +1,8 @@
-ldap:
-  readOnly: true
+pocci:
+  services:
+    - jenkins
+
+user:
   users:
     -
       uid:          jenkinsci

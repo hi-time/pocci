@@ -2,7 +2,7 @@
 var git = require('./git.js');
 var gitlab = require('./gitlab.js');
 var jenkins = require('./jenkins.js');
-var ldap = require('./ldap.js');
+var user = require('./user.js');
 var redmine = require('./redmine.js');
 var yaml = require('./yaml.js');
 var webdriver = require('./webdriver.js');
@@ -18,47 +18,46 @@ var initBrowser = function*() {
 var setup = function*(yamlFile, keepOpenBrowser) {
   var options = yaml(yamlFile);
 
-  if(options.ldap) {
+  if(!options.pocci || !options.pocci.services) {
+    return;
+  }
+  var services = options.pocci.services;
+
+  console.log('*** Start Selenium Webdriver...');
+  yield initBrowser();
+  var browser = module.exports.browser;
+
+  if(services.indexOf('user') > -1) {
     console.log('*** Add users...');
-    yield ldap.add(options.ldap);
+    yield user.setup(browser, options);
   }
 
-  var browser;
-  if(options.gitlab || options.jenkins || options.redmine) {
-    console.log('*** Start Selenium Webdriver...');
-    yield initBrowser();
-    browser = module.exports.browser;
-  }
-
-  var repositories = [];
-
-  if(options.gitlab) {
+  if(services.indexOf('gitlab') > -1) {
     console.log('*** Setup GitLab...');
-    yield gitlab.setup(browser, options.gitlab, options.ldap, repositories);
+    yield gitlab.setup(browser, options);
   }
 
-  if(options.redmine) {
+  if(services.indexOf('redmine') > -1) {
     console.log('*** Setup Redmine...');
-    yield redmine.setup(browser, options.redmine, options.ldap, options.gitlab);
+    yield redmine.setup(browser, options);
   }
 
-  if(repositories.length > 0) {
+  if(options.repositories.length > 0) {
     console.log('*** Import codes to Git repository...');
-    yield git.import(repositories, options.ldap);
+    yield git.setup(browser, options);
   }
 
-  if(options.jenkins) {
+  if(services.indexOf('jenkins') > -1) {
     console.log('*** Setup Jenkins...');
-    yield jenkins.setup(browser, options.jenkins, options.ldap, repositories);
+    yield jenkins.setup(browser, options);
   }
 
-  if(options.pocci && options.pocci.services &&
-      options.pocci.services.indexOf('kanban') > -1) {
+  if(services.indexOf('kanban') > -1) {
     console.log('*** Setup Kanban...');
-    yield kanban.setup(browser);
+    yield kanban.setup(browser, options);
   }
 
-  if(browser && !keepOpenBrowser) {
+  if(!keepOpenBrowser) {
     console.log('*** Closing browser...');
     yield browser.yieldable.end();
   }
