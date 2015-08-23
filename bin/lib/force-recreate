@@ -1,0 +1,6 @@
+
+if [ `docker-compose up --help |grep force-recreate |wc -l` -gt 0 ]; then
+   FORCE_RECREATE="--force-recreate"
+else
+   FORCE_RECREATE=""
+fi

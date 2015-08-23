@@ -4,4 +4,5 @@ set -e
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
-${LIB_DIR}/jenkins-slave up -d
+source ${LIB_DIR}/force-recreate
+${LIB_DIR}/jenkins-slave up -d ${FORCE_RECREATE}

@@ -9,7 +9,8 @@ SERVICE_NAME=${SERVICE_NAME:-poccis}
 cd ${CONFIG_DIR}
 
 if [ "$1" = "up" ]; then
-    docker-compose -p poccis -f dns.yml up -d
+    source ${LIB_DIR}/force-recreate
+    docker-compose -p poccis -f dns.yml up -d ${FORCE_RECREATE}
 fi
 
 docker-compose -p ${SERVICE_NAME} "$@"

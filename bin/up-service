@@ -7,7 +7,8 @@ source ${BASE_DIR}/bin/lib/init-env
 ${LIB_DIR}/stop-document-server
 
 echo "Start services..."
-${LIB_DIR}/docker-service up -d
+source ${LIB_DIR}/force-recreate
+${LIB_DIR}/docker-service up -d ${FORCE_RECREATE}
 
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 if [ -n "${JENKINS_URL}" ]; then
