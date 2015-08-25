@@ -18,6 +18,17 @@ var updateByUserEnvironment = function(environment, userEnvironment) {
   }
 };
 
+var addUrl = function(environment, services, serviceUrl, allServiceUrl) {
+  for(var i = 0; i < services.length; i++) {
+    var key = services[i].toUpperCase() + '_URL';
+    if(environment[key]) {
+      var value = environment[key];
+      allServiceUrl.push(value);
+      serviceUrl.push(value);
+    }
+  }
+};
+
 module.exports = function(yamlFile) {
   var options = yaml(yamlFile);
   var config = [pocci, ldap, user, gitlab, jenkins, kanban, redmine, sonar];
@@ -39,17 +50,14 @@ module.exports = function(yamlFile) {
     console.log(name + '=' + environment[name]);
   }
 
-  var allServiceUrl = '';
-  var services = options.pocci.services;
-  for(i = 0; i < services.length; i++) {
-    var key = services[i].toUpperCase() + '_URL';
-    if(environment[key]) {
-      if(allServiceUrl.length > 0) {
-        allServiceUrl += ' ';
-      }
-      allServiceUrl += environment[key];
-    }
-  }
+  var allServiceUrl = [];
+  var internalServiceUrl = [];
+  var externalServiceUrl = [];
 
-  console.log('ALL_SERVICE_URL=' + allServiceUrl);
+  addUrl(environment, options.pocci.services, internalServiceUrl, allServiceUrl);
+  addUrl(environment, options.pocci.externalServices, externalServiceUrl, allServiceUrl);
+
+  console.log('ALL_SERVICE_URL=' + allServiceUrl.join(' '));
+  console.log('INTERNAL_SERVICE_URL=' + internalServiceUrl.join(' '));
+  console.log('EXTERNAL_SERVICE_URL=' + externalServiceUrl.join(' '));
 };

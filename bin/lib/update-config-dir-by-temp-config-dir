@@ -7,7 +7,7 @@ fi
 
 mkdir ${CONFIG_DIR}/nginx
 DEFAULT_SERVICE=""
-for i in ${POCCI_SERVICES}; do
+for i in ${INTERNAL_SERVICES}; do
     if [ -z ${DEFAULT_SERVICE} ]; then
         DEFAULT_SERVICE=$i
     fi
@@ -26,7 +26,7 @@ done
 
 source ${TEMP_CONFIG_DIR}/services/nginx.yml.template >${CONFIG_DIR}/docker-compose.yml
 
-for i in ${POCCI_SERVICES}; do
+for i in ${INTERNAL_SERVICES}; do
     source ${TEMP_CONFIG_DIR}/services/$i.yml.template >>${CONFIG_DIR}/docker-compose.yml
 done
 
@@ -36,7 +36,7 @@ if [ -d ${CONFIG_DIR}/volumes ]; then
 fi
 mkdir ${CONFIG_DIR}/volumes
 
-for i in ${POCCI_SERVICES}; do
+for i in ${INTERNAL_SERVICES}; do
     if [ -d ${TEMP_CONFIG_DIR}/services/volumes/$i ]; then
         cp -r ${TEMP_CONFIG_DIR}/services/volumes/$i  ${CONFIG_DIR}/volumes
     fi

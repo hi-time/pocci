@@ -11,9 +11,9 @@ source ${LIB_DIR}/force-recreate
 ${LIB_DIR}/docker-service up -d ${FORCE_RECREATE}
 
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
-if [ -n "${JENKINS_URL}" ]; then
+if [ `docker ps |grep poccis_jenkins_1 |wc -l` -gt 0 ]; then
     ${LIB_DIR}/waitfor ${JENKINS_URL}
-    ${BIN_DIR}/up-jenkins-slave
 fi
+${BIN_DIR}/up-jenkins-slave
 
-${LIB_DIR}/waitfor ${ALL_SERVICE_URL}
+${LIB_DIR}/waitfor ${INTERNAL_SERVICE_URL}
