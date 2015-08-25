@@ -30,7 +30,7 @@ ${BIN_DIR}/up-service 2>&1              | tee -a ${LOG_FILE} && handle_error
 
 echo ""                                 | tee -a ${LOG_FILE}
 echo "*** STEP 4 ***"                   | tee -a ${LOG_FILE}
-${LIB_DIR}/update-jenkins-plugins 2>&1  | tee -a ${LOG_FILE} && handle_error
+${LIB_DIR}/update-jenkins-container 2>&1| tee -a ${LOG_FILE} && handle_error
 
 echo ""                                 | tee -a ${LOG_FILE}
 echo "*** STEP 5 ***"                   | tee -a ${LOG_FILE}
