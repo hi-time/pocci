@@ -19,7 +19,7 @@ h2 {
   margin-top: 46px;
 }
 
-h3, h4 {
+h3, h4, h5, h6 {
   border-top: 2px solid white;
   padding-top: 4px;
 }
@@ -28,11 +28,15 @@ h3 {
   margin-top:38px;
 }
 
-h4 {
+h4, h5 {
   margin-top:28px;
 }
 
-h3, h4, p {
+h5 {
+  font-weight:bold;
+}
+
+h3, h4, h5, h6, p {
   padding-left: 6px;
 }
 
@@ -48,6 +52,13 @@ table th {
 table tr:nth-child(2n) {
     background-color: #f8f8f8;
 }
+
+img.block {
+  border-left: 6px #f0f0f0 solid;
+  padding: 20px;
+  margin-bottom:20px;
+}
+
 
   /*github.com style (c) Vasily Polovnyov <vast@whiteants.net>*/
   pre code {

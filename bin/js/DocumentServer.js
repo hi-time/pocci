@@ -17,7 +17,9 @@ module.exports = function(grunt) {
         files: [
           {expand: true, cwd: '/app/', src: 'config.log', dest: '/tmp/html/', timestamp:true},
           {expand: true, cwd: '/app/bin/js/config/screen/', src: '*.png', dest: '/tmp/html/screen/', timestamp:true},
-          {expand: true, cwd: '/app/document/', src: '**/*.css', dest: '/tmp/html/'}
+          {expand: true, cwd: '/app/document/', src: ['**/*.css', '**/*.png'], dest: '/tmp/html/'},
+          {expand: true, cwd: '/app/bin/js/bower_components/bootstrap/dist', src: ['**/*'], dest: '/tmp/html/bootstrap/'},
+          {expand: true, cwd: '/app/bin/js/bower_components/jquery/dist', src: ['**/*'], dest: '/tmp/html/jquery/'}
         ]
       }
     },
@@ -59,7 +61,12 @@ module.exports = function(grunt) {
             templateContext.title = $('h1').first().text() || $('h2').first().text() || $('h3').first().text();
             $('a').each(function(i, elem) {
               var href = $(this).attr('href');
-              $(this).attr('href', href.replace(/\...\.md$/, '.html'));
+              $(this).attr('href', href.replace(/\...\.md$/, '.html').replace(/\...\.md#/, '.html#'));
+            });
+            $('img').each(function(i, elem) {
+              if($(this).parent().contents().length === 1) {
+                $(this).addClass('block');
+              }
             });
             var log = $('#setup-log');
             if(log.length > 0) {
