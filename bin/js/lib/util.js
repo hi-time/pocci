@@ -100,5 +100,8 @@ module.exports = {
       return '443';
     }
     return '80';
+  },
+  getHref: function(url) {
+    return url.href.replace(/\/$/,'');
   }
 };

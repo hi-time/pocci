@@ -5,7 +5,7 @@ var server = require('co-request');
 var assertStatus = require('./util.js').assertStatus;
 var toArray = require('./util.js').toArray;
 var copy = require('./util.js').copy;
-var getPort = require('./util.js').getPort;
+var util = require('./util.js');
 var parse = require('url').parse;
 var gitlab = require('./gitlab.js');
 
@@ -410,10 +410,10 @@ module.exports = {
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.redmine.url);
-    environment.REDMINE_URL           = url.href;                     // redmine.js
+    environment.REDMINE_URL           = util.getHref(url);            // redmine.js
     environment.REDMINE_PROTOCOL      = url.protocol;
     environment.REDMINE_HOST          = url.hostname;
-    environment.REDMINE_PORT          = getPort(url);
+    environment.REDMINE_PORT          = util.getPort(url);
     environment.REDMINE_DB_USER       = options.redmine.dbUser;       // sameersbn/postgresql (redminedb)
     environment.REDMINE_DB_PASS       = options.redmine.dbPassword;   // sameersbn/postgresql (redminedb)
     environment.REDMINE_DB_NAME       = options.redmine.dbName;       // sameersbn/postgresql (redminedb)

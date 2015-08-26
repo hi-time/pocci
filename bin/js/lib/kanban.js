@@ -2,7 +2,7 @@
 'use strict';
 var fs = require('fs');
 var yaml = require('js-yaml');
-var getPort = require('./util.js').getPort;
+var util = require('./util.js');
 var parse = require('url').parse;
 var gitlab = require('./gitlab.js');
 
@@ -40,10 +40,10 @@ module.exports = {
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.kanban.url);
-    environment.KANBAN_URL        = url.href;       // kanban.js
+    environment.KANBAN_URL        = util.getHref(url);  // kanban.js
     environment.KANBAN_PROTOCOL   = url.protocol;
     environment.KANBAN_HOST       = url.hostname;
-    environment.KANBAN_PORT       = getPort(url);
+    environment.KANBAN_PORT       = util.getPort(url);
   },
   edit: function(yamlFile) {
     var yamlText = fs.readFileSync(yamlFile, 'utf8')

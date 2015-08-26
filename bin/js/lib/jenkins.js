@@ -5,7 +5,6 @@ var jenkinsLib = require('jenkins');
 var path = require('path');
 var gitlab = require('./gitlab.js');
 var util = require('./util.js');
-var getPort = require('./util.js').getPort;
 var parse = require('url').parse;
 var version = require('./jenkins-slaves-version.json');
 
@@ -243,10 +242,10 @@ module.exports = {
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.jenkins.url);
-    environment.JENKINS_URL       = url.href;                 // jenkins.js, jenkins-slaves.yml, shell scripts
+    environment.JENKINS_URL       = util.getHref(url);        // jenkins.js, jenkins-slaves.yml, shell scripts
     environment.JENKINS_PROTOCOL  = url.protocol;
     environment.JENKINS_HOST      = url.hostname;
-    environment.JENKINS_PORT      = getPort(url);
+    environment.JENKINS_PORT      = util.getPort(url);
     environment.JENKINS_JNLP_PORT = options.jenkins.jnlpPort; // jenkins-slaves.yml, jenkins.js
   },
   setup: function*(browser, options) {

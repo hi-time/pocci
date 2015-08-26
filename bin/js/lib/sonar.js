@@ -1,5 +1,5 @@
 'use strict';
-var getPort = require('./util.js').getPort;
+var util = require('./util.js');
 var parse = require('url').parse;
 
 module.exports = {
@@ -16,10 +16,10 @@ module.exports = {
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.sonar.url);
-    environment.SONAR_URL             = url.href;                     // example codes
+    environment.SONAR_URL             = util.getHref(url);            // example codes
     environment.SONAR_PROTOCOL        = url.protocol;
     environment.SONAR_HOST            = url.hostname;                 // jenkins-slaves.yml
-    environment.SONAR_PORT            = getPort(url);
+    environment.SONAR_PORT            = util.getPort(url);
     environment.SONAR_SECURITY_REALM  = options.sonar.securityRealm;  // xpfriend/sonarqube
     environment.SONAR_LDAP_REAL_NAME  = options.sonar.ldapRealName;   // xpfriend/sonarqube
     environment.SONAR_DB_USER         = options.sonar.dbUser;         // sameersbn/postgresql (sonarqubedb), jenkins-slaves (example codes)

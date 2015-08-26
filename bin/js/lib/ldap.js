@@ -1,6 +1,6 @@
 'use strict';
 var parse = require('url').parse;
-var getPort = require('./util.js').getPort;
+var util = require('./util.js');
 
 module.exports = {
   addDefaults: function(options) {
@@ -18,10 +18,10 @@ module.exports = {
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.ldap.url);
-    environment.LDAP_URL              = url.href;                   // user.js, jenkins.js
+    environment.LDAP_URL              = util.getHref(url);          // user.js, jenkins.js
     environment.LDAP_PROTOCOL         = url.protocol;
     environment.LDAP_HOST             = url.hostname;               // redmine.js, xpfriend/sonarqube, osixia/phpLDAPadmin (v0.5.1)
-    environment.LDAP_PORT             = getPort(url);
+    environment.LDAP_PORT             = util.getPort(url);
     environment.LDAP_DOMAIN           = options.ldap.domain;        // osixia/openldap
     environment.LDAP_BASE_DN          = options.ldap.baseDn;        // jenkins.js, redmine.js, user.js, xpfriend/sonarqube
     environment.LDAP_BIND_DN          = options.ldap.bindDn;        // jenkins.js, redmine.js, user.js, xpfriend/sonarqube, sameersbn/gitlab

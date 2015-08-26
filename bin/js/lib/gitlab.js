@@ -3,7 +3,7 @@ var fs = require('fs');
 var server = require('co-request');
 var toArray = require('./util.js').toArray;
 var assertStatus = require('./util.js').assertStatus;
-var getPort = require('./util.js').getPort;
+var util = require('./util.js');
 var parse = require('url').parse;
 var adminPassword = process.env.GITLAB_ROOT_PASSWORD;
 
@@ -301,10 +301,10 @@ module.exports = {
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.gitlab.url);
-    environment.GITLAB_URL            = url.href;                                   // gitlab.js, jenkins.js, kanban.js, redmine.js, git.js
+    environment.GITLAB_URL            = util.getHref(url);                          // gitlab.js, jenkins.js, kanban.js, redmine.js, git.js
     environment.GITLAB_PROTOCOL       = url.protocol;
     environment.GITLAB_HOST           = url.hostname;                               // sameersbn/gitlab
-    environment.GITLAB_PORT           = getPort(url);
+    environment.GITLAB_PORT           = util.getPort(url);
     environment.GITLAB_LDAP_ENABLED   = options.gitlab.ldapEnabled;                 // sameersbn/gitlab
     environment.GITLAB_LDAP_METHOD    = options.gitlab.ldapMethod;                  // sameersbn/gitlab
     environment.GITLAB_LDAP_ACTIVE_DIRECTORY = options.gitlab.ldapActiveDirectory;  // sameersbn/gitlab
