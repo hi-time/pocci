@@ -89,4 +89,16 @@ module.exports = {
                   
     assert(false, message);
   },
+  getPort: function(url) {
+    if(url.port) {
+      return url.port;
+    }
+    if(url.protocol === 'ldap:') {
+      return '389';
+    }
+    if(url.protocol === 'https:') {
+      return '443';
+    }
+    return '80';
+  }
 };

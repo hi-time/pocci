@@ -6,6 +6,6 @@ jenkins:
     - ./.env
   dns: 172.17.42.1
   ports:
-    - "50000:50000"
+    - "${JENKINS_JNLP_PORT}:50000"
 
 EOF

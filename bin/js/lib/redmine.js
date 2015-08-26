@@ -5,7 +5,8 @@ var server = require('co-request');
 var assertStatus = require('./util.js').assertStatus;
 var toArray = require('./util.js').toArray;
 var copy = require('./util.js').copy;
-var urlparse = require('url').parse;
+var getPort = require('./util.js').getPort;
+var parse = require('url').parse;
 var gitlab = require('./gitlab.js');
 
 var logout = function*(browser, user) {
@@ -70,7 +71,7 @@ var enableWebService = function*(browser, url) {
   }
 };
 
-var enableLdap = function*(browser, url, ldapUrl) {
+var enableLdap = function*(browser, url) {
   browser.url(url + '/auth_sources/1/edit');
 
   if(!(yield exists(browser, '#auth_source_name'))) {
@@ -80,8 +81,8 @@ var enableLdap = function*(browser, url, ldapUrl) {
   yield browser.yieldable.save('redmine-before-enableLdap');
   browser
     .setValue('#auth_source_name', 'ldap')
-    .setValue('#auth_source_host', ldapUrl.hostname)
-    .setValue('#auth_source_port', ldapUrl.port || '389')
+    .setValue('#auth_source_host', process.env.LDAP_HOST)
+    .setValue('#auth_source_port', process.env.LDAP_PORT)
     .setValue('#auth_source_account', process.env.LDAP_BIND_DN)
     .setValue('#auth_source_account_password', process.env.LDAP_BIND_PASSWORD)
     .setValue('#auth_source_base_dn', process.env.LDAP_BASE_DN)
@@ -398,8 +399,7 @@ var setupGitLabForGroups = function*(browser, url, groups, options) {
 module.exports = {
   addDefaults: function(options) {
     options.redmine             = options.redmine             || {};
-    options.redmine.host        = options.redmine.host        || 'redmine.' + options.pocci.domain;
-    options.redmine.url         = options.redmine.url         || 'http://' + options.redmine.host;
+    options.redmine.url         = options.redmine.url         || 'http://redmine.' + options.pocci.domain;
     options.redmine.dbUser      = options.redmine.dbUser      || 'redmine';
     options.redmine.dbPassword  = options.redmine.dbPassword  || 'password';
     options.redmine.dbName      = options.redmine.dbName      || 'redmine_production';
@@ -409,8 +409,11 @@ module.exports = {
     // options.redmine.lang = options.redmine.lang;
   },
   addEnvironment: function(options, environment) {
-    environment.REDMINE_HOST          = options.redmine.host;
-    environment.REDMINE_URL           = options.redmine.url;          // redmine.js
+    var url = parse(options.redmine.url);
+    environment.REDMINE_URL           = url.href;                     // redmine.js
+    environment.REDMINE_PROTOCOL      = url.protocol;
+    environment.REDMINE_HOST          = url.hostname;
+    environment.REDMINE_PORT          = getPort(url);
     environment.REDMINE_DB_USER       = options.redmine.dbUser;       // sameersbn/postgresql (redminedb)
     environment.REDMINE_DB_PASS       = options.redmine.dbPassword;   // sameersbn/postgresql (redminedb)
     environment.REDMINE_DB_NAME       = options.redmine.dbName;       // sameersbn/postgresql (redminedb)
@@ -426,7 +429,7 @@ module.exports = {
     yield loginByAdmin(browser, url);
     yield loadDefaultConfiguration(browser, url, redmineOptions.lang);
     yield enableWebService(browser, url);
-    yield enableLdap(browser, url, urlparse(process.env.LDAP_URL));
+    yield enableLdap(browser, url);
 
     yield logout(browser, 'admin');
     if(users) {

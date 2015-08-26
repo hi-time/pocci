@@ -20,13 +20,13 @@ gitlab:
     - ./.env
   dns: 172.17.42.1
   environment:
-    - GITLAB_SSH_PORT=10022
+    - GITLAB_SSH_PORT=${GITLAB_SSH_PORT}
     - LDAP_ENABLED=${GITLAB_LDAP_ENABLED}
     - LDAP_UID=${LDAP_ATTR_LOGIN}
     - LDAP_METHOD=${GITLAB_LDAP_METHOD}
     - LDAP_ACTIVE_DIRECTORY=${GITLAB_LDAP_ACTIVE_DIRECTORY}
   ports:
-    - "10022:22"
+    - "${GITLAB_SSH_PORT}:22"
   links:
     - gitlabredis:redisio
     - gitlabdb:postgresql

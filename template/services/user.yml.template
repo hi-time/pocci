@@ -7,7 +7,7 @@ ldap:
   environment:
     - USE_TLS=false
   ports:
-    - "389:389"
+    - "${LDAP_PORT}:389"
 
 user:
   image: osixia/phpldapadmin:${VERSION_PHPLDAPADMIN}

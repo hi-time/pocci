@@ -5,6 +5,8 @@ var jenkinsLib = require('jenkins');
 var path = require('path');
 var gitlab = require('./gitlab.js');
 var util = require('./util.js');
+var getPort = require('./util.js').getPort;
+var parse = require('url').parse;
 var version = require('./jenkins-slaves-version.json');
 
 var registerGitLab = function*(browser, url, job) {
@@ -150,9 +152,10 @@ var enableLdap = function*(browser, url, loginUser) {
       yield browser.yieldable.click('input[type="checkbox"][name="_.useSecurity"]');
     }
 
-      yield browser.yieldable.save('jenkins-doing-enableSecurity-2');
+    browser.setValue('#slaveAgentPortId', process.env.JENKINS_JNLP_PORT);
+    yield browser.yieldable.save('jenkins-doing-enableSecurity-2');
     yield browser.yieldable.click('#radio-block-2');
-      yield browser.yieldable.save('jenkins-doing-enableSecurity-3');
+    yield browser.yieldable.save('jenkins-doing-enableSecurity-3');
     yield browser.yieldable.click('#yui-gen1-button');
 
     var uid = process.env.LDAP_ATTR_LOGIN;
@@ -232,15 +235,19 @@ var configureGitLab = function*(browser, url, gitlabUrl, apiToken) {
 
 module.exports = {
   addDefaults: function(options) {
-    options.jenkins       = options.jenkins       || {};
-    options.jenkins.host  = options.jenkins.host  || 'jenkins.' + options.pocci.domain;
-    options.jenkins.url   = options.jenkins.url   || 'http://' + options.jenkins.host;
+    options.jenkins       = options.jenkins             || {};
+    options.jenkins.url   = options.jenkins.url         || 'http://jenkins.' + options.pocci.domain;
+    options.jenkins.jnlpPort = options.jenkins.jnlpPort || '50000';
     // options.jenkins.nodes = options.jenkins.nodes;
     // options.jenkins.user = options.jenkins.user;
   },
   addEnvironment: function(options, environment) {
-    environment.JENKINS_HOST        = options.jenkins.host;
-    environment.JENKINS_URL         = options.jenkins.url;        // jenkins.js, jenkins-slaves.yml, shell scripts
+    var url = parse(options.jenkins.url);
+    environment.JENKINS_URL       = url.href;                 // jenkins.js, jenkins-slaves.yml, shell scripts
+    environment.JENKINS_PROTOCOL  = url.protocol;
+    environment.JENKINS_HOST      = url.hostname;
+    environment.JENKINS_PORT      = getPort(url);
+    environment.JENKINS_JNLP_PORT = options.jenkins.jnlpPort; // jenkins-slaves.yml, jenkins.js
   },
   setup: function*(browser, options) {
     var url = process.env.JENKINS_URL;

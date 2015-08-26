@@ -2,6 +2,8 @@
 'use strict';
 var fs = require('fs');
 var yaml = require('js-yaml');
+var getPort = require('./util.js').getPort;
+var parse = require('url').parse;
 var gitlab = require('./gitlab.js');
 
 var registerOauth = function*(browser, url, keys) {
@@ -34,12 +36,14 @@ var updateComposeFile = function(keys) {
 module.exports = {
   addDefaults: function(options) {
     options.kanban      = options.kanban       || {};
-    options.kanban.host = options.kanban.host  || 'kanban.' + options.pocci.domain;
-    options.kanban.url  = options.kanban.url   || 'http://' + options.kanban.host;
+    options.kanban.url  = options.kanban.url   || 'http://kanban.' + options.pocci.domain;
   },
   addEnvironment: function(options, environment) {
-    environment.KANBAN_HOST = options.kanban.host;
-    environment.KANBAN_URL  = options.kanban.url;   // kanban.js
+    var url = parse(options.kanban.url);
+    environment.KANBAN_URL        = url.href;       // kanban.js
+    environment.KANBAN_PROTOCOL   = url.protocol;
+    environment.KANBAN_HOST       = url.hostname;
+    environment.KANBAN_PORT       = getPort(url);
   },
   edit: function(yamlFile) {
     var yamlText = fs.readFileSync(yamlFile, 'utf8')

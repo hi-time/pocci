@@ -9,7 +9,7 @@ sonarqubedb:
     - DB_PASS=${SONAR_DB_PASS}
     - DB_NAME=${SONAR_DB_NAME}
   ports:
-    - "5432:5432"
+    - "${SONAR_DB_PORT}:5432"
 
 sonar:
   image: xpfriend/sonarqube:${VERSION_SONARQUBE}
