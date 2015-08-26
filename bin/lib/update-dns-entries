@@ -8,3 +8,12 @@ for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
 done
 
 echo ${PUBLIC_NAMES} >>${CONFIG_DIR}/althosts
+
+
+DEFAULT_IFS="${IFS}"
+IFS=$'|'
+
+for i in ${ALT_HOSTS}; do
+    echo $i  >>${CONFIG_DIR}/althosts
+done
+IFS="${DEFAULT_IFS}"

@@ -18,11 +18,13 @@ module.exports = {
     options.pocci.domain            = options.pocci.domain            || 'pocci.test';
     options.pocci.services          = options.pocci.services          || ['gitlab'];
     options.pocci.externalServices  = options.pocci.externalServices  || [];
+    options.pocci.hosts             = options.pocci.hosts             || [];
   },
   addEnvironment: function(options, environment) {
     environment.POCCI_DOMAIN_NAME = options.pocci.domain;
     environment.INTERNAL_SERVICES = getServices(options.pocci.services);
     environment.EXTERNAL_SERVICES = getServices(options.pocci.externalServices);
     environment.ALL_SERVICES      = [environment.INTERNAL_SERVICES, environment.EXTERNAL_SERVICES].join(' ').trim();
+    environment.ALT_HOSTS         = options.pocci.hosts.join('|');
   }
 };

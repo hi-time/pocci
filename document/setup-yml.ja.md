@@ -82,6 +82,9 @@ pocci:
     - jenkins
     - sonar
     - redmine
+  hosts:
+    - 192.168.0.11 test-01.pocci.example.com it-server
+    - 192.168.0.12 test-02.pocci.example.com uat-server
   environment:
     TZ: Asia/Tokyo
 ```
@@ -97,6 +100,7 @@ pocci:
     *   注意: redmine と kanban は併用できません。
     *   IPアドレスを使って接続する場合（例：`http://192.168.0.2`）、
         ここで先頭に指定したサービスに接続されます。
+*   **hosts:** 各サービスの hosts ファイルに設定するIPアドレスとホスト名のエントリ  
 *   **environment:** サービスコンテナに設定する環境変数
 
 
@@ -129,8 +133,7 @@ pocci内部の組み込みLDAPサーバ（userサービス）以外を利用す�
 
 ```yaml
 ldap:
-  host:           user.pocci.test
-  url:            ldap://user.pocci.test
+  url:            'ldap://user.pocci.test'
   domain:         example.com
   baseDn:         dc=example,dc=com
   bindDn:         cn=admin,dc=example,dc=com
@@ -142,8 +145,6 @@ ldap:
   attrMail:       mail
 ```
 
-*   **host:** LDAP サーバーのホスト名  
-    pocci内部の組み込みLDAPサーバ（userサービス）以外を利用する場合に指定してください。
 *   **url:** LDAP サーバーアクセス時のURL  
     pocci内部の組み込みLDAPサーバ（userサービス）以外を利用する場合に指定してください。
 *   **domain:** LDAPドメイン
@@ -168,11 +169,11 @@ pocci:
     - redmine
 
 ldap:
-  host: ldap.example.com
+  url: 'ldap://ldap.example.com'
 ```
 
 *   `pocci.services` に `user` を追加しない。
-*   `ldap.host` に外部の LDAP サーバアドレスを記述する。
+*   `ldap.url` に外部の LDAP サーバのURLを記述する。
 
 
 gitlab:
@@ -244,7 +245,6 @@ gitlab:
 
     *   `users:` または `user.users:` で定義したユーザーは、
         `groups:` で定義したグループの Owner として設定されます。
-*   **host:** GitLab サーバのホスト名。外部の GitLab サーバを使用する場合に指定する
 *   **url:** GitLab サーバのURL。外部の GitLab サーバを使用する場合に指定する
 *   **adminPassword:** rootユーザーのパスワード。デフォルトは `5iveL!fe`
 *   **dbUser:** GitLab が内部的に使用するデータベース接続時のユーザー名。デフォルトは `gitlab`
@@ -288,7 +288,6 @@ jenkins:
             ...
         ```
 
-*   **host:** Jenkins サーバのホスト名。外部の Jenkins サーバを使用する場合に指定する
 *   **url:** Jenkins サーバのURL。外部の Jenkins サーバを使用する場合に指定する
 
 
@@ -351,7 +350,6 @@ redmine:
     *   `users:` または `user.users:` で定義したユーザーは、
         `projects:` で定義したプロジェクトの管理者および開発者として設定されます。
 *   **lang:** デフォルト設定で利用する言語
-*   **host:** Redmine サーバのホスト名。外部の Redmine サーバを使用する場合に指定する
 *   **url:** Redmine サーバのURL。外部の Redmine サーバを使用する場合に指定する
 *   **dbUser:** Redmine が内部的に使用するデータベース接続時のユーザー名。デフォルトは `redmine`
 *   **dbPassword:** Redmine が内部的に使用するデータベース接続時のパスワード。デフォルトは `password`
@@ -362,7 +360,6 @@ sonar:
 ------
 SonarQube 関連の設定を行います。
 
-*   **host:** SonarQube サーバのホスト名。外部の SonarQube サーバを使用する場合に指定する
 *   **url:** SonarQube サーバのURL。外部の SonarQube サーバを使用する場合に指定する
 *   **dbUser:** SonarQube が内部的に使用するデータベース接続時のユーザー名。デフォルトは `sonarqube`
 *   **dbPassword:** SonarQube が内部的に使用するデータベース接続時のパスワード。デフォルトは `sonarqubepass`
