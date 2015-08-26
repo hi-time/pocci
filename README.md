@@ -28,6 +28,6 @@ Installation
 
     ```bash
     cd bin
-    bash ./build
+    ./build
     ```
 

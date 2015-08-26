@@ -28,7 +28,7 @@ Docker コンテナを使った CIサービス構築の試作。
 
     ```bash
     cd bin
-    bash ./build
+    ./build
     ```
 
 
