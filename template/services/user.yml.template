@@ -1,7 +1,7 @@
 cat << EOF
 # LDAP
 ldap:
-  image: osixia/openldap:${VERSION_OPENLDAP}
+  image: xpfriend/openldap:${VERSION_OPENLDAP}
   env_file:
     - ./.env
   environment:
