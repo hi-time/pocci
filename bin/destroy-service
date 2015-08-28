@@ -18,7 +18,7 @@ case ${yesno} in
     "Y" | "y" )
         echo "";;
     * )
-        exit ;;
+        exit 1;;
 esac
 
 ${BIN_DIR}/stop-service
