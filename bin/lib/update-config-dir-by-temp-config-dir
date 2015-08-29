@@ -8,28 +8,39 @@ fi
 mkdir ${CONFIG_DIR}/nginx
 DEFAULT_SERVICE=""
 for i in ${INTERNAL_SERVICES}; do
-    if [ -z ${DEFAULT_SERVICE} ]; then
-        DEFAULT_SERVICE=$i
+    if [ -f ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ]; then
+        if [ -z "${DEFAULT_SERVICE}" ]; then
+            DEFAULT_SERVICE=$i
+        fi
+        cp ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ${CONFIG_DIR}/nginx
     fi
-    cp ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ${CONFIG_DIR}/nginx
 done
-sed -E 's/listen .+80;/listen 80 default_server;/' -i ${CONFIG_DIR}/nginx/${DEFAULT_SERVICE}.conf
+if [ -n "${DEFAULT_SERVICE}" ]; then
+    sed -E 's/listen .+80;/listen 80 default_server;/' -i ${CONFIG_DIR}/nginx/${DEFAULT_SERVICE}.conf
+fi
 
 POCCI_PUBLIC_CONTAINERS=""
-for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
-    if [ "${POCCI_PUBLIC_CONTAINERS}" != "" ]; then
-        POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS}, "
-    fi
-    PUBLIC_CONTAINER_NAME=`basename ${i%.*}`
-    POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS} ${PUBLIC_CONTAINER_NAME}"
-done
+if [ `ls ${CONFIG_DIR}/nginx/ |wc -l` -gt 0 ]; then
+    for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
+        if [ "${POCCI_PUBLIC_CONTAINERS}" != "" ]; then
+            POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS}, "
+        fi
+        PUBLIC_CONTAINER_NAME=`basename ${i%.*}`
+        POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS} ${PUBLIC_CONTAINER_NAME}"
+    done
+fi
 
-source ${TEMP_CONFIG_DIR}/services/nginx.yml.template >${CONFIG_DIR}/docker-compose.yml
-
+if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
+    rm ${CONFIG_DIR}/docker-compose.yml
+fi
 for i in ${INTERNAL_SERVICES}; do
-    source ${TEMP_CONFIG_DIR}/services/$i.yml.template >>${CONFIG_DIR}/docker-compose.yml
+    if [ -f ${TEMP_CONFIG_DIR}/services/$i.yml.template ]; then
+        source ${TEMP_CONFIG_DIR}/services/$i.yml.template >>${CONFIG_DIR}/docker-compose.yml
+    fi
 done
-
+if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
+    source ${TEMP_CONFIG_DIR}/services/nginx.yml.template >>${CONFIG_DIR}/docker-compose.yml
+fi
 
 if [ -d ${CONFIG_DIR}/volumes ]; then
     rm -fr ${CONFIG_DIR}/volumes

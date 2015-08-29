@@ -124,7 +124,7 @@ pocci:
     *   デフォルトは `pocci.test`
     *   環境変数: `POCCI_DOMAIN_NAME`
 *   **services:** 利用するサービス  
-    gitlab, jenkins, sonar, user, kanban, redmine
+    gitlab, jenkins, sonar, user, kanban, redmine, slave
     の中から利用したいものを選んでください。
     *   組み合わせに関する注意:
         *   redmine と kanban は併用できません。
@@ -260,7 +260,6 @@ gitlab:
     *   **commitMessage:** 初期登録用のソースコードをリポジトリに登録する際のコミットメッセージ
         *   `template/code/グループ名/プロジェクト名` (上の設定例の場合は `template/code/example/example-java`)
             ディレクトリが存在すれば、その中に格納されているファイルがリポジトリへ登録されます。
-        *   Jenkins を利用している場合、上のディレクトリ内に `jenkins-config.xml` が存在すれば、Jenkins へのジョブ登録が行われます。
     *   **issues:** チケット  
         以下のように記述するとタイトルのみが登録されますが、
 
@@ -321,6 +320,8 @@ jenkins:
   user:
     uid:          bouze
     userPassword: password
+  jobs:
+    - example/example-java
   nodes:
     - java
     - nodejs
@@ -328,6 +329,10 @@ jenkins:
 
 *   **nodes:** 作成するJenkinsスレーブノード  
     `java`, `nodejs`, `iojs` が指定できます。
+*   **jobs:** 作成するビルドジョブ
+    *   `GitLabグループ名/GitLabプロジェクト名` の形式で指定してください。
+    *   `template/code/GitLabグループ名/GitLabプロジェクト名` (上の設定例の場合は `template/code/example/example-java`)
+        ディレクトリ内に `jenkins-config.xml` を格納してください。
 *   **user:** Jenkins の設定を行う際に利用するユーザー
     *   ユーザーID (`uid`) およびパスワード (`userPassword`) の指定が必要です。
     *   以下のように `user:` に `users:` が指定されている場合は省略可能です。
@@ -350,6 +355,25 @@ jenkins:
 *   **jnlpPort:** JenkinsスレーブノードがJNLP接続する際のポート番号
     *   デフォルトは `50000`
     *   環境変数: `JENKINS_JNLP_PORT`
+
+
+slave:
+--------
+Jenkins スレーブノード定義。
+
+Jenkins マスターが存在しない (pocci.services に `jenkins` を指定していない) 環境で、
+Jenkins スレーブノードだけを起動したい場合に使用します。
+
+定義例:
+
+```yaml
+slave:
+  nodes:
+    - java
+    - nodejs
+```
+
+定義内容は **jenkins:** と同一です。
 
 
 redmine:

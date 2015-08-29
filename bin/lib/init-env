@@ -18,6 +18,13 @@ if [ -z "${DOCKER_CLIENT_TIMEOUT}" ]; then
     export DOCKER_CLIENT_TIMEOUT=240
 fi
 
+if [ -z "${POCCI_SERVICE_PREFIX}" ]; then
+    export POCCI_SERVICE_PREFIX="poccis"
+fi
+
+export JENKINS_CONTAINER=${POCCI_SERVICE_PREFIX}_jenkins_1
+export DNS_CONTAINER=${POCCI_SERVICE_PREFIX}_dns_1
+
 assert ${BASE_DIR}
 assert ${BIN_DIR}
 assert ${LIB_DIR}

@@ -8,10 +8,11 @@ ${LIB_DIR}/stop-document-server
 
 echo "Start services..."
 source ${LIB_DIR}/force-recreate
-${LIB_DIR}/docker-service up -d ${FORCE_RECREATE}
+${LIB_DIR}/docker-compose dns.yml -p ${POCCI_SERVICE_PREFIX} up -d ${FORCE_RECREATE}
+${LIB_DIR}/docker-compose docker-compose.yml -p ${POCCI_SERVICE_PREFIX} up -d ${FORCE_RECREATE}
 
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
-if [ `docker ps |grep poccis_jenkins_1 |wc -l` -gt 0 ]; then
+if [ `docker ps |grep "${JENKINS_CONTAINER}" |wc -l` -gt 0 ]; then
     ${LIB_DIR}/waitfor ${JENKINS_URL}
 fi
 ${BIN_DIR}/up-jenkins-slave

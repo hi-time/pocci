@@ -5,6 +5,10 @@ BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
 COMPOSE_FILE=$1
+if [ ! -f ${CONFIG_DIR}/${COMPOSE_FILE} ]; then
+    exit
+fi
+
 IMAGES=`docker images |awk '{printf "%s:%s",$1,$2}'`
 for i in $(grep -E ' +image:' ${CONFIG_DIR}/${COMPOSE_FILE} |awk '{print $2}' |sed -e "s/'//g"); do
     if [ `echo ${IMAGES} |grep $i |wc -l` -eq 0 ]; then

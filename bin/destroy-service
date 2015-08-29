@@ -6,7 +6,7 @@ source ${BASE_DIR}/bin/lib/init-env
 
 ${LIB_DIR}/stop-document-server
 
-if [ `docker ps -a |grep "pocci[s|n|r]_" |wc -l` -eq 0 ]; then
+if [ `docker ps -a |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -eq 0 ]; then
     exit
 fi
 
@@ -24,10 +24,11 @@ esac
 ${BIN_DIR}/stop-service
 
 set +e
-${LIB_DIR}/docker-service rm -v --force
-${LIB_DIR}/jenkins-slave rm -v --force
+${LIB_DIR}/docker-compose jenkins-slaves.yml -p poccin rm -v --force
+${LIB_DIR}/docker-compose docker-compose.yml -p ${POCCI_SERVICE_PREFIX} rm -v --force
+${LIB_DIR}/docker-compose dns.yml -p ${POCCI_SERVICE_PREFIX} rm -v --force
 
 set -e
-if [ `docker ps -a |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then
-    `docker ps -a |grep "pocci[s|n|r]_" |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
+if [ `docker ps -a |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -gt 0 ]; then
+    `docker ps -a |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
 fi

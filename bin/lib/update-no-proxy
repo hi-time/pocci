@@ -19,14 +19,19 @@ fi
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
 default_no_proxy="pocci,127.0.0.1,localhost"
-for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' ${CONFIG_DIR}/docker-compose.yml | sed -e 's/://'); do
-    default_no_proxy="${default_no_proxy},$i"
-done
 
-for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
-    CONTAINER_NAME=`basename ${i%.conf}`
-    default_no_proxy="${default_no_proxy},${CONTAINER_NAME}.${POCCI_DOMAIN_NAME}"
-done
+if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
+    for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' ${CONFIG_DIR}/docker-compose.yml | sed -e 's/://'); do
+        default_no_proxy="${default_no_proxy},$i"
+    done
+fi
+
+if [ `ls ${CONFIG_DIR}/nginx/ |wc -l` -gt 0 ]; then
+    for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
+        CONTAINER_NAME=`basename ${i%.conf}`
+        default_no_proxy="${default_no_proxy},${CONTAINER_NAME}.${POCCI_DOMAIN_NAME}"
+    done
+fi
 
 if [ -n "${no_proxy_env}" ]; then
     updated_no_proxy="${default_no_proxy},${no_proxy_env}"

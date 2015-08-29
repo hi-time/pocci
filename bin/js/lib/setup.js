@@ -2,6 +2,7 @@
 var git = require('./git.js');
 var gitlab = require('./gitlab.js');
 var jenkins = require('./jenkins.js');
+var slave = require('./slave.js');
 var user = require('./user.js');
 var redmine = require('./redmine.js');
 var yaml = require('./yaml.js');
@@ -42,7 +43,7 @@ var setup = function*(yamlFile, keepOpenBrowser) {
     yield redmine.setup(browser, options);
   }
 
-  if(options.repositories.length > 0) {
+  if(options.repositories && options.repositories.length > 0) {
     console.log('*** Import codes to Git repository...');
     yield git.setup(browser, options);
   }
@@ -50,6 +51,11 @@ var setup = function*(yamlFile, keepOpenBrowser) {
   if(services.indexOf('jenkins') > -1) {
     console.log('*** Setup Jenkins...');
     yield jenkins.setup(browser, options);
+  }
+
+  if(services.indexOf('slave') > -1) {
+    console.log('*** Setup Jenkins slave...');
+    yield slave.setup(browser, options);
   }
 
   if(services.indexOf('kanban') > -1) {

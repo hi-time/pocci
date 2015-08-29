@@ -23,6 +23,9 @@ user:
       userPassword: password
 
 jenkins:
+  jobs:
+    - example/example-java
+    - example/example-nodejs
   nodes:
     - java
     - nodejs

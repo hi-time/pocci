@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ `docker ps |grep "pocci[s|n|r]_" |wc -l` -eq 0 ]; then
+if [ `docker ps |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -eq 0 ]; then
     exit
 fi
 
@@ -9,10 +9,11 @@ BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
 set +e
-${LIB_DIR}/docker-service stop
 ${BIN_DIR}/stop-jenkins-slave
+${LIB_DIR}/docker-compose docker-compose.yml -p ${POCCI_SERVICE_PREFIX} stop
+${LIB_DIR}/docker-compose dns.yml -p ${POCCI_SERVICE_PREFIX} stop
 
 set -e
-if [ `docker ps |grep "pocci[s|n|r]_" |wc -l` -gt 0 ]; then
-    `docker ps |grep "pocci[s|n|r]_" |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
+if [ `docker ps |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -gt 0 ]; then
+    `docker ps |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
 fi
