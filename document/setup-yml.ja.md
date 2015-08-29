@@ -1,7 +1,7 @@
 セットアップファイル リファレンス
 =================================
-セットアップファイル (`setup.*.yml`) を記述することで、
-各サービスに対してさまざまな情報を登録することができます。
+セットアップファイル (`setup.*.yml`) は、`bin/create-config`
+コマンドが各サービスの初期設定を行う際に利用する定義ファイルです。
 
 
 セットアップファイルの例:
@@ -54,22 +54,50 @@ redmine:
 ```
 
 
+セットアップファイルの役割
+--------------------------
+`bin/create-config` コマンドは以下の処理を行います。
 
-セットアップファイルでは、以下のような情報の設定が行えます。
+*   config ディレクトリ内の設定ファイルを作成する
+*   サービスインスタンスを操作して初期設定を行う
 
-セクション  | 役割                          | 設定(登録)できるもの
------------ | ----------------------------- | ----------- 
-pocci       | サービス構成全般に関する設定  | サービスのドメイン名、利用するサービス
-user        | ユーザー登録                  | サービス利用者のアカウント
-gitlab      | GitLab 関連登録               | グループ、プロジェクト (リポジトリ)、チケット (Issue)
-jenkins     | Jenkins 関連登録              | ビルドジョブ、スレーブノード
-redmine     | Redmine 関連登録              | プロジェクト、チケット
+これらの処理をどのように行うかを記述したものがセットアップファイルになります。
+
+### config ディレクトリ内の設定ファイル作成
+config ディレクトリの各ファイルは
+`template/services` ディレクトリにある雛形ファイルに対して、
+セットアップファイルに記述された設定内容を反映することにより作成されます。
+
+config ディレクトリの内容:
+```
+pocci/
+  - config/
+    - nginx/                ... Nginx 設定
+    - .env                  ... 環境変数定義
+    - althosts              ... ホスト名 (IPアドレス) 定義 (hostsファイル形式)
+    - dns.yml               ... DNSコンテナの定義 (Docker Compose形式)
+    - docker-compose.yml    ... 各種サービス用コンテナ定義 (Docker Compose形式)
+    - jenkins-slaves.yml    ... Jenkins スレーブノード用コンテナ定義 (Docker Compose形式)
+```
+
+config ディレクトリ内のファイルの中で中心的な役割を担うのが `.env` (環境変数定義) です。
+各サービス（コンテナ）は `.env` に記述された環境変数に従って動作を行います。
+`.env` はセットアップファイルの内容をもとにして作成されます。
+
+### サービスインスタンスの初期設定
+セットアップファイルに記述された情報をもとにして、
+サービスインスタンスの初期設定が行われます。
+
+サービスインスタンスの設定例:
+*   **user:** サービス利用者のアカウント登録
+*   **gitlab:** グループ、プロジェクト (リポジトリ)、チケット (Issue)
+*   **jenkins:** ビルドジョブ、スレーブノード
 
 
 
 pocci:
 ------
-サービス構成全般に関する情報の登録を行います。
+サービス構成全般に関する情報定義。
 
 定義例:
 
@@ -93,20 +121,28 @@ pocci:
     例えば、`domain : pocci.example.com` とすれば、
     `http://gitlab.pocci.example.com` や `http://jenkins.pocci.example.com`
     というURLでサービスが利用できます。  
-    デフォルトは `pocci.test`。
+    *   デフォルトは `pocci.test`
+    *   環境変数: `POCCI_DOMAIN_NAME`
 *   **services:** 利用するサービス  
     gitlab, jenkins, sonar, user, kanban, redmine
     の中から利用したいものを選んでください。
-    *   注意: redmine と kanban は併用できません。
+    *   組み合わせに関する注意:
+        *   redmine と kanban は併用できません。
+        *   redmine を指定する場合は必ず gitlab の指定が必要です。
+        *   外部の LDAP サーバを利用する場合は user の指定はできません。
     *   IPアドレスを使って接続する場合（例：`http://192.168.0.2`）、
         ここで先頭に指定したサービスに接続されます。
-*   **hosts:** 各サービスの hosts ファイルに設定するIPアドレスとホスト名のエントリ  
-*   **environment:** サービスコンテナに設定する環境変数
+    *   環境変数: `INTERNAL_SERVICES`
+*   **hosts:** 各サービスが参照するサーバの名前  
+    *   `IPアドレス サーバ名 別名1 別名2 ...`  の形式でIPアドレス毎に記述する
+    *   ここで記述した内容は `config/althosts` に反映される
+*   **environment:** サービスコンテナに設定する環境変数  
+    任意の値を定義可能です。
 
 
 user:
 -----
-サービス運用開始に最低限必要なユーザーの登録を行います。
+サービス運用開始に最低限必要なユーザー (管理者) の定義を行います。
 
 定義例:
 
@@ -120,14 +156,22 @@ user:
       userPassword: password
 ```
 
-
+*   **users:** 初期登録ユーザー
+    *   pocci に組み込まれているユーザー管理機能 (Open LDAP + phpLDAPadmin) を使用する場合、
+        上記定義例のように `uid` (ユーザーID), `userPassword` (パスワード), 
+        `givenName` (名), `sn` (姓), `mail` (メールアドレス) を指定してください。
+        これらの値を利用してユーザー登録が行われます。
+*   **url:** ユーザー管理画面アクセス時のURL
+    *   デフォルトは `http://user.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `USER_URL`, `USER_PROTOCOL`, `USER_HOST`, `USER_PORT`
 
 
 ldap:
 -----
-LDAPサーバ関連設定を行います。
+LDAPサーバ関連定義。
 
-pocci内部の組み込みLDAPサーバ（userサービス）以外を利用する場合には指定が必要になります。
+pocci内部の組み込みLDAPサーバ（userサービス）を利用せずに、
+外部の LDAP サーバを利用する場合は記述する必要があります。
 
 定義例:
 
@@ -145,17 +189,27 @@ ldap:
   attrMail:       mail
 ```
 
-*   **url:** LDAP サーバーアクセス時のURL  
-    pocci内部の組み込みLDAPサーバ（userサービス）以外を利用する場合に指定してください。
+*   **url:** LDAP サーバーアクセス時のURL
+    *   デフォルトは `ldap://user.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `LDAP_URL`, `LDAP_PROTOCOL`, `LDAP_HOST`, `LDAP_PORT`
 *   **domain:** LDAPドメイン
+    *   環境変数: `LDAP_DOMAIN`
 *   **baseDn:** ベースDN
+    *   環境変数: `LDAP_BASE_DN`
 *   **bindDn:** バインドDN
+    *   環境変数: `LDAP_BIND_DN`
 *   **bindPassword:** バインド時のパスワード
+    *   環境変数: `LDAP_BIND_PASSWORD`
 *   **organisation:** 組織
+    *   環境変数: `LDAP_ORGANISATION`
 *   **attrLogin:** 各種サービスへのログインアカウントとして使用する利用者属性
+    *   環境変数: `LDAP_ATTR_LOGIN`
 *   **attrFirstName:** 利用者の名を表す属性
+    *   環境変数: `LDAP_ATTR_FIRST_NAME`
 *   **attrLastName:** 利用者の姓を表す属性
+    *   環境変数: `LDAP_ATTR_LAST_NAME`
 *   **attrMail:** 利用者のメールアドレスを表す属性
+    *   環境変数: `LDAP_ATTR_MAIL`
 
 
 外部のLDAPサーバを利用する場合は以下のように記述します。
@@ -178,7 +232,7 @@ ldap:
 
 gitlab:
 -------
-GitLab 関連情報の登録を行います。
+GitLab 関連定義。
 
 定義例:
 
@@ -245,18 +299,20 @@ gitlab:
 
     *   `users:` または `user.users:` で定義したユーザーは、
         `groups:` で定義したグループの Owner として設定されます。
-*   **url:** GitLab サーバのURL。外部の GitLab サーバを使用する場合に指定する
-*   **adminPassword:** rootユーザーのパスワード。デフォルトは `5iveL!fe`
-*   **dbUser:** GitLab が内部的に使用するデータベース接続時のユーザー名。デフォルトは `gitlab`
-*   **dbPassword:** GitLab が内部的に使用するデータベース接続時のパスワード。デフォルトは `secretpassword`
-*   **dbName:** GitLab が内部的に使用するデータベースの名前。デフォルトは `gitlabhq_production`
-
-
+*   **url:** GitLab サーバのURL
+    *   デフォルトは `http://gitlab.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `GITLAB_URL`, `GITLAB_PROTOCOL`, `GITLAB_HOST`, `GITLAB_PORT`
+*   **adminPassword:** rootユーザーのパスワード
+    *   デフォルトは `5iveL!fe`
+    *   環境変数: `GITLAB_ROOT_PASSWORD`
+*   **sshPort:** GitリポジトリにSSH接続する際のポート番号
+    *   デフォルトは `10022`
+    *   環境変数: `GITLAB_SSH_PORT`
 
 
 jenkins:
 --------
-Jenkins 関連の情報登録を行います。
+Jenkins 関連定義。
 
 定義例:
 
@@ -270,7 +326,7 @@ jenkins:
     - nodejs
 ```
 
-*   **nodes:** ビルド実行時に利用できるJenkinsスレーブノードの種類  
+*   **nodes:** 作成するJenkinsスレーブノード  
     `java`, `nodejs`, `iojs` が指定できます。
 *   **user:** Jenkins の設定を行う際に利用するユーザー
     *   ユーザーID (`uid`) およびパスワード (`userPassword`) の指定が必要です。
@@ -288,12 +344,17 @@ jenkins:
             ...
         ```
 
-*   **url:** Jenkins サーバのURL。外部の Jenkins サーバを使用する場合に指定する
+*   **url:** Jenkins サーバのURL
+    *   デフォルトは `http://jenkins.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `JENKINS_URL`, `JENKINS_PROTOCOL`, `JENKINS_HOST`, `JENKINS_PORT`
+*   **jnlpPort:** JenkinsスレーブノードがJNLP接続する際のポート番号
+    *   デフォルトは `50000`
+    *   環境変数: `JENKINS_JNLP_PORT`
 
 
 redmine:
 --------
-Redmine 関連の情報登録を行います。
+Redmine 関連定義。
 
 定義例:
 
@@ -350,17 +411,39 @@ redmine:
     *   `users:` または `user.users:` で定義したユーザーは、
         `projects:` で定義したプロジェクトの管理者および開発者として設定されます。
 *   **lang:** デフォルト設定で利用する言語
-*   **url:** Redmine サーバのURL。外部の Redmine サーバを使用する場合に指定する
-*   **dbUser:** Redmine が内部的に使用するデータベース接続時のユーザー名。デフォルトは `redmine`
-*   **dbPassword:** Redmine が内部的に使用するデータベース接続時のパスワード。デフォルトは `password`
-*   **dbName:** Redmine が内部的に使用するデータベースの名前。デフォルトは `redmine_production`
+*   **url:** Redmine サーバのURL
+    *   デフォルトは `http://redmine.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `REDMINE_URL`, `REDMINE_PROTOCOL`, `REDMINE_HOST`, `REDMINE_PORT`
 
 
 sonar:
 ------
-SonarQube 関連の設定を行います。
+SonarQube 関連定義。
 
-*   **url:** SonarQube サーバのURL。外部の SonarQube サーバを使用する場合に指定する
-*   **dbUser:** SonarQube が内部的に使用するデータベース接続時のユーザー名。デフォルトは `sonarqube`
-*   **dbPassword:** SonarQube が内部的に使用するデータベース接続時のパスワード。デフォルトは `sonarqubepass`
-*   **dbName:** SonarQube が内部的に使用するデータベースの名前。デフォルトは `sonarqubedb`
+*   **url:** SonarQube サーバのURL
+    *   デフォルトは `http://sonar.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `SONAR_URL`, `SONAR_PROTOCOL`, `SONAR_HOST`, `SONAR_PORT`
+*   **dbHost:** SonarQube が内部的に使用するデータベースのホスト名
+    *   デフォルトは `sonar.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `SONAR_DB_HOST`
+*   **dbHost:** SonarQube が内部的に使用するデータベースのポート番号
+    *   デフォルトは `5432`
+    *   環境変数: `SONAR_PORT`
+*   **dbName:** SonarQube が内部的に使用するデータベースの名前
+    *   デフォルトは `sonarqubedb`
+    *   環境変数: `SONAR_DB_NAME`
+*   **dbUser:** SonarQube が内部的に使用するデータベース接続時のユーザー名
+    *   デフォルトは `sonarqube`
+    *   環境変数: `SONAR_DB_USER`
+*   **dbPassword:** SonarQube が内部的に使用するデータベース接続時のパスワード
+    *   デフォルトは `sonarqubepass`
+    *   環境変数: `SONAR_DB_PASS`
+
+kanban:
+------
+かんばんボード関連定義。
+
+*   **url:** かんばんボードサーバのURL
+    *   デフォルトは `http://kanban.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `KANBAN_URL`, `KANBAN_PROTOCOL`, `KANBAN_HOST`, `KANBAN_PORT`
+
