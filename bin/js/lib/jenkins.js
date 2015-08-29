@@ -239,21 +239,36 @@ var configureGitLab = function*(browser, url, gitlabUrl) {
   yield browser.yieldable.save('jenkins-after-configureGitLab');
 };
 
+var configureMail = function*(browser, url) {
+  browser.url(url + '/configure');
+  yield browser.yieldable.save('jenkins-before-configureMail');
+  browser
+    .setValue('input[type="text"][name="_.smtpServer"]', process.env.JENKINS_SMTP_HOST)
+    .setValue('input[type="text"][name="_.adminAddress"]', process.env.JENKINS_MAIL_ADDRESS);
+  yield browser.yieldable.save('jenkins-doing-configureMail');
+  yield browser.yieldable.click('#yui-gen17-button');
+  yield browser.yieldable.save('jenkins-after-configureMail');
+};
+
 module.exports = {
   addDefaults: function(options) {
-    options.jenkins       = options.jenkins             || {};
-    options.jenkins.url   = options.jenkins.url         || 'http://jenkins.' + options.pocci.domain;
-    options.jenkins.jnlpPort = options.jenkins.jnlpPort || '50000';
+    options.jenkins             = options.jenkins             || {};
+    options.jenkins.url         = options.jenkins.url         || 'http://jenkins.' + options.pocci.domain;
+    options.jenkins.jnlpPort    = options.jenkins.jnlpPort    || '50000';
+    options.jenkins.smtpHost    = options.jenkins.smtpHost    || '172.17.42.1';
+    options.jenkins.mailAddress = options.jenkins.mailAddress || 'jenkins@'  + options.pocci.domain;
     // options.jenkins.nodes = options.jenkins.nodes;
     // options.jenkins.user = options.jenkins.user;
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.jenkins.url);
-    environment.JENKINS_URL       = util.getHref(url);        // jenkins.js, jenkins-slaves.yml, shell scripts
-    environment.JENKINS_PROTOCOL  = url.protocol;
-    environment.JENKINS_HOST      = url.hostname;
-    environment.JENKINS_PORT      = util.getPort(url);
-    environment.JENKINS_JNLP_PORT = options.jenkins.jnlpPort; // jenkins-slaves.yml, jenkins.js
+    environment.JENKINS_URL           = util.getHref(url);            // jenkins.js, jenkins-slaves.yml, shell scripts
+    environment.JENKINS_PROTOCOL      = url.protocol;
+    environment.JENKINS_HOST          = url.hostname;
+    environment.JENKINS_PORT          = util.getPort(url);
+    environment.JENKINS_JNLP_PORT     = options.jenkins.jnlpPort;     // jenkins-slaves.yml, jenkins.js
+    environment.JENKINS_SMTP_HOST     = options.jenkins.smtpHost;     // jenkins.js
+    environment.JENKINS_MAIL_ADDRESS  = options.jenkins.mailAddress;  // jenkins.js
   },
   setup: function*(browser, options) {
     yield this.handleSetup(browser, options, 'jenkins');
@@ -266,6 +281,7 @@ module.exports = {
     var loginUser = util.getUser(jenkinsOptions.user, userOptions.users);
 
     var isDisabledSecurity = yield enableLdap(browser, url, loginUser);
+    yield configureMail(browser, url);
 
     var getJenkins = function() {
       return jenkinsLib(util.getURL(url, loginUser));

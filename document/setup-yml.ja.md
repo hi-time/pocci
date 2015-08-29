@@ -307,6 +307,18 @@ gitlab:
 *   **sshPort:** GitリポジトリにSSH接続する際のポート番号
     *   デフォルトは `10022`
     *   環境変数: `GITLAB_SSH_PORT`
+*   **smtpEnabled:** SMTPサーバへのメール送信を有効にするかどうか
+    *   デフォルトは `false`
+    *   環境変数: `GITLAB_SMTP_ENABLED`
+*   **smtpDomain:** SMTPドメイン
+    *   デフォルトは pocci.domain で指定したドメイン名
+    *   環境変数: `GITLAB_SMTP_DOMAIN`
+*   **smtpHost:** SMTPサーバホスト名
+    *   デフォルトは `172.17.42.1`
+    *   環境変数: `GITLAB_SMTP_HOST`
+*   **mailAddress:** このサーバのメールアドレス
+    *   デフォルトは `gitlab@[pocci.domainで指定したドメイン名]`
+    *   環境変数: `GITLAB_MAIL_ADDRESS`
 
 
 jenkins:
@@ -355,6 +367,12 @@ jenkins:
 *   **jnlpPort:** JenkinsスレーブノードがJNLP接続する際のポート番号
     *   デフォルトは `50000`
     *   環境変数: `JENKINS_JNLP_PORT`
+*   **smtpHost:** SMTPサーバホスト名
+    *   デフォルトは `172.17.42.1`
+    *   環境変数: `JENKINS_SMTP_HOST`
+*   **mailAddress:** このサーバのメールアドレス
+    *   デフォルトは `jenkins@[pocci.domainで指定したドメイン名]`
+    *   環境変数: `JENKINS_MAIL_ADDRESS`
 
 
 slave:

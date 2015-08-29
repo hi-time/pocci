@@ -295,7 +295,10 @@ module.exports = {
     options.gitlab.dbPassword           = options.gitlab.dbPassword           || 'secretpassword';
     options.gitlab.dbName               = options.gitlab.dbName               || 'gitlabhq_production';
     options.gitlab.sshPort              = options.gitlab.sshPort              || '10022';
-
+    options.gitlab.smtpEnabled          = options.gitlab.smtpEnabled          || 'false';
+    options.gitlab.smtpDomain           = options.gitlab.smtpDomain           || options.pocci.domain;
+    options.gitlab.smtpHost             = options.gitlab.smtpHost             || '172.17.42.1';
+    options.gitlab.mailAddress          = options.gitlab.mailAddress          || 'gitlab@' + options.pocci.domain;
     // options.gitlab.topPage = options.gitlab.topPage;
     // options.gitlab.users = options.gitlab.users;
     // options.gitlab.groups = options.gitlab.groups;
@@ -316,6 +319,10 @@ module.exports = {
     environment.GITLAB_DB_NAME        = options.gitlab.dbName;                      // sameersbn/postgresql (gitlabdb)
     environment.LDAP_PASS             = options.ldap.bindPassword;                  // sameersbn/gitlab
     environment.LDAP_BASE             = options.ldap.baseDn;                        // sameersbn/gitlab
+    environment.GITLAB_SMTP_ENABLED   = options.gitlab.smtpEnabled;                 // sameersbn/gitlab
+    environment.GITLAB_SMTP_DOMAIN    = options.gitlab.smtpDomain;                  // sameersbn/gitlab
+    environment.GITLAB_SMTP_HOST      = options.gitlab.smtpHost;                    // sameersbn/gitlab
+    environment.GITLAB_MAIL_ADDRESS   = options.gitlab.mailAddress;                 // sameersbn/gitlab
   },
   setup: function*(browser, options) {
     var url = process.env.GITLAB_URL;
