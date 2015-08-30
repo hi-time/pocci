@@ -26,14 +26,30 @@ for i in ${CONTAINERS}; do
         fi
     fi
 
-    VOLUMES=`docker inspect --format="${FORMAT}" $i |grep -E '/_data$' |sed -e 's/:.*$//' |tr '\n' ' '`
+    VOLUMES=`docker inspect --format="${FORMAT}" $i |grep -E '/_data$' |tr '\n' ' '`
     if [ -z "${VOLUMES}" ]; then
         echo "skip backup : $i"
     else
-        echo "backup : $i:${VOLUMES}"
-        docker run --name poccir_backup --volumes-from $i -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base:${VERSION_JENKINS_SLAVE_BASE} sudo tar cfz /backup/$i.tar.gz ${VOLUMES}
+        if [ -d /tmp/$i ]; then
+            sudo rm -fr /tmp/$i
+        fi
+        TARGET_DIRS=""
+        for j in ${VOLUMES}; do
+            SOURCE_DIR=`echo "$j" |cut -f2 -d :`
+            TARGET_DIR=`echo "$j" |cut -f1 -d :`
+            TARGET_DIRS="${TARGET_DIRS} ${TARGET_DIR}"
+            echo "backup : $i:${TARGET_DIR}"
+            if [ -f ${BACKUP_DIR}/$i.tar ]; then
+                sudo sh -c "cd ${SOURCE_DIR};tar rf ${BACKUP_DIR}/$i.tar --transform='s,^\./,${TARGET_DIR}/,g' ."
+            else
+                sudo sh -c "cd ${SOURCE_DIR};tar cf ${BACKUP_DIR}/$i.tar --transform='s,^\./,${TARGET_DIR}/,g' ."
+            fi
+        done
+        sudo rm -fr /tmp/$i
+        sudo chown `whoami`:`groups` ${BACKUP_DIR}/$i.tar
+
         RESTORE_SCRIPT=${BACKUP_DIR}/restore-$i.sh
-        RESTORE_COMMAND='docker run --name poccir_restore --volumes-from '$i' -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base:'${VERSION_JENKINS_SLAVE_BASE}' sudo bash -c "cd /;find '${VOLUMES}' -mindepth 1 -delete;tar xfz /backup/'$i'.tar.gz"'
+        RESTORE_COMMAND='docker run --name poccir_restore --volumes-from '$i' -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base:'${VERSION_JENKINS_SLAVE_BASE}' sudo bash -c "cd /;find '${TARGET_DIRS}' -mindepth 1 -delete;tar xf /backup/'$i'.tar"'
         echo '#!/bin/bash' >${RESTORE_SCRIPT}
         echo 'set -ex' >>${RESTORE_SCRIPT}
         echo 'BACKUP_DIR=$(cd $(dirname $0); pwd)' >>${RESTORE_SCRIPT}
