@@ -1,57 +1,50 @@
 
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
-if [ -d ${CONFIG_DIR}/nginx ]; then
-    rm -fr ${CONFIG_DIR}/nginx
-fi
-
-mkdir ${CONFIG_DIR}/nginx
-DEFAULT_SERVICE=""
-for i in ${INTERNAL_SERVICES}; do
-    if [ -f ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ]; then
-        if [ -z "${DEFAULT_SERVICE}" ]; then
-            DEFAULT_SERVICE=$i
-        fi
-        cp ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ${CONFIG_DIR}/nginx
-    fi
-done
-if [ -n "${DEFAULT_SERVICE}" ]; then
-    sed -E 's/listen .+80;/listen 80 default_server;/' -i ${CONFIG_DIR}/nginx/${DEFAULT_SERVICE}.conf
-fi
-
-POCCI_PUBLIC_CONTAINERS=""
-if [ `ls ${CONFIG_DIR}/nginx/ |wc -l` -gt 0 ]; then
-    for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
-        if [ "${POCCI_PUBLIC_CONTAINERS}" != "" ]; then
-            POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS}, "
-        fi
-        PUBLIC_CONTAINER_NAME=`basename ${i%.*}`
-        POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS} ${PUBLIC_CONTAINER_NAME}"
-    done
-fi
-
-if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
-    rm ${CONFIG_DIR}/docker-compose.yml
-fi
-for i in ${INTERNAL_SERVICES}; do
-    if [ -f ${TEMP_CONFIG_DIR}/services/$i.yml.template ]; then
-        source ${TEMP_CONFIG_DIR}/services/$i.yml.template >>${CONFIG_DIR}/docker-compose.yml
-    fi
-done
-if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
-    source ${TEMP_CONFIG_DIR}/services/nginx.yml.template >>${CONFIG_DIR}/docker-compose.yml
-fi
-
 if [ -d ${CONFIG_DIR}/volumes ]; then
     rm -fr ${CONFIG_DIR}/volumes
 fi
 mkdir ${CONFIG_DIR}/volumes
 
+if [ -d ${CONFIG_DIR}/nginx ]; then
+    rm -fr ${CONFIG_DIR}/nginx
+fi
+mkdir ${CONFIG_DIR}/nginx
+
+if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
+    rm ${CONFIG_DIR}/docker-compose.yml
+fi
+
+DEFAULT_SERVICE=""
+POCCI_PUBLIC_CONTAINERS=""
 for i in ${INTERNAL_SERVICES}; do
+    if [ -f ${TEMP_CONFIG_DIR}/services/scripts/$i ]; then
+        source ${TEMP_CONFIG_DIR}/services/scripts/$i
+    fi
+    if [ -f ${TEMP_CONFIG_DIR}/services/$i.yml.template ]; then
+        source ${TEMP_CONFIG_DIR}/services/$i.yml.template >>${CONFIG_DIR}/docker-compose.yml
+    fi
     if [ -d ${TEMP_CONFIG_DIR}/services/volumes/$i ]; then
-        cp -r ${TEMP_CONFIG_DIR}/services/volumes/$i  ${CONFIG_DIR}/volumes
+        cp -r ${TEMP_CONFIG_DIR}/services/volumes/$i ${CONFIG_DIR}/volumes
+    fi
+    if [ -f ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ]; then
+        if [ -z "${DEFAULT_SERVICE}" ]; then
+            DEFAULT_SERVICE=$i
+        fi
+        cp ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ${CONFIG_DIR}/nginx
+        if [ "${POCCI_PUBLIC_CONTAINERS}" != "" ]; then
+            POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS}, "
+        fi
+        POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS} $i"
     fi
 done
+
+if [ -n "${DEFAULT_SERVICE}" ]; then
+    sed -E 's/listen .+80;/listen 80 default_server;/' -i ${CONFIG_DIR}/nginx/${DEFAULT_SERVICE}.conf
+fi
+if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
+    source ${TEMP_CONFIG_DIR}/services/nginx.yml.template >>${CONFIG_DIR}/docker-compose.yml
+fi
 
 source ${LIB_DIR}/update-no-proxy
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
@@ -62,4 +55,3 @@ if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then
     source ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template >${CONFIG_DIR}/jenkins-slaves.yml
     ${LIB_DIR}/pull-images jenkins-slaves.yml
 fi
-

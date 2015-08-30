@@ -5,7 +5,7 @@ KANBAN_DIR=${SERVICES_DIR}/volumes/kanban
 KANBAN_COMPOSE_FILE=${SERVICES_DIR}/kanban.yml.template
 
 if [ -d ${KANBAN_DIR} ]; then
-    rm -fr ${KANBAN_DIR}
+    return
 fi
 
 mkdir ${KANBAN_DIR}

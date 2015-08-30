@@ -3,14 +3,7 @@ if [ -d ${TEMP_CONFIG_DIR} ]; then
     rm -fr ${TEMP_CONFIG_DIR}
 fi
 mkdir ${TEMP_CONFIG_DIR}
+cp -r ${TEMPLATE_DIR}/* ${TEMP_CONFIG_DIR}
+mkdir ${TEMP_CONFIG_DIR}/services/volumes
 
 cp ${CONFIG_DIR}/setup.yml ${TEMP_CONFIG_DIR}
-cp -r ${TEMPLATE_DIR}/* ${TEMP_CONFIG_DIR}
-
-if [ ! -d ${TEMP_CONFIG_DIR}/services/volumes ]; then
-    mkdir ${TEMP_CONFIG_DIR}/services/volumes
-fi
-
-for i in $(ls ${TEMP_CONFIG_DIR}/services/scripts/*); do
-    source $i
-done
