@@ -22,6 +22,5 @@ sonar:
     - LDAP_MAIL=${LDAP_ATTR_MAIL}
   links:
     - sonarqubedb:db
-    - ldap:${LDAP_HOST}
 
 EOF
