@@ -298,6 +298,7 @@ module.exports = {
     options.gitlab.smtpEnabled          = options.gitlab.smtpEnabled          || 'false';
     options.gitlab.smtpDomain           = options.gitlab.smtpDomain           || options.pocci.domain;
     options.gitlab.smtpHost             = options.gitlab.smtpHost             || '172.17.42.1';
+    options.gitlab.smtpPort             = options.gitlab.smtpPort             || '25';
     options.gitlab.mailAddress          = options.gitlab.mailAddress          || 'gitlab@' + options.pocci.domain;
     // options.gitlab.topPage = options.gitlab.topPage;
     // options.gitlab.users = options.gitlab.users;
@@ -322,6 +323,7 @@ module.exports = {
     environment.GITLAB_SMTP_ENABLED   = options.gitlab.smtpEnabled;                 // sameersbn/gitlab
     environment.GITLAB_SMTP_DOMAIN    = options.gitlab.smtpDomain;                  // sameersbn/gitlab
     environment.GITLAB_SMTP_HOST      = options.gitlab.smtpHost;                    // sameersbn/gitlab
+    environment.GITLAB_SMTP_PORT      = options.gitlab.smtpPort;                    // sameersbn/gitlab
     environment.GITLAB_MAIL_ADDRESS   = options.gitlab.mailAddress;                 // sameersbn/gitlab
   },
   setup: function*(browser, options) {
