@@ -46,7 +46,7 @@ for i in ${CONTAINERS}; do
             fi
         done
         sudo rm -fr /tmp/$i
-        sudo chown `whoami`:`groups` ${BACKUP_DIR}/$i.tar
+        sudo chown `id -un`:`id -gn` ${BACKUP_DIR}/$i.tar
 
         RESTORE_SCRIPT=${BACKUP_DIR}/restore-$i.sh
         RESTORE_COMMAND='docker run --name poccir_restore --volumes-from '$i' -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base:'${VERSION_JENKINS_SLAVE_BASE}' sudo bash -c "cd /;find '${TARGET_DIRS}' -mindepth 1 -delete;tar xf /backup/'$i'.tar"'
