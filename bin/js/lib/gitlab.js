@@ -10,9 +10,7 @@ var adminPassword = process.env.GITLAB_ROOT_PASSWORD;
 var logout = function*(browser) {
   browser.url(process.env.GITLAB_URL);
   yield browser.yieldable.save('gitlab-before-logout');
-  browser
-    .click('a[href="/users/sign_out"]')
-    .pause(1000);
+  yield browser.yieldable.click('a[href="/users/sign_out"]');
   yield browser.yieldable.save('gitlab-after-logout');
 };
 
