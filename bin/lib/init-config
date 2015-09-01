@@ -10,8 +10,6 @@ source ${LIB_DIR}/copy-setup-file-to-config-dir $1
 source ${LIB_DIR}/prepare-temp-config-dir
 ${LIB_DIR}/create-env-file-from-setup-file
 source ${LIB_DIR}/update-config-dir-by-temp-config-dir
+source ${LIB_DIR}/create-docker-compose-file
 
 ${LIB_DIR}/save-config "Create configuration files"
-
-${LIB_DIR}/pull-images dns.yml
-${LIB_DIR}/pull-images docker-compose.yml

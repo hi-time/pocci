@@ -6,12 +6,8 @@ source ${BASE_DIR}/bin/lib/init-env
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
 echo "Apply user settings..."
-if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml ]; then
-    rm ${TEMP_CONFIG_DIR}/jenkins-slaves.yml
-fi
-
 cd ${JS_DIR}
 ${BIN_DIR}/oneoff iojs node ./app.js
-source ${LIB_DIR}/update-config-dir-by-temp-config-dir
+source ${LIB_DIR}/create-docker-compose-file
 
 ${LIB_DIR}/save-config "Update configuration files"

@@ -5,6 +5,7 @@ BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
 if [ -f ${CONFIG_DIR}/$1 ]; then
+    ${LIB_DIR}/pull-images $1
     cd ${CONFIG_DIR}
     docker-compose -f "$@"
 fi

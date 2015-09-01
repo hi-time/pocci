@@ -11,47 +11,26 @@ if [ -d ${CONFIG_DIR}/nginx ]; then
 fi
 mkdir ${CONFIG_DIR}/nginx
 
-if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
-    rm ${CONFIG_DIR}/docker-compose.yml
-fi
-
-DEFAULT_SERVICE=""
+DEFAULT_SERVER="default_server"
 POCCI_PUBLIC_CONTAINERS=""
 for i in ${INTERNAL_SERVICES}; do
     if [ -f ${TEMP_CONFIG_DIR}/services/scripts/$i ]; then
         source ${TEMP_CONFIG_DIR}/services/scripts/$i
     fi
-    if [ -f ${TEMP_CONFIG_DIR}/services/$i.yml.template ]; then
-        source ${TEMP_CONFIG_DIR}/services/$i.yml.template >>${CONFIG_DIR}/docker-compose.yml
-    fi
     if [ -d ${TEMP_CONFIG_DIR}/services/volumes/$i ]; then
         cp -r ${TEMP_CONFIG_DIR}/services/volumes/$i ${CONFIG_DIR}/volumes
     fi
-    if [ -f ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ]; then
-        if [ -z "${DEFAULT_SERVICE}" ]; then
-            DEFAULT_SERVICE=$i
-        fi
-        cp ${TEMP_CONFIG_DIR}/services/nginx/$i.conf ${CONFIG_DIR}/nginx
+    if [ -f ${TEMP_CONFIG_DIR}/services/nginx/$i.conf.template ]; then
+        source ${TEMP_CONFIG_DIR}/services/nginx/$i.conf.template >${CONFIG_DIR}/nginx/$i.conf
+        DEFAULT_SERVER=""
         if [ "${POCCI_PUBLIC_CONTAINERS}" != "" ]; then
-            POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS}, "
+            POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS},"
         fi
         POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS} $i"
     fi
 done
+echo "POCCI_PUBLIC_CONTAINERS=${POCCI_PUBLIC_CONTAINERS}" >>${CONFIG_DIR}/.env
 
-if [ -n "${DEFAULT_SERVICE}" ]; then
-    sed -E 's/listen .+80;/listen 80 default_server;/' -i ${CONFIG_DIR}/nginx/${DEFAULT_SERVICE}.conf
-fi
-if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
-    source ${TEMP_CONFIG_DIR}/services/nginx.yml.template >>${CONFIG_DIR}/docker-compose.yml
-fi
 
-source ${LIB_DIR}/update-no-proxy
-source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
-
-source ${TEMP_CONFIG_DIR}/services/dns.yml.template >${CONFIG_DIR}/dns.yml
 source ${LIB_DIR}/update-dns-entries
-if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then
-    source ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template >${CONFIG_DIR}/jenkins-slaves.yml
-    ${LIB_DIR}/pull-images jenkins-slaves.yml
-fi
+${LIB_DIR}/create-proxy-env >>${CONFIG_DIR}/.env

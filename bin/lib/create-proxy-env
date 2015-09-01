@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+BASE_DIR=$(cd $(dirname $0)/../..; pwd)
+CONFIG_DIR=${BASE_DIR}/config
+
 decode() {
     printf "`printf "%s\n" "$1" | sed -e 's/+/ /g' -e 's/%\(..\)/\\\\x\1/g'`"
 }
@@ -40,15 +43,34 @@ parseurl() {
     echo "${prefix}_proxy_port=${proxy_port}"
 }
 
-parseurl "${http_proxy}" http >./proxy.env
-parseurl "${https_proxy}" https >>./proxy.env
-parseurl "${ftp_proxy}" ftp >>./proxy.env
+parseurl "${http_proxy}" http
+parseurl "${https_proxy}" https
+parseurl "${ftp_proxy}" ftp
 
-if [ -n "${http_proxy}" ]; then
-    default_no_proxy=127.0.0.1,localhost
-    if [ -n "${no_proxy}" ]; then
-        echo "no_proxy=${no_proxy},${default_no_proxy}" >>./proxy.env
-    else
-        echo "no_proxy=${default_no_proxy}" >>./proxy.env
+if [ -z "${http_proxy}" ]; then
+    exit
+fi
+
+
+default_no_proxy=127.0.0.1,localhost
+if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
+    for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' ${CONFIG_DIR}/docker-compose.yml | sed -e 's/://'); do
+        default_no_proxy="${default_no_proxy},$i"
+    done
+fi
+
+if [ -d ${CONFIG_DIR}/nginx/ ]; then
+    if [ `ls ${CONFIG_DIR}/nginx/ |wc -l` -gt 0 ]; then
+        for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
+            CONTAINER_NAME=`basename ${i%.conf}`
+            default_no_proxy="${default_no_proxy},${CONTAINER_NAME}.${POCCI_DOMAIN_NAME}"
+        done
     fi
 fi
+
+if [ -n "${no_proxy}" ]; then
+    echo "no_proxy=${no_proxy},${default_no_proxy}"
+else
+    echo "no_proxy=${default_no_proxy}"
+fi
+

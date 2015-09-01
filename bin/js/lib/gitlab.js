@@ -8,7 +8,7 @@ var parse = require('url').parse;
 var adminPassword = process.env.GITLAB_ROOT_PASSWORD;
 
 var logout = function*(browser) {
-  browser.url(process.env.GITLAB_URL);
+  browser.url(process.env.GITLAB_URL + '/profile');
   yield browser.yieldable.save('gitlab-before-logout');
   yield browser.yieldable.click('a[href="/users/sign_out"]');
   yield browser.yieldable.save('gitlab-after-logout');
@@ -274,13 +274,6 @@ var addUsers = function*(browser, url, users) {
   }
 };
 
-var updateNginxConfFile = function(topPage) {
-  var file = './config/services/nginx/gitlab.conf';
-  var text = fs.readFileSync(file, 'utf8');
-  text = text.replace(/__TOP_PAGE/, topPage).replace(/#location/, 'location');
-  fs.writeFileSync(file, text);
-};
-
 module.exports = {
   addDefaults: function(options) {
     options.gitlab                      = options.gitlab      || {};
@@ -298,7 +291,7 @@ module.exports = {
     options.gitlab.smtpHost             = options.gitlab.smtpHost             || '172.17.42.1';
     options.gitlab.smtpPort             = options.gitlab.smtpPort             || '25';
     options.gitlab.mailAddress          = options.gitlab.mailAddress          || 'gitlab@' + options.pocci.domain;
-    // options.gitlab.topPage = options.gitlab.topPage;
+    options.gitlab.topPage              = options.gitlab.topPage              || '';
     // options.gitlab.users = options.gitlab.users;
     // options.gitlab.groups = options.gitlab.groups;
   },
@@ -323,6 +316,7 @@ module.exports = {
     environment.GITLAB_SMTP_HOST      = options.gitlab.smtpHost;                    // sameersbn/gitlab
     environment.GITLAB_SMTP_PORT      = options.gitlab.smtpPort;                    // sameersbn/gitlab
     environment.GITLAB_MAIL_ADDRESS   = options.gitlab.mailAddress;                 // sameersbn/gitlab
+    environment.GITLAB_TOP_PAGE       = options.gitlab.topPage;                     // nginx/gitlab.conf.template
   },
   setup: function*(browser, options) {
     var url = process.env.GITLAB_URL;
@@ -341,10 +335,6 @@ module.exports = {
       var groups = toArray(gitlabOptions.groups);
       yield setupGroups(this.request, groups, users, repositories);
       yield logout(browser);
-    }
-
-    if(gitlabOptions.topPage) {
-      updateNginxConfFile(gitlabOptions.topPage);
     }
   },
   getPrivateToken: getPrivateToken,

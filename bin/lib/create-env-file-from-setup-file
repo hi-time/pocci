@@ -19,7 +19,3 @@ fi
 
 cat ${CONFIG_DIR}/tmp.env | tr -d '\r' >${CONFIG_DIR}/.env
 rm ${CONFIG_DIR}/tmp.env
-
-if [ -f ${BIN_DIR}/proxy.env ]; then
-    cat ${BIN_DIR}/proxy.env >>${CONFIG_DIR}/.env
-fi
