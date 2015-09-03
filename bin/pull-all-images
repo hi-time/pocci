@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+BASE_DIR=$(cd $(dirname $0)/..; pwd)
+source ${BASE_DIR}/bin/lib/init-env
+
+if [ ! -d ${CONFIG_DIR} ];then
+    mkdir ${CONFIG_DIR}
+fi
+
+# docker-compose.yml
+echo "" >${CONFIG_DIR}/all-docker-compose.txt
+for i in $(ls ${TEMPLATE_DIR}/services/*.yml.template); do
+    source $i >>${CONFIG_DIR}/all-docker-compose.txt
+done
+
+
+# jenkins-slaves.yml
+grep JENKINS_SLAVE lib/version |tr '[:upper:]' '[:lower:]' | \
+    sed -e 's|version_|  image: xpfriend/|' -e 's/_/-/g' -e 's/=/:/' \
+    >> ${CONFIG_DIR}/all-docker-compose.txt
+
+${LIB_DIR}/pull-images all-docker-compose.txt
+rm ${CONFIG_DIR}/all-docker-compose.txt
+
+
+# kanban etc...
+for i in $(ls ${TEMPLATE_DIR}/services/scripts/*-pull-images); do
+    source $i
+done

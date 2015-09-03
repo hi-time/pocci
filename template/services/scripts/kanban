@@ -3,14 +3,9 @@ KANBAN_VERSION=1.1.4
 SERVICES_DIR=${TEMP_CONFIG_DIR}/services
 KANBAN_DIR=${SERVICES_DIR}/volumes/kanban
 KANBAN_COMPOSE_FILE=${SERVICES_DIR}/kanban.yml.template
+KANBAN_REPOSITORY=${KANBAN_REPOSITORY:-"https://github.com/leanlabsio/kanban.git"}
 
-if [ -d ${KANBAN_DIR} ]; then
-    return
-fi
-
-mkdir ${KANBAN_DIR}
-cd ${KANBAN_DIR}/..
-git clone https://github.com/leanlabsio/kanban.git
+git clone ${KANBAN_REPOSITORY} ${KANBAN_DIR}
 cd ${KANBAN_DIR}
 git checkout ${KANBAN_VERSION}
 mv .git .git.backup
