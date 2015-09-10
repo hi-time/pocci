@@ -31,11 +31,11 @@ jenkins:
     - nodejs
 
 gitlab:
-  topPage: /example/example-document/blob/master/README.md
+  topPage: /example/users-guide/blob/master/README.md
   groups:
     - groupName: example
       projects:
-        - projectName:    example-document
+        - projectName:    users-guide
         - projectName:    example-java
           commitMessage:  "import example codes (#1)"
           issues:
