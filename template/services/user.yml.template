@@ -1,11 +1,12 @@
 cat << EOF
 # LDAP
 ldap:
-  image: xpfriend/openldap:${VERSION_OPENLDAP}
+  image: osixia/openldap:${VERSION_OPENLDAP}
   env_file:
     - ./.env
   environment:
-    - USE_TLS=false
+    - LDAP_TLS=false
+    - LDAP_LOG_LEVEL=256
   ports:
     - "${LDAP_PORT}:389"
 
@@ -16,7 +17,7 @@ user:
   links:
    - ldap:ldap
   environment:
-    - LDAP_HOSTS=ldap
-    - HTTPS=false
+    - PHPLDAPADMIN_LDAP_HOSTS=ldap
+    - PHPLDAPADMIN_HTTPS=false
 
 EOF
