@@ -23,6 +23,7 @@ esac
 
 ${BIN_DIR}/stop-service
 
+SECONDS=0
 set +e
 ${LIB_DIR}/docker-compose jenkins-slaves.yml -p poccin rm -v --force
 ${LIB_DIR}/docker-compose docker-compose.yml -p ${POCCI_SERVICE_PREFIX} rm -v --force
@@ -32,3 +33,5 @@ set -e
 if [ `docker ps -a |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -gt 0 ]; then
     `docker ps -a |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
 fi
+
+echo "#__ destroy-service: ${SECONDS}"

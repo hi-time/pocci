@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+SECONDS=0
 BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
@@ -13,3 +14,5 @@ source ${LIB_DIR}/update-config-dir-by-temp-config-dir
 source ${LIB_DIR}/create-docker-compose-file
 
 ${LIB_DIR}/save-config "Create configuration files"
+
+echo "#__ init-config: ${SECONDS}"
