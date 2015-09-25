@@ -1,0 +1,25 @@
+cat << EOF
+#
+# SonarQube
+#
+<source>
+  type tail
+  format /^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \[(?<time>[^\]]*)\] (?<log>.*)$/
+  time_format %d/%b/%Y:%H:%M:%S %z
+  time_key time
+  path ${POCCI_LOG_DIR}/sonar/access.log
+  pos_file ${POCCI_LOG_DIR}/sonar/access.log.pos
+  tag pocci.sonar.access
+</source>
+<source>
+  type tail
+  format /^((?<time>.+? .+?) (?<log>.*))$/
+  time_format %Y.%m.%d %T
+  time_key time
+  path ${POCCI_LOG_DIR}/sonar/sonar.log
+  pos_file ${POCCI_LOG_DIR}/sonar/sonarlog.pos
+  tag pocci.sonar.sonar
+</source>
+
+
+EOF

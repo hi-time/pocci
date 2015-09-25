@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+BASE_DIR=$(cd $(dirname $0)/../..; pwd)
+source ${BASE_DIR}/bin/lib/init-env
+source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
+LOG_CONFIG_FILE=${CONFIG_DIR}/td-agent.source.conf
+LOG_CONFIG_TEMPLATE=${TEMPLATE_DIR}/services/logging
+
+
+echo "#Default (docker json-file)" >${LOG_CONFIG_FILE}
+for i in $(docker ps -q --no-trunc); do
+    NAME_LOG_PATH=`docker inspect --format="{{.Name}}:{{.LogPath}}" "$i"`
+    NAME=`echo "${NAME_LOG_PATH}" | cut -f1 -d : | sed -e 's,^/,,'`
+    LOG_PATH=`echo "${NAME_LOG_PATH}" | cut -f2 -d :`
+    source ${LOG_CONFIG_TEMPLATE}/default.source.template >>${LOG_CONFIG_FILE}
+done
+echo "" >>${LOG_CONFIG_FILE}
+echo "" >>${LOG_CONFIG_FILE}
+
+for i in ${INTERNAL_SERVICES}; do
+    if [ -f ${LOG_CONFIG_TEMPLATE}/$i.source.template ]; then
+        source ${LOG_CONFIG_TEMPLATE}/$i.source.template >>${LOG_CONFIG_FILE}
+    fi
+done

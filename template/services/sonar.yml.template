@@ -22,5 +22,7 @@ sonar:
     - LDAP_MAIL=${LDAP_ATTR_MAIL}
   links:
     - sonarqubedb:db
+  volumes:
+    - ${POCCI_LOG_DIR}/sonar:/opt/sonar/logs
 
 EOF

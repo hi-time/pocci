@@ -24,6 +24,8 @@ SECONDS=0
 ${BIN_DIR}/up-jenkins-slave
 echo "#__ up-service(3): ${SECONDS}"
 
+${LIB_DIR}/create-log-config-file
+
 SECONDS=0
 ${LIB_DIR}/waitfor ${INTERNAL_SERVICE_URL}
 echo "#__ up-service(4): ${SECONDS}"

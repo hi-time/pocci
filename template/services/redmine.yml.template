@@ -20,5 +20,7 @@ redmine:
     - redminedb:postgresql
   volumes_from:
     - gitlab
+  volumes:
+    - ${POCCI_LOG_DIR}/redmine:/var/log/redmine
 
 EOF
