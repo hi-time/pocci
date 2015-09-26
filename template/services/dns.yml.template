@@ -1,8 +1,8 @@
 cat << EOF
 dns:
-  image: xpfriend/dnsmasq:${VERSION_DNSMASQ}
+  image: devries/dnsmasq:${VERSION_DNSMASQ}
   volumes:
-    - ${CONFIG_DIR}:/altetc
+    - ${CONFIG_DIR}/althosts:/etc/althosts
   ports:
     - "53:53"
     - "53:53/udp"
