@@ -8,7 +8,7 @@ source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 SECONDS=0
 echo "Apply user settings..."
 cd ${JS_DIR}
-${BIN_DIR}/oneoff iojs node ./app.js
+${BIN_DIR}/oneoff nodejs node ./app.js
 
 source ${LIB_DIR}/create-docker-compose-file
 ${LIB_DIR}/save-config "Update configuration files"

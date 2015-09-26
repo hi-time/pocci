@@ -8,7 +8,6 @@ remove()
     done
 }
 
-remove xpfriend/jenkins-slave-iojs
 remove xpfriend/jenkins-slave-nodejs
 remove xpfriend/jenkins-slave-java
 remove xpfriend/jenkins-slave-base

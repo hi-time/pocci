@@ -343,7 +343,7 @@ jenkins:
 ```
 
 *   **nodes:** 作成するJenkinsスレーブノード  
-    `java`, `nodejs`, `iojs` が指定できます。
+    `java`, `nodejs` が指定できます。
 *   **jobs:** 作成するビルドジョブ
     *   `GitLabグループ名/GitLabプロジェクト名` の形式で指定してください。
     *   `template/code/GitLabグループ名/GitLabプロジェクト名` (上の設定例の場合は `template/code/example/example-java`)

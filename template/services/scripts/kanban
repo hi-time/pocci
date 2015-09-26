@@ -15,7 +15,7 @@ cd ${BIN_DIR}
 echo "cat << EOF" >${KANBAN_COMPOSE_FILE}
 echo "#Kanban" >>${KANBAN_COMPOSE_FILE}
 POCCIR_OPTS=" " \
-    ./oneoff iojs iojs \
+    ./oneoff nodejs node \
     -e "require('./js/lib/kanban.js').edit('./js/config/services/volumes/kanban/docker-compose.yml')" | \
     tr -d '\r' >>${KANBAN_COMPOSE_FILE}
 echo "EOF" >>${KANBAN_COMPOSE_FILE}

@@ -93,16 +93,16 @@ Jenkins スレーブのみを停止します。
 ### bin/oneoff (ワンオフコマンド実行)
 Jenkinsスレーブコンテナ用イメージから新しく作成したコンテナ上でコマンドを実行します。
 
-例えば、以下のコマンドを実行すると iojs スレーブ用コンテナ上で node インタプリタを起動します。
+例えば、以下のコマンドを実行すると nodejs スレーブ用コンテナ上で node インタプリタを起動します。
 
 ```bash
-./oneoff iojs node
+./oneoff nodejs node
 ```
 
-iojs コンテナ上で bash を起動する例:
+nodejs コンテナ上で bash を起動する例:
 
 ```bash
-./oneoff iojs bash
+./oneoff nodejs bash
 ```
 
 java コンテナ上で bash を起動する例:
