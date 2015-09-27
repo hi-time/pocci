@@ -103,8 +103,11 @@ var enableLdap = function*(browser, url) {
 };
 
 var createRequest = function*(browser, url) {
-  browser.url(url + '/my/account');
-  var key = (yield browser.yieldable.getHTML('#api-access-key', false))[0];
+  browser.url(url + '/my/api_key');
+  yield browser.yieldable.save('redmine-before-createRequest');
+
+  var key = (yield browser.yieldable.getHTML('#content pre', false))[0];
+  yield browser.yieldable.save('redmine-after-createRequest');
 
   return function(path, body) {
     var request = {
@@ -134,15 +137,15 @@ var getProject = function*(request, projectName) {
 
 var createProject = function*(browser, url, projectName) {
   browser.url(url + '/projects/new');
-  yield browser.yieldable.save('redmine-before-createProject:' + projectName);
+  yield browser.yieldable.save('redmine-before-createProject-' + projectName);
 
   browser
     .setValue('#project_name', projectName)
     .setValue('#project_identifier', projectName);
 
-  yield browser.yieldable.save('redmine-doing-createProject:' + projectName);
+  yield browser.yieldable.save('redmine-doing-createProject-' + projectName);
   yield browser.yieldable.click('input[type="submit"][name="commit"]');
-  yield browser.yieldable.save('redmine-after-createProject:' + projectName);
+  yield browser.yieldable.save('redmine-after-createProject-' + projectName);
 };
 
 var createRepository = function*(browser, url, projectName, repository) {
