@@ -73,13 +73,19 @@ http://kanban.pocci.test/  | [GitLab Kanban Board](http://kanban.leanlabs.io/)  
 
     ![GitLab - 初期画面](images/gitlab-01.png)
 
-2.  ユーザー名、パスワードを入力し、**LDAP Sign in** をクリックする。
+2.  ユーザー名、パスワードを入力し、**Sign in** をクリックする。
 
     ![GitLab - Sign in](images/gitlab-02.png)
 
-3.  画面右上の、**Profile settings** をクリックする。
+3.  画面左下の、自分のユーザー名をクリックする。
 
-    ![GitLab - Profile settings のクリック](images/gitlab-03.png)
+    ![GitLab - ユーザー名のクリック](images/gitlab-03.png)
+    *   画面左側にアイコンだけが表示されている場合は、
+        ウインドウを横に広げると文字も表示されるようになります。
+
+4.  画面左側の **Profile settings** をクリックする。
+
+    ![GitLab - Profile settings のクリック](images/gitlab-03-1.png)
 
 4.  **Name** を本名（もしあなたが日本人ならば日本語表記）に変更し、
     **Choose File...** で顔写真ファイルを選択する。
@@ -97,9 +103,6 @@ http://kanban.pocci.test/  | [GitLab Kanban Board](http://kanban.leanlabs.io/)  
 1.  画面左側の **Notifications** をクリックする。
 
     ![GitLab - Notifications](images/gitlab-06.png)
-
-    *   アイコンしか表示されていない場合は、
-        ウインドウを横に広げると文字も表示されるようになります。
 
 2.  **Notification level** を選択し、**Save changes** をクリックする。
     (最初のうちは **Watch** がおすすめです)
@@ -120,10 +123,7 @@ Git リポジトリにアクセスする際に毎回パスワード入力を行�
 
 2.  SSH キーを登録する。  
     以下のような手順で SSH キーを GitLab に登録することができます。
-    1.  GitLab にサインインし、画面右上の、**Profile settings** をクリックする。
-
-        ![GitLab - Profile settings のクリック](images/gitlab-03.png)
-
+    1.  GitLab にサインインし、**Profile settings** 画面を開く。
     2.  画面左側の **SSH Keys** をクリックする。
 
         ![GitLab - SSH Keys](images/gitlab-08.png)
@@ -135,16 +135,15 @@ Git リポジトリにアクセスする際に毎回パスワード入力を行�
     4.  シェルで `cat ~/.ssh/id_rsa.pub` を実行し、
         表示される文字列をコピーする。
 
-    5.  **Title** に任意の文字列、**Key** にコピーした文字列を貼り付ける。
-        *   途中に改行が入っている場合は削除してください。1行で入力しないと正常に登録できません。
+    5.  **Key** にコピーした文字列を貼り付け、**Title** に任意の文字列を入力する。
+        *   **Key** の途中に改行が入っている場合は削除してください。1行で入力しないと正常に登録できません。
 
 3.  SSH でリポジトリにアクセスする。  
     登録した SSH キーを使ってリポジトリにアクセスする場合は、
     SSH アクセス用の URL を使用します。
-    SSH アクセス用の URL はプロジェクトのトップ画面の右側に表示されます。
-    (もし表示されていない場合は、ウインドウ幅を広げてみてください)
+    SSH アクセス用の URL はプロジェクトのトップ画面に表示されます。
 
-    ![GitLab - SSH ULR](images/gitlab-11.png)
+    ![GitLab - SSH URL](images/gitlab-11.png)
 
 
 C. ソースコード更新ルール
@@ -160,7 +159,7 @@ C. ソースコード更新ルール
 1.  ソースコード更新の前に、ブランチを作成する（名前は `issue-番号` とする）。
 
     ```bash
-    $ git checkout -b issue-1
+    $ git checkout -b issue-2
     ```
 
 2.  作成したブランチに修正をコミットする。（コミットのタイミングは自由）
@@ -169,13 +168,13 @@ C. ソースコード更新ルール
 
     ```bash
     $ git add --all
-    $ git commit -m "プロジェクトのひな形を初期登録する (#1)"
+    $ git commit -m "READMEファイルを追加する  (#2)"
     ```
 
 3.  サーバにコミットをプッシュする。
 
     ```bash
-    $ git push origin issue-1
+    $ git push origin issue-2
     ```
 
     *   作業に区切りがついていない場合でも、進捗情報を共有するために、

@@ -11,32 +11,13 @@ var version = require('./jenkins-slaves-version.json');
 var registerGitLab = function*(browser, url, job) {
   var jenkinsJobUrl = process.env.JENKINS_URL + '/project/' + job.jobName;
 
-  browser.url(url + '/services');
-  yield browser.yieldable.save('jenkins-before-registerGitLab-1');
-
-  browser.url(url + '/services/gitlab_ci/edit');
-  yield browser.yieldable.save('jenkins-before-registerGitLab-1');
-
-  browser
-    .setValue('#service_token', 'jenkins')
-    .setValue('#service_project_url', jenkinsJobUrl);
-
-  var isSelected = (yield browser.yieldable.isSelected('#service_active'))[0];
-  if (!isSelected) {
-    yield browser.yieldable.click('#service_active');
-  }
-
-  yield browser.yieldable.save('jenkins-doing-registerGitLab-1');
-  browser.submitForm('#edit_service');
-  yield browser.yieldable.save('jenkins-after-registerGitLab-1');
-
   browser.url(url + '/hooks');
-  yield browser.yieldable.save('jenkins-after-registerGitLab-2');
+  yield browser.yieldable.save('jenkins-after-registerGitLab');
 
   browser.setValue('#hook_url', jenkinsJobUrl);
 
-  isSelected = (yield browser.yieldable.isSelected('#hook_push_events'))[0];
-  if (isSelected) {
+  var isSelected = (yield browser.yieldable.isSelected('#hook_push_events'))[0];
+  if (!isSelected) {
     yield browser.yieldable.click('#hook_push_events');
   }
 
@@ -45,9 +26,9 @@ var registerGitLab = function*(browser, url, job) {
     yield browser.yieldable.click('#hook_merge_requests_events');
   }
 
-  yield browser.yieldable.save('jenkins-doing-registerGitLab-2');
+  yield browser.yieldable.save('jenkins-doing-registerGitLab');
   browser.submitForm('#new_hook');
-  yield browser.yieldable.save('jenkins-after-registerGitLab-2');
+  yield browser.yieldable.save('jenkins-after-registerGitLab');
 };
 
 var createJob = function*(browser, jenkins, job, gitlabUrl) {

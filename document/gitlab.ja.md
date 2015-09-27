@@ -46,8 +46,7 @@ B. メンバーの追加
 
 1.  登録するユーザーで GitLab に一度サインインしておく。
 2.  `root` もしくはメンバー登録するグループのオーナー権限を持つユーザーで GitLab にサインインする。
-3.  登録したいグループを開き、画面左の ![Members アイコン](images/gitlab-members-icon.png)
-    **Members** アイコンをクリックする。
+3.  登録したいグループを開き、画面左の ![Members](images/gitlab-members-icon.png) をクリックする。
 4.  ![Add members](images/gitlab-add-members.png) ボタンをクリックする。
 5.  **People** で登録したいユーザーを選択し (複数選択可能)、
     **Group Access** でユーザーに与える権限を選択し、

@@ -81,25 +81,11 @@ A. ジョブの作成
 2.  プロジェクトのページを開き、画面左側の
     ![Settings](images/gitlab-settings-button.png) をクリックする。
 
-3.  ![Services](images/gitlab-services-button.png) をクリックする。
-4.  一覧の中の ![GitLab CI](images/gitlab-services-gitlab-ci-button.png) をクリックする。
-5.  以下の設定を行い、**Save** をクリックする。
-    *   **Active** にチェックを入れる。
-    *   **Token** に任意の文字列を入れる (なんでもOK)。
-    *   **Project url** に **Jenkins 設定画面** の 
-        **ビルド・トリガ - Build when a change is pushed to GitLab. GitLab CI Service URL: ...**
-        に表示されていた URL を貼り付ける。
-
-    ![GitLab CI form](images/gitlab-services-gitlab-ci-form.png)
-
-6.  ![Test settings](images/gitlab-services-test-settings-button.png) ボタンをクリックし、
-    Jenkins でビルドが始まることを確認する。
-7.  ![Web Hooks](images/gitlab-web-hooks-button.png) ボタンをクリックする。
+3.  ![Web Hooks](images/gitlab-web-hooks-button.png) ボタンをクリックする。
 8.  以下の設定を行い、**Add Web Hook** をクリックする。
     *   **URL** に **Jenkins 設定画面** の 
         **ビルド・トリガ - Build when a change is pushed to GitLab. GitLab CI Service URL: ...**
         に表示されていた URL を貼り付ける。
-    *   **Push events** のチェックを外す。
     *   **Merge Request events** をチェックする。
 
     ![GitLab Web Hooks form](images/gitlab-web-hooks-form.png)
@@ -137,18 +123,14 @@ GitLab および Jenkins に登録することにより、
 
 ##### GitLab への SSH キー登録
 以下の手順で GitLab に SSH キーを登録できます。
-1.  Jenkins ビルド用ユーザーで GitLab にサインインする。
-2.  画面右上の **Profile settings** アイコンをクリックする。
-
-    ![Profile settings](images/gitlab-profile-settings-button.png)
-
-3.  画面左側の **SSH Keys** をクリックする。
+1.  Jenkins ビルド用ユーザーで GitLab にサインインし、、**Profile settings** 画面を開く。
+2.  画面左側の **SSH Keys** をクリックする。
 
     ![SSH Keys](images/gitlab-ssh-keys-button.png)
 
-4.  ![Add SSH Key](images/gitlab-add-ssh-key-button.png) ボタンをクリックする。
+3.  ![Add SSH Key](images/gitlab-add-ssh-key-button.png) ボタンをクリックする。
 
-5.  以下の内容を入力し、**Add key** ボタンをクリックする。
+4.  以下の内容を入力し、**Add key** ボタンをクリックする。
     *   **Title:** 任意のタイトル。
     *   **Key:** `config/jenkins.id_rsa.pub` ファイルの内容を貼り付ける。
         *   途中に改行が入ると正しく登録できないので、必ず1行で入力すること。
