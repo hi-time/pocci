@@ -25,7 +25,7 @@ module.exports = {
     environment.SONAR_DB_USER         = options.sonar.dbUser;         // sameersbn/postgresql (sonarqubedb), jenkins-slaves (example codes)
     environment.SONAR_DB_PASS         = options.sonar.dbPassword;     // sameersbn/postgresql (sonarqubedb), jenkins-slaves (example codes)
     environment.SONAR_DB_NAME         = options.sonar.dbName;         // sameersbn/postgresql (sonarqubedb), jenkins-slaves (example codes)
-    environment.SONAR_DB_HOST         = options.sonar.dbHost;         // jenkins-slaves (example codes)
+    environment.SONAR_DB_HOST         = options.sonar.dbHost;         // xpfriend/sonarqube, jenkins-slaves (example codes)
     environment.SONAR_DB_PORT         = options.sonar.dbPort;         // sameersbn/postgresql (sonarqubedb), jenkins-slaves (example codes)
   }
 };

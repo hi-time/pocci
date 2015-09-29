@@ -21,7 +21,7 @@ sonar:
     - LDAP_REAL_NAME=${SONAR_LDAP_REAL_NAME}
     - LDAP_MAIL=${LDAP_ATTR_MAIL}
   links:
-    - sonarqubedb:db
+    - sonarqubedb:${SONAR_DB_HOST}
   volumes:
     - ${POCCI_LOG_DIR}/sonar:/opt/sonar/logs
 
