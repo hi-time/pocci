@@ -1,4 +1,5 @@
 'use strict';
+var path = require('path');
 
 var getServices = function(option) {
   var services = '';
@@ -19,7 +20,7 @@ module.exports = {
     options.pocci.services          = options.pocci.services          || ['gitlab'];
     options.pocci.externalServices  = options.pocci.externalServices  || [];
     options.pocci.hosts             = options.pocci.hosts             || [];
-    options.pocci.logdir            = options.pocci.logdir            || '/tmp/pocci/log';
+    options.pocci.logdir            = options.pocci.logdir            || path.resolve(process.env.POCCI_DIR, 'log');
   },
   addEnvironment: function(options, environment) {
     environment.POCCI_DOMAIN_NAME = options.pocci.domain;

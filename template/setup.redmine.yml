@@ -6,7 +6,6 @@ pocci:
     - jenkins
     - sonar
     - redmine
-  logdir: /tmp/log/pocci
   environment:
     TZ: Asia/Tokyo
 
