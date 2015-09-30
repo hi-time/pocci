@@ -1,0 +1,6 @@
+
+if [ `docker inspect $1 |grep \"Mounts\": |wc -l` -eq 0 ]; then
+    echo '{{range $key, $value := .Volumes}}{{printf "%s:%s\n" $key $value }}{{end}}'
+else
+    echo '{{range $value := .Mounts}}{{printf "%s:%s\n" $value.Destination $value.Source }}{{end}}'
+fi

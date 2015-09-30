@@ -1,4 +1,0 @@
-#!/bin/bash
-set -e
-
-docker stats "$@" $(docker ps |awk 'NR>1{print $NF}')

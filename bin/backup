@@ -3,6 +3,7 @@ set -e
 
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
+source ${BASE_DIR}/bin/pocci-utils
 BACKUP_DIR=${BASE_DIR}/backup/$(date +%Y%m%d-%H%M)
 
 ${LIB_DIR}/save-config "Backup: ${BACKUP_DIR}"
@@ -19,11 +20,7 @@ CONTAINERS=`docker ps -a |grep 'pocci[s|n]_' |sed -e 's/.*pocci/pocci/'`
 FORMAT=""
 for i in ${CONTAINERS}; do
     if [ -z "${FORMAT}" ]; then
-        if [ `docker inspect $i |grep \"Mounts\": |wc -l` -eq 0 ]; then
-            FORMAT='{{range $key, $value := .Volumes}}{{printf "%s:%s\n" $key $value }}{{end}}'
-        else
-            FORMAT='{{range $value := .Mounts}}{{printf "%s:%s\n" $value.Destination $value.Source }}{{end}}'
-        fi
+        FORMAT=`get-format-of-volume $i`
     fi
 
     VOLUMES=`docker inspect --format="${FORMAT}" $i |grep -E '/_data$' |tr '\n' ' '`

@@ -1,0 +1,76 @@
+#!/bin/bash
+
+get-format-of-volume() {
+    if [ `docker inspect $1 |grep \"Mounts\": |wc -l` -eq 0 ]; then
+        echo '{{range $key, $value := .Volumes}}{{printf "%s:%s\n" $key $value }}{{end}}'
+    else
+        echo '{{range $value := .Mounts}}{{printf "%s:%s\n" $value.Destination $value.Source }}{{end}}'
+    fi
+}
+
+vls() {
+    CONTAINER=${1:-.}
+
+    if [ "${CONTAINER:0:1}" = "-" ]; then
+        echo "Usage: vls [CONTAINER]"
+        return 1
+    fi
+
+    FORMAT=""
+    for i in $(docker ps -a |awk 'NR>1{print $NF}' |grep ${CONTAINER}); do
+        echo "$i:"
+        if [ -z "${FORMAT}" ]; then
+            FORMAT=`get-format-of-volume $i`
+        fi
+        docker inspect --format="${FORMAT}" $i | sed -e 's/:/ -> /'
+    done
+}
+
+vcd() {
+    CONTAINER=$1
+    VOLUME=$2
+
+    if [ -z "${CONTAINER}" -o "${CONTAINER:0:1}" = "-"  -o -z "${VOLUME}" ]; then
+        echo "Usage: vcd CONTAINER VOLUME"
+        return 1
+    fi
+
+    for i in $(docker ps -a |awk 'NR>1{print $NF}' |grep ${CONTAINER}); do
+        if [ -z "${FORMAT}" ]; then
+            FORMAT=`get-format-of-volume $i`
+        fi
+	    VOLUMES=`docker inspect --format="${FORMAT}" $i | grep ${VOLUME}`
+        for j in ${VOLUMES}; do
+            SOURCE_DIR=`echo "$j" |cut -f2 -d :`
+            TARGET_DIR=`echo "$j" |cut -f1 -d :`
+            echo "$i:${TARGET_DIR}"
+            cd ${SOURCE_DIR}
+            return 0
+        done
+    done
+
+    echo "${CONTAINER}:${VOLUME}: No such file or directory"
+    return 1
+}
+
+psh() {
+    CONTAINER=$1
+    SHELL=${2:-sh}
+
+    if [ -z "${CONTAINER}" -o "${CONTAINER:0:1}" = "-" ]; then
+        echo "Usage: psh CONTAINER [SHELL]"
+        return 1
+    fi
+
+    for i in $(docker ps |awk 'NR>1{print $NF}' |grep ${CONTAINER}); do
+        docker exec -it $i ${SHELL}
+        return $?
+    done
+
+    echo "${CONTAINER}: No such container"
+    return 1
+}
+
+stats() {
+    docker stats "$@" $(docker ps |awk 'NR>1{print $NF}')
+}
