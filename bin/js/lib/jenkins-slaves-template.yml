@@ -10,5 +10,7 @@ __NAME:
     - JENKINS_SLAVE_SECRET=__SECRET
     - JENKINS_URL=${JENKINS_URL}
     - SONAR_DB_HOST=${SONAR_DB_HOST}
+  volumes:
+    - /tmp
 
 EOF

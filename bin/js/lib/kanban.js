@@ -69,9 +69,16 @@ module.exports = {
       container.env_file = ['./.env'];
       if(name === 'kanban') {
         delete container.ports;
+        container.volumes.push('/var/log/nginx');
+      }
+      if(name === 'kanbanbackend') {
+        container.volumes = ['/var/log'];
+      }
+      if(name === 'kanbanwsserver') {
+        container.volumes = ['/usr/local/leanlabs/wsserver/rel/wsserver/log'];
       }
       if(name === 'kanbanredis') {
-        delete container.volumes;
+        container.volumes = ['/data'];
       }
     }
     console.log(yaml.dump(containers));
