@@ -10,7 +10,7 @@ cat << EOF
   time_key time
   time_format %F %T %z
   path ${POCCI_LOG_DIR}/gitlab/gitlab/production.log
-  pos_file ${POCCI_LOG_DIR}/gitlab/gitlab/production.log.pos
+  pos_file ${POCCI_LOG_DIR}/gitlab.gitlab.production.log.pos
   tag pocci.gitlab.production
 </source>
 <source>
@@ -18,7 +18,7 @@ cat << EOF
   format /^(?<time>^.+, .... ..:..): (?<log>.*)$/ 
   time_key time
   path ${POCCI_LOG_DIR}/gitlab/gitlab/application.log
-  pos_file ${POCCI_LOG_DIR}/gitlab/gitlab/application.log.pos
+  pos_file ${POCCI_LOG_DIR}/gitlab.gitlab.application.log.pos
   tag pocci.gitlab.application
 </source>
 <source>
@@ -26,25 +26,25 @@ cat << EOF
   format /^(?<time>^.+, .... ..:..): (?<log>.*)$/ 
   time_key time
   path ${POCCI_LOG_DIR}/gitlab/gitlab/satellites.log
-  pos_file ${POCCI_LOG_DIR}/gitlab/gitlab/satellites.log.pos
+  pos_file ${POCCI_LOG_DIR}/gitlab.gitlab.satellites.log.pos
   tag pocci.gitlab.satellites
 </source>
 <source>
   type tail
-  format /^(.+), \[(?<time>[^ ]+) #([0-9]+)\] (?<log>.*)$/ 
+  format /^(.+), \[(?<time>[^ ]+) \#([0-9]+)\] (?<log>.*)$/
   time_format %FT%T.%N
   time_key time
   path ${POCCI_LOG_DIR}/gitlab/gitlab/unicorn.stderr.log
-  pos_file ${POCCI_LOG_DIR}/gitlab/gitlab/unicorn.stderr.log.pos
+  pos_file ${POCCI_LOG_DIR}/gitlab.gitlab.unicorn.stderr.log.pos
   tag pocci.gitlab.unicorn.stderr
 </source>
 <source>
   type tail
-  format /^(.+), \[(?<time>[^ ]+) #([0-9]+)\] (?<log>.*)$/ 
+  format /^(.+), \[(?<time>[^ ]+) \#([0-9]+)\] (?<log>.*)$/
   time_format %FT%T.%N
   time_key time
   path ${POCCI_LOG_DIR}/gitlab/gitlab/unicorn.stdout.log
-  pos_file ${POCCI_LOG_DIR}/gitlab/gitlab/unicorn.stdout.log.pos
+  pos_file ${POCCI_LOG_DIR}/gitlab.gitlab.unicorn.stdout.log.pos
   tag pocci.gitlab.unicorn.stdout
 </source>
 <source>
@@ -53,7 +53,7 @@ cat << EOF
   time_format %FT%T.%NZ
   time_key time
   path ${POCCI_LOG_DIR}/gitlab/gitlab/sidekiq.log
-  pos_file ${POCCI_LOG_DIR}/gitlab/gitlab/sidekiq.log.pos
+  pos_file ${POCCI_LOG_DIR}/gitlab.gitlab.sidekiq.log.pos
   tag pocci.gitlab.sidekiq
 </source>
 <source>
@@ -62,7 +62,7 @@ cat << EOF
   time_format %d/%b/%Y:%H:%M:%S %z
   time_key time
   path ${POCCI_LOG_DIR}/gitlab/nginx/gitlab_access.log
-  pos_file ${POCCI_LOG_DIR}/gitlab/nginx/gitlab_access.log.pos
+  pos_file ${POCCI_LOG_DIR}/gitlab.nginx.gitlab_access.log.pos
   tag pocci.gitlab.nginx.access
 </source>
 <source>
@@ -71,7 +71,7 @@ cat << EOF
   time_format %Y/%m/%d %T
   time_key time
   path ${POCCI_LOG_DIR}/gitlab/nginx/gitlab_error.log
-  pos_file ${POCCI_LOG_DIR}/gitlab/nginx/gitlab_error.log.pos
+  pos_file ${POCCI_LOG_DIR}/gitlab.nginx.gitlab_error.log.pos
   tag pocci.gitlab.nginx.error
 </source>
 

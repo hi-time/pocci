@@ -43,6 +43,14 @@ parseurl() {
     echo "${prefix}_proxy_port=${proxy_port}"
 }
 
+add_no_proxy() {
+if [ -f ${CONFIG_DIR}/$1 ]; then
+    for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' ${CONFIG_DIR}/$1 | sed -e 's/://'); do
+        default_no_proxy="${default_no_proxy},$i"
+    done
+fi
+}
+
 parseurl "${http_proxy}" http
 parseurl "${https_proxy}" https
 parseurl "${ftp_proxy}" ftp
@@ -53,11 +61,8 @@ fi
 
 
 default_no_proxy=127.0.0.1,localhost
-if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
-    for i in $(grep -vh -e '^\s' -e '^\#' -e '^\s*$' ${CONFIG_DIR}/docker-compose.yml | sed -e 's/://'); do
-        default_no_proxy="${default_no_proxy},$i"
-    done
-fi
+add_no_proxy backend-services.yml
+add_no_proxy core-services.yml
 
 if [ -d ${CONFIG_DIR}/nginx/ ]; then
     if [ `ls ${CONFIG_DIR}/nginx/ |wc -l` -gt 0 ]; then

@@ -8,9 +8,12 @@ if [ ! -d ${CONFIG_DIR} ];then
     mkdir ${CONFIG_DIR}
 fi
 
-# docker-compose.yml
+# compose/*.yml
 echo "" >${CONFIG_DIR}/all-docker-compose.txt
-for i in $(ls ${TEMPLATE_DIR}/services/*.yml.template); do
+for i in $(ls ${TEMPLATE_DIR}/services/backend/compose/*.yml.template); do
+    source $i >>${CONFIG_DIR}/all-docker-compose.txt
+done
+for i in $(ls ${TEMPLATE_DIR}/services/core/compose/*.yml.template); do
     source $i >>${CONFIG_DIR}/all-docker-compose.txt
 done
 
@@ -25,6 +28,9 @@ rm ${CONFIG_DIR}/all-docker-compose.txt
 
 
 # kanban etc...
-for i in $(ls ${TEMPLATE_DIR}/services/scripts/*-pull-images); do
+for i in $(ls ${TEMPLATE_DIR}/services/backend/scripts/*-pull-images); do
+    source $i
+done
+for i in $(ls ${TEMPLATE_DIR}/services/core/scripts/*-pull-images); do
     source $i
 done

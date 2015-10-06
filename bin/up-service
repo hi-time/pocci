@@ -9,8 +9,8 @@ ${LIB_DIR}/stop-document-server
 SECONDS=0
 echo "Start services..."
 source ${LIB_DIR}/force-recreate
-${LIB_DIR}/docker-compose dns.yml -p ${POCCI_SERVICE_PREFIX} up -d ${FORCE_RECREATE}
-${LIB_DIR}/docker-compose docker-compose.yml -p ${POCCI_SERVICE_PREFIX} up -d ${FORCE_RECREATE}
+${LIB_DIR}/docker-compose backend-services.yml -p ${POCCI_SERVICE_PREFIX} up -d ${FORCE_RECREATE}
+${LIB_DIR}/docker-compose core-services.yml -p ${POCCI_SERVICE_PREFIX} up -d ${FORCE_RECREATE}
 echo "#__ up-service(1): ${SECONDS}"
 
 SECONDS=0
@@ -23,8 +23,6 @@ echo "#__ up-service(2): ${SECONDS}"
 SECONDS=0
 ${BIN_DIR}/up-jenkins-slave
 echo "#__ up-service(3): ${SECONDS}"
-
-${LIB_DIR}/create-log-config-file
 
 SECONDS=0
 ${LIB_DIR}/waitfor ${INTERNAL_SERVICE_URL}

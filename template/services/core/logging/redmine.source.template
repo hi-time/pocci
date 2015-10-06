@@ -10,7 +10,7 @@ cat << EOF
   time_key time
   time_format %F %T %z
   path ${POCCI_LOG_DIR}/redmine/redmine/production.log
-  pos_file ${POCCI_LOG_DIR}/redmine/redmine/production.log.pos
+  pos_file ${POCCI_LOG_DIR}/redmine.redmine.production.log.pos
   tag pocci.redmine.production
 </source>
 <source>
@@ -19,7 +19,7 @@ cat << EOF
   time_format %FT%T.%N
   time_key time
   path ${POCCI_LOG_DIR}/redmine/redmine/unicorn.stderr.log
-  pos_file ${POCCI_LOG_DIR}/redmine/redmine/unicorn.stderr.log.pos
+  pos_file ${POCCI_LOG_DIR}/redmine.redmine.unicorn.stderr.log.pos
   tag pocci.redmine.unicorn.stderr
 </source>
 <source>
@@ -28,7 +28,7 @@ cat << EOF
   time_format %FT%T.%N
   time_key time
   path ${POCCI_LOG_DIR}/redmine/redmine/unicorn.stdout.log
-  pos_file ${POCCI_LOG_DIR}/redmine/redmine/unicorn.stdout.log.pos
+  pos_file ${POCCI_LOG_DIR}/redmine.redmine.unicorn.stdout.log.pos
   tag pocci.redmine.unicorn.stdout
 </source>
 <source>
@@ -37,7 +37,7 @@ cat << EOF
   time_format %d/%b/%Y:%H:%M:%S %z
   time_key time
   path ${POCCI_LOG_DIR}/redmine/nginx/redmine_access.log
-  pos_file ${POCCI_LOG_DIR}/redmine/nginx/redmine_access.log.pos
+  pos_file ${POCCI_LOG_DIR}/redmine.nginx.redmine_access.log.pos
   tag pocci.redmine.nginx.access
 </source>
 <source>
@@ -46,7 +46,7 @@ cat << EOF
   time_format %Y/%m/%d %T
   time_key time
   path ${POCCI_LOG_DIR}/redmine/nginx/redmine_error.log
-  pos_file ${POCCI_LOG_DIR}/redmine/nginx/redmine_error.log.pos
+  pos_file ${POCCI_LOG_DIR}/redmine.nginx.redmine_error.log.pos
   tag pocci.redmine.nginx.error
 </source>
 

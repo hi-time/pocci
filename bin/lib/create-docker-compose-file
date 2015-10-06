@@ -1,21 +1,26 @@
 
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
-# docker-compose.yml
-if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
-    rm ${CONFIG_DIR}/docker-compose.yml
+# core-services.yml
+if [ -f ${CONFIG_DIR}/core-services.yml ]; then
+    rm ${CONFIG_DIR}/core-services.yml
 fi
 for i in ${INTERNAL_SERVICES}; do
-    if [ -f ${TEMP_CONFIG_DIR}/services/$i.yml.template ]; then
-        source ${TEMP_CONFIG_DIR}/services/$i.yml.template >>${CONFIG_DIR}/docker-compose.yml
+    if [ -f ${TEMP_CONFIG_DIR}/services/core/compose/$i.yml.template ]; then
+        source ${TEMP_CONFIG_DIR}/services/core/compose/$i.yml.template >>${CONFIG_DIR}/core-services.yml
     fi
 done
-if [ -f ${CONFIG_DIR}/docker-compose.yml ]; then
-    source ${TEMP_CONFIG_DIR}/services/nginx.yml.template >>${CONFIG_DIR}/docker-compose.yml
+if [ -f ${CONFIG_DIR}/core-services.yml ]; then
+    source ${TEMP_CONFIG_DIR}/services/core/compose/nginx.yml.template >>${CONFIG_DIR}/core-services.yml
 fi
 
-# dns.yml
-source ${TEMP_CONFIG_DIR}/services/dns.yml.template >${CONFIG_DIR}/dns.yml
+# backend-services.yml
+if [ -f ${CONFIG_DIR}/backend-services.yml ]; then
+    rm ${CONFIG_DIR}/backend-services.yml
+fi
+for i in $(ls ${TEMP_CONFIG_DIR}/services/backend/compose/*.yml.template); do
+    source $i >>${CONFIG_DIR}/backend-services.yml
+done
 
 # jenkins-slaves.yml
 if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then

@@ -75,8 +75,8 @@ pocci/
     - nginx/                ... Nginx 設定
     - .env                  ... 環境変数定義
     - althosts              ... ホスト名 (IPアドレス) 定義 (hostsファイル形式)
-    - dns.yml               ... DNSコンテナの定義 (Docker Compose形式)
-    - docker-compose.yml    ... 各種サービス用コンテナ定義 (Docker Compose形式)
+    - backend-services.yml  ... バックエンドサービス用コンテナの定義 (Docker Compose形式)
+    - core-services.yml     ... 各種サービス用コンテナ定義 (Docker Compose形式)
     - jenkins-slaves.yml    ... Jenkins スレーブノード用コンテナ定義 (Docker Compose形式)
 ```
 

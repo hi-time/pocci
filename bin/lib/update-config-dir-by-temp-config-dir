@@ -11,17 +11,21 @@ if [ -d ${CONFIG_DIR}/nginx ]; then
 fi
 mkdir ${CONFIG_DIR}/nginx
 
+for i in $(ls ${TEMP_CONFIG_DIR}/services/backend/scripts/*); do
+    source $i
+done
+
 DEFAULT_SERVER="default_server"
 POCCI_PUBLIC_CONTAINERS=""
 for i in ${INTERNAL_SERVICES}; do
-    if [ -f ${TEMP_CONFIG_DIR}/services/scripts/$i ]; then
-        source ${TEMP_CONFIG_DIR}/services/scripts/$i
+    if [ -f ${TEMP_CONFIG_DIR}/services/core/scripts/$i ]; then
+        source ${TEMP_CONFIG_DIR}/services/core/scripts/$i
     fi
-    if [ -d ${TEMP_CONFIG_DIR}/services/volumes/$i ]; then
-        cp -r ${TEMP_CONFIG_DIR}/services/volumes/$i ${CONFIG_DIR}/volumes
+    if [ -d ${TEMP_CONFIG_DIR}/services/core/volumes/$i ]; then
+        cp -r ${TEMP_CONFIG_DIR}/services/core/volumes/$i ${CONFIG_DIR}/volumes
     fi
-    if [ -f ${TEMP_CONFIG_DIR}/services/nginx/$i.conf.template ]; then
-        source ${TEMP_CONFIG_DIR}/services/nginx/$i.conf.template >${CONFIG_DIR}/nginx/$i.conf
+    if [ -f ${TEMP_CONFIG_DIR}/services/core/nginx/$i.conf.template ]; then
+        source ${TEMP_CONFIG_DIR}/services/core/nginx/$i.conf.template >${CONFIG_DIR}/nginx/$i.conf
         DEFAULT_SERVER=""
         if [ "${POCCI_PUBLIC_CONTAINERS}" != "" ]; then
             POCCI_PUBLIC_CONTAINERS="${POCCI_PUBLIC_CONTAINERS},"

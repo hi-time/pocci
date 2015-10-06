@@ -1,0 +1,11 @@
+cat << EOF
+fluentd:
+  image: xpfriend/fluentd:${VERSION_FLUENTD}
+  user: root
+  env_file:
+    - ./.env
+  volumes:
+    - ${CONFIG_DIR}:/fluentd/etc
+    - ${POCCI_LOG_DIR}:${POCCI_LOG_DIR}
+
+EOF

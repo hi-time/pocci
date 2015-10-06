@@ -25,7 +25,7 @@ var registerOauth = function*(browser, url, keys) {
 };
 
 var updateComposeFile = function(keys) {
-  var file = './config/services/kanban.yml.template';
+  var file = './config/services/core/compose/kanban.yml.template';
   var text = fs.readFileSync(file, 'utf8')
               .replace(/GITLAB_API_TOKEN=.*/g, 'GITLAB_API_TOKEN=' + keys.apiToken)
               .replace(/GITLAB_OAUTH_CLIENT_ID=.*/g, 'GITLAB_OAUTH_CLIENT_ID=' + keys.clientId)

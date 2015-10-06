@@ -9,6 +9,7 @@ var jenkins = require('./jenkins.js');
 var kanban = require('./kanban.js');
 var redmine = require('./redmine.js');
 var sonar = require('./sonar.js');
+var fluentd = require('./fluentd.js');
 
 var updateByUserEnvironment = function(environment, userEnvironment) {
   var names = Object.keys(userEnvironment);
@@ -31,7 +32,7 @@ var addUrl = function(environment, services, serviceUrl, allServiceUrl) {
 
 module.exports = function(yamlFile) {
   var options = yaml(yamlFile);
-  var config = [pocci, ldap, user, gitlab, jenkins, kanban, redmine, sonar];
+  var config = [pocci, ldap, user, gitlab, jenkins, kanban, redmine, sonar, fluentd];
 
   for(var i = 0; i < config.length; i++) {
     config[i].addDefaults(options);
