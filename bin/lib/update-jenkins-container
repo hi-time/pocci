@@ -10,9 +10,12 @@ if [ `docker ps |grep "${JENKINS_CONTAINER}" |wc -l` -gt 0 ]; then
     echo "Update Jenkins plugins..."
     ${LIB_DIR}/docker-exec ${JENKINS_CONTAINER} /config/update-plugins.sh
 
-    PUBLIC_KEY=${CONFIG_DIR}/jenkins.id_rsa.pub
-    echo "Get public key --> ${PUBLIC_KEY}"
+    KEY_PAIR_DIR=${CONFIG_DIR}/.ssh
+    echo "Get key pair --> ${KEY_PAIR_DIR}"
     docker exec ${JENKINS_CONTAINER} bash -c 'if [ ! -d /var/jenkins_home/.ssh ]; then ssh-keygen -t rsa -N "" -f /var/jenkins_home/.ssh/id_rsa; fi'
-    docker exec ${JENKINS_CONTAINER} cat /var/jenkins_home/.ssh/id_rsa.pub >${PUBLIC_KEY}
+    if [ -d ${KEY_PAIR_DIR} ]; then
+        rm -fr ${KEY_PAIR_DIR}
+    fi
+    docker cp ${JENKINS_CONTAINER}:/var/jenkins_home/.ssh ${KEY_PAIR_DIR}
 fi
 echo "#__ update-jenkins-container: ${SECONDS}"

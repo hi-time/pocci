@@ -113,7 +113,7 @@ GitLab のアクセス設定に関しては
 
 
 #### 2. SSH キー登録
-`config` ディレクトリには、`jenkins.id_rsa.pub` という名前のファイルに
+`config/.ssh` ディレクトリには、`id_rsa.pub` という名前のファイルに
 SSH キーが格納されています。
 *   このファイルは `create-config` を実行したときに作成されたものです。
 
@@ -132,7 +132,7 @@ GitLab および Jenkins に登録することにより、
 
 4.  以下の内容を入力し、**Add key** ボタンをクリックする。
     *   **Title:** 任意のタイトル。
-    *   **Key:** `config/jenkins.id_rsa.pub` ファイルの内容を貼り付ける。
+    *   **Key:** `config/.ssh/id_rsa.pub` ファイルの内容を貼り付ける。
         *   途中に改行が入ると正しく登録できないので、必ず1行で入力すること。
 
     ![Add an SSH Key form](images/gitlab-add-ssh-key-form.png)
