@@ -5,4 +5,4 @@ BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
 cd ${BIN_DIR}
-./oneoff nodejs node -e "require('./js/lib/wait.js')(process.argv.slice(1))" $@
+./oneoff ${NODEJS_IMAGE} node -e "require('./js/lib/wait.js')(process.argv.slice(1))" $@

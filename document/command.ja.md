@@ -91,36 +91,33 @@ Jenkins スレーブのみを停止します。
 ワンオフコマンド実行
 --------------------
 ### bin/oneoff (ワンオフコマンド実行)
-Jenkinsスレーブコンテナ用イメージから新しく作成したコンテナ上でコマンドを実行します。
+任意のイメージから新しく作成したコンテナ上でコマンドを実行します。
 
-例えば、以下のコマンドを実行すると nodejs スレーブ用コンテナ上で node インタプリタを起動します。
+例えば、以下のコマンドを実行すると xpfriend/jenkins-slave-nodejs:1.1.1
+から作成したコンテナ上で node インタプリタを起動します。
 
 ```bash
-./oneoff nodejs node
+./oneoff xpfriend/jenkins-slave-nodejs:1.1.1 node
 ```
 
-nodejs コンテナ上で bash を起動する例:
+作成したコンテナ上で bash を起動する例:
+
+```bash
+./oneoff xpfriend/jenkins-slave-nodejs:1.1.1 bash
+```
+
+以下のようにイメージ名の一部を指定して起動することもできます。
 
 ```bash
 ./oneoff nodejs bash
 ```
 
-java コンテナ上で bash を起動する例:
-
-```bash
-./oneoff java bash
-```
-
-java コンテナ上で `java -version` を実行する例:
-
-```bash
-./oneoff java java -version
-```
+この場合、現在ホスト上に存在するイメージの中から指定したイメージ名に一致するものを利用して起動します。
 
 *   `oneoff` コマンドを利用すると、コマンド実行時のディレクトリがコンテナ上の `/app` 
     ディレクトリとしてマウントされます。
 *   現在起動しているコンテナ上でコマンドを実行するわけではありません。
-    (現在起動しているコンテナ上でコマンド実行したい場合は `docker exec` を使用してください)
+    (現在起動しているコンテナ上でコマンド実行したい場合は `docker exec` や `psh` を使用してください)
 
 
 

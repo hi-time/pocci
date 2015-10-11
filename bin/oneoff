@@ -31,11 +31,19 @@ fi
 
 CONTAINER_TYPE="$1"
 shift
-CONTAINER_NAME=poccir_${CONTAINER_TYPE}
-CONTAINER_VERSION=$(grep JENKINS_SLAVE_`echo ${CONTAINER_TYPE} |tr '[:lower:]' '[:upper:]'` ${BASE_DIR}/bin/lib/version |cut -d '=' -f 2)
+CONTAINER_NAME_STEM=`echo ${CONTAINER_TYPE} |sed -e 's/[\/|:]/_/g'`
+CONTAINER_NAME=poccir_${CONTAINER_NAME_STEM}
+if [ "${CONTAINER_TYPE}" = "${CONTAINER_NAME_STEM}" ]; then
+    IMAGE=`docker images |awk '{printf "%s:%s\n",$1,$2}'| grep ${CONTAINER_TYPE} |head -1`
+    if [ -z "${IMAGE}" ]; then
+        IMAGE=${CONTAINER_TYPE}
+    fi
+else
+    IMAGE=${CONTAINER_TYPE}
+fi
 
 set +e
-docker run --name ${CONTAINER_NAME} --privileged -w /app -v ${PWD}:/app ${POCCIR_OPTS} -v /dev/urandom:/dev/random --rm ${TTY_OPTION} xpfriend/jenkins-slave-${CONTAINER_TYPE}:${CONTAINER_VERSION} "$@"
+docker run --name ${CONTAINER_NAME} --privileged -w /app -v ${PWD}:/app ${POCCIR_OPTS} -v /dev/urandom:/dev/random --rm ${TTY_OPTION} ${IMAGE} "$@"
 RC=$?
 
 set -e
