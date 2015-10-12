@@ -339,11 +339,22 @@ jenkins:
     - example/example-java
   nodes:
     - java
-    - nodejs
+    - python: "xpfriend/jenkins-slave-python27:latest"
+    - centos:
+        from: centos:7.1.1503
 ```
 
 *   **nodes:** 作成するJenkinsスレーブノード  
-    `java`, `nodejs` が指定できます。
+    以下の3種類のいずれかの方法で指定できます。
+    *   pocci 組み込みのノード名 (`java` もしくは `nodejs`) を指定する。
+    *   `ノード名:"イメージ名"` を指定する。  
+        pocci の Jenkinsスレーブノードとして動作することを意識して作成されたイメージ名を指定します。
+    *   `ノード名:オブジェクト(マップ)` を指定する。  
+        オブジェクト(マップ)の要素として `from:` で任意の既存イメージ名を指定します。
+        これにより、既存のイメージを Jenkins スレーブノードとして動作させることができるようになります。  
+        この形式で指定すると `config/image/ノード名` という名前でディレクトリが作成され、
+        その中に Jenkinsスレーブノードとして動作させるための Dockerfile
+        とそのファイルから利用されるスクリプトが格納されます。
 *   **jobs:** 作成するビルドジョブ
     *   `GitLabグループ名/GitLabプロジェクト名` の形式で指定してください。
     *   `template/code/GitLabグループ名/GitLabプロジェクト名` (上の設定例の場合は `template/code/example/example-java`)

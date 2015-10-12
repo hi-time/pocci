@@ -1,9 +1,10 @@
 cat << EOF
 __NAME:
-  image: xpfriend/jenkins-slave-__NAME:__VERSION
+  __IMAGE
   volumes:
-    - /var/jenkins_home
     - /tmp
+    - /var/jenkins_home
+    - ${CONFIG_DIR}/.ssh:/var/jenkins_home/.ssh
   env_file:
     - ./.env
   dns: 172.17.42.1
@@ -11,5 +12,6 @@ __NAME:
     - JENKINS_SLAVE_SECRET=__SECRET
     - JENKINS_URL=${JENKINS_URL}
     - SONAR_DB_HOST=${SONAR_DB_HOST}
+    - NODE_NAME=__NAME
 
 EOF

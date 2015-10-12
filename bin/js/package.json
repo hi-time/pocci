@@ -21,6 +21,7 @@
     "jenkins": "^0.9.0",
     "js-yaml": "^3.2.7",
     "ldapjs": "^0.7.1",
+    "mkdirp": "^0.5.1",
     "requestretry": "^1.2.2",
     "selenium-standalone": "4.1.0",
     "ssha": "^1.0.1",

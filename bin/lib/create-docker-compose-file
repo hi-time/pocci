@@ -27,3 +27,11 @@ if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then
     source ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template >${CONFIG_DIR}/jenkins-slaves.yml
     rm ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template
 fi
+
+if [ -d ${TEMP_CONFIG_DIR}/image ]; then
+    if [ -d ${CONFIG_DIR}/image ]; then
+        rm -fr ${CONFIG_DIR}/image
+    fi
+    cp -r ${TEMP_CONFIG_DIR}/image ${CONFIG_DIR}
+    rm -fr ${TEMP_CONFIG_DIR}/image
+fi

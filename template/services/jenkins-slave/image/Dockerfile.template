@@ -1,0 +1,11 @@
+FROM __FROM
+
+ENV JENKINS_HOME /var/jenkins_home
+RUN mkdir ${JENKINS_HOME}
+
+COPY ./config/. /config/
+RUN chmod +x /config/*
+RUN /config/installjdk.sh
+
+ENTRYPOINT ["/config/entrypoint"]
+CMD ["/config/startJenkinsSlave.sh"]

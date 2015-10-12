@@ -1,5 +1,6 @@
 'use strict';
 var fs = require('fs');
+var mkdirp = require('mkdirp');
 var thunkify = require('thunkify');
 var jenkinsLib = require('jenkins');
 var path = require('path');
@@ -86,12 +87,26 @@ var createJobs = function*(browser, jenkins, jobNames, gitlabUrl) {
 };
 
 var writeNodeConf = function(node, secret) {
-  var templateFilePath = path.resolve(__dirname, 'jenkins-slaves-template.yml');
+  var templateFilePath = './config/services/jenkins-slave/compose/jenkins-slaves.yml.template';
   var text = fs.readFileSync(templateFilePath, 'utf8')
-              .replace(/__NAME/g, node)
-              .replace(/__VERSION/g, version[node])
+              .replace(/__NAME/g, node.name)
+              .replace(/__IMAGE/g, node.image)
               .replace(/__SECRET/g, secret);
   fs.appendFileSync('./config/jenkins-slaves.yml.template', text);
+};
+
+var copyConfigFile = function(nodeName, fileName) {
+  fs.createReadStream('./config/services/jenkins-slave/image/config/' + fileName)
+    .pipe(fs.createWriteStream('./config/image/' + nodeName + '/config/' + fileName));
+};
+
+var writeDockerFile = function(node) {
+  var dockerfileTemplate = './config/services/jenkins-slave/image/Dockerfile.template';
+  var text = fs.readFileSync(dockerfileTemplate, 'utf8').replace(/__FROM/g, node.from);
+  mkdirp.sync('./config/image/' + node.name + '/config');
+  fs.writeFileSync('./config/image/' + node.name + '/Dockerfile', text);
+  copyConfigFile(node.name, 'entrypoint');
+  copyConfigFile(node.name, 'startJenkinsSlave.sh');
 };
 
 var createNode = function*(jenkins, nodeName) {
@@ -115,9 +130,8 @@ var createNode = function*(jenkins, nodeName) {
 };
 
 var createNodes = function*(jenkins, nodes) {
-  nodes = util.toArray(nodes);
   for(var i = 0; i < nodes.length; i++) {
-    yield createNode(jenkins, nodes[i]);
+    yield createNode(jenkins, nodes[i].name);
   }
 };
 
@@ -192,16 +206,18 @@ var enableMasterToSlaveAccessControl = function*(browser, url) {
 };
 
 var saveSecret = function*(browser, url, node) {
-  browser.url(url + '/computer/' + node);
+  browser.url(url + '/computer/' + node.name);
   yield browser.yieldable.save('jenkins-saveSecret');
 
   var text = (yield browser.yieldable.getText('pre'))[0];
   var secret = text.replace(/.*-secret/,'-secret');
   writeNodeConf(node, secret);
+  if(node.from) {
+    writeDockerFile(node);
+  }
 };
 
 var saveSecrets = function*(browser, url, nodes) {
-  nodes = util.toArray(nodes);
   for(var i = 0; i < nodes.length; i++) {
     yield saveSecret(browser, url, nodes[i]);
   }
@@ -229,6 +245,38 @@ var configureMail = function*(browser, url) {
   yield browser.yieldable.save('jenkins-doing-configureMail');
   yield browser.yieldable.click('#yui-gen17-button');
   yield browser.yieldable.save('jenkins-after-configureMail');
+};
+
+var normalizeNode = function(node, nodes) {
+  if(typeof node === 'string') {
+    nodes.push({
+      name: node, 
+      image: 'image: xpfriend/jenkins-slave-' + node + ':' + version[node]
+    });
+    return;
+  }
+
+  if(typeof node === 'object') {
+    var keys = Object.keys(node);
+    for(var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      var value = node[key];
+      if(typeof value === 'string') {
+        nodes.push({name: key, image: 'image: ' + value});
+      } else if(typeof value === 'object' && value.from) {
+        nodes.push({name: key, image: 'build: ${CONFIG_DIR}/image/' + key, from: value.from});
+      }
+    }
+  }
+};
+
+var normalizeNodes = function(nodes) {
+  nodes = util.toArray(nodes);
+  var normalized = [];
+  for(var i = 0; i < nodes.length; i++) {
+    normalizeNode(nodes[i], normalized);
+  }
+  return normalized;
 };
 
 module.exports = {
@@ -270,8 +318,9 @@ module.exports = {
 
     var jenkins = getJenkins();
     if(jenkinsOptions.nodes) {
-      yield createNodes(jenkins, jenkinsOptions.nodes);
-      yield saveSecrets(browser, url, jenkinsOptions.nodes);
+      var nodes = normalizeNodes(jenkinsOptions.nodes);
+      yield createNodes(jenkins, nodes);
+      yield saveSecrets(browser, url, nodes);
       if(isDisabledSecurity) {
         yield enableMasterToSlaveAccessControl(browser, url);
       }
