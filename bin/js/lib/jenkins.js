@@ -107,6 +107,7 @@ var writeDockerFile = function(node) {
   fs.writeFileSync('./config/image/' + node.name + '/Dockerfile', text);
   copyConfigFile(node.name, 'entrypoint');
   copyConfigFile(node.name, 'startJenkinsSlave.sh');
+  copyConfigFile(node.name, 'installjdk.sh');
 };
 
 var createNode = function*(jenkins, nodeName) {
@@ -205,21 +206,24 @@ var enableMasterToSlaveAccessControl = function*(browser, url) {
   yield browser.yieldable.save('jenkins-after-enableMasterToSlaveAccessControl');
 };
 
-var saveSecret = function*(browser, url, node) {
+var saveSecret = function*(browser, url, node, isEnabledAuth) {
   browser.url(url + '/computer/' + node.name);
   yield browser.yieldable.save('jenkins-saveSecret');
 
-  var text = (yield browser.yieldable.getText('pre'))[0];
-  var secret = text.replace(/.*-secret/,'-secret');
+  var secret = '';
+  if(isEnabledAuth) {
+    var text = (yield browser.yieldable.getText('pre'))[0];
+    secret = text.replace(/.*-secret/,'-secret');
+  }
   writeNodeConf(node, secret);
   if(node.from) {
     writeDockerFile(node);
   }
 };
 
-var saveSecrets = function*(browser, url, nodes) {
+var saveSecrets = function*(browser, url, nodes, isEnabledAuth) {
   for(var i = 0; i < nodes.length; i++) {
-    yield saveSecret(browser, url, nodes[i]);
+    yield saveSecret(browser, url, nodes[i], isEnabledAuth);
   }
 };
 
@@ -307,27 +311,32 @@ module.exports = {
     var jenkinsOptions = options[optionName] || {};
     var userOptions = options.user || {};
     var jobs = jenkinsOptions.jobs || [];
+    var isEnabledAuth = process.env.ALL_SERVICES.indexOf('user') > -1;
+    var isEnabledGitLab = process.env.ALL_SERVICES.indexOf('gitlab') > -1;
     var loginUser = util.getUser(jenkinsOptions.user, userOptions.users);
 
-    var isDisabledSecurity = yield enableLdap(browser, url, loginUser);
+    var isDisabledSecurity = false;
+    if(isEnabledAuth) {
+      isDisabledSecurity = yield enableLdap(browser, url, loginUser);
+    }
     yield configureMail(browser, url);
 
     var getJenkins = function() {
-      return jenkinsLib(util.getURL(url, loginUser));
+      return jenkinsLib((isEnabledAuth)? util.getURL(url, loginUser) : url);
     };
 
     var jenkins = getJenkins();
     if(jenkinsOptions.nodes) {
       var nodes = normalizeNodes(jenkinsOptions.nodes);
       yield createNodes(jenkins, nodes);
-      yield saveSecrets(browser, url, nodes);
+      yield saveSecrets(browser, url, nodes, isEnabledAuth);
       if(isDisabledSecurity) {
         yield enableMasterToSlaveAccessControl(browser, url);
       }
     }
 
-    var gitlabUrl = process.env.GITLAB_URL;
-    if(gitlabUrl) {
+    if(isEnabledGitLab) {
+      var gitlabUrl = process.env.GITLAB_URL;
       yield gitlab.loginByAdmin(browser, gitlabUrl);
       yield configureGitLab(browser, url, gitlabUrl);
       yield createJobs(browser, jenkins, jobs, gitlabUrl);
