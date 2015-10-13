@@ -44,3 +44,11 @@ gitlab:
           commitMessage:  "import example codes (#1)"
           issues:
             - import example codes
+
+kanban:
+  - board: example/example-java
+    stages:
+      - BACKLOG
+      - TODO
+      - DOING
+      - DONE

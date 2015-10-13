@@ -5,6 +5,7 @@ var yaml = require('js-yaml');
 var util = require('./util.js');
 var parse = require('url').parse;
 var gitlab = require('./gitlab.js');
+var server = require('co-request');
 
 var registerOauth = function*(browser, url, keys) {
   browser.url(url + '/oauth/applications/new');
@@ -31,6 +32,41 @@ var updateComposeFile = function(keys) {
               .replace(/GITLAB_OAUTH_CLIENT_ID=.*/g, 'GITLAB_OAUTH_CLIENT_ID=' + keys.clientId)
               .replace(/GITLAB_OAUTH_CLIENT_SECRET=.*/g, 'GITLAB_OAUTH_CLIENT_SECRET=' + keys.secret);
   fs.writeFileSync(file, text);
+};
+
+
+var deleteLabels = function*(request, path) {
+  var response = yield server.get(request(path));
+  util.assertStatus(response, 'response.statusCode < 300');
+  for(var i = 0; i < response.body.length; i++) {
+    yield server.del(request(path), {
+      name: response.body[i].name
+    });
+  }
+};
+
+var createLabels = function*(request, path, labels) {
+  for(var i = 0; i < labels.length; i++) {
+    var response = yield server.post(request(path, {
+      name: 'KB[stage][' + i + '][' + labels[i] + ']',
+      color: '#F5F5F5'
+    }));
+    util.assertStatus(response, 'response.statusCode === 201');
+  }
+};
+
+var addStage = function*(request, option) {
+  var projectId = yield gitlab.getProjectId(request, option.board);
+  var path = '/projects/' + projectId + '/labels';
+  yield deleteLabels(request, path);
+  yield createLabels(request, path, option.stages);
+};
+
+var addStages = function*(request, options) {
+  options = util.toArray(options);
+  for(var i = 0; i < options.length; i++) {
+    yield addStage(request, options[i]);
+  }
 };
 
 module.exports = {
@@ -83,7 +119,7 @@ module.exports = {
     }
     console.log(yaml.dump(containers));
   },
-  setup: function*(browser) {
+  setup: function*(browser, options) {
     var url = process.env.GITLAB_URL;
     yield gitlab.loginByAdmin(browser, url);
 
@@ -92,6 +128,10 @@ module.exports = {
     keys.apiToken = token;
     yield registerOauth(browser, url, keys);
     updateComposeFile(keys);
+    if(options.kanban) {
+      var request = yield gitlab.createRequest(browser, url);
+      yield addStages(request, options.kanban);
+    }
     yield gitlab.logout(browser);
   }
 };

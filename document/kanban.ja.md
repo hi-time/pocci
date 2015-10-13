@@ -29,8 +29,9 @@ A. 初期設定
 
     ![プロジェクト一覧](images/kanban-boards.png)
 
-5.  かんばんボードの初期設定を行うために **Yes, Do it for me!**
-    をクリックする。
+5.  セットアップファイル (`setup.*.yml`) で事前に工程 (stage)
+    の定義を行っていない場合は以下のような画面が表示されるので、
+    **Yes, Do it for me!** をクリックする。
 
     ![初期設定](images/kanban-configure.png)
 

@@ -499,7 +499,28 @@ kanban:
 ------
 かんばんボード関連定義。
 
+定義例:
+
+```yaml
+kanban:
+  - board: example/example-board
+    stages:
+      - あとで
+      - 今週
+      - 調査中
+      - 対応中
+      - リリース待ち
+  - board: example/example-java
+    stages:
+      - TODO
+      - 要件定義
+      - 実装
+      - 受け入れテスト
+```
+
 *   **url:** かんばんボードサーバのURL
     *   デフォルトは `http://kanban.[pocci.domainで指定したドメイン名]`
     *   環境変数: `KANBAN_URL`, `KANBAN_PROTOCOL`, `KANBAN_HOST`, `KANBAN_PORT`
-
+*   **board:** 工程を定義するボード
+    *   `GitLabグループ名/GitLabプロジェクト名` の形式で指定してください。
+*   **stages:** 工程

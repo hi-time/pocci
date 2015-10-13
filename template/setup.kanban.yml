@@ -28,3 +28,11 @@ gitlab:
           issues:
             - task 1
             - task 2
+
+kanban:
+  - board: example/example-board
+    stages:
+      - BACKLOG
+      - TODO
+      - DOING
+      - DONE

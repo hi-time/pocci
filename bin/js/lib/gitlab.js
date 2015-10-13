@@ -1,3 +1,4 @@
+/*jshint camelcase: false */
 'use strict';
 var fs = require('fs');
 var server = require('co-request');
@@ -89,9 +90,15 @@ var createRequest = function*(browser, url) {
 };
 
 var getProjectId = function*(request, projectName) {
-  var response = yield server.get(request('/projects/search/' + projectName));
+  var names = projectName.split('/');
+  var response = yield server.get(request('/projects/search/' + names[1] + '?per_page=100'));
   assertStatus(response, 'response.statusCode < 300');
-  return (response.body.length === 0)? null : response.body[0].id;
+  for(var i = 0; i < response.body.length; i++) {
+    if(response.body[i].path_with_namespace === projectName) {
+      return response.body[i].id;
+    }
+  }
+  return null;
 };
 
 var createProject = function*(request, projectName, groupId) {
@@ -207,7 +214,7 @@ var createIssues = function*(request, projectId, issues) {
 
 var setupProject = function*(request, options, groupId, repositories, groupName) {
   var projectName = options.projectName;
-  var projectId = yield getProjectId(request, projectName);
+  var projectId = yield getProjectId(request, groupName + '/' + projectName);
   if(!projectId) {
     projectId = yield createProject(request, projectName, groupId);
   }
@@ -352,5 +359,6 @@ module.exports = {
   getPrivateToken: getPrivateToken,
   loginByAdmin: loginByAdmin,
   logout: logout,
+  getProjectId: getProjectId,
   createRequest: createRequest
 };
