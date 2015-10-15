@@ -1,3 +1,4 @@
+/*jshint camelcase: false */
 'use strict';
 var fs = require('fs');
 var mkdirp = require('mkdirp');
@@ -100,14 +101,26 @@ var copyConfigFile = function(nodeName, fileName) {
     .pipe(fs.createWriteStream('./config/image/' + nodeName + '/config/' + fileName));
 };
 
+var writeProxyEnv = function(nodeName) {
+  var proxy = '';
+  if(process.env.http_proxy) {
+    proxy = 'export http_proxy=' + process.env.http_proxy + '\n' +
+                'export https_proxy=' + process.env.https_proxy + '\n' +
+                'export ftp_proxy=' + process.env.ftp_proxy + '\n' +
+                'export no_proxy=' + process.env.no_proxy + '\n';
+  }
+  fs.writeFileSync('./config/image/' + nodeName + '/config/proxy.env', proxy);
+};
+
 var writeDockerFile = function(node) {
   var dockerfileTemplate = './config/services/jenkins-slave/image/Dockerfile.template';
   var text = fs.readFileSync(dockerfileTemplate, 'utf8').replace(/__FROM/g, node.from);
   mkdirp.sync('./config/image/' + node.name + '/config');
   fs.writeFileSync('./config/image/' + node.name + '/Dockerfile', text);
   copyConfigFile(node.name, 'entrypoint');
-  copyConfigFile(node.name, 'startJenkinsSlave.sh');
-  copyConfigFile(node.name, 'installjdk.sh');
+  copyConfigFile(node.name, 'start-jenkins-slave.sh');
+  copyConfigFile(node.name, 'install-dependencies.sh');
+  writeProxyEnv(node.name);
 };
 
 var createNode = function*(jenkins, nodeName) {

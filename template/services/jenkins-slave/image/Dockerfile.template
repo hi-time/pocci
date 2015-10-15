@@ -5,7 +5,8 @@ RUN mkdir ${JENKINS_HOME}
 
 COPY ./config/. /config/
 RUN chmod +x /config/*
-RUN /config/installjdk.sh
+RUN /config/install-dependencies.sh
+RUN ln -s ~ /tmp/user_home
 
 ENTRYPOINT ["/config/entrypoint"]
-CMD ["/config/startJenkinsSlave.sh"]
+CMD ["/config/start-jenkins-slave.sh"]

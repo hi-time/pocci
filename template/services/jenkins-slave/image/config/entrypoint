@@ -1,4 +1,12 @@
 #!/bin/bash
 set -e
 
+if [ `locale -a |grep C.UTF-8 |wc -l` -eq 1 ]; then
+    export LANG=C.UTF-8
+else
+    if [ `locale -a |grep en_US.utf8 |wc -l` -eq 1 ];then
+        export LANG=en_US.utf8
+    fi
+fi
+
 exec "$@"

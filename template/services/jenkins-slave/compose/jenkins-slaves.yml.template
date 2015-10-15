@@ -4,7 +4,7 @@ __NAME:
   volumes:
     - /tmp
     - /var/jenkins_home
-    - ${CONFIG_DIR}/.ssh:/var/jenkins_home/.ssh
+    - ${CONFIG_DIR}/.ssh:/tmp/user_home/.ssh
   env_file:
     - ./.env
   dns: 172.17.42.1
