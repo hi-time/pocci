@@ -23,6 +23,7 @@ for i in ${CONTAINERS}; do
         FORMAT=`get-format-of-volume $i`
     fi
 
+    IGNORES=`docker inspect --format='{{index .Config.Labels "com.xpfriend.pocci.backup-ignore"}}' $i`
     VOLUMES=`docker inspect --format="${FORMAT}" $i |grep -E '/_data$' |tr '\n' ' '`
     if [ -z "${VOLUMES}" ]; then
         echo "skip backup : $i"
@@ -34,12 +35,14 @@ for i in ${CONTAINERS}; do
         for j in ${VOLUMES}; do
             SOURCE_DIR=`echo "$j" |cut -f2 -d :`
             TARGET_DIR=`echo "$j" |cut -f1 -d :`
-            TARGET_DIRS="${TARGET_DIRS} ${TARGET_DIR}"
-            echo "backup : $i:${TARGET_DIR}"
-            if [ -f ${BACKUP_DIR}/$i.tar ]; then
-                sudo sh -c "cd ${SOURCE_DIR};tar rf ${BACKUP_DIR}/$i.tar --transform='s,^\./,${TARGET_DIR}/,g' ."
-            else
-                sudo sh -c "cd ${SOURCE_DIR};tar cf ${BACKUP_DIR}/$i.tar --transform='s,^\./,${TARGET_DIR}/,g' ."
+            if [ `echo " ${IGNORES} " |grep " $j " |wc -l` -eq 0 ]; then
+                TARGET_DIRS="${TARGET_DIRS} ${TARGET_DIR}"
+                echo "backup : $i:${TARGET_DIR}"
+                if [ -f ${BACKUP_DIR}/$i.tar ]; then
+                    sudo sh -c "cd ${SOURCE_DIR};tar rf ${BACKUP_DIR}/$i.tar --transform='s,^\./,${TARGET_DIR}/,g' ."
+                else
+                    sudo sh -c "cd ${SOURCE_DIR};tar cf ${BACKUP_DIR}/$i.tar --transform='s,^\./,${TARGET_DIR}/,g' ."
+                fi
             fi
         done
         sudo rm -fr /tmp/$i

@@ -5,6 +5,8 @@ __NAME:
     - /tmp
     - /var/jenkins_home
     - ${CONFIG_DIR}/.ssh:/tmp/user_home/.ssh
+  labels:
+    com.xpfriend.pocci.backup-ignore: "/tmp"
   env_file:
     - ./.env
   dns: 172.17.42.1
