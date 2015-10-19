@@ -16,6 +16,9 @@ redmine:
   dns: 172.17.42.1
   environment:
     - SMTP_ENABLED=${REDMINE_SMTP_ENABLED}
+    - SMTP_DOMAIN=${REDMINE_SMTP_DOMAIN}
+    - SMTP_HOST=${REDMINE_SMTP_HOST}
+    - SMTP_PORT=${REDMINE_SMTP_PORT}
   links:
     - redminedb:postgresql
   volumes_from:

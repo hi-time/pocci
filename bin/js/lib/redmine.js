@@ -407,6 +407,9 @@ module.exports = {
     options.redmine.dbPassword  = options.redmine.dbPassword  || 'password';
     options.redmine.dbName      = options.redmine.dbName      || 'redmine_production';
     options.redmine.smtpEnabled = options.redmine.smtpEnabled || 'false';
+    options.redmine.smtpDomain  = options.redmine.smtpDomain  || options.pocci.domain;
+    options.redmine.smtpHost    = options.redmine.smtpHost    || '172.17.42.1';
+    options.redmine.smtpPort    = options.redmine.smtpPort    || '25';
     // options.redmine.users = options.redmine.users;
     // options.redmine.projects = options.redmine.projects;
     // options.redmine.lang = options.redmine.lang;
@@ -421,6 +424,9 @@ module.exports = {
     environment.REDMINE_DB_PASS       = options.redmine.dbPassword;   // sameersbn/postgresql (redminedb)
     environment.REDMINE_DB_NAME       = options.redmine.dbName;       // sameersbn/postgresql (redminedb)
     environment.REDMINE_SMTP_ENABLED  = options.redmine.smtpEnabled;  // sameersbn/redmine
+    environment.REDMINE_SMTP_DOMAIN   = options.redmine.smtpDomain;   // sameersbn/redmine
+    environment.REDMINE_SMTP_HOST     = options.redmine.smtpHost;     // sameersbn/redmine
+    environment.REDMINE_SMTP_PORT     = options.redmine.smtpPort;     // sameersbn/redmine
   },
   setup: function*(browser, options) {
     var url = process.env.REDMINE_URL;

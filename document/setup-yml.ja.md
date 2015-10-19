@@ -319,6 +319,9 @@ gitlab:
 *   **smtpHost:** SMTPサーバホスト名
     *   デフォルトは `172.17.42.1`
     *   環境変数: `GITLAB_SMTP_HOST`
+*   **smtpPort:** SMTPサーバポート番号
+    *   デフォルトは `25`
+    *   環境変数: `GITLAB_SMTP_PORT`
 *   **mailAddress:** このサーバのメールアドレス
     *   デフォルトは `gitlab@[pocci.domainで指定したドメイン名]`
     *   環境変数: `GITLAB_MAIL_ADDRESS`
@@ -470,6 +473,15 @@ redmine:
 *   **url:** Redmine サーバのURL
     *   デフォルトは `http://redmine.[pocci.domainで指定したドメイン名]`
     *   環境変数: `REDMINE_URL`, `REDMINE_PROTOCOL`, `REDMINE_HOST`, `REDMINE_PORT`
+*   **smtpDomain:** SMTPドメイン
+    *   デフォルトは pocci.domain で指定したドメイン名
+    *   環境変数: `REDMINE_SMTP_DOMAIN`
+*   **smtpHost:** SMTPサーバホスト名
+    *   デフォルトは `172.17.42.1`
+    *   環境変数: `REDMINE_SMTP_HOST`
+*   **smtpPort:** SMTPサーバポート番号
+    *   デフォルトは `25`
+    *   環境変数: `REDMINE_SMTP_PORT`
 
 
 sonar:
