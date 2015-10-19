@@ -15,7 +15,7 @@ cat << EOF
 </source>
 <source>
   type tail
-  format /^(.+), \[(?<time>[^ ]+) #([0-9]+)\] (?<log>.*)$/ 
+  format /^(.+), \[(?<time>[^ ]+) \#([0-9]+)\] (?<log>.*)$/
   time_format %FT%T.%N
   time_key time
   path ${POCCI_LOG_DIR}/redmine/redmine/unicorn.stderr.log
@@ -24,7 +24,7 @@ cat << EOF
 </source>
 <source>
   type tail
-  format /^(.+), \[(?<time>[^ ]+) #([0-9]+)\] (?<log>.*)$/ 
+  format /^(.+), \[(?<time>[^ ]+) \#([0-9]+)\] (?<log>.*)$/
   time_format %FT%T.%N
   time_key time
   path ${POCCI_LOG_DIR}/redmine/redmine/unicorn.stdout.log
