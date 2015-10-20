@@ -55,6 +55,35 @@ var loadDefaultConfiguration = function*(browser, url, lang) {
     browser.submitForm('#admin-index form');
     yield browser.yieldable.save('redmine-after-loadDefaultConfiguration');
   }
+
+  browser.url(url + '/settings');
+  yield browser.yieldable.save('redmine-before-configureHostname');
+  var hostName = process.env.REDMINE_HOST;
+  if(process.env.REDMINE_PORT !== '80') {
+    hostName = hostName + ':' + process.env.REDMINE_PORT;
+  }
+  browser.setValue('#settings_host_name', hostName);
+  yield browser.yieldable.save('redmine-doing-configureHostname');
+  yield browser.yieldable.click('#tab-content-general > form > input[type="submit"]');
+  yield browser.yieldable.save('redmine-after-configureHostname');
+
+  browser.url(url + '/settings?tab=notifications');
+  yield browser.yieldable.save('redmine-before-configureNotifications');
+  if(yield exists(browser, '#settings_mail_from')) {
+    browser.setValue('#settings_mail_from', process.env.REDMINE_MAIL_ADDRESS);
+    yield browser.yieldable.save('redmine-doing-configureNotifications');
+    yield browser.yieldable.click('#tab-content-notifications > form > input[type="submit"]');
+    yield browser.yieldable.save('redmine-after-configureNotifications');
+  }
+
+  if(lang) {
+    browser.url(url + '/settings?tab=display');
+    yield browser.yieldable.save('redmine-before-configureLang');
+    browser.selectByValue('#settings_default_language', lang).pause(1000);
+    yield browser.yieldable.save('redmine-doing-configureLang');
+    yield browser.yieldable.click('#tab-content-display > form > input[type="submit"]');
+    yield browser.yieldable.save('redmine-after-configureLang');
+  }
 };
 
 var enableWebService = function*(browser, url) {
@@ -410,6 +439,7 @@ module.exports = {
     options.redmine.smtpDomain  = options.redmine.smtpDomain  || options.pocci.domain;
     options.redmine.smtpHost    = options.redmine.smtpHost    || '172.17.42.1';
     options.redmine.smtpPort    = options.redmine.smtpPort    || '25';
+    options.redmine.mailAddress = options.redmine.mailAddress || 'redmine@' + options.pocci.domain;
     // options.redmine.users = options.redmine.users;
     // options.redmine.projects = options.redmine.projects;
     // options.redmine.lang = options.redmine.lang;
@@ -427,6 +457,7 @@ module.exports = {
     environment.REDMINE_SMTP_DOMAIN   = options.redmine.smtpDomain;   // sameersbn/redmine
     environment.REDMINE_SMTP_HOST     = options.redmine.smtpHost;     // sameersbn/redmine
     environment.REDMINE_SMTP_PORT     = options.redmine.smtpPort;     // sameersbn/redmine
+    environment.REDMINE_MAIL_ADDRESS  = options.redmine.mailAddress;  // redmine.js
   },
   setup: function*(browser, options) {
     var url = process.env.REDMINE_URL;

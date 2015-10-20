@@ -482,6 +482,9 @@ redmine:
 *   **smtpPort:** SMTPサーバポート番号
     *   デフォルトは `25`
     *   環境変数: `REDMINE_SMTP_PORT`
+*   **mailAddress:** このサーバのメールアドレス
+    *   デフォルトは `redmine@[pocci.domainで指定したドメイン名]`
+    *   環境変数: `REDMINE_MAIL_ADDRESS`
 
 
 sonar:

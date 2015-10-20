@@ -28,6 +28,7 @@ jenkins:
     - nodejs
 
 gitlab:
+  smtpEnabled: false
   groups:
     - groupName: example
       projects:
@@ -38,6 +39,7 @@ gitlab:
 
 redmine:
   lang: ja
+  smtpEnabled: false
   projects:
     - projectId: example
       issues:
