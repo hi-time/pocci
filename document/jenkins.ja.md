@@ -123,6 +123,7 @@ GitLab および Jenkins に登録することにより、
 
 ##### GitLab への SSH キー登録
 以下の手順で GitLab に SSH キーを登録できます。
+
 1.  Jenkins ビルド用ユーザーで GitLab にサインインし、、**Profile settings** 画面を開く。
 2.  画面左側の **SSH Keys** をクリックする。
 
@@ -139,6 +140,7 @@ GitLab および Jenkins に登録することにより、
 
 ##### Jenkins への SSH キー登録
 以下の手順で Jenkins に SSH キーを登録できます。
+
 1.  Jenkins にログインし、 ![Jenkinsの管理](images/jenkins-manage-button.png) をクリックする。
 2.  画面左側の ![認証情報](images/jenkins-credential-store-button.png) をクリックする。
 3.  ![グローバルドメイン](images/jenkins-global-domain-button.png) をクリックする。
@@ -167,6 +169,7 @@ GitLab および Jenkins に登録することにより、
 B. スレーブノードの作成
 -----------------------
 Jenkins スレーブノードは以下のようにして作成できます。
+
 1.  Jenkins にログインし、 ![Jenkinsの管理](images/jenkins-manage-button.png) をクリックする。
 2.  **ノードの管理** ボタンをクリックする。
 
