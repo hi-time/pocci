@@ -22,7 +22,6 @@ describe "Login", () ->
       setup: ->
         yield browser.yieldable.end()
 
-
   it "user", (done) ->
     test done,
       when: ->
@@ -73,9 +72,8 @@ describe "Login", () ->
         text = (yield browser.yieldable.getText("nav"))[0]
         assert.ok(text.indexOf("jenkinsci") > -1)
 
-
   it "gitlab", (done) ->
-    loginGitHub = ->
+    loginGitLab = ->
       browser
         .url(process.env.GITLAB_URL + "/users/sign_in")
         .setValue("#username", "bouze")
@@ -90,4 +88,25 @@ describe "Login", () ->
 
     test done,
       expect: ->
-        yield loginGitHub()
+        yield loginGitLab()
+
+  it "kanban", (done) ->
+    test done,
+      when: ->
+        browser.url(process.env.KANBAN_URL + "/")
+        yield browser.yieldable.save("kanban-before-Oauth")
+        yield browser.click("[data-ng-click='oauth()']")
+        yield browser.yieldable.save("kanban-after-Oauth")
+
+        handles = yield browser.windowHandles()
+        yield browser.switchTab(handles.value[1])
+
+        yield browser.yieldable.save("kanban-before-autherize")
+        yield browser.click("input[value='Authorize']")
+        yield browser.switchTab(handles.value[0])
+        yield browser.pause(10000)
+        yield browser.yieldable.save("kanban-after-autherize")
+
+      then: ->
+        url = yield browser.url();
+        assert.equal(url.value, process.env.KANBAN_URL + "/boards/")
