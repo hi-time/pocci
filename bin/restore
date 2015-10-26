@@ -11,6 +11,12 @@ if [ -z "${BACKUP_DIR}" -o ! -f "${BACKUP_DIR}"/restore-all.sh ]; then
     exit 1
 fi
 
+if [ -f "${BACKUP_DIR}"/restore-pocci.sh ]; then
+    "${BACKUP_DIR}"/restore-pocci.sh
+    echo ""
+    echo ""
+fi
+
 cp -r ${CONFIG_DIR} ${BACKUP_DIR}/config-$(date +%Y%m%d-%H%M)
 ${BIN_DIR}/destroy-service
 rm -fr ${CONFIG_DIR}
