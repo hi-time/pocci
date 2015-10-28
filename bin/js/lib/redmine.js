@@ -349,8 +349,8 @@ var setupProject = function*(browser, url, request, options, users, gitlabOption
 
   yield browser.yieldable.call();
 
-  var members = options.members || addDefaultMembers(users);
-  if(members) {
+  var members = toArray(options.members || addDefaultMembers(users));
+  if(members.length > 0) {
     yield addProjectMembers(request, options.projectId, members);
   }
 
@@ -464,15 +464,18 @@ module.exports = {
     var redmineOptions = options.redmine || {};
     var userOptions = options.user || {};
     var gitlabOptions = options.gitlab || {};
-    var users = toArray(redmineOptions.users || userOptions.users);
+    var isEnabledAuth = process.env.ALL_SERVICES.indexOf('user') > -1;
+    var users = (isEnabledAuth)? toArray(redmineOptions.users || userOptions.users) : [];
 
     yield loginByAdmin(browser, url);
     yield loadDefaultConfiguration(browser, url, redmineOptions.lang);
     yield enableWebService(browser, url);
-    yield enableLdap(browser, url);
+    if(isEnabledAuth) {
+      yield enableLdap(browser, url);
+    }
 
     yield logout(browser, 'admin');
-    if(users) {
+    if(users.length > 0) {
       yield addUsers(browser, url, users);
     }
 

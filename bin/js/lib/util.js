@@ -29,9 +29,9 @@ module.exports = {
   },
   getUser: function(user, ldapUsers) {
     var defaultUser = {
-      uid: 'anonymous',
-      userPassword: '',
-      mail: 'anonymous@example.com'
+      uid: 'root',
+      userPassword: process.env.GITLAB_ROOT_PASSWORD,
+      mail: process.env.GITLAB_MAIL_ADDRESS
     };
 
     if(typeof user === 'object') {

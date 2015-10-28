@@ -128,7 +128,12 @@ pocci:
     の中から利用したいものを選んでください。
     *   組み合わせに関する注意:
         *   redmine と kanban は併用できません。
-        *   redmine を指定する場合は必ず gitlab の指定が必要です。
+        *   redmine を指定する場合は必ず services に gitlab の指定が必要です。
+            (別マシン上に起動する gitlab と連携することはできません)
+        *   kanban を指定する場合は services に gitlab を指定するか
+            GITLAB_URL 環境変数に接続可能な gitlab の URL が設定されている必要があります。
+        *   slave を指定する場合は、JENKINS_URL 環境変数に接続可能な
+            jenkins の URL が設定されている必要があります。
         *   外部の LDAP サーバを利用する場合は user の指定はできません。
     *   IPアドレスを使って接続する場合（例：`http://192.168.0.2`）、
         ここで先頭に指定したサービスに接続されます。
