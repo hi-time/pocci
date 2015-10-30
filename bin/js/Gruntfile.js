@@ -45,6 +45,12 @@ module.exports = function(grunt) {
       login: {
         src: ['test/loginTest.js']
       },
+      loginDefault: {
+        src: ['test/loginTest-default.js']
+      },
+      loginRedmine: {
+        src: ['test/loginTest-redmine.js']
+      },
       jenkinsJavaBuild: {
         src: ['test/jenkinsJavaBuildTest.js']
       },
