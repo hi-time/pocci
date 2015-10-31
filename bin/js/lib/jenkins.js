@@ -14,23 +14,23 @@ var registerGitLab = function*(browser, url, job) {
   var jenkinsJobUrl = process.env.JENKINS_URL + '/project/' + job.jobName;
 
   browser.url(url + '/hooks');
-  yield browser.yieldable.save('jenkins-after-registerGitLab');
+  yield browser.save('jenkins-after-registerGitLab');
 
   browser.setValue('#hook_url', jenkinsJobUrl);
 
-  var isSelected = (yield browser.yieldable.isSelected('#hook_push_events'))[0];
+  var isSelected = yield browser.isSelected('#hook_push_events');
   if (!isSelected) {
-    yield browser.yieldable.click('#hook_push_events');
+    yield browser.click('#hook_push_events');
   }
 
-  isSelected = (yield browser.yieldable.isSelected('#hook_merge_requests_events'))[0];
+  isSelected = yield browser.isSelected('#hook_merge_requests_events');
   if (!isSelected) {
-    yield browser.yieldable.click('#hook_merge_requests_events');
+    yield browser.click('#hook_merge_requests_events');
   }
 
-  yield browser.yieldable.save('jenkins-doing-registerGitLab');
+  yield browser.save('jenkins-doing-registerGitLab');
   browser.submitForm('#new_hook');
-  yield browser.yieldable.save('jenkins-after-registerGitLab');
+  yield browser.save('jenkins-after-registerGitLab');
 };
 
 var createJob = function*(browser, jenkins, job, gitlabUrl) {
@@ -151,14 +151,14 @@ var createNodes = function*(jenkins, nodes) {
 
 var enableLdap = function*(browser, url, loginUser) {
   var enableSecurity = function*() {
-    yield browser.yieldable.save('jenkins-doing-enableSecurity-1');
-    yield browser.yieldable.click('input[type="checkbox"][name="_.useSecurity"]');
+    yield browser.save('jenkins-doing-enableSecurity-1');
+    yield browser.click('input[type="checkbox"][name="_.useSecurity"]');
 
     browser.setValue('#slaveAgentPortId', process.env.JENKINS_JNLP_PORT);
-    yield browser.yieldable.save('jenkins-doing-enableSecurity-2');
-    yield browser.yieldable.click('#radio-block-2');
-    yield browser.yieldable.save('jenkins-doing-enableSecurity-3');
-    yield browser.yieldable.click('#yui-gen1-button');
+    yield browser.save('jenkins-doing-enableSecurity-2');
+    yield browser.click('#radio-block-2');
+    yield browser.save('jenkins-doing-enableSecurity-3');
+    yield browser.click('#yui-gen1-button');
 
     var uid = process.env.LDAP_ATTR_LOGIN;
     browser
@@ -169,18 +169,18 @@ var enableLdap = function*(browser, url, loginUser) {
       .setValue('input[type="password"][name="_.managerPasswordSecret"]', process.env.LDAP_BIND_PASSWORD)
       .setValue('input[type="text"][name="_.displayNameAttributeName"]', uid);
 
-    yield browser.yieldable.save('jenkins-doing-enableSecurity-4');
-    yield browser.yieldable.click('#yui-gen6-button');
-    yield browser.yieldable.save('jenkins-after-enableSecurity');
+    yield browser.save('jenkins-doing-enableSecurity-4');
+    yield browser.click('#yui-gen6-button');
+    yield browser.save('jenkins-after-enableSecurity');
   };
 
   browser.url(url + '/configureSecurity/');
-  yield browser.yieldable.save('jenkins-before-enableSecurity');
+  yield browser.save('jenkins-before-enableSecurity');
 
   var useSecuritySelector = 'input[type="checkbox"][name="_.useSecurity"]';
-  var isDisabledSecurity = (yield browser.yieldable.isExisting(useSecuritySelector))[0];
+  var isDisabledSecurity = yield browser.isExisting(useSecuritySelector);
   if(isDisabledSecurity) {
-    isDisabledSecurity = !((yield browser.yieldable.isSelected(useSecuritySelector))[0]);
+    isDisabledSecurity = !(yield browser.isSelected(useSecuritySelector));
   }
 
   if(isDisabledSecurity) {
@@ -188,44 +188,44 @@ var enableLdap = function*(browser, url, loginUser) {
   }
 
   browser.url(url + '/login');
-  yield browser.yieldable.save('jenkins-before-login-by-' + loginUser.uid);
+  yield browser.save('jenkins-before-login-by-' + loginUser.uid);
 
   browser
     .setValue('#j_username', loginUser.uid)
     .setValue('input[type="password"][name="j_password"]', loginUser.userPassword);
-  yield browser.yieldable.save('jenkins-doing-login-by-' + loginUser.uid);
+  yield browser.save('jenkins-doing-login-by-' + loginUser.uid);
 
-  yield browser.yieldable.click('button');
-  yield browser.yieldable.save('jenkins-after-login-by-' + loginUser.uid);
+  yield browser.click('button');
+  yield browser.save('jenkins-after-login-by-' + loginUser.uid);
 
   if(isDisabledSecurity) {
     browser.url(url + '/configureSecurity/');
-    yield browser.yieldable.save('jenkins-before-configureSecurity');
+    yield browser.save('jenkins-before-configureSecurity');
 
-    yield browser.yieldable.click('#radio-block-8');
-    yield browser.yieldable.save('jenkins-doing-configureSecurity');
-    yield browser.yieldable.click('#yui-gen6-button');
-    yield browser.yieldable.save('jenkins-after-configureSecurity');
+    yield browser.click('#radio-block-8');
+    yield browser.save('jenkins-doing-configureSecurity');
+    yield browser.click('#yui-gen6-button');
+    yield browser.save('jenkins-after-configureSecurity');
   }
   return isDisabledSecurity;
 };
 
 var enableMasterToSlaveAccessControl = function*(browser, url) {
   browser.url(url + '/configureSecurity/');
-  yield browser.yieldable.save('jenkins-before-enableMasterToSlaveAccessControl');
-  yield browser.yieldable.click('input[type="checkbox"][name="_.masterToSlaveAccessControl"]');
-  yield browser.yieldable.save('jenkins-doing-enableMasterToSlaveAccessControl');
-  yield browser.yieldable.click('#yui-gen6-button');
-  yield browser.yieldable.save('jenkins-after-enableMasterToSlaveAccessControl');
+  yield browser.save('jenkins-before-enableMasterToSlaveAccessControl');
+  yield browser.click('input[type="checkbox"][name="_.masterToSlaveAccessControl"]');
+  yield browser.save('jenkins-doing-enableMasterToSlaveAccessControl');
+  yield browser.click('#yui-gen6-button');
+  yield browser.save('jenkins-after-enableMasterToSlaveAccessControl');
 };
 
 var saveSecret = function*(browser, url, node, isEnabledAuth) {
   browser.url(url + '/computer/' + node.name);
-  yield browser.yieldable.save('jenkins-saveSecret');
+  yield browser.save('jenkins-saveSecret');
 
   var secret = '';
   if(isEnabledAuth) {
-    var text = (yield browser.yieldable.getText('pre'))[0];
+    var text = yield browser.getText('pre');
     secret = text.replace(/.*-secret/,'-secret');
   }
   writeNodeConf(node, secret);
@@ -244,24 +244,24 @@ var configureGitLab = function*(browser, url, gitlabUrl) {
   var apiToken = yield gitlab.getPrivateToken(browser, gitlabUrl);
 
   browser.url(url + '/configure');
-  yield browser.yieldable.save('jenkins-before-configureGitLab');
+  yield browser.save('jenkins-before-configureGitLab');
   browser
     .setValue('input[type="text"][name="_.gitlabHostUrl"]', gitlabUrl)
     .setValue('input[type="text"][name="_.gitlabApiToken"]', apiToken);
-  yield browser.yieldable.save('jenkins-doing-configureGitLab');
-  yield browser.yieldable.click('#yui-gen17-button');
-  yield browser.yieldable.save('jenkins-after-configureGitLab');
+  yield browser.save('jenkins-doing-configureGitLab');
+  yield browser.click('#yui-gen17-button');
+  yield browser.save('jenkins-after-configureGitLab');
 };
 
 var configureMail = function*(browser, url) {
   browser.url(url + '/configure');
-  yield browser.yieldable.save('jenkins-before-configureMail');
+  yield browser.save('jenkins-before-configureMail');
   browser
     .setValue('input[type="text"][name="_.smtpServer"]', process.env.JENKINS_SMTP_HOST)
     .setValue('input[type="text"][name="_.adminAddress"]', process.env.JENKINS_MAIL_ADDRESS);
-  yield browser.yieldable.save('jenkins-doing-configureMail');
-  yield browser.yieldable.click('#yui-gen17-button');
-  yield browser.yieldable.save('jenkins-after-configureMail');
+  yield browser.save('jenkins-doing-configureMail');
+  yield browser.click('#yui-gen17-button');
+  yield browser.save('jenkins-after-configureMail');
 };
 
 var normalizeNode = function(node, nodes) {

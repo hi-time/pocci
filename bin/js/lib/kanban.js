@@ -9,20 +9,20 @@ var server = require('co-request');
 
 var registerOauth = function*(browser, url, keys) {
   browser.url(url + '/oauth/applications/new');
-  yield browser.yieldable.save('kanban-before-registerOauth');
+  yield browser.save('kanban-before-registerOauth');
   var redirectPath = '/assets/html/user/views/oauth.html';
   browser
     .setValue('#doorkeeper_application_name', 'Kanban')
     .setValue('#doorkeeper_application_redirect_uri',
         process.env.KANBAN_URL + redirectPath + '\n' +
         'http://kanban' + redirectPath);
-  yield browser.yieldable.save('kanban-doing-registerOauth');
+  yield browser.save('kanban-doing-registerOauth');
 
   browser.submitForm('#new_doorkeeper_application');
-  yield browser.yieldable.save('kanban-after-registerOauth');
+  yield browser.save('kanban-after-registerOauth');
 
-  keys.clientId = (yield browser.yieldable.getText('#application_id'))[0];
-  keys.secret = (yield browser.yieldable.getText('#secret'))[0];
+  keys.clientId = yield browser.getText('#application_id');
+  keys.secret = yield browser.getText('#secret');
 };
 
 var updateComposeFile = function(keys) {

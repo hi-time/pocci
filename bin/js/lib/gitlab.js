@@ -10,53 +10,53 @@ var adminPassword = process.env.GITLAB_ROOT_PASSWORD;
 
 var logout = function*(browser) {
   browser.url(process.env.GITLAB_URL + '/profile');
-  yield browser.yieldable.save('gitlab-before-logout');
-  yield browser.yieldable.click('a[href="/users/sign_out"]');
-  yield browser.yieldable.save('gitlab-after-logout');
+  yield browser.save('gitlab-before-logout');
+  yield browser.click('a[href="/users/sign_out"]');
+  yield browser.save('gitlab-after-logout');
 };
 
 var login = function*(browser, url, user, password) {
   browser.url(url + '/users/sign_in');
-  yield browser.yieldable.save('gitlab-before-login-by-' + user);
+  yield browser.save('gitlab-before-login-by-' + user);
 
   browser
     .setValue('#username', user)
     .setValue('#password', password);
-  yield browser.yieldable.save('gitlab-doing-login-by-' + user);
+  yield browser.save('gitlab-doing-login-by-' + user);
 
   browser.submitForm('#new_ldap_user');
-  yield browser.yieldable.save('gitlab-after-login-by-' + user);
+  yield browser.save('gitlab-after-login-by-' + user);
 };
 
 var newPassword = function*(browser, url, password) {
   browser.url(url + '/profile/password/new');
-  yield browser.yieldable.save('gitlab-before-newPassword');
+  yield browser.save('gitlab-before-newPassword');
 
   browser
     .setValue('#user_current_password', password)
     .setValue('#user_password', password)
     .setValue('#user_password_confirmation', password);
-  yield browser.yieldable.save('gitlab-doing-newPassword');
+  yield browser.save('gitlab-doing-newPassword');
 
   browser.submitForm('#edit_user_1');
-  yield browser.yieldable.save('gitlab-after-newPassword');
+  yield browser.save('gitlab-after-newPassword');
 };
 
 
 var loginByAdmin = function*(browser, url) {
   browser.url(url + '/users/sign_in');
-  yield browser.yieldable.save('gitlab-before-loginByAdmin');
+  yield browser.save('gitlab-before-loginByAdmin');
 
-  yield browser.yieldable.click('a[href="#tab-signin"]');
-  yield browser.yieldable.save('gitlab-loginByAdmin-siginin-tab-clicked');
+  yield browser.click('a[href="#tab-signin"]');
+  yield browser.save('gitlab-loginByAdmin-siginin-tab-clicked');
 
   browser
     .setValue('#user_login', 'root')
     .setValue('#user_password', adminPassword);
-  yield browser.yieldable.save('gitlab-doing-loginByAdmin');
+  yield browser.save('gitlab-doing-loginByAdmin');
 
   browser.submitForm('#new_user');
-  yield browser.yieldable.save('gitlab-after-loginByAdmin');
+  yield browser.save('gitlab-after-loginByAdmin');
 };
 
 var firstLoginByAdmin = function*(browser, url) {
@@ -67,8 +67,8 @@ var firstLoginByAdmin = function*(browser, url) {
 
 var getPrivateToken = function*(browser, url) {
   browser.url(url + '/profile/account');
-  yield browser.yieldable.save('gitlab-getPrivateToken');
-  return (yield browser.yieldable.getValue('#token'))[0];
+  yield browser.save('gitlab-getPrivateToken');
+  return yield browser.getValue('#token');
 };
 
 var createRequest = function*(browser, url) {

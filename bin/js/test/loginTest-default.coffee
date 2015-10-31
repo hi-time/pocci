@@ -21,7 +21,7 @@ describe "Login (default)", () ->
   after (done) ->
     test done,
       setup: ->
-        yield browser.yieldable.end()
+        yield browser.end()
 
   it "gitlab", (done) ->
     test done,
@@ -31,19 +31,21 @@ describe "Login (default)", () ->
   it "kanban", (done) ->
     test done,
       when: ->
-        browser.url(process.env.KANBAN_URL + "/")
-        yield browser.yieldable.save("kanban-before-Oauth")
-        yield browser.click("[data-ng-click='oauth()']")
-        yield browser.yieldable.save("kanban-after-Oauth")
+        yield browser
+          .url(process.env.KANBAN_URL + "/")
+          .save("kanban-before-Oauth")
+          .click("[data-ng-click='oauth()']")
+          .save("kanban-after-Oauth")
 
         handles = yield browser.windowHandles()
-        yield browser.switchTab(handles.value[1])
+        console.log(handles)
 
-        yield browser.yieldable.save("kanban-before-autherize")
-        yield browser.click("input[value='Authorize']")
-        yield browser.switchTab(handles.value[0])
-        yield browser.pause(10000)
-        yield browser.yieldable.save("kanban-after-autherize")
+        yield browser.switchTab(handles.value[1])
+          .save("kanban-before-autherize")
+          .click("input[value='Authorize']")
+          .switchTab(handles.value[0])
+          .pause(10000)
+          .save("kanban-after-autherize")
 
       then: ->
         url = yield browser.url();

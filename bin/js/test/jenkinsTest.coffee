@@ -74,7 +74,7 @@ describe "Jenkins", ->
   after (done) ->
     test done,
       cleanup: ->
-        yield browser.yieldable.end()
+        yield browser.end()
 
   it "creates a node", (done) ->
     test done,

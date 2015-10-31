@@ -13,10 +13,10 @@ module.exports.loginGitLab = (browser) ->
     .setValue("#password", "password")
     .submitForm("#new_ldap_user")
 
-  yield browser.yieldable.call()
+  yield browser.call()
 
   browser.url(process.env.GITLAB_URL + "/profile/")
-  text = (yield browser.yieldable.getValue("#user_name"))[0]
+  text = yield browser.getValue("#user_name")
   assert.equal(text, "bouze")
 
 
@@ -34,54 +34,63 @@ describe "Login", () ->
   after (done) ->
     test done,
       setup: ->
-        yield browser.yieldable.end()
+        yield browser.end()
 
   it "user", (done) ->
     test done,
       when: ->
-        browser
+        yield browser
           .url(process.env.USER_URL + "/cmd.php?cmd=login_form")
+          .call()
           .setValue("#login", "cn=admin,dc=example,dc=com")
           .setValue("#password", "admin")
           .submitForm("form")
-
-        yield browser.yieldable.call()
+          .call()
 
       then: ->
-        browser.url(process.env.USER_URL + "/")
-        text = (yield browser.yieldable.getText("td.logged_in"))[0]
+        text = yield browser
+          .url(process.env.USER_URL + "/")
+          .call()
+          .getText("td.logged_in")
         assert.equal(text, "Logged in as: cn=admin")
 
 
   it "jenkins", (done) ->
     test done,
       when: ->
-        browser
+        yield browser
           .url(process.env.JENKINS_URL + "/login")
+          .call()
           .setValue("#j_username", "bouze")
           .setValue("input[type='password'][name='j_password']", "password")
-
-        yield browser.yieldable.call()
-        yield browser.yieldable.click("button")
+          .save("jenkins-before-login")
+          .click("button")
+          .pause(1000)
+          .save("jenkins-after-login")
 
       then: ->
-        browser.url(process.env.JENKINS_URL + "/")
-        text = (yield browser.yieldable.getText("#header div.login a[href='/user/bouze'] > b"))[0]
+        text = yield browser
+          .url(process.env.JENKINS_URL + "/")
+          .save("jenkins-assert-login")
+          .getText("#header div.login a[href='/user/bouze'] > b")
         assert.equal(text, "bouze")
 
 
   it "sonar", (done) ->
     test done,
       when: ->
-        browser
+        yield browser
           .url(process.env.SONAR_URL + "/sessions/new")
+          .call()
           .setValue("#login", "jenkinsci")
           .setValue("#password", "password")
           .submitForm("form")
+          .call()
 
-        yield browser.yieldable.call()
       then: ->
-        browser.url(process.env.SONAR_URL + "/")
-        browser.pause(1000)
-        text = (yield browser.yieldable.getText("nav"))[0]
+        text = yield browser
+          .url(process.env.SONAR_URL + "/")
+          .pause(1000)
+          .call()
+          .getText("nav")
         assert.ok(text.indexOf("jenkinsci") > -1)

@@ -21,7 +21,7 @@ describe "Login (redmine)", () ->
   after (done) ->
     test done,
       setup: ->
-        yield browser.yieldable.end()
+        yield browser.end()
 
   it "gitlab", (done) ->
     test done,
@@ -31,15 +31,17 @@ describe "Login (redmine)", () ->
   it "redmine", (done) ->
     test done,
       when: ->
-        browser.url(process.env.REDMINE_URL + "/login")
-        yield browser.yieldable.call()
-        browser.setValue("#username", "jenkinsci").setValue("#password", "password")
-        yield browser.yieldable.call()
-        browser.submitForm("#login-form form");
+        yield browser.url(process.env.REDMINE_URL + "/login")
+          .call()
+          .setValue("#username", "jenkinsci")
+          .setValue("#password", "password")
+          .submitForm("#login-form form")
+          .call()
 
       then: ->
-        browser.url(process.env.REDMINE_URL + "/")
-        yield browser.yieldable.call()
-        text = (yield browser.yieldable.getText("#loggedas"))[0]
+        text = yield browser.url(process.env.REDMINE_URL + "/")
+          .call()
+          .getText("#loggedas")
+
         assert.ok(text.indexOf("jenkinsci") > -1)
 

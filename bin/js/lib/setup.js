@@ -65,7 +65,7 @@ var setup = function*(yamlFile, keepOpenBrowser) {
 
   if(!keepOpenBrowser) {
     console.log('*** Closing browser...');
-    yield browser.yieldable.end();
+    yield browser.end();
   }
 };
 
