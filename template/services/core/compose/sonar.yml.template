@@ -15,7 +15,7 @@ sonar:
   image: xpfriend/sonarqube:${VERSION_SONARQUBE}
   env_file:
     - ./.env
-  dns: 172.17.42.1
+  dns: ${DNS_ADDRESS}
   environment:
     - LDAP_UID=${LDAP_ATTR_LOGIN}
     - LDAP_REAL_NAME=${SONAR_LDAP_REAL_NAME}

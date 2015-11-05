@@ -18,7 +18,7 @@ gitlab:
   image: sameersbn/gitlab:${VERSION_GITLAB}
   env_file:
     - ./.env
-  dns: 172.17.42.1
+  dns: ${DNS_ADDRESS}
   environment:
     - GITLAB_SSH_PORT=${GITLAB_SSH_PORT}
     - LDAP_ENABLED=${GITLAB_LDAP_ENABLED}

@@ -13,7 +13,7 @@ redmine:
   image: sameersbn/redmine:${VERSION_REDMINE}
   env_file:
     - ./.env
-  dns: 172.17.42.1
+  dns: ${DNS_ADDRESS}
   environment:
     - SMTP_ENABLED=${REDMINE_SMTP_ENABLED}
     - SMTP_DOMAIN=${REDMINE_SMTP_DOMAIN}

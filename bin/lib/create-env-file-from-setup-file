@@ -7,6 +7,12 @@ source ${BASE_DIR}/bin/lib/init-env
 cd ${BASE_DIR}
 
 set +e
+DOCKER_HOST_ADDRESS=`docker network inspect bridge 2> /dev/null |grep Gateway |sed -E 's/.*".+".*"(.+)"/\1/'`
+if [ -z "${DOCKER_HOST_ADDRESS}" ]; then
+    DOCKER_HOST_ADDRESS=172.17.42.1
+fi
+export DOCKER_HOST_ADDRESS
+
 POCCIR_OPTS="-e POCCI_DIR=${BASE_DIR}" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} node -e "require('./bin/js/lib/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/tmp.env
 RC=$?
 
@@ -19,3 +25,6 @@ fi
 
 cat ${CONFIG_DIR}/tmp.env | tr -d '\r' >${CONFIG_DIR}/.env
 rm ${CONFIG_DIR}/tmp.env
+
+echo "DOCKER_HOST_ADDRESS=${DOCKER_HOST_ADDRESS}" >>${CONFIG_DIR}/.env
+echo "DNS_ADDRESS=${DOCKER_HOST_ADDRESS}" >>${CONFIG_DIR}/.env

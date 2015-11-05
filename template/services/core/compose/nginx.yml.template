@@ -4,7 +4,7 @@ nginx:
   image: nginx:${VERSION_NGINX}
   env_file:
     - ./.env
-  dns: 172.17.42.1
+  dns: ${DNS_ADDRESS}
   links: [ ${POCCI_PUBLIC_CONTAINERS} ]
   volumes:
    - ./nginx:/etc/nginx/conf.d

@@ -9,7 +9,7 @@ __NAME:
     com.xpfriend.pocci.backup-ignore: "/tmp"
   env_file:
     - ./.env
-  dns: 172.17.42.1
+  dns: ${DNS_ADDRESS}
   environment:
     - JENKINS_SLAVE_SECRET=__SECRET
     - JENKINS_URL=${JENKINS_URL}

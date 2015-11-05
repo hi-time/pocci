@@ -7,9 +7,10 @@ source ${BASE_DIR}/bin/lib/init-env
 if [ -z "${POCCIR_OPTS}" ]; then
     if [ -f "${CONFIG_DIR}/.env" ]; then
         POCCIR_OPTS="--env-file ${CONFIG_DIR}/.env"
-    fi
-    if [ `docker ps |grep "${DNS_CONTAINER}" |wc -l` -ne 0 ]; then
-        POCCIR_OPTS="${POCCIR_OPTS} --dns 172.17.42.1"
+        export `grep DNS_ADDRESS ${CONFIG_DIR}/.env`
+        if [ `docker ps |grep "${DNS_CONTAINER}" |wc -l` -ne 0 ]; then
+            POCCIR_OPTS="${POCCIR_OPTS} --dns ${DNS_ADDRESS}"
+        fi
     fi
 fi
 

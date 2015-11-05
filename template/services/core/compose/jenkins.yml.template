@@ -4,7 +4,7 @@ jenkins:
   image: xpfriend/jenkins:${VERSION_JENKINS}
   env_file:
     - ./.env
-  dns: 172.17.42.1
+  dns: ${DNS_ADDRESS}
   ports:
     - "${JENKINS_JNLP_PORT}:50000"
 
