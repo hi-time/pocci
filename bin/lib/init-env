@@ -14,8 +14,8 @@ TEMP_CONFIG_DIR=${JS_DIR}/config
 TEMPLATE_DIR=${BASE_DIR}/template
 CONFIG_DIR=${BASE_DIR}/config
 
-if [ -z "${DOCKER_CLIENT_TIMEOUT}" ]; then
-    export DOCKER_CLIENT_TIMEOUT=240
+if [ -z "${COMPOSE_HTTP_TIMEOUT}" ]; then
+    export COMPOSE_HTTP_TIMEOUT=240
 fi
 
 if [ -z "${POCCI_SERVICE_PREFIX}" ]; then
