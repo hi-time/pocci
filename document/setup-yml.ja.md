@@ -25,10 +25,10 @@ user:
       sn:           CI
       mail:         jenkins-ci@example.com
       userPassword: password
-    - uid:          bouze
+    - uid:          boze
       givenName:    Taro
-      sn:           BOUZE
-      mail:         bouze@example.com
+      sn:           BOZE
+      mail:         boze@example.com
       userPassword: password
 
 jenkins:
@@ -157,10 +157,10 @@ user:
 ```yaml
 user:
   users:
-    - uid:          bouze
+    - uid:          boze
       givenName:    太郎
       sn:           坊主
-      mail:         bouze@example.com
+      mail:         boze@example.com
       userPassword: password
 ```
 
@@ -256,7 +256,7 @@ gitlab:
           issues:
             - 初期コード登録
   users:
-    - uid:          bouze
+    - uid:          boze
       userPassword: password
 ```
 
@@ -295,7 +295,7 @@ gitlab:
         ```yaml
         user:
           users:
-            - uid:          bouze
+            - uid:          boze
               userPassword: password
               ...
 
@@ -341,7 +341,7 @@ Jenkins 関連定義。
 ```yaml
 jenkins:
   user:
-    uid:          bouze
+    uid:          boze
     userPassword: password
   jobs:
     - example/example-java
@@ -374,7 +374,7 @@ jenkins:
         ```yaml
         user:
           users:
-            - uid:          bouze
+            - uid:          boze
               userPassword: password
               ...
 
@@ -430,7 +430,7 @@ redmine:
       issues:
         - 初期コード登録
   users:
-    - uid:          bouze
+    - uid:          boze
       userPassword: password
   lang: ja
 ```
@@ -463,7 +463,7 @@ redmine:
         ```yaml
         user:
           users:
-            - uid:          bouze
+            - uid:          boze
               userPassword: password
               ...
 

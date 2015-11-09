@@ -6,7 +6,7 @@ gitlab:
   users:
     - uid:          jenkinsci
       userPassword: password
-    - uid:          bouze
+    - uid:          boze
       userPassword: password
   groups:
     - groupName: group01
@@ -23,4 +23,4 @@ gitlab:
         - projectName: project02
     - groupName: group02
       members:
-        - bouze
+        - boze

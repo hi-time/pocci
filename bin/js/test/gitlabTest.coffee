@@ -131,7 +131,7 @@ describe "GitLab", ->
               "body[0].access_level": 50
               "body[1].username":     "jenkinsci"
               "body[1].access_level": 50
-              "body[2].username":     "bouze"
+              "body[2].username":     "boze"
               "body[2].access_level": 50
 
           group02Members:
@@ -141,5 +141,5 @@ describe "GitLab", ->
               "body.length":          2
               "body[0].username":     "root"
               "body[0].access_level": 50
-              "body[1].username":     "bouze"
+              "body[1].username":     "boze"
               "body[1].access_level": 50

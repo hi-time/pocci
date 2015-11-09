@@ -45,7 +45,7 @@ phpLDAPadmin | cn=admin,dc=example,dc=com | admin       |
 ユーザー名 | パスワード
 ---------- | --------
 jenkinsci  | password
-bouze      | password
+boze       | password
 
 *   GitLab は **LDAP**タブから Sign in します。
 *   かんばんボードは `with http://gitlab.pocci.test/` をクリックすることで、

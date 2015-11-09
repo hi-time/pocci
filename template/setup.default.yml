@@ -16,10 +16,10 @@ user:
       sn:           CI
       mail:         jenkins-ci@example.com
       userPassword: password
-    - uid:          bouze
+    - uid:          boze
       givenName:    Taro
-      sn:           BOUZE
-      mail:         bouze@example.com
+      sn:           BOZE
+      mail:         boze@example.com
       userPassword: password
 
 jenkins:
@@ -31,7 +31,6 @@ jenkins:
     - nodejs
 
 gitlab:
-  topPage: /example/users-guide/blob/master/README.md
   smtpEnabled: true
   groups:
     - groupName: example

@@ -9,7 +9,7 @@ test = require("./resq.js")
 module.exports.loginGitLab = (browser) ->
   browser
     .url(process.env.GITLAB_URL + "/users/sign_in")
-    .setValue("#username", "bouze")
+    .setValue("#username", "boze")
     .setValue("#password", "password")
     .submitForm("#new_ldap_user")
 
@@ -17,7 +17,7 @@ module.exports.loginGitLab = (browser) ->
 
   browser.url(process.env.GITLAB_URL + "/profile/")
   text = yield browser.getValue("#user_name")
-  assert.equal(text, "bouze")
+  assert.equal(text, "boze")
 
 
 describe "Login", () ->
@@ -61,7 +61,7 @@ describe "Login", () ->
         yield browser
           .url(process.env.JENKINS_URL + "/login")
           .call()
-          .setValue("#j_username", "bouze")
+          .setValue("#j_username", "boze")
           .setValue("input[type='password'][name='j_password']", "password")
           .save("jenkins-before-login")
           .click("button")
@@ -72,8 +72,8 @@ describe "Login", () ->
         text = yield browser
           .url(process.env.JENKINS_URL + "/")
           .save("jenkins-assert-login")
-          .getText("#header div.login a[href='/user/bouze'] > b")
-        assert.equal(text, "bouze")
+          .getText("#header div.login a[href='/user/boze'] > b")
+        assert.equal(text, "boze")
 
 
   it "sonar", (done) ->
