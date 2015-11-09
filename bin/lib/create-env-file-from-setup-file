@@ -7,9 +7,9 @@ source ${BASE_DIR}/bin/lib/init-env
 cd ${BASE_DIR}
 
 set +e
-DOCKER_HOST_ADDRESS=`docker network inspect bridge 2> /dev/null |grep Gateway |sed -E 's/.*".+".*"(.+)"/\1/'`
+DOCKER_HOST_ADDRESS=`ip -o -f inet addr show docker0 | sed -E 's/.*inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+).*/\1/'`
 if [ -z "${DOCKER_HOST_ADDRESS}" ]; then
-    DOCKER_HOST_ADDRESS=172.17.42.1
+    DOCKER_HOST_ADDRESS=172.17.0.1
 fi
 export DOCKER_HOST_ADDRESS
 
