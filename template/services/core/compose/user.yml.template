@@ -11,15 +11,10 @@ ldap:
     - "${LDAP_PORT}:389"
 
 user:
-  image: osixia/phpldapadmin:${VERSION_PHPLDAPADMIN}
+  image: xpfriend/pocci-account-center:${VERSION_ACCOUNT_CENTER}
   env_file:
     - ./.env
   links:
-   - ldap:ldap
-  environment:
-    - PHPLDAPADMIN_LDAP_HOSTS=ldap
-    - PHPLDAPADMIN_HTTPS=false
-  volumes:
-    - /var/log
-
+   - ldap:${LDAP_HOST}
+  restart: always
 EOF

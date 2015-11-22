@@ -34,6 +34,6 @@ CIサービス全体      | <https://github.com/xpfriend/pocci>
 GitLab              | <https://gitlab.com/>, <https://github.com/sameersbn/docker-gitlab>
 Jenkins             | <https://jenkins-ci.org/>
 SonarQube           | <http://www.sonarqube.org/>
-phpLDAPadmin        | <http://phpldapadmin.sourceforge.net/>, <https://github.com/osixia/docker-phpLDAPadmin>
 GitLab Kanban Board | <http://kanban.leanlabs.io/>
 Redmine             | <http://www.redmine.org/>, <https://github.com/sameersbn/docker-redmine/>
+Open LDAP           | <http://www.openldap.org/>, <https://github.com/osixia/docker-openldap>

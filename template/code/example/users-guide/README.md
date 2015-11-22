@@ -32,7 +32,7 @@ XXX.XXX.XXX.XXX user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci
 
 URL                        | サービス                                                | 主な用途
 -------------------------- | ------------------------------------------------------- | ---------------------------------------------
-http://user.pocci.test/    | [phpLDAPadmin](http://phpldapadmin.sourceforge.net/)    | パスワード変更
+http://user.pocci.test/    | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | パスワード変更
 http://gitlab.pocci.test/  | [GitLab](https://gitlab.com/)                           | コードリポジトリ管理 / チケット (Issue) 管理
 http://jenkins.pocci.test/ | [Jenkins](https://jenkins-ci.org/)                      | CIジョブ管理
 http://sonar.pocci.test/   | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析
@@ -42,28 +42,14 @@ http://kanban.pocci.test/  | [GitLab Kanban Board](http://kanban.leanlabs.io/)  
 ### 2. パスワードの変更
 以下の手順でパスワードの変更を行ってください。
 
-1.  `http://user.pocci.test/` にアクセスし、画面左側にある **login** をクリックする。
+1.  `http://user.pocci.test/` にアクセスし、**User Id** と **Password** を入力し、**LOGIN** をクリックしてログインする。
 
-    ![初期画面](images/user-01.png)
+    ![ログイン](images/user-01.png)
 
-2.  **Login DN** と **Password** を入力し、**Authenticate** をクリックしてログインする。
-    *   **Login DN** : `cn=ユーザー名,dc=example,dc=com`
-    *   **Password** : `password`
+2.  **Password** に新しいパスワードを入力し、**SAVE** をクリックする。
 
-    ![ログイン](images/user-02.png)
+    ![パスワード変更](images/user-02.png)
 
-3.  左上の **cn=ユーザー名** の場所をクリックする。
-
-    ![ログイン後](images/user-03.png)
-
-4.  表示された画面を一番下までスクロールして、
-    **Password** に任意のパスワードを入力し、**Update Object** をクリックする。
-
-    ![パスワード変更](images/user-04.png)
-
-5.  変更内容の確認画面が表示されるので、**Update Object** をクリックする。
-
-    ![パスワード変更確認](images/user-05.png)
 
 
 ### 3. プロファイル（名前と顔写真）設定

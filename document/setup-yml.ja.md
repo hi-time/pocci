@@ -165,7 +165,7 @@ user:
 ```
 
 *   **users:** 初期登録ユーザー
-    *   pocci に組み込まれているユーザー管理機能 (Open LDAP + phpLDAPadmin) を使用する場合、
+    *   pocci に組み込まれているユーザー管理機能 (Open LDAP) を使用する場合、
         上記定義例のように `uid` (ユーザーID), `userPassword` (パスワード), 
         `givenName` (名), `sn` (姓), `mail` (メールアドレス) を指定してください。
         これらの値を利用してユーザー登録が行われます。

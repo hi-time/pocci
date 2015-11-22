@@ -1,40 +1,26 @@
 利用者の登録
 ============
 
-組み込みの利用者管理機能 (user サービス) を利用している場合、
+組み込みの利用者管理機能 (Account Center) を利用している場合、
 以下の手順で LDAP サーバーに利用者登録を行うことができます。
 
-1.  ブラウザで user サービスのURL（例: http://user.pocci.test/ ）にアクセスする。
-2.  画面左側の **login** をクリックしてログイン画面を表示する。
+1.  ブラウザで Account Center のURL（例: http://user.pocci.test/ ）にアクセスし、
+    **User Id** (`admin`) と **Password** (デフォルト: `admin`) を入力し、
+    **LOGIN** をクリックして admin 権限でログインする。
 
-    ![ログインボタン](images/user-01.png)
+    ![ログイン](images/user-03.png)
 
-3.  **Login DN:** (デフォルト: `cn=admin,dc=example,dc=com`)、
-    **Password:** (デフォルト: `admin`) を入力して、
-    **Authenticate** ボタンをクリックして、admin 権限でログインする。
+2.  **Search** に作成したい利用者のIDを入力し、**NEW USER** をクリックする。
 
-    ![ログイン](images/user-02.png)
+    ![ID入力](images/user-04.png)
 
-4.  画面左側の **dc=xxx,dc=xxx*** (デフォルト設定の場合、 `dc=example,dc=com`)
-    の左にある **+** ボタンをクリックする。
-
-    ![+ボタン](images/user-03.png)
-
-5.  **Create new entry here** をクリックする。
-
-    ![Create new entry here](images/user-04.png)
-
-6.  **Templates:** の中から一番先頭にある `Courier Mail: Account` を選択する。
-
-    ![Courier Mail: Account](images/user-05.png)
-
-7.  以下のようにユーザー情報を入力し、**Create Object** をクリックする。
-    *   **Given Name :**    名
-    *   **Last name :**     姓
-    *   **Common Name :**   ユーザーID
-        *   自動入力されますが、ユーザーIDに書き換えてください。
-    *   **User ID :**       ユーザーID (Common Name と同じにする)
-    *   **Email :**         E-mail アドレス
+3.  以下のようにユーザー情報を入力し、**SAVE** をクリックする。
     *   **Password :**      初期パスワード
+    *   **Last Name :**     姓
+    *   **First Name :**    名
+    *   **Display Name :**  画面表示名
+        *   自動入力されますが、必要に応じて修正してください。
+    *   **Email :**         E-mail アドレス
+    *   **Avatar URL :**    アイコン画像ファイルのURL (省略可)
 
-8.  確認画面が表示されるので **Commit** をクリックする。
+    ![ユーザー情報入力](images/user-05.png)

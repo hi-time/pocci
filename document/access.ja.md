@@ -20,7 +20,7 @@ URL                             | サービス                                  
 http://gitlab.pocci.test/       | [GitLab](https://gitlab.com/)                           | コードリポジトリ管理 / チケット (Issue) 管理
 http://jenkins.pocci.test/      | [Jenkins](https://jenkins-ci.org/)                      | CIジョブ管理
 http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析
-http://user.pocci.test/         | [phpLDAPadmin](http://phpldapadmin.sourceforge.net/)    | サービス利用者の登録
+http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | サービス利用者の登録 (LDAP)
 http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | かんばんボード
 http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | チケット (Issue) 管理
 
@@ -31,12 +31,12 @@ http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)            
 ----------
 
 ### 管理者
-サービス     | ユーザー名                 | パスワード  | 備考
------------- | -------------------------- | ----------- | ------------------
-GitLab       | root                       | 5iveL!fe    | Standard タブから
-SonarQube    | admin                      | admin       |
-Redmine      | admin                      | admin       |
-phpLDAPadmin | cn=admin,dc=example,dc=com | admin       |
+サービス              | ユーザー名                 | パスワード  | 備考
+--------------------- | -------------------------- | ----------- | ------------------
+GitLab                | root                       | 5iveL!fe    | Standard タブから
+SonarQube             | admin                      | admin       |
+Redmine               | admin                      | admin       |
+Account Center (LDAP) | admin                      | admin       |
 
 *   GitLab は **Standard**タブから Sign in します。
 

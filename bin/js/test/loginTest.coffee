@@ -36,23 +36,37 @@ describe "Login", () ->
       setup: ->
         yield browser.end()
 
-  it "user", (done) ->
+  it "user-admin", (done) ->
     test done,
       when: ->
         yield browser
-          .url(process.env.USER_URL + "/cmd.php?cmd=login_form")
+          .url(process.env.USER_URL)
           .call()
-          .setValue("#login", "cn=admin,dc=example,dc=com")
-          .setValue("#password", "admin")
-          .submitForm("form")
-          .call()
+          .setValue("#login-cn", "admin")
+          .setValue("#login-userPassword", "admin")
+          .save("user-admin-berore-autherize")
+          .click("#login button")
+          .save("user-admin-after-autherize")
 
       then: ->
-        text = yield browser
-          .url(process.env.USER_URL + "/")
+        assert.ok(yield browser.isExisting("#user-form"))
+        assert.ok(yield browser.isExisting("#search-form"))
+
+  it "user-not-admin", (done) ->
+    test done,
+      when: ->
+        yield browser
+          .url(process.env.USER_URL)
           .call()
-          .getText("td.logged_in")
-        assert.equal(text, "Logged in as: cn=admin")
+          .setValue("#login-cn", "boze")
+          .setValue("#login-userPassword", "password")
+          .save("user-not-admin-berore-autherize")
+          .click("#login button")
+          .save("user-not-admin-after-autherize")
+
+      then: ->
+        assert.ok(yield browser.isExisting("#user-form"))
+        assert.notOk(yield browser.isExisting("#search-form"))
 
 
   it "jenkins", (done) ->
