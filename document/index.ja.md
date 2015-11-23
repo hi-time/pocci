@@ -12,6 +12,7 @@ CIサービス構築・利用手引き
 導入後の設定方法
 ----------------
 *   [サービスへの接続方法](./access.ja.md)
+*   [管理者パスワードの変更方法](./change-admin-password.ja.md)
 *   [利用者の登録](./add-user.ja.md)
 *   [GitLab の設定](./gitlab.ja.md)
 *   [Jenkins の設定](./jenkins.ja.md)

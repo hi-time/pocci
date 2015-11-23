@@ -4,6 +4,9 @@ if [ -d ${TEMP_CONFIG_DIR} ]; then
 fi
 mkdir ${TEMP_CONFIG_DIR}
 cp -r ${TEMPLATE_DIR}/* ${TEMP_CONFIG_DIR}
-mkdir ${TEMP_CONFIG_DIR}/services/core/volumes
+
+if [ ! -d ${TEMP_CONFIG_DIR}/services/core/volumes ]; then
+    mkdir ${TEMP_CONFIG_DIR}/services/core/volumes
+fi
 
 cp ${CONFIG_DIR}/setup.yml ${TEMP_CONFIG_DIR}

@@ -39,6 +39,8 @@ Redmine               | admin                      | admin       |
 Account Center (LDAP) | admin                      | admin       |
 
 *   GitLab は **Standard**タブから Sign in します。
+*   管理者アカウントのパスワード変更方法については
+    [管理者パスワードの変更方法](./change-admin-password.ja.md) を参照してください。
 
 
 ### 開発者
@@ -50,4 +52,3 @@ boze       | password
 *   GitLab は **LDAP**タブから Sign in します。
 *   かんばんボードは `with http://gitlab.pocci.test/` をクリックすることで、
     GitLab の OAuth 認証機能を利用してユーザー名、パスワードの入力無しでログインできます。
-

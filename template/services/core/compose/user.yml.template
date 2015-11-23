@@ -9,6 +9,8 @@ ldap:
     - LDAP_LOG_LEVEL=256
   ports:
     - "${LDAP_PORT}:389"
+  volumes:
+    - ./volumes/user:/tools
 
 user:
   image: xpfriend/pocci-account-center:${VERSION_ACCOUNT_CENTER}
