@@ -13,3 +13,4 @@ config/
 temp/
 backup/
 jenkins-slaves-version.json
+*.d.ts

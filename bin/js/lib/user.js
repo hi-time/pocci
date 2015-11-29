@@ -1,15 +1,11 @@
 'use strict';
-var ldap = require('ldapjs');
-var thunkify = require('thunkify');
+var LdapClient = require('promised-ldap');
 var ssha = require('ssha');
 var toArray = require('./util.js').toArray;
 var util = require('./util.js');
 var parse = require('url').parse;
 
 var addUsers = function*(client, users, baseDn) {
-  var add = thunkify(client.add.bind(client));
-  var del = thunkify(client.del.bind(client));
-
   for(var i = 0; i < users.length; i++) {
     var user = users[i];
     var plainPassword = user.userPassword;
@@ -18,7 +14,7 @@ var addUsers = function*(client, users, baseDn) {
     user.cn = user.cn || user.uid;
     var dn = 'cn=' + user.cn + ',' + baseDn;
     try {
-      yield del(dn);
+      yield client.del(dn);
     } catch(err) {
       if(err.name === 'NoSuchObjectError') {
         console.log('  DELETE: ' + err.message + ' : ' + dn);
@@ -26,15 +22,14 @@ var addUsers = function*(client, users, baseDn) {
         throw err;
       }
     }
-    yield add(dn, user);
+    yield client.add(dn, user);
     user.userPassword = plainPassword;
   }
 };
 
 var bind = function*() {
-  var client = ldap.createClient({url: process.env.LDAP_URL});
-  var bind = thunkify(client.bind.bind(client));
-  yield bind(process.env.LDAP_BIND_DN, process.env.LDAP_ADMIN_PASSWORD);
+  var client = new LdapClient({url: process.env.LDAP_URL});
+  yield client.bind(process.env.LDAP_BIND_DN, process.env.LDAP_ADMIN_PASSWORD);
   return client;
 };
 
