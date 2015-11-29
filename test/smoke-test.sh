@@ -14,6 +14,7 @@ ${BASE_DIR}/temp/pocci/bin/backup
 
 ../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginDefault
+../oneoff nodejs grunt prepare mochaTest:defaultSetup
 ../oneoff nodejs grunt prepare mochaTest:gitlab
 
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config redmine
@@ -24,4 +25,5 @@ echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup/*
 
 ../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginDefault
+../oneoff nodejs grunt prepare mochaTest:defaultSetup
 ../oneoff nodejs grunt prepare mochaTest:gitlab

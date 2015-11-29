@@ -57,6 +57,9 @@ module.exports = function(grunt) {
       jenkinsNodeJSBuild: {
         src: ['test/jenkinsNodeJSBuildTest.js']
       },
+      defaultSetup: {
+        src: ['test/defaultSetupTest.js']
+      },
     }
   });
   grunt.loadNpmTasks('grunt-contrib-jshint');

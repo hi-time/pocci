@@ -24,6 +24,9 @@ module.exports = (done, spec) ->
   spec.del = (address) ->
     yield deleteResource(spec.request, address)
 
+  spec.request = (path) ->
+    url: path
+
   spec.response = {}
   spec.assert = (assertionSpecs) ->
     yield assertResources(spec.request, assertionSpecs, spec.response)
@@ -45,24 +48,56 @@ execute = (tasks, spec) ->
   if typeof tasks is "string"
     if spec[tasks] then (yield execute(spec[tasks], spec))
 
+assertJsonValue = (response, spec, expected) ->
+  if spec.sort then sort(response, toArray(spec.sort))
+
+  for key, value of expected
+    console.log("  assert: #{key} === #{value}")
+    if typeof value is "undefined"
+      assert.notDeepProperty(response, key)
+    else
+      assert.deepPropertyVal(response, key, value)
+
+  return
+
+assertHtmlValue = (response, spec, expected) ->
+  $ = cheerio.load(response.body)
+
+  for key, value of expected
+    console.log("  assert: #{key} === #{value}")
+    if typeof value is "undefined"
+      assert.equal($(key).length, 0)
+    else
+      actual = $(key).first().text()
+      if typeof value is "object"
+        assert.match(actual, value)
+      else
+        assert.equal(actual, value)
+
+  return
 
 assertResources = (request, specs, responses) ->
   for name, spec of specs
 
     console.log("\n#{name}  (#{spec.path})")
-    responses[name] = response = (yield server.get(request(spec.path)))
-    if specs.debug then console.log(JSON.stringify(response, null, "  "))
-
-    if spec.sort then sort(response, toArray(spec.sort))
-
-    for key, value of spec.expected
-      console.log("  assert: #{key} === #{value}")
-      if typeof value is "undefined"
-        assert.notDeepProperty(response, key)
+    expected = spec.expected
+    try
+      responses[name] = response = (yield server.get(request(spec.path)))
+      contentType = response.headers["content-type"]
+    catch e
+      if typeof spec.thrown is "undefined"
+        throw e
       else
-        assert.deepPropertyVal(response, key, value)
+        responses[name] = response = e
+        expected = spec.thrown
+        contentType = "application/json"
 
-  return
+    if spec.debug then console.log(JSON.stringify(response, null, "  "))
+
+    if /^application\/json/.test(contentType)
+      assertJsonValue(response, spec, expected)
+    else
+      assertHtmlValue(response, spec, expected)
 
 
 deleteResource = (request, address) ->
@@ -82,10 +117,10 @@ putResource = (request, address, body) ->
 
 getValue = (request, address, assertExists) ->
   path = address.split("@")
-  response = (yield server.get(request(path[1])))
+  response = (yield server.get(request(path[1] || path[0])))
   contentType = response.headers["content-type"]
   console.log(JSON.stringify(response, null, "  "))
-  if not path[0] then return response
+  if not path[1] then return response
   if contentType is "application/json" then return getJsonValue(path[0], response, assertExists)
   return getHtmlValue(path[0], response, assertExists)
 
