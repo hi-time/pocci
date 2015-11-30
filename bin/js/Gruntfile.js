@@ -60,6 +60,9 @@ module.exports = function(grunt) {
       defaultSetup: {
         src: ['test/defaultSetupTest.js']
       },
+      redmineSetup: {
+        src: ['test/redmineSetupTest.js']
+      },
     }
   });
   grunt.loadNpmTasks('grunt-contrib-jshint');

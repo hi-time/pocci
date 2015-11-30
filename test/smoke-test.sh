@@ -19,7 +19,9 @@ ${BASE_DIR}/temp/pocci/bin/backup
 
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config redmine
 ${BASE_DIR}/temp/pocci/bin/up-service
+../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginRedmine
+../oneoff nodejs grunt prepare mochaTest:redmineSetup
 
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup/*
 
