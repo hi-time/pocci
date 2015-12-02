@@ -44,10 +44,10 @@ describe "setup.default.yml", ->
               "body[0].name":         "Administrator"
               "body[0].access_level": 50
               "body[1].username":     "jenkinsci"
-              "body[1].name":         "jenkinsci"
+              "body[1].name":         "Jenkins"
               "body[1].access_level": 50
               "body[2].username":     "boze"
-              "body[2].name":         "boze"
+              "body[2].name":         "BOZE, Taro"
               "body[2].access_level": 50
 
           projects:

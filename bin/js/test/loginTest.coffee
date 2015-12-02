@@ -17,7 +17,7 @@ module.exports.loginGitLab = (browser) ->
 
   browser.url(process.env.GITLAB_URL + "/profile/")
   text = yield browser.getValue("#user_name")
-  assert.equal(text, "boze")
+  assert.equal(text, "BOZE, Taro")
 
 
 describe "Login", () ->

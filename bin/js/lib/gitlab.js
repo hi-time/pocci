@@ -1,6 +1,7 @@
 /*jshint camelcase: false */
 'use strict';
 var fs = require('fs');
+var path = require('path');
 var server = require('co-request');
 var toArray = require('./util.js').toArray;
 var assertStatus = require('./util.js').assertStatus;
@@ -24,8 +25,28 @@ var login = function*(browser, url, user, password) {
     .setValue('#password', password);
   yield browser.save('gitlab-doing-login-by-' + user);
 
-  browser.submitForm('#new_ldap_user');
+  yield browser.submitForm('#new_ldap_user');
   yield browser.save('gitlab-after-login-by-' + user);
+};
+
+var updateProfileSettings = function*(browser, url, user) {
+  browser.url(url + '/profile');
+  yield browser.save('gitlab-before-updateProfileSettings-of-' + user.uid);
+  if(user.displayName) {
+    browser.setValue('#user_name', user.displayName);
+  }
+  if(user.labeledURI) {
+    var fileName = './config/screen/avatar-' + user.uid + path.extname(user.labeledURI);
+    var res = yield server({
+      url: user.labeledURI,
+      encoding : null
+    });
+    fs.writeFileSync(fileName, res.body, {encoding:'binary'});
+    yield browser.chooseFile('#user_avatar', fileName);
+  }
+  yield browser.save('gitlab-doing-updateProfileSettings-of-' + user.uid);
+  yield browser.submitForm('form.edit_user');
+  yield browser.save('gitlab-after-updateProfileSettings-of-' + user.uid);
 };
 
 var newPassword = function*(browser, url, password) {
@@ -277,6 +298,7 @@ var setupGroups = function*(request, groups, users, repositories) {
 var addUsers = function*(browser, url, users) {
   for(var i = 0; i < users.length; i++) {
     yield login(browser, url, users[i].uid, users[i].userPassword);
+    yield updateProfileSettings(browser, url, users[i]);
     yield logout(browser);
   }
 };
@@ -358,6 +380,7 @@ module.exports = {
   },
   getPrivateToken: getPrivateToken,
   loginByAdmin: loginByAdmin,
+  login: login,
   logout: logout,
   getProjectId: getProjectId,
   createRequest: createRequest

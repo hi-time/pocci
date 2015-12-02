@@ -3,8 +3,6 @@ Pocci
 
 Docker コンテナを使った CIサービス構築の試作。
 
-![Services](./pocci-service.png)
-
 [English](./README.md)
 
 必須ソフトウェア

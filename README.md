@@ -3,8 +3,6 @@ Pocci
 
 A try of CI Services by Docker containers.
 
-![Services](./pocci-service.png)
-
 [日本語](./README.ja.md)
 
 Requirement

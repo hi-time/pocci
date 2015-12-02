@@ -350,7 +350,11 @@ module.exports = {
 
     if(isEnabledGitLab) {
       var gitlabUrl = process.env.GITLAB_URL;
-      yield gitlab.loginByAdmin(browser, gitlabUrl);
+      if(loginUser.uid === 'root') {
+        yield gitlab.loginByAdmin(browser, gitlabUrl);
+      } else {
+        yield gitlab.login(browser, gitlabUrl, loginUser.uid, loginUser.userPassword);
+      }
       yield configureGitLab(browser, url, gitlabUrl);
       yield createJobs(browser, jenkins, jobs, gitlabUrl);
       yield gitlab.logout(browser);
