@@ -27,4 +27,6 @@ ${BIN_DIR}/stop-service
 
 set -ex
 ${BACKUP_DIR}/restore-all.sh
+rm -fr ${CONFIG_DIR}
+git clone ${BACKUP_DIR}/config/.git ${CONFIG_DIR}
 ${BIN_DIR}/up-service

@@ -36,13 +36,18 @@ var updateProfileSettings = function*(browser, url, user) {
     browser.setValue('#user_name', user.displayName);
   }
   if(user.labeledURI) {
-    var fileName = './config/screen/avatar-' + user.uid + path.extname(user.labeledURI);
-    var res = yield server({
-      url: user.labeledURI,
-      encoding : null
-    });
-    fs.writeFileSync(fileName, res.body, {encoding:'binary'});
-    yield browser.chooseFile('#user_avatar', fileName);
+    try {
+      var fileName = './config/screen/avatar-' + user.uid + path.extname(user.labeledURI);
+      var res = yield server({
+        url: user.labeledURI,
+        encoding : null
+      });
+      fs.writeFileSync(fileName, res.body, {encoding:'binary'});
+      yield browser.chooseFile('#user_avatar', fileName);
+    } catch(e) {
+      console.log('WARNING: cannot download: ' + user.labeledURI + ' --> ' + fileName);
+      console.log(e);
+    }
   }
   yield browser.save('gitlab-doing-updateProfileSettings-of-' + user.uid);
   yield browser.submitForm('form.edit_user');

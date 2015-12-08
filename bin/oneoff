@@ -43,8 +43,15 @@ else
     IMAGE=${CONTAINER_TYPE}
 fi
 
+if [ -d "${CONFIG_DIR}/.ssh" ]; then
+    MOUNT_SSH_DIR="-v ${CONFIG_DIR}/.ssh:/tmp/user_home/.ssh"
+fi
+
 set +e
-docker run --name ${CONTAINER_NAME} --privileged -w /app -v ${PWD}:/app ${POCCIR_OPTS} -v /dev/urandom:/dev/random --rm ${TTY_OPTION} ${IMAGE} "$@"
+docker run --name ${CONTAINER_NAME} --privileged -w /app \
+    -v ${PWD}:/app ${POCCIR_OPTS} \
+    -v /dev/urandom:/dev/random ${MOUNT_SSH_DIR} \
+    --rm ${TTY_OPTION} ${IMAGE} "$@"
 RC=$?
 
 set -e

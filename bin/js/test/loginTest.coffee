@@ -36,7 +36,7 @@ describe "Login", () ->
       setup: ->
         yield browser.end()
 
-  it "user-admin", (done) ->
+  it "user", (done) ->
     test done,
       when: ->
         yield browser
@@ -49,25 +49,7 @@ describe "Login", () ->
           .save("user-admin-after-autherize")
 
       then: ->
-        assert.ok(yield browser.isExisting("#user-form"))
         assert.ok(yield browser.isExisting("#search-form"))
-
-  it "user-not-admin", (done) ->
-    test done,
-      when: ->
-        yield browser
-          .url(process.env.USER_URL)
-          .call()
-          .setValue("#login-cn", "boze")
-          .setValue("#login-userPassword", "password")
-          .save("user-not-admin-berore-autherize")
-          .click("#login button")
-          .save("user-not-admin-after-autherize")
-
-      then: ->
-        assert.ok(yield browser.isExisting("#user-form"))
-        assert.notOk(yield browser.isExisting("#search-form"))
-
 
   it "jenkins", (done) ->
     test done,

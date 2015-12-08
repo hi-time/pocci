@@ -63,6 +63,12 @@ module.exports = function(grunt) {
       redmineSetup: {
         src: ['test/redmineSetupTest.js']
       },
+      scenarioDefaultA: {
+        src: ['test/scenarioDefaultATest.js']
+      },
+      scenarioRedmineA: {
+        src: ['test/scenarioRedmineATest.js']
+      },
     }
   });
   grunt.loadNpmTasks('grunt-contrib-jshint');
