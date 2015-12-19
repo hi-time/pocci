@@ -15,8 +15,6 @@ SonarQube でプログラム分析を行うために必要な情報が環境変�
 
 環境変数の例:
 *   **SONAR_URL:** SonarQube の URL
-*   **SONAR_DB_HOST:** SonarQube データベースのホスト名
-*   **SONAR_DB_PORT:** SonarQube データベースのポート番号
 
 その他利用可能な環境変数に関しては、
 [セットアップファイルリファレンスの sonar: の項](./setup-yml.ja.md#sonar-)
@@ -29,9 +27,6 @@ Java プログラムを分析できます。
 
 ```xml
 <properties>
-    <sonar.jdbc.url>jdbc:postgresql://${env.SONAR_DB_HOST}:${env.SONAR_DB_PORT}/${env.SONAR_DB_NAME}</sonar.jdbc.url>
-    <sonar.jdbc.username>${env.SONAR_DB_USER}</sonar.jdbc.username>
-    <sonar.jdbc.password>${env.SONAR_DB_PASS}</sonar.jdbc.password>
     <sonar.host.url>${env.SONAR_URL}</sonar.host.url>
 </properties>
 ```
@@ -52,11 +47,6 @@ sonarRunner: {
       sonar: {
         host: {
           url: process.env.SONAR_URL
-        },
-        jdbc: {
-          url: 'jdbc:postgresql://' + process.env.SONAR_DB_HOST + ':' + process.env.SONAR_DB_PORT + '/' + process.env.SONAR_DB_NAME,
-          username: process.env.SONAR_DB_USER,
-          password: process.env.SONAR_DB_PASS
         },
         ...
       }

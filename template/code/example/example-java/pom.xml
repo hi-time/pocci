@@ -8,9 +8,6 @@
   <name>example-java</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.jdbc.url>jdbc:postgresql://${env.SONAR_DB_HOST}:${env.SONAR_DB_PORT}/${env.SONAR_DB_NAME}</sonar.jdbc.url>
-    <sonar.jdbc.username>${env.SONAR_DB_USER}</sonar.jdbc.username>
-    <sonar.jdbc.password>${env.SONAR_DB_PASS}</sonar.jdbc.password>
     <sonar.host.url>${env.SONAR_URL}</sonar.host.url>
   </properties>
   <dependencies>

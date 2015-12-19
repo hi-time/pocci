@@ -7,9 +7,7 @@ sonarqubedb:
   environment:
     - DB_USER=${SONAR_DB_USER}
     - DB_PASS=${SONAR_DB_PASS}
-    - DB_NAME=${SONAR_DB_NAME}
-  ports:
-    - "${SONAR_DB_PORT}:5432"
+    - DB_NAME=sonarqubedb
 
 sonar:
   image: xpfriend/sonarqube:${VERSION_SONARQUBE}
@@ -20,8 +18,11 @@ sonar:
     - LDAP_UID=${LDAP_ATTR_LOGIN}
     - LDAP_REAL_NAME=${SONAR_LDAP_REAL_NAME}
     - LDAP_MAIL=${LDAP_ATTR_MAIL}
+    - SONAR_DB_NAME=sonarqubedb
+    - SONAR_DB_HOST=sonarqubedb
+    - SONAR_DB_PORT=5432
   links:
-    - sonarqubedb:${SONAR_DB_HOST}
+    - sonarqubedb:sonarqubedb
   volumes:
     - ${POCCI_LOG_DIR}/sonar:/opt/sonar/logs
 

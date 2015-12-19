@@ -13,3 +13,5 @@ remove xpfriend/jenkins-slave-java
 remove xpfriend/jenkins-slave-base
 remove xpfriend/jenkins
 remove xpfriend/sonarqube
+remove xpfriend/fluentd
+remove xpfriend/pocci-account-center

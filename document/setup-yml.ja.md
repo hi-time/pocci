@@ -499,15 +499,6 @@ SonarQube 関連定義。
 *   **url:** SonarQube サーバのURL
     *   デフォルトは `http://sonar.[pocci.domainで指定したドメイン名]`
     *   環境変数: `SONAR_URL`, `SONAR_PROTOCOL`, `SONAR_HOST`, `SONAR_PORT`
-*   **dbHost:** SonarQube が内部的に使用するデータベースのホスト名
-    *   デフォルトは `sonar.[pocci.domainで指定したドメイン名]`
-    *   環境変数: `SONAR_DB_HOST`
-*   **dbHost:** SonarQube が内部的に使用するデータベースのポート番号
-    *   デフォルトは `5432`
-    *   環境変数: `SONAR_PORT`
-*   **dbName:** SonarQube が内部的に使用するデータベースの名前
-    *   デフォルトは `sonarqubedb`
-    *   環境変数: `SONAR_DB_NAME`
 *   **dbUser:** SonarQube が内部的に使用するデータベース接続時のユーザー名
     *   デフォルトは `sonarqube`
     *   環境変数: `SONAR_DB_USER`
