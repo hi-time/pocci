@@ -26,13 +26,9 @@ module.exports = function(grunt) {
     markdown: {
       all: {
         files: [
-          {
-            expand: true,
-            cwd: '/app/document/',
-            src: '**/*.md',
-            dest: '/tmp/html/',
-            ext: '.html'
-          }
+          {expand: true, cwd: '/app/document/', src: '**/*.ja.md', dest: '/tmp/html/', ext: '.ja.html'},
+          {expand: true, cwd: '/app/document/', src: '**/*.en.md', dest: '/tmp/html/', ext: '.en.html'},
+          {expand: true, cwd: '/app/document/', src: '**/index.md', dest: '/tmp/html/', ext: '.html'}
         ],
         options: {
           template: '/app/document/template.html',
@@ -61,7 +57,7 @@ module.exports = function(grunt) {
             templateContext.title = $('h1').first().text() || $('h2').first().text() || $('h3').first().text();
             $('a').each(function(i, elem) {
               var href = $(this).attr('href');
-              $(this).attr('href', href.replace(/\...\.md$/, '.html').replace(/\...\.md#/, '.html#'));
+              $(this).attr('href', href.replace(/\.md$/, '.html').replace(/\.md#/, '.html#'));
             });
             $('img').each(function(i, elem) {
               if($(this).parent().contents().length === 1) {

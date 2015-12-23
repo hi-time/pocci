@@ -1,8 +1,6 @@
 CIサービス構築・利用手引き
 ==========================
 
-<div id="setup-log"></div>
-
 導入方法
 --------
 *   [サービス開始・利用方法](./create-service.ja.md)
@@ -31,7 +29,7 @@ CIサービス構築・利用手引き
 
 サービス            | 情報源
 ------------------- | ---------------------------------------------------------------------------------------
-CIサービス全体      | <https://github.com/xpfriend/pocci>
+Pocci               | <https://github.com/xpfriend/pocci>
 GitLab              | <https://gitlab.com/>, <https://github.com/sameersbn/docker-gitlab>
 Jenkins             | <https://jenkins-ci.org/>
 SonarQube           | <http://www.sonarqube.org/>

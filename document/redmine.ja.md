@@ -13,46 +13,46 @@ A. プロジェクトの作成
 ---------------------
 以下のような操作でプロジェクトを作成できます。
 
-1.  画面右上の ![ログイン](images/redmine-login.png) をクリックし、
+1.  画面右上の ![ログイン](images/redmine-login.ja.png) をクリックし、
     **ログイン:** `admin`、**パスワード:** `admin`
     で **ログイン** をクリックする。
 
-    ![ログイン画面](images/redmine-login-form.png)
+    ![ログイン画面](images/redmine-login-form.ja.png)
 
-2.  画面左上の ![プロジェクト](images/redmine-project-button.png)
-    をクリックし、![新しいプロジェクト](images/redmine-new-project-button.png)
+2.  画面左上の ![プロジェクト](images/redmine-project-button.ja.png)
+    をクリックし、![新しいプロジェクト](images/redmine-new-project-button.ja.png)
     をクリックする。
 
 3.  **名前** にプロジェクト名を入力し、
-    ![作成](images/redmine-new-project-create-button.png) をクリックする。
+    ![作成](images/redmine-new-project-create-button.ja.png) をクリックする。
     *   **識別子** にも入力が必要ですが、
         名前を入力すると識別子にも同じものが自動入力されます。
 
-    ![新規プロジェクト作成画面](images/redmine-new-project-form.png)
+    ![新規プロジェクト作成画面](images/redmine-new-project-form.ja.png)
 
 4.  **メンバー** タブをクリックして、
     **新しいメンバー** をクリックする。
 
-    ![新しいメンバーボタン](images/redmine-new-member-button.png)
+    ![新しいメンバーボタン](images/redmine-new-member-button.ja.png)
 
 5.  作成したプロジェクトを利用するユーザーとそのユーザーに割り当てる
     **ロール** をチェックして、**追加** をクリックする。
     *   Redmine に一度もログインしたことのないユーザーはこの画面に現れないため、
         事前にそのユーザーで一度ログインしておく必要があります。
 
-    ![新しいメンバー画面](images/redmine-new-member-form.png)
+    ![新しいメンバー画面](images/redmine-new-member-form.ja.png)
 
 6.  **リポジトリ** タブをクリックして、
     **新しいリポジトリ** をクリックする。
 
-    ![新しいリポジトリボタン](images/redmine-new-repository-button.png)
+    ![新しいリポジトリボタン](images/redmine-new-repository-button.ja.png)
 
 7.  以下のように入力して、**作成** をクリックする。
     *   **バージョン管理システム:** `Git`
     *   **識別子:** 任意の名前
     *   **リポジトリのパス:** `/home/git/data/repositories/GitLabのグループ名/GitLabのプロジェクト名.git`
 
-    ![新しいリポジトリ画面](images/redmine-new-repository-form.png)
+    ![新しいリポジトリ画面](images/redmine-new-repository-form.ja.png)
 
 
 

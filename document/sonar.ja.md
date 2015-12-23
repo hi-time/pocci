@@ -63,6 +63,6 @@ sonarRunner: {
 B. 情報源
 ---------
 *   [SonarQube](http://www.sonarqube.org/)
-*   [SonarQube - Analyzing with Maven](http://docs.sonarqube.org/display/SONAR/Analyzing+with+Maven)
-*   [SonarQube Mave Plugin](http://www.mojohaus.org/sonar-maven-plugin/)
+*   [SonarQube - Analyzing with Maven](http://docs.sonarqube.org/display/SONAR/Installing+and+Configuring+SonarQube+Scanner+for+Maven)
+*   [SonarQube Maven Plugin](http://www.mojohaus.org/sonar-maven-plugin/)
 *   [grunt-sonar-runner](https://www.npmjs.com/package/grunt-sonar-runner)

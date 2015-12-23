@@ -61,14 +61,14 @@ GitLab のラベルを編集することにより、
     *   工程を追加するには、**New label** ボタンをクリックして、
         `KB[stage][番号][工程名]` 形式のラベルを作成する。
 
-ラベル修正例:
+ラベル変更例:
 
-![修正したラベル](images/gitlab-labels-list-updated.png)
+![変更したラベル](images/gitlab-labels-list-updated.ja.png)
 
 
 タスクボード例:
 
-![修正されたタスクボード](images/kanban-taskboard-updated.png)
+![変更されたタスクボード](images/kanban-taskboard-updated.ja.png)
 
 
 C. 情報源

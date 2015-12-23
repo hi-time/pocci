@@ -1,19 +1,19 @@
 Pocci
 =====
 
-A try of CI Services by Docker containers.
+Try building CI services using Docker containers.
 
 [日本語](./README.ja.md)
 
-Requirement
------------
+Required Software
+-----------------
 *   [Docker](https://www.docker.com/)
 *   [Docker Compose](https://github.com/docker/compose/)
 
 
-Installation
-------------
-1.  Change the current user to the user who has uid=1000.
+How to Install
+--------------
+1.  Change the current user to the user of uid=1000.
 
 2.  Clone this repository.
 
@@ -22,10 +22,15 @@ Installation
     cd pocci
     ```
 
-3.  Build setup tools.
+3.  Build.
 
     ```bash
     cd bin
     ./build
     ```
 
+
+How to Use
+----------
+For details on how to use services, 
+refer to [How to Start and Use Services](./document/create-service.en.md).

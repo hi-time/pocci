@@ -1,6 +1,8 @@
 開発環境の利用方法について
 ==========================
 
+[English](./README.en.md) | [日本語](./README.ja.md)
+
 目次
 ----
 *   [A. 最初にやること](#a-)
@@ -55,23 +57,17 @@ http://kanban.pocci.test/  | [GitLab Kanban Board](http://kanban.leanlabs.io/)  
 ### 3. プロファイル（名前と顔写真）設定
 以下の手順で GitLab の利用者情報修正を行ってください。
 
-1.  `http://gitlab.pocci.test/` にアクセスし、画面右上の **Sign in** をクリックする。
-
-    ![GitLab - 初期画面](images/gitlab-01.png)
+1.  `http://gitlab.pocci.test/` にアクセスする。
 
 2.  ユーザー名、パスワードを入力し、**Sign in** をクリックする。
 
     ![GitLab - Sign in](images/gitlab-02.png)
 
-3.  画面左下の、自分のユーザー名をクリックする。
-
-    ![GitLab - ユーザー名のクリック](images/gitlab-03.png)
-    *   画面左側にアイコンだけが表示されている場合は、
-        ウインドウを横に広げると文字も表示されるようになります。
-
-4.  画面左側の **Profile settings** をクリックする。
+3.  画面左側の **Profile settings** をクリックする。
 
     ![GitLab - Profile settings のクリック](images/gitlab-03-1.png)
+    *   画面左側にアイコンだけが表示されている場合は、
+        ウインドウを横に広げると文字も表示されるようになります。
 
 4.  **Name** を本名（もしあなたが日本人ならば日本語表記）に変更し、
     **Choose File...** で顔写真ファイルを選択する。

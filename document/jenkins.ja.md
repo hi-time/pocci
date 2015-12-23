@@ -14,29 +14,29 @@ A. ジョブの作成
 *   以下はジョブ作成手順の一例です（必ずこの手順で作成しなければらない、というわけではありません）。
 
 ### 1. Jenkins 側の設定
-1.  画面右上の ![ログイン](images/jenkins-login-button.png) をクリックする。
+1.  画面右上の ![ログイン](images/jenkins-login-button.ja.png) をクリックする。
 2.  ユーザー名とパスワードを入力してログインする。
 
-    ![ログインフォーム](images/jenkins-login-form.png)
+    ![ログインフォーム](images/jenkins-login-form.ja.png)
 
-3.  画面左上の ![新規ジョブ作成](images/jenkins-new-job-button.png) をクリックする。
+3.  画面左上の ![新規ジョブ作成](images/jenkins-new-job-button.ja.png) をクリックする。
 4.  任意の **ジョブ名** を入力し、**フリースタイル・プロジェクトのビルド** を選択し、
-    ![OK](images/jenkins-ok-button.png) をクリックする。
+    ![OK](images/jenkins-ok-button.ja.png) をクリックする。
 
-    ![新規ジョブ作成](images/jenkins-new-job-form.png)
+    ![新規ジョブ作成](images/jenkins-new-job-form.ja.png)
 
 5.  **実行するノードを制限** にチェックを入れて、
     **ラベル式** に登録済みの Jenkinsスレーブノードの名前
     (デフォルト設定の場合 `java` もしくは `nodejs`)
     を指定する。
 
-    ![ノード制限](images/jenkins-node-selection.png)
+    ![ノード制限](images/jenkins-node-selection.ja.png)
 
 6.  **ソースコード管理** で `Git` を選択し、
     **Repository URL** に Git リポジトリの URL を入力し、
     **Branch Specifier (blank for 'any')** に入力されている文字列を削除する。
 
-    ![ソースコード管理](images/jenkins-scm-config.png)
+    ![ソースコード管理](images/jenkins-scm-config.ja.png)
 
     *   ここでは Git リポジトリに認証なしでアクセス (git clone) できるケース
         (GitLab の `Public` プロジェクトを利用している場合) を例にして説明しています
@@ -52,27 +52,27 @@ A. ジョブの作成
     **Build when a change is pushed to GitLab. GitLab CI Service URL: ...**
     をクリックして、表示されるチェックボックスをすべてチェックする。
 
-    ![ビルド・トリガ](images/jenkins-build-trigger.png)
+    ![ビルド・トリガ](images/jenkins-build-trigger.ja.png)
 
     *   ここで **GitLab CI Service URL:** 以降に表示されている URL 文字列を
         どこかに保存しておいてください (あとで利用します)。
 
-        ![ビルドURL](images/jenkins-build-url.png)
+        ![ビルドURL](images/jenkins-build-url.ja.png)
 
 8.  **ビルド** の **ビルド手順の追加** で `シェルの実行` を選択する。
 
-    ![ビルド手順の追加](images/jenkins-build.png)
+    ![ビルド手順の追加](images/jenkins-build.ja.png)
 
 9.  **シェルの実行** の **シェルスクリプト** にビルド処理を行うスクリプトを記述する。
 
-    ![シェルの実行](images/jenkins-build-by-shell.png)
+    ![シェルの実行](images/jenkins-build-by-shell.ja.png)
 
     *   この例では、実際にビルド処理を行うスクリプト `build.sh` の呼び出しを記述しています。
         `build.sh` の内容については `template/code/example/example-java/build.sh` や
         `template/code/example/example-nodejs/build.sh` を参考にしてください。
 
 10. その他、必要な設定があれば追加し、
-    ![保存](images/jenkins-save-button.png) をクリックする。
+    ![保存](images/jenkins-save-button.ja.png) をクリックする。
 
 ### 2. GitLab 側の設定
 1.  root もしくは対象プロジェクトの Master もしくは Owner 権限を持つユーザーで
@@ -141,17 +141,17 @@ GitLab および Jenkins に登録することにより、
 ##### Jenkins への SSH キー登録
 以下の手順で Jenkins に SSH キーを登録できます。
 
-1.  Jenkins にログインし、 ![Jenkinsの管理](images/jenkins-manage-button.png) をクリックする。
-2.  画面左側の ![認証情報](images/jenkins-credential-store-button.png) をクリックする。
-3.  ![グローバルドメイン](images/jenkins-global-domain-button.png) をクリックする。
-4.  ![認証情報の追加](images/jenkins-new-credential-button.png) をクリックする。
+1.  Jenkins にログインし、 ![Jenkinsの管理](images/jenkins-manage-button.ja.png) をクリックする。
+2.  画面左側の ![認証情報](images/jenkins-credential-store-button.ja.png) をクリックする。
+3.  ![グローバルドメイン](images/jenkins-global-domain-button.ja.png) をクリックする。
+4.  ![認証情報の追加](images/jenkins-new-credential-button.ja.png) をクリックする。
 5.  以下の設定を行い、**OK** をクリックする。
     *   **種類:** `SSHユーザー名と秘密鍵`
     *   **スコープ:** `グローバル`
     *   **ユーザー名:** GitLab に登録した Jenkins ビルド用ユーザー名
     *   **秘密鍵:** `Jenkinsマスター上の~/.sshから`
 
-    ![キー登録](images/jenkins-new-credential-form.png)
+    ![キー登録](images/jenkins-new-credential-form.ja.png)
 
 
 #### 3. ジョブ設定の変更
@@ -163,46 +163,46 @@ GitLab および Jenkins に登録することにより、
 
 *   **Credentials** で、GitLab に登録した Jenkins ビルド用ユーザー名を選択する。
 
-![ビルドジョブSSH認証設定](images/jenkins-scm-config-ssh.png)
+![ビルドジョブSSH認証設定](images/jenkins-scm-config-ssh.ja.png)
 
 
 B. スレーブノードの作成
 -----------------------
 Jenkins スレーブノードは以下のようにして作成できます。
 
-1.  Jenkins にログインし、 ![Jenkinsの管理](images/jenkins-manage-button.png) をクリックする。
+1.  Jenkins にログインし、 ![Jenkinsの管理](images/jenkins-manage-button.ja.png) をクリックする。
 2.  **ノードの管理** ボタンをクリックする。
 
-    ![ノードの管理ボタン](images/jenkins-manage-nodes-button.png)
+    ![ノードの管理ボタン](images/jenkins-manage-nodes-button.ja.png)
 
-3.  画面左側の ![新規ノード作成](images/jenkins-create-node-button.png) をクリックする。
+3.  画面左側の ![新規ノード作成](images/jenkins-create-node-button.ja.png) をクリックする。
 4.  任意の**ノード名**を入力し、**ダムスレーブ**または**ノードのコピー**を選択して
     (ノードのコピーを選択した場合は既存ノードをの名前を入力して)、
     **OK**をクリックする。
 
-    ![新規ノード作成画面](images/jenkins-create-node-form.png)
+    ![新規ノード作成画面](images/jenkins-create-node-form.ja.png)
 
 5.  以下の設定を行い、**保存** をクリックする。
     *   **リモートFSルート:** Jenkins スレーブノードが動作するための、ノード上のディレクトリ
     *   **起動方法:** JNLP経由でスレーブを起動
-    *   その他については、 ![ヘルプ](images/jenkins-help-button.png) に記載されている内容を読み設定を行う。
+    *   その他については、 ![ヘルプ](images/jenkins-help-button.ja.png) に記載されている内容を読み設定を行う。
 
-    ![ノード設定画面](images/jenkins-edit-node-config.png)
+    ![ノード設定画面](images/jenkins-edit-node-config.ja.png)
 
 6.  ノード一覧の中から、作成したノードの名前をクリックする。
 
-    ![ノード一覧](images/jenkins-nodes-list.png)
+    ![ノード一覧](images/jenkins-nodes-list.ja.png)
 
 7.  Jenkins スレーブ用のマシン上で **slave.jar** をダウンロードして、
     ノードの設定時に **リモートFSルート** で指定したディレクトリに保存する。
 
-    ![slave.jarのダウンロード](images/jenkins-download-slave-jar.png)
+    ![slave.jarのダウンロード](images/jenkins-download-slave-jar.ja.png)
 
 8.  **スレーブでコマンドラインから起動:** の下に書かれているコマンドを
     Jenkins スレーブ用のマシンで実行する。
     *   シェルスクリプトやバッチファイルとして保存しておくのがおすすめです。
 
-    ![コマンド実行](images/jenkins-execute-slave-jar.png)
+    ![コマンド実行](images/jenkins-execute-slave-jar.ja.png)
 
 
 C. 情報源

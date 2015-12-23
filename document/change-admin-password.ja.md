@@ -22,8 +22,8 @@ standard タブから root アカウントでサインインし、
 
 SonarQube
 ---------
-admin でログインし、**Settings - Security - Users** でユーザー管理画面に移動し、
-admin 行の **Change password** リンクから変更できます。
+admin でログインし、**Administration - Security - Users** でユーザー管理画面に移動し、
+admin 行の **Change password** リンク (鍵アイコン) から変更できます。
 
 Redmine
 -------
