@@ -5,10 +5,9 @@ var mkdirp = require('mkdirp');
 var thunkify = require('thunkify');
 var jenkinsLib = require('jenkins');
 var path = require('path');
-var gitlab = require('./gitlab.js');
-var util = require('./util.js');
+var gitlab = require('pocci/gitlab.js');
+var util = require('pocci/util.js');
 var parse = require('url').parse;
-var version = require('./jenkins-slaves-version.json');
 
 var registerGitLab = function*(browser, url, job) {
   var jenkinsJobUrl = process.env.JENKINS_URL + '/project/' + job.jobName;
@@ -88,16 +87,16 @@ var createJobs = function*(browser, jenkins, jobNames, gitlabUrl) {
 };
 
 var writeNodeConf = function(node, secret) {
-  var templateFilePath = './config/services/jenkins-slave/compose/jenkins-slaves.yml.template';
+  var templateFilePath = './config/services/core/jenkins/slave/compose/workspaces.yml.template';
   var text = fs.readFileSync(templateFilePath, 'utf8')
               .replace(/__NAME/g, node.name)
               .replace(/__IMAGE/g, node.image)
               .replace(/__SECRET/g, secret);
-  fs.appendFileSync('./config/jenkins-slaves.yml.template', text);
+  fs.appendFileSync('./config/workspaces.yml.template', text);
 };
 
 var copyConfigFile = function(nodeName, fileName) {
-  fs.createReadStream('./config/services/jenkins-slave/image/config/' + fileName)
+  fs.createReadStream('./config/services/core/jenkins/slave/image/config/' + fileName)
     .pipe(fs.createWriteStream('./config/image/' + nodeName + '/config/' + fileName));
 };
 
@@ -113,7 +112,7 @@ var writeProxyEnv = function(nodeName) {
 };
 
 var writeDockerFile = function(node) {
-  var dockerfileTemplate = './config/services/jenkins-slave/image/Dockerfile.template';
+  var dockerfileTemplate = './config/services/core/jenkins/slave/image/Dockerfile.template';
   var text = fs.readFileSync(dockerfileTemplate, 'utf8').replace(/__FROM/g, node.from);
   mkdirp.sync('./config/image/' + node.name + '/config');
   fs.writeFileSync('./config/image/' + node.name + '/Dockerfile', text);
@@ -264,7 +263,7 @@ var configureMail = function*(browser, url) {
   yield browser.save('jenkins-after-configureMail');
 };
 
-var normalizeNode = function(node, nodes) {
+var normalizeNode = function(node, nodes, version) {
   if(typeof node === 'string') {
     nodes.push({
       name: node, 
@@ -290,8 +289,9 @@ var normalizeNode = function(node, nodes) {
 var normalizeNodes = function(nodes) {
   nodes = util.toArray(nodes);
   var normalized = [];
+  var version = require('pocci/jenkins-slaves-version.json');
   for(var i = 0; i < nodes.length; i++) {
-    normalizeNode(nodes[i], normalized);
+    normalizeNode(nodes[i], normalized, version);
   }
   return normalized;
 };
@@ -308,11 +308,11 @@ module.exports = {
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.jenkins.url);
-    environment.JENKINS_URL           = util.getHref(url);            // jenkins.js, jenkins-slaves.yml, shell scripts
+    environment.JENKINS_URL           = util.getHref(url);            // jenkins.js, workspaces.yml, shell scripts
     environment.JENKINS_PROTOCOL      = url.protocol;
     environment.JENKINS_HOST          = url.hostname;
     environment.JENKINS_PORT          = util.getPort(url);
-    environment.JENKINS_JNLP_PORT     = options.jenkins.jnlpPort;     // jenkins-slaves.yml, jenkins.js
+    environment.JENKINS_JNLP_PORT     = options.jenkins.jnlpPort;     // workspaces.yml, jenkins.js
     environment.JENKINS_SMTP_HOST     = options.jenkins.smtpHost;     // jenkins.js
     environment.JENKINS_MAIL_ADDRESS  = options.jenkins.mailAddress;  // jenkins.js
   },

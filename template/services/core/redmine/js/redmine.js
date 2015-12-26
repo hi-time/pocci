@@ -2,12 +2,12 @@
 'use strict';
 
 var server = require('co-request');
-var assertStatus = require('./util.js').assertStatus;
-var toArray = require('./util.js').toArray;
-var copy = require('./util.js').copy;
-var util = require('./util.js');
+var assertStatus = require('pocci/util.js').assertStatus;
+var toArray = require('pocci/util.js').toArray;
+var copy = require('pocci/util.js').copy;
+var util = require('pocci/util.js');
 var parse = require('url').parse;
-var gitlab = require('./gitlab.js');
+var gitlab = require('pocci/gitlab.js');
 
 var logout = function*(browser, user) {
   user = user || 'unknown';

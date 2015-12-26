@@ -3,7 +3,7 @@
 "use strict"
 
 assert = require("chai").assert
-webdriver = require("../lib/webdriver.js")
+webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
 
 module.exports.loginGitLab = (browser) ->
@@ -80,13 +80,11 @@ describe "Login", () ->
           .call()
           .setValue("#login", "jenkinsci")
           .setValue("#password", "password")
+          .save("sonar-before-login")
           .submitForm("form")
-          .call()
+          .pause(2000)
+          .save("sonar-after-login")
 
       then: ->
-        text = yield browser
-          .url(process.env.SONAR_URL + "/")
-          .pause(1000)
-          .call()
-          .getText("nav")
+        text = yield browser.getText("nav")
         assert.ok(text.indexOf("jenkinsci") > -1)

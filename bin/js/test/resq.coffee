@@ -6,8 +6,8 @@ cheerio = require("cheerio")
 co = require("co")
 getPathValue = require("chai/lib/chai/utils/getPathValue")
 server = require("co-request")
-assertStatus = require("../lib/util.js").assertStatus
-toArray = require("../lib/util.js").toArray
+assertStatus = require("pocci/util.js").assertStatus
+toArray = require("pocci/util.js").toArray
 
 
 module.exports = (done, spec) ->

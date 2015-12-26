@@ -1,7 +1,7 @@
 'use strict';
 var spawn = require('co-child-process');
 var path = require('path');
-var util = require('./util.js');
+var util = require('pocci/util.js');
 
 var importCode = function*(url, options, ldapUsers) {
   var user = util.getUser(options.user, ldapUsers);
@@ -20,7 +20,7 @@ var importCode = function*(url, options, ldapUsers) {
 };
 
 module.exports = {
-  setup: function*(browser, options) {
+  handleSetup: function*(browser, options) {
     var repos = options.repositories || [];
     var userOptions = options.user || {};
     var url = process.env.GITLAB_URL;

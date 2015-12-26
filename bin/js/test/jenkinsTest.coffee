@@ -7,11 +7,11 @@ fs = require("fs")
 path = require("path")
 jenkinsLib = require("jenkins")
 thunkify = require("thunkify")
-jenkins = require("../lib/jenkins.js")
-yaml = require("../lib/yaml.js")
-webdriver = require("../lib/webdriver.js")
+jenkins = require("pocci/jenkins.js")
+yaml = require("pocci/yaml.js")
+webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
-version = require("../lib/jenkins-slaves-version.json")
+version = require("pocci/jenkins-slaves-version.json")
 
 
 listNodes = ->
@@ -29,7 +29,7 @@ listNodes = ->
   return jenkinsNodes
 
 assertEntries = (options) ->
-  config = yaml("./config/jenkins-slaves.yml")
+  config = yaml("./config/workspaces.yml")
 
   options.nodes.sort()
   nodes = yield listNodes()
@@ -66,7 +66,7 @@ describe "Jenkins", ->
     test done,
       setup: ->
         try
-          fs.unlinkSync("./config/jenkins-slaves.yml")
+          fs.unlinkSync("./config/workspaces.yml")
         catch err
 
         yield destroyNodes()

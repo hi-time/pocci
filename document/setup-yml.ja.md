@@ -77,7 +77,7 @@ pocci/
     - althosts              ... ホスト名 (IPアドレス) 定義 (hostsファイル形式)
     - backend-services.yml  ... バックエンドサービス用コンテナの定義 (Docker Compose形式)
     - core-services.yml     ... 各種サービス用コンテナ定義 (Docker Compose形式)
-    - jenkins-slaves.yml    ... Jenkins スレーブノード用コンテナ定義 (Docker Compose形式)
+    - workspaces.yml        ... ビルド時作業領域用コンテナ定義 (Docker Compose形式)
 ```
 
 config ディレクトリ内のファイルの中で中心的な役割を担うのが `.env` (環境変数定義) です。

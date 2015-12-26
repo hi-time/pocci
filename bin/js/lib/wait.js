@@ -1,6 +1,6 @@
 'use strict';
 var requestretry = require('requestretry');
-var assertStatus = require('./util.js').assertStatus;
+var assertStatus = require('pocci/util.js').assertStatus;
 
 module.exports = function(url) {
   var handleResponse = function(err, response) {

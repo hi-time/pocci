@@ -6,26 +6,26 @@ if [ -f ${CONFIG_DIR}/core-services.yml ]; then
     rm ${CONFIG_DIR}/core-services.yml
 fi
 for i in ${INTERNAL_SERVICES}; do
-    if [ -f ${TEMP_CONFIG_DIR}/services/core/compose/$i.yml.template ]; then
-        source ${TEMP_CONFIG_DIR}/services/core/compose/$i.yml.template >>${CONFIG_DIR}/core-services.yml
+    if [ -f ${TEMP_CONFIG_DIR}/services/core/$i/docker-compose.yml.template ]; then
+        source ${TEMP_CONFIG_DIR}/services/core/$i/docker-compose.yml.template >>${CONFIG_DIR}/core-services.yml
     fi
 done
 if [ -f ${CONFIG_DIR}/core-services.yml ]; then
-    source ${TEMP_CONFIG_DIR}/services/core/compose/nginx.yml.template >>${CONFIG_DIR}/core-services.yml
+    source ${TEMP_CONFIG_DIR}/services/core/nginx/docker-compose.yml.template >>${CONFIG_DIR}/core-services.yml
 fi
 
 # backend-services.yml
 if [ -f ${CONFIG_DIR}/backend-services.yml ]; then
     rm ${CONFIG_DIR}/backend-services.yml
 fi
-for i in $(ls ${TEMP_CONFIG_DIR}/services/backend/compose/*.yml.template); do
+for i in $(find ${TEMP_CONFIG_DIR}/services/backend/ -name docker-compose.yml.template); do
     source $i >>${CONFIG_DIR}/backend-services.yml
 done
 
-# jenkins-slaves.yml
-if [ -f ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template ]; then
-    source ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template >${CONFIG_DIR}/jenkins-slaves.yml
-    rm ${TEMP_CONFIG_DIR}/jenkins-slaves.yml.template
+# workspaces.yml
+if [ -f ${TEMP_CONFIG_DIR}/workspaces.yml.template ]; then
+    source ${TEMP_CONFIG_DIR}/workspaces.yml.template >${CONFIG_DIR}/workspaces.yml
+    rm ${TEMP_CONFIG_DIR}/workspaces.yml.template
 fi
 
 if [ -d ${TEMP_CONFIG_DIR}/image ]; then

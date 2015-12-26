@@ -2,9 +2,9 @@
 'use strict';
 var fs = require('fs');
 var yaml = require('js-yaml');
-var util = require('./util.js');
+var util = require('pocci/util.js');
 var parse = require('url').parse;
-var gitlab = require('./gitlab.js');
+var gitlab = require('pocci/gitlab.js');
 var server = require('co-request');
 
 var registerOauth = function*(browser, url, keys) {
@@ -26,7 +26,7 @@ var registerOauth = function*(browser, url, keys) {
 };
 
 var updateComposeFile = function(keys) {
-  var file = './config/services/core/compose/kanban.yml.template';
+  var file = './config/services/core/kanban/docker-compose.yml.template';
   var text = fs.readFileSync(file, 'utf8')
               .replace(/GITLAB_API_TOKEN=.*/g, 'GITLAB_API_TOKEN=' + keys.apiToken)
               .replace(/GITLAB_OAUTH_CLIENT_ID=.*/g, 'GITLAB_OAUTH_CLIENT_ID=' + keys.clientId)

@@ -10,7 +10,7 @@ source ${BASE_DIR}/bin/lib/init-env
 
 SECONDS=0
 set +e
-${BIN_DIR}/stop-jenkins-slave
+${BIN_DIR}/close-workspace
 ${LIB_DIR}/docker-compose core-services.yml -p ${POCCI_SERVICE_PREFIX} stop
 ${LIB_DIR}/docker-compose backend-services.yml -p ${POCCI_SERVICE_PREFIX} stop
 

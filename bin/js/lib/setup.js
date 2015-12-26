@@ -1,13 +1,9 @@
 'use strict';
-var git = require('./git.js');
-var gitlab = require('./gitlab.js');
-var jenkins = require('./jenkins.js');
-var slave = require('./slave.js');
-var user = require('./user.js');
-var redmine = require('./redmine.js');
-var yaml = require('./yaml.js');
-var webdriver = require('./webdriver.js');
-var kanban = require('./kanban.js');
+var fs = require('fs');
+var gitlab = require('pocci/gitlab.js');
+var user = require('pocci/user.js');
+var yaml = require('pocci/yaml.js');
+var webdriver = require('pocci/webdriver.js');
 
 var initBrowser = function*() {
   if(!module.exports.browser) {
@@ -34,33 +30,24 @@ var setup = function*(yamlFile, keepOpenBrowser) {
   }
 
   if(services.indexOf('gitlab') > -1) {
-    console.log('*** Setup GitLab...');
+    console.log('*** Setup gitlab...');
     yield gitlab.setup(browser, options);
   }
 
-  if(services.indexOf('redmine') > -1) {
-    console.log('*** Setup Redmine...');
-    yield redmine.setup(browser, options);
-  }
-
-  if(options.repositories && options.repositories.length > 0) {
-    console.log('*** Import codes to Git repository...');
-    yield git.setup(browser, options);
-  }
-
-  if(services.indexOf('jenkins') > -1) {
-    console.log('*** Setup Jenkins...');
-    yield jenkins.setup(browser, options);
-  }
-
-  if(services.indexOf('slave') > -1) {
-    console.log('*** Setup Jenkins slave...');
-    yield slave.setup(browser, options);
-  }
-
-  if(services.indexOf('kanban') > -1) {
-    console.log('*** Setup Kanban...');
-    yield kanban.setup(browser, options);
+  var modules = fs.readdirSync(__dirname);
+  for(var i = 0; i < modules.length; i++) {
+    var fileName = modules[i];
+    if(fileName.match(/\.js$/) && fileName !== 'setup.js' && 
+        fileName !== 'user.js' && fileName !== 'gitlab.js') {
+      var serviceName = fileName.split('.')[0];
+      if(services.indexOf(serviceName) > -1) {
+        var m = require('pocci/' + fileName);
+        if(m.setup) {
+          console.log('*** Setup ' + serviceName + '...');
+          yield m.setup(browser, options);
+        }
+      }
+    }
   }
 
   if(!keepOpenBrowser) {
@@ -71,8 +58,3 @@ var setup = function*(yamlFile, keepOpenBrowser) {
 
 module.exports.setup = setup;
 module.exports.initBrowser = initBrowser;
-module.exports.gitlab = gitlab;
-module.exports.git = git;
-module.exports.jenkins = jenkins;
-module.exports.redmine = redmine;
-module.exports.kanban = kanban;

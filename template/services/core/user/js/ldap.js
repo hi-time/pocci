@@ -1,6 +1,6 @@
 'use strict';
 var parse = require('url').parse;
-var util = require('./util.js');
+var util = require('pocci/util.js');
 
 module.exports = {
   addDefaults: function(options) {

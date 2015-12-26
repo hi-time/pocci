@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
   <description></description>
@@ -9,7 +10,7 @@
   </logRotator>
   <keepDependencies>false</keepDependencies>
   <properties/>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -31,17 +32,20 @@
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers>
-    <com.dabsquared.gitlabjenkins.GitLabPushTrigger plugin="gitlab-plugin@1.1.24">
+    <com.dabsquared.gitlabjenkins.GitLabPushTrigger plugin="gitlab-plugin@1.1.28">
       <spec></spec>
       <triggerOnPush>true</triggerOnPush>
       <triggerOnMergeRequest>true</triggerOnMergeRequest>
-      <triggerOpenMergeRequestOnPush>true</triggerOpenMergeRequestOnPush>
+      <triggerOpenMergeRequestOnPush>never</triggerOpenMergeRequestOnPush>
       <ciSkip>true</ciSkip>
       <setBuildDescription>true</setBuildDescription>
       <addNoteOnMergeRequest>true</addNoteOnMergeRequest>
+      <addCiMessage>true</addCiMessage>
       <addVoteOnMergeRequest>true</addVoteOnMergeRequest>
       <allowAllBranches>true</allowAllBranches>
-      <allowedBranches/>
+      <includeBranchesSpec></includeBranchesSpec>
+      <excludeBranchesSpec></excludeBranchesSpec>
+      <acceptMergeRequestOnSuccess>false</acceptMergeRequestOnSuccess>
     </com.dabsquared.gitlabjenkins.GitLabPushTrigger>
   </triggers>
   <concurrentBuild>false</concurrentBuild>
@@ -51,10 +55,11 @@
     </hudson.tasks.Shell>
   </builders>
   <publishers>
-    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.6">
+    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.10">
       <testResults>target/surefire-reports/*.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <healthScaleFactor>1.0</healthScaleFactor>
+      <allowEmptyResults>false</allowEmptyResults>
     </hudson.tasks.junit.JUnitResultArchiver>
   </publishers>
   <buildWrappers/>

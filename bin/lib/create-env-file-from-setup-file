@@ -13,7 +13,8 @@ if [ -z "${DOCKER_HOST_ADDRESS}" ]; then
 fi
 export DOCKER_HOST_ADDRESS
 
-POCCIR_OPTS="-e POCCI_DIR=${BASE_DIR}" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} node -e "require('./bin/js/lib/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/tmp.env
+cd ${JS_DIR}
+POCCIR_OPTS="-e POCCI_DIR=${BASE_DIR}" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} node -e "require('pocci/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/tmp.env
 RC=$?
 
 set -e

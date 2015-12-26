@@ -3,9 +3,10 @@
 var fs = require('fs');
 var path = require('path');
 var server = require('co-request');
-var toArray = require('./util.js').toArray;
-var assertStatus = require('./util.js').assertStatus;
-var util = require('./util.js');
+var git = require('pocci/git.js');
+var toArray = require('pocci/util.js').toArray;
+var assertStatus = require('pocci/util.js').assertStatus;
+var util = require('pocci/util.js');
 var parse = require('url').parse;
 var adminPassword = process.env.GITLAB_ROOT_PASSWORD;
 
@@ -381,6 +382,11 @@ module.exports = {
       var groups = toArray(gitlabOptions.groups);
       yield setupGroups(this.request, groups, users, repositories);
       yield logout(browser);
+    }
+
+    if(repositories && repositories.length > 0) {
+      console.log('*** Import codes to Git repository...');
+      yield git.handleSetup(browser, options);
     }
   },
   getPrivateToken: getPrivateToken,

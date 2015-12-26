@@ -18,7 +18,7 @@ pocci/
     - althosts:              Host names (IP addresses) definitions (host file format)
     - backend-services.yml:  Container definitions for backend services (Docker Compose format)
     - core-services.yml:     Continer definitions for various services (Docker Compose format)
-    - jenkins-slaves.yml:    Container definitions for Jenkins slave nodes (Docker Compose format)
+    - workspaces.yml:        Container definitions for workspaces (Docker Compose format)
 ```
 
 The initial setup of the services can be executed in any of the following three ways

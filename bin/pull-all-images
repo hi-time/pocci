@@ -10,15 +10,12 @@ fi
 
 # compose/*.yml
 echo "" >${CONFIG_DIR}/all-docker-compose.txt
-for i in $(ls ${TEMPLATE_DIR}/services/backend/compose/*.yml.template); do
-    source $i >>${CONFIG_DIR}/all-docker-compose.txt
-done
-for i in $(ls ${TEMPLATE_DIR}/services/core/compose/*.yml.template); do
+for i in $(find ${TEMPLATE_DIR}/services/ -name docker-compose.yml.template); do
     source $i >>${CONFIG_DIR}/all-docker-compose.txt
 done
 
 
-# jenkins-slaves.yml
+# xpfriend/jenkins-slave-*
 grep JENKINS_SLAVE ${LIB_DIR}/version |tr '[:upper:]' '[:lower:]' | \
     sed -e 's|version_|  image: xpfriend/|' -e 's/_/-/g' -e 's/=/:/' \
     >> ${CONFIG_DIR}/all-docker-compose.txt
@@ -28,9 +25,6 @@ rm ${CONFIG_DIR}/all-docker-compose.txt
 
 
 # kanban etc...
-for i in $(ls ${TEMPLATE_DIR}/services/backend/scripts/*-pull-images); do
-    source $i
-done
-for i in $(ls ${TEMPLATE_DIR}/services/core/scripts/*-pull-images); do
+for i in $(find ${TEMPLATE_DIR}/services/ -name pull-images.sh); do
     source $i
 done

@@ -3,7 +3,8 @@
 "use strict"
 
 path = require("path")
-setup = require("../lib/setup.js")
+setup = require("pocci/setup.js")
+gitlab = require("pocci/gitlab.js")
 test = require("./resq.js")
 chai = require("chai")
 LdapClient = require("promised-ldap")
@@ -14,7 +15,6 @@ describe "setup.default.yml", ->
   it "gitlab", (done) ->
     test done,
       setup: ->
-        gitlab = setup.gitlab
         url = "http://gitlab.pocci.test"
         yield setup.initBrowser()
         yield gitlab.loginByAdmin(setup.browser, url)
@@ -75,9 +75,10 @@ describe "setup.default.yml", ->
             path: "/projects/#{@projectIdGuide}/repository/tree"
             sort:   {target: "body", keys: "name"}
             expected:
-              "body.length":          2
-              "body[0].name":        "README.md"
-              "body[1].name":        "images"
+              "body.length":          3
+              "body[0].name":        "README.en.md"
+              "body[1].name":        "README.ja.md"
+              "body[2].name":        "images"
 
           projectGuideIssues:
             path: "/projects/#{@projectIdGuide}/issues"

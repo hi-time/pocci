@@ -3,7 +3,8 @@
 "use strict"
 
 path = require("path")
-setup = require("../lib/setup.js")
+setup = require("pocci/setup.js")
+gitlab = require("pocci/gitlab.js")
 test = require("./resq.js")
 
 describe "GitLab", ->
@@ -13,7 +14,6 @@ describe "GitLab", ->
   it "can setup a group", (done) ->
     spec01 =
       setup: ->
-        gitlab = setup.gitlab
         url = process.env.GITLAB_URL
         yield setup.initBrowser()
         yield gitlab.loginByAdmin(setup.browser, url)

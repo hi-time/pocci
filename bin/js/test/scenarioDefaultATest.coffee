@@ -4,7 +4,7 @@
 
 assert = require("chai").assert
 fs = require("fs")
-webdriver = require("../lib/webdriver.js")
+webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
 scenarioTest = require("./scenarioTest.js")
 

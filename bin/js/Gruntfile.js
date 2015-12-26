@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         options: {
           jshintrc: '.jshintrc'
         },
-        src: ['Gruntfile.js', 'app.js', 'lib/**/*.js', 'test/**/*.js']
+        src: ['Gruntfile.js', 'app.js', 'lib/**/*.js', 'node_modules/pocci/*.js', 'test/**/*.js']
       }
     },
     clean: ['config'],

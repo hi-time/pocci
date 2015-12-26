@@ -3,7 +3,7 @@
 "use strict"
 
 assert = require("chai").assert
-webdriver = require("../lib/webdriver.js")
+webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
 scenarioTest = require("./scenarioTest.js")
 

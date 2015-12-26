@@ -1,15 +1,8 @@
 /*jshint camelcase: false */
 'use strict';
-var yaml = require('./yaml.js');
-var pocci = require('./pocci.js');
-var ldap = require('./ldap.js');
-var user = require('./user.js');
-var gitlab = require('./gitlab.js');
-var jenkins = require('./jenkins.js');
-var kanban = require('./kanban.js');
-var redmine = require('./redmine.js');
-var sonar = require('./sonar.js');
-var fluentd = require('./fluentd.js');
+var fs = require('fs');
+var yaml = require('pocci/yaml.js');
+var pocci = require('pocci/pocci.js');
 
 var updateByUserEnvironment = function(environment, userEnvironment) {
   var names = Object.keys(userEnvironment);
@@ -32,9 +25,18 @@ var addUrl = function(environment, services, serviceUrl, allServiceUrl) {
 
 module.exports = function(yamlFile) {
   var options = yaml(yamlFile);
-  var config = [pocci, ldap, user, gitlab, jenkins, kanban, redmine, sonar, fluentd];
+  var modules = fs.readdirSync(__dirname);
+  var config = [pocci];
+  for(var i = 0; i < modules.length; i++) {
+    if(modules[i] !== 'pocci.js' && modules[i].match(/\.js$/)) {
+      var m = require('pocci/' + modules[i]);
+      if(m.addDefaults) {
+        config.push(m);
+      }
+    }
+  }
 
-  for(var i = 0; i < config.length; i++) {
+  for(i = 0; i < config.length; i++) {
     config[i].addDefaults(options);
   }
 

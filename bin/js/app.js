@@ -1,6 +1,6 @@
 'use strict';
 var co = require('co');
-var setup = require('./lib/setup.js').setup;
+var setup = require('pocci/setup.js').setup;
 
 co(function*() {
   yield setup('./config/setup.yml');

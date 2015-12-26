@@ -25,7 +25,7 @@ ${BIN_DIR}/stop-service
 
 SECONDS=0
 set +e
-${LIB_DIR}/docker-compose jenkins-slaves.yml -p poccin rm -v --force
+${LIB_DIR}/docker-compose workspaces.yml -p poccin rm -v --force
 ${LIB_DIR}/docker-compose core-services.yml -p ${POCCI_SERVICE_PREFIX} rm -v --force
 ${LIB_DIR}/docker-compose backend-services.yml -p ${POCCI_SERVICE_PREFIX} rm -v --force
 

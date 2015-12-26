@@ -1,5 +1,5 @@
 'use strict';
-var util = require('./util.js');
+var util = require('pocci/util.js');
 var parse = require('url').parse;
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
     var url = parse(options.sonar.url);
     environment.SONAR_URL             = util.getHref(url);            // example codes
     environment.SONAR_PROTOCOL        = url.protocol;
-    environment.SONAR_HOST            = url.hostname;                 // jenkins-slaves.yml
+    environment.SONAR_HOST            = url.hostname;                 // workspaces.yml
     environment.SONAR_PORT            = util.getPort(url);
     environment.SONAR_SECURITY_REALM  = options.sonar.securityRealm;  // xpfriend/sonarqube
     environment.SONAR_LDAP_REAL_NAME  = options.sonar.ldapRealName;   // xpfriend/sonarqube

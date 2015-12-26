@@ -31,7 +31,7 @@ For details, refer to [How to Start and Use Services](./create-service.en.md).
 Starting and Stopping
 ---------------------
 ### bin/up-service (Starts services)
-Start the services and Jenkins slave.
+Start the services and open the workspaces.
 
 ```bash
 ./up-service
@@ -39,31 +39,31 @@ Start the services and Jenkins slave.
 
 
 ### bin/stop-service (Stops services)
-Stop the services and Jenkins slave.
+Stop the services and close the workspaces.
 
 ```bash
 ./stop-service
 ```
 
 ### bin/restart-service (Restarts services)
-Restart the services and Jenkins slave.
+Restart the services and reopen the workspaces.
 
 ```bash
 ./restart-service
 ```
 
-### bin/up-jenkins-slave (Starts Jenkins slave)
-Start only the Jenkins slave.
+### bin/open-workspace (Opens workspaces)
+Open the workspaces.
 
 ```bash
-./up-jenkins-slave
+./open-workspace
 ```
 
-### bin/stop-jenkins-slave (Stops Jenkins slave)
-Stops only the Jenkins slave.
+### bin/close-workspace (Closes workspaces)
+Close the workspaces.
 
 ```bash
-./stop-jenkins-slave
+./close-workspace
 ```
 
 

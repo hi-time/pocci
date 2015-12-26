@@ -3,7 +3,9 @@
 "use strict"
 
 path = require("path")
-setup = require("../lib/setup.js")
+setup = require("pocci/setup.js")
+gitlab = require("pocci/gitlab.js")
+redmine = require("pocci/redmine.js")
 test = require("./resq.js")
 chai = require("chai")
 LdapClient = require("promised-ldap")
@@ -24,7 +26,6 @@ describe "setup.redmine.yml", ->
   it "gitlab", (done) ->
     test done,
       setup: ->
-        gitlab = setup.gitlab
         url = "http://gitlab.pocci.test"
         yield gitlab.loginByAdmin(setup.browser, url)
         @request = yield gitlab.createRequest(setup.browser, url)
@@ -219,12 +220,11 @@ describe "setup.redmine.yml", ->
     url = "http://redmine.pocci.test"
     test done,
       setup: ->
-        @redmine = setup.redmine
-        yield @redmine.loginByAdmin(setup.browser, url)
+        yield redmine.loginByAdmin(setup.browser, url)
         return
 
       cleanup: ->
-        yield @redmine.logout(setup.browser)
+        yield redmine.logout(setup.browser)
 
       expect: ->
         @request = (path) ->
@@ -253,7 +253,7 @@ describe "setup.redmine.yml", ->
             expected:
               "#issue-changesets .changeset.even a": new RegExp(@revisionNode)
 
-        @request = yield @redmine.createRequest(setup.browser, url)
+        @request = yield redmine.createRequest(setup.browser, url)
         yield @assert
           projects:
             path:   "/projects.json"

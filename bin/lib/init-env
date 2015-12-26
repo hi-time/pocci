@@ -22,7 +22,6 @@ if [ -z "${POCCI_SERVICE_PREFIX}" ]; then
     export POCCI_SERVICE_PREFIX="poccis"
 fi
 
-export JENKINS_CONTAINER=${POCCI_SERVICE_PREFIX}_jenkins_1
 export DNS_CONTAINER=${POCCI_SERVICE_PREFIX}_dns_1
 
 assert ${BASE_DIR}

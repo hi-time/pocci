@@ -1,5 +1,5 @@
 'use strict';
-var jenkins = require('./jenkins.js');
+var jenkins = require('pocci/jenkins.js');
 
 module.exports = {
   setup: function*(browser, options) {

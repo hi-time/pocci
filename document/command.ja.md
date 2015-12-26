@@ -31,7 +31,7 @@ bash ./build
 起動・停止
 ----------
 ### bin/up-service (サービス起動)
-サービスおよびJenkins スレーブを起動します。
+サービスを起動し、ビルド用作業領域をオープンします。
 
 ```bash
 ./up-service
@@ -39,31 +39,31 @@ bash ./build
 
 
 ### bin/stop-service (サービス停止)
-サービスおよびJenkins スレーブを停止します。
+ビルド用作業領域をクローズして、サービスを停止します。
 
 ```bash
 ./stop-service
 ```
 
 ### bin/restart-service (サービス再起動)
-サービスおよびJenkins スレーブを再起動します。
+サービスおよびビルド用作業領域を再起動します。
 
 ```bash
 ./restart-service
 ```
 
-### bin/up-jenkins-slave (Jenkinsスレーブ起動)
-Jenkins スレーブのみを起動します。
+### bin/open-workspace (ビルド用作業領域を開く)
+ビルド用作業領域をオープンします。
 
 ```bash
-./up-jenkins-slave
+./open-workspace
 ```
 
-### bin/stop-jenkins-slave (Jenkinsスレーブ停止)
-Jenkins スレーブのみを停止します。
+### bin/close-workspace (ビルド用作業領域をクローズする)
+ビルド用作業領域をクローズします。
 
 ```bash
-./stop-jenkins-slave
+./close-workspace
 ```
 
 

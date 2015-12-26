@@ -77,7 +77,7 @@ pocci/
     - althosts:              Host names (IP addresses) definitions (host file format)
     - backend-services.yml:  Container definitions for backend services (Docker Compose format)
     - core-services.yml:     Container definitions for various services (Docker Compose format)
-    - jenkins-slaves.yml:    Container definitions for Jenkins slave nodes (Docker Compose format)
+    - workspaces.yml:        Container definitions for workspaces (Docker Compose format)
 ```
 
 The file that plays the central role of the files in the config directory is `.env` (environment variable definitions).

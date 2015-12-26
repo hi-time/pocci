@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+BASE_DIR=$(cd $(dirname $0)/../..; pwd)
+source ${BASE_DIR}/bin/lib/init-env
+source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
+
+SECONDS=0
+
+for i in $(find ${TEMPLATE_DIR}/services/ -name update-container.sh); do
+    source $i
+done
+
+echo "#__ update-container: ${SECONDS}"
