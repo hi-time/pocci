@@ -7,8 +7,10 @@ source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
 SECONDS=0
 
-for i in $(find ${TEMPLATE_DIR}/services/ -name update-container.sh); do
-    source $i
+for i in ${INTERNAL_SERVICES}; do
+    if [ -f ${TEMPLATE_DIR}/services/core/$i/update-container.sh ]; then
+        source ${TEMPLATE_DIR}/services/core/$i/update-container.sh
+    fi
 done
 
 echo "#__ update-container: ${SECONDS}"

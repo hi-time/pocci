@@ -8,9 +8,9 @@ remove()
     done
 }
 
-remove xpfriend/jenkins-slave-nodejs
-remove xpfriend/jenkins-slave-java
-remove xpfriend/jenkins-slave-base
+remove xpfriend/workspace-nodejs
+remove xpfriend/workspace-java
+remove xpfriend/workspace-base
 remove xpfriend/jenkins
 remove xpfriend/sonarqube
 remove xpfriend/fluentd

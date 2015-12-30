@@ -258,6 +258,11 @@ gitlab:
   users:
     - uid:          boze
       userPassword: password
+  runners:
+    - java
+    - python: "xpfriend/workspace-python27:latest"
+    - centos:
+        from: centos:7.1.1503
 ```
 
 *   **topPage:** ホスト名のみを指定した時に表示されるページ。デフォルトはログインページ
@@ -306,6 +311,17 @@ gitlab:
 
     *   `users:` または `user.users:` で定義したユーザーは、
         `groups:` で定義したグループの Owner として設定されます。
+*   **runners:** 作成する GitLab CI 用ランナー  
+    以下の3種類のいずれかの方法で指定できます。
+    *   pocci 組み込みのランナー名 (`java` もしくは `nodejs`) を指定する。
+    *   `ランナー名:"イメージ名"` を指定する。  
+        pocci 用の GitLab Runner として動作することを意識して作成されたイメージ名を指定します。
+    *   `ランナー名:オブジェクト(マップ)` を指定する。  
+        オブジェクト(マップ)の要素として `from:` で任意の既存イメージ名を指定します。
+        これにより、既存のイメージ上で GitLab CI Runner を動作させることができるようになります。  
+        この形式で指定すると `config/image/ランナー名` という名前でディレクトリが作成され、
+        その中に GitLab Runner を動作させるための Dockerfile
+        とそのファイルから利用されるスクリプトが格納されます。
 *   **url:** GitLab サーバのURL
     *   デフォルトは `http://gitlab.[pocci.domainで指定したドメイン名]`
     *   環境変数: `GITLAB_URL`, `GITLAB_PROTOCOL`, `GITLAB_HOST`, `GITLAB_PORT`
@@ -347,7 +363,7 @@ jenkins:
     - example/example-java
   nodes:
     - java
-    - python: "xpfriend/jenkins-slave-python27:latest"
+    - python: "xpfriend/workspace-python27:latest"
     - centos:
         from: centos:7.1.1503
 ```

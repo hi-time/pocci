@@ -11,4 +11,4 @@ CONTAINER_NAME=poccid_document_server
 cd ${BASE_DIR}
 
 echo "Start document server..."
-docker run --name ${CONTAINER_NAME} --privileged -d -w /app -v ${PWD}:/app -p ${DOCUMENT_SERVER_PORT}:9999 xpfriend/jenkins-slave-nodejs:${VERSION_JENKINS_SLAVE_NODEJS} grunt --gruntfile bin/js/DocumentServer.js
+docker run --name ${CONTAINER_NAME} --privileged -d -w /app -v ${PWD}:/app -p ${DOCUMENT_SERVER_PORT}:9999 xpfriend/workspace-nodejs:${VERSION_WORKSPACE_NODEJS} grunt --gruntfile bin/js/DocumentServer.js

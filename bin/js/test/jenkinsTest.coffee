@@ -11,7 +11,7 @@ jenkins = require("pocci/jenkins.js")
 yaml = require("pocci/yaml.js")
 webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
-version = require("pocci/jenkins-slaves-version.json")
+version = require("pocci/workspaces-version.json")
 
 
 listNodes = ->
@@ -40,7 +40,7 @@ assertEntries = (options) ->
   for node, i in options.nodes
     console.log("#{node} : #{nodes[i]}")
     assert.equal(node, nodes[i])
-    assert.equal(config[node].image, "xpfriend/jenkins-slave-#{node}:#{version[node]}")
+    assert.equal(config[node].image, "xpfriend/workspace-#{node}:#{version[node]}")
 
 
 destroyNodes = ->

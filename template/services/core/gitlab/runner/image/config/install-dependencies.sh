@@ -5,31 +5,30 @@ if [ $? -ne 0 ]; then
     INSTALL_PACKAGE="git"
 fi
 
-type java
+type gitlab-ci-multi-runner
 if [ $? -ne 0 ]; then
-    INSTALL_PACKAGE="${INSTALL_PACKAGE} java"
+    INSTALL_PACKAGE="${INSTALL_PACKAGE} gitlab-ci-multi-runner"
 fi
 
 if [ -n "${INSTALL_PACKAGE}" ]; then
     type apt-get
     if [ $? -eq 0 ]; then
-        INSTALL_PACKAGE=`echo ${INSTALL_PACKAGE} | sed -e "s/java/openjdk-8-jre-headless/"`
         echo "set -e \
                && . /config/proxy.env \
-               && echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
-               && apt-get update \
+               && apt-get update && apt-get install -y curl \
+               && curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.deb.sh | bash \
                && apt-get install -y ${INSTALL_PACKAGE} \
                && rm -rf /var/lib/apt/lists/*" >./install-packages.sh
     fi
 
     type yum
     if [ $? -eq 0 ]; then
-        INSTALL_PACKAGE=`echo ${INSTALL_PACKAGE} | sed -e "s/java/java-1.8.0-openjdk/"`
         echo "set -e \
                && . /config/proxy.env \
-               && yum update -y \
-               && yum install -y ${INSTALL_PACKAGE} \
-               && yum clean all" >./install-packages.sh
+               && yum install -y curl \
+               && curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash \
+               && yum install --nogpgcheck -y ${INSTALL_PACKAGE} \
+               && yum clean all"  >./install-packages.sh
     fi
 
     set -e

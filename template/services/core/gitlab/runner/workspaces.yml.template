@@ -1,0 +1,24 @@
+cat << EOF
+__NAME:
+  __IMAGE
+  volumes:
+    - /tmp
+    - /var/workspace
+    - ${CONFIG_DIR}/.ssh:/tmp/user_home/.ssh
+    - ${CONFIG_DIR}/volumes/gitlab-runner/__NAME:/var/workspace/.gitlab-runner
+  labels:
+    com.xpfriend.pocci.backup-ignore: "/tmp"
+  env_file:
+    - ./.env
+  dns: ${DNS_ADDRESS}
+  environment:
+    - CI_SERVER_URL=${GITLAB_URL}/ci
+    - REGISTRATION_TOKEN=__SECRET
+    - RUNNER_NAME=__NAME
+    - RUNNER_TAG_LIST=__NAME
+    - CONFIG_FILE=/var/workspace/.gitlab-runner/config.toml
+    - RUNNER_BUILDS_DIR=/var/workspace/builds
+    - RUNNER_CACHE_DIR=/var/workspace/cache
+  command: /config/start-gitlab-ci-runner.sh run
+
+EOF

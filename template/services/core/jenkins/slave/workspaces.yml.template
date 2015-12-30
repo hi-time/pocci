@@ -3,7 +3,7 @@ __NAME:
   __IMAGE
   volumes:
     - /tmp
-    - /var/jenkins_home
+    - /var/workspace
     - ${CONFIG_DIR}/.ssh:/tmp/user_home/.ssh
   labels:
     com.xpfriend.pocci.backup-ignore: "/tmp"
@@ -14,5 +14,6 @@ __NAME:
     - JENKINS_SLAVE_SECRET=__SECRET
     - JENKINS_URL=${JENKINS_URL}
     - NODE_NAME=__NAME
+  command: /config/start-jenkins-slave.sh
 
 EOF

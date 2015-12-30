@@ -1,0 +1,4 @@
+build_job:
+  script: bash ./build.sh
+  tags:
+    - java

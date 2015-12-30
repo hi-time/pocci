@@ -1,0 +1,44 @@
+pocci:
+  domain: pocci.test
+  services:
+    - gitlab
+    - user
+    - sonar
+    - kanban
+  environment:
+    TZ: Asia/Tokyo
+
+user:
+  users:
+    - uid:          boze
+      givenName:    Taro
+      sn:           BOZE
+      displayName:  "BOZE, Taro"
+      mail:         boze@example.com
+      userPassword: password
+
+gitlab:
+  smtpEnabled: true
+  groups:
+    - groupName: example
+      projects:
+        - projectName:    users-guide
+        - projectName:    example-java
+          commitMessage:  "[ci skip] import example codes (#1)"
+          issues:
+            - import example codes
+        - projectName:    example-nodejs
+          commitMessage:  "[ci skip] import example codes (#1)"
+          issues:
+            - import example codes
+  runners:
+    - java
+    - nodejs
+
+kanban:
+  - board: example/example-java
+    stages:
+      - BACKLOG
+      - TODO
+      - DOING
+      - DONE

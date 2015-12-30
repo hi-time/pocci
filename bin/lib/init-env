@@ -31,4 +31,4 @@ assert ${JS_DIR}
 assert ${TEMPLATE_DIR}
 
 source ${LIB_DIR}/version
-NODEJS_IMAGE=xpfriend/jenkins-slave-nodejs:${VERSION_JENKINS_SLAVE_NODEJS}
+NODEJS_IMAGE=xpfriend/workspace-nodejs:${VERSION_WORKSPACE_NODEJS}

@@ -258,6 +258,11 @@ gitlab:
   users:
     - uid:           boze
       userPassword:  password
+  runners:
+    - java
+    - python: "xpfriend/workspace-python27:latest"
+    - centos:
+        from: centos:7.1.1503
 ```
 
 *   **topPage:** Page displayed when only a host name is specified. The default is the login page.
@@ -306,6 +311,17 @@ gitlab:
 
     *   A user defined in `users:` or `user.users:`
         is set as the Owner of the groups defined in `groups:`.
+*   **runners:** GitLab CI Runner to be created  
+    Specify this in any of the following three ways.
+    *   Specify the runner name (`java` or `nodejs`) incorporated in pocci.
+    *   Specify `Runner name:"Image name"`.  
+        Specify an image name that was created keeping in mind that the container will operate as a GitLab CI Runner of pocci.
+    *   Specify `Runner name:Object (map)`.  
+        Specify any existing image name in `from:` as an element of the object (map).
+        This enables the existing image to be able to be operated as a GitLab CI Runner.  
+        If it is specified in this format, a directory under the name of `config/image/node name` is created,
+        and the Dockerfile for operation as a GitLab CI Runner
+        and the script used from that file are stored in that directory.
 *   **url:** URL of GitLab server
     *   The default is `http://gitlab.[Domain name specified in pocci.domain]`.
     *   Environment variables:  `GITLAB_URL`, `GITLAB_PROTOCOL`, `GITLAB_HOST`, `GITLAB_PORT`
@@ -347,7 +363,7 @@ jenkins:
     - example/example-java
   nodes:
     - java
-    - python:  "xpfriend/jenkins-slave-python27:latest"
+    - python:  "xpfriend/workspace-python27:latest"
     - centos:
         from:  centos:7.1.1503
 ```

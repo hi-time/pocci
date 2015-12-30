@@ -96,7 +96,7 @@ for i in ${CONTAINERS}; do
         sudo chown `id -un`:`id -gn` ${BACKUP_DIR}/$i.tar
 
         RESTORE_SCRIPT=${BACKUP_DIR}/restore-$i.sh
-        RESTORE_COMMAND='docker run --name poccir_restore --volumes-from '$i' -v ${BACKUP_DIR}:/backup --rm xpfriend/jenkins-slave-base:'${VERSION_JENKINS_SLAVE_BASE}' sudo bash -c "cd /;find '${TARGET_DIRS}' -mindepth 1 -delete;tar xf /backup/'$i'.tar"'
+        RESTORE_COMMAND='docker run --name poccir_restore --volumes-from '$i' -v ${BACKUP_DIR}:/backup --rm xpfriend/workspace-base:'${VERSION_WORKSPACE_BASE}' sudo bash -c "cd /;find '${TARGET_DIRS}' -mindepth 1 -delete;tar xf /backup/'$i'.tar"'
         echo '#!/bin/bash' >${RESTORE_SCRIPT}
         echo 'set -ex' >>${RESTORE_SCRIPT}
         echo 'BACKUP_DIR=$(cd $(dirname $0); pwd)' >>${RESTORE_SCRIPT}

@@ -35,3 +35,11 @@ if [ -d ${TEMP_CONFIG_DIR}/image ]; then
     cp -r ${TEMP_CONFIG_DIR}/image ${CONFIG_DIR}
     rm -fr ${TEMP_CONFIG_DIR}/image
 fi
+
+
+# workspace
+for i in ${INTERNAL_SERVICES}; do
+    if [ -f ${TEMP_CONFIG_DIR}/services/core/$i/setup-workspace.sh ]; then
+        source ${TEMP_CONFIG_DIR}/services/core/$i/setup-workspace.sh
+    fi
+done

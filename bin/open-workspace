@@ -5,10 +5,6 @@ BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
-if [ -n "${CI_CONTAINER}" -a `docker ps |grep "${CI_CONTAINER}" |wc -l` -gt 0 ]; then
-    ${LIB_DIR}/waitfor ${CI_URL}
-fi
-
 ${LIB_DIR}/docker-compose workspaces.yml -p poccin build
 source ${LIB_DIR}/force-recreate
 ${LIB_DIR}/docker-compose workspaces.yml -p poccin up -d ${FORCE_RECREATE}

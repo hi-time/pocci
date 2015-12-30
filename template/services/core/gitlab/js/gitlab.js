@@ -7,8 +7,10 @@ var git = require('pocci/git.js');
 var toArray = require('pocci/util.js').toArray;
 var assertStatus = require('pocci/util.js').assertStatus;
 var util = require('pocci/util.js');
+var workspace = require('pocci/workspace.js');
 var parse = require('url').parse;
 var adminPassword = process.env.GITLAB_ROOT_PASSWORD;
+var firstLogin = true;
 
 var logout = function*(browser) {
   browser.url(process.env.GITLAB_URL + '/profile');
@@ -88,8 +90,11 @@ var loginByAdmin = function*(browser, url) {
 
 var firstLoginByAdmin = function*(browser, url) {
   yield loginByAdmin(browser, url);
-  yield newPassword(browser, url, adminPassword);
-  yield loginByAdmin(browser, url);
+  if(firstLogin) {
+    firstLogin = false;
+    yield newPassword(browser, url, adminPassword);
+    yield loginByAdmin(browser, url);
+  }
 };
 
 var getPrivateToken = function*(browser, url) {
@@ -317,6 +322,16 @@ var getGitlabTimezone = function(timezone) {
   }
 };
 
+var setupRunners = function*(browser, url, runners) {
+  browser.url(url + '/ci/admin/runners');
+  yield browser.save('gitlab-getToken');
+  var token = yield browser.getText('code');
+
+  for(var i = 0; i < runners.length; i++) {
+    workspace.writeConfiguration('./config/services/core/gitlab/runner', runners[i], token);
+  }
+};
+
 module.exports = {
   addDefaults: function(options) {
     options.gitlab                      = options.gitlab      || {};
@@ -387,6 +402,13 @@ module.exports = {
     if(repositories && repositories.length > 0) {
       console.log('*** Import codes to Git repository...');
       yield git.handleSetup(browser, options);
+    }
+
+    if(gitlabOptions.runners) {
+      yield firstLoginByAdmin(browser, url);
+      var runners = workspace.normalize(gitlabOptions.runners);
+      yield setupRunners(browser, url, runners);
+      yield logout(browser);
     }
   },
   getPrivateToken: getPrivateToken,

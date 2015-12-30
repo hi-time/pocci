@@ -59,6 +59,7 @@ cd bin
 サービス構成タイプ | 利用可能なサービス                                       | 特徴
 ------------------ | -------------------------------------------------------- | ----
 default            | GitLab, Jenkins, SonarQube, かんばんボード, ユーザー管理 | チケット(Issue)管理はGitLabで行う。チケットをかんばんとしてタスクボード上で扱うことができる
+gitlab             | GitLab, SonarQube, かんばんボード, ユーザー管理          | チケット(Issue)管理はGitLabで行う。CI にも GitLab を利用する
 redmine            | GitLab, Jenkins, SonarQube, Redmine, ユーザー管理        | チケット(Issue)管理はRedmineで行う
 
 
@@ -86,6 +87,7 @@ redmine            | GitLab, Jenkins, SonarQube, Redmine, ユーザー管理    
 ```
 template/
   setup.default.yml
+  setup.gitlab.yml
   setup.redmine.yml
 ```
 

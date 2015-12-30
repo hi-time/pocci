@@ -1,12 +1,12 @@
 /*jshint camelcase: false */
 'use strict';
 var fs = require('fs');
-var mkdirp = require('mkdirp');
 var thunkify = require('thunkify');
 var jenkinsLib = require('jenkins');
 var path = require('path');
 var gitlab = require('pocci/gitlab.js');
 var util = require('pocci/util.js');
+var workspace = require('pocci/workspace.js');
 var parse = require('url').parse;
 
 var registerGitLab = function*(browser, url, job) {
@@ -86,42 +86,6 @@ var createJobs = function*(browser, jenkins, jobNames, gitlabUrl) {
   }
 };
 
-var writeNodeConf = function(node, secret) {
-  var templateFilePath = './config/services/core/jenkins/slave/compose/workspaces.yml.template';
-  var text = fs.readFileSync(templateFilePath, 'utf8')
-              .replace(/__NAME/g, node.name)
-              .replace(/__IMAGE/g, node.image)
-              .replace(/__SECRET/g, secret);
-  fs.appendFileSync('./config/workspaces.yml.template', text);
-};
-
-var copyConfigFile = function(nodeName, fileName) {
-  fs.createReadStream('./config/services/core/jenkins/slave/image/config/' + fileName)
-    .pipe(fs.createWriteStream('./config/image/' + nodeName + '/config/' + fileName));
-};
-
-var writeProxyEnv = function(nodeName) {
-  var proxy = '';
-  if(process.env.http_proxy) {
-    proxy = 'export http_proxy=' + process.env.http_proxy + '\n' +
-                'export https_proxy=' + process.env.https_proxy + '\n' +
-                'export ftp_proxy=' + process.env.ftp_proxy + '\n' +
-                'export no_proxy=' + process.env.no_proxy + '\n';
-  }
-  fs.writeFileSync('./config/image/' + nodeName + '/config/proxy.env', proxy);
-};
-
-var writeDockerFile = function(node) {
-  var dockerfileTemplate = './config/services/core/jenkins/slave/image/Dockerfile.template';
-  var text = fs.readFileSync(dockerfileTemplate, 'utf8').replace(/__FROM/g, node.from);
-  mkdirp.sync('./config/image/' + node.name + '/config');
-  fs.writeFileSync('./config/image/' + node.name + '/Dockerfile', text);
-  copyConfigFile(node.name, 'entrypoint');
-  copyConfigFile(node.name, 'start-jenkins-slave.sh');
-  copyConfigFile(node.name, 'install-dependencies.sh');
-  writeProxyEnv(node.name);
-};
-
 var createNode = function*(jenkins, nodeName) {
   var destroy = thunkify(jenkins.node.destroy.bind(jenkins.node));
   var create = thunkify(jenkins.node.create.bind(jenkins.node));
@@ -134,7 +98,7 @@ var createNode = function*(jenkins, nodeName) {
 
   var options = {
     name: nodeName,
-    remoteFS: '/var/jenkins_home',
+    remoteFS: '/var/workspace',
     numExecutors: 1,
     exclusive: false
   };
@@ -227,10 +191,7 @@ var saveSecret = function*(browser, url, node, isEnabledAuth) {
     var text = yield browser.getText('pre');
     secret = text.replace(/.*-secret/,'-secret');
   }
-  writeNodeConf(node, secret);
-  if(node.from) {
-    writeDockerFile(node);
-  }
+  workspace.writeConfiguration('./config/services/core/jenkins/slave', node, secret);
 };
 
 var saveSecrets = function*(browser, url, nodes, isEnabledAuth) {
@@ -261,39 +222,6 @@ var configureMail = function*(browser, url) {
   yield browser.save('jenkins-doing-configureMail');
   yield browser.click('#yui-gen17-button');
   yield browser.save('jenkins-after-configureMail');
-};
-
-var normalizeNode = function(node, nodes, version) {
-  if(typeof node === 'string') {
-    nodes.push({
-      name: node, 
-      image: 'image: xpfriend/jenkins-slave-' + node + ':' + version[node]
-    });
-    return;
-  }
-
-  if(typeof node === 'object') {
-    var keys = Object.keys(node);
-    for(var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      var value = node[key];
-      if(typeof value === 'string') {
-        nodes.push({name: key, image: 'image: ' + value});
-      } else if(typeof value === 'object' && value.from) {
-        nodes.push({name: key, image: 'build: ${CONFIG_DIR}/image/' + key, from: value.from});
-      }
-    }
-  }
-};
-
-var normalizeNodes = function(nodes) {
-  nodes = util.toArray(nodes);
-  var normalized = [];
-  var version = require('pocci/jenkins-slaves-version.json');
-  for(var i = 0; i < nodes.length; i++) {
-    normalizeNode(nodes[i], normalized, version);
-  }
-  return normalized;
 };
 
 module.exports = {
@@ -340,7 +268,7 @@ module.exports = {
 
     var jenkins = getJenkins();
     if(jenkinsOptions.nodes) {
-      var nodes = normalizeNodes(jenkinsOptions.nodes);
+      var nodes = workspace.normalize(jenkinsOptions.nodes);
       yield createNodes(jenkins, nodes);
       yield saveSecrets(browser, url, nodes, isEnabledAuth);
       if(isDisabledSecurity) {

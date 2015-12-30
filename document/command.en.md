@@ -94,16 +94,16 @@ Executing One-off Commands
 Execute a command in a container that has been newly created from any image.
 
 For example, if you execute the following command, the node interpretor is started
-in the container created from xpfriend/jenkins-slave-nodejs:1.1.1.
+in the container created from xpfriend/workspace-nodejs:2.0.0.
 
 ```bash
-./oneoff xpfriend/jenkins-slave-nodejs:1.1.1 node
+./oneoff xpfriend/workspace-nodejs:2.0.0 node
 ```
 
 Example of starting bash in a created container:
 
 ```bash
-./oneoff xpfriend/jenkins-slave-nodejs:1.1.1 bash
+./oneoff xpfriend/workspace-nodejs:2.0.0 bash
 ```
 
 Bash can also be started by just specifying part of the image name as shown below.

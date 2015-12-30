@@ -14,10 +14,10 @@ ${LIB_DIR}/docker-compose core-services.yml -p ${POCCI_SERVICE_PREFIX} up -d ${F
 echo "#__ up-service(1): ${SECONDS}"
 
 SECONDS=0
-${BIN_DIR}/open-workspace
+source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
+${LIB_DIR}/waitfor ${INTERNAL_SERVICE_URL}
 echo "#__ up-service(2): ${SECONDS}"
 
 SECONDS=0
-source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
-${LIB_DIR}/waitfor ${INTERNAL_SERVICE_URL}
+${BIN_DIR}/open-workspace
 echo "#__ up-service(3): ${SECONDS}"

@@ -1,7 +1,25 @@
 'use strict';
+var fs = require('fs');
 var spawn = require('co-child-process');
 var path = require('path');
 var util = require('pocci/util.js');
+
+var deleteFile = function(file) {
+    try {
+      fs.unlinkSync(file);
+    } catch(e) {
+      // ignore
+    }
+};
+
+var selectCIConfigFile = function(localPath, options) {
+  if(!options.gitlab || !options.gitlab.runners) {
+    deleteFile(path.join(localPath, '.gitlab-ci.yml'));
+  }
+  if(options.pocci.services.indexOf('jenkins') === -1) {
+    deleteFile(path.join(localPath, 'jenkins-config.xml'));
+  }
+};
 
 var importCode = function*(url, options, ldapUsers) {
   var user = util.getUser(options.user, ldapUsers);
@@ -25,6 +43,7 @@ module.exports = {
     var userOptions = options.user || {};
     var url = process.env.GITLAB_URL;
     for(var i = 0; i < repos.length; i++) {
+      selectCIConfigFile(repos[i].localPath, options);
       yield importCode(url, repos[i], userOptions.users);
     }
   }

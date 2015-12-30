@@ -93,17 +93,17 @@ bash ./build
 ### bin/oneoff (ワンオフコマンド実行)
 任意のイメージから新しく作成したコンテナ上でコマンドを実行します。
 
-例えば、以下のコマンドを実行すると xpfriend/jenkins-slave-nodejs:1.1.1
+例えば、以下のコマンドを実行すると xpfriend/workspace-nodejs:2.0.0
 から作成したコンテナ上で node インタプリタを起動します。
 
 ```bash
-./oneoff xpfriend/jenkins-slave-nodejs:1.1.1 node
+./oneoff xpfriend/workspace-nodejs:2.0.0 node
 ```
 
 作成したコンテナ上で bash を起動する例:
 
 ```bash
-./oneoff xpfriend/jenkins-slave-nodejs:1.1.1 bash
+./oneoff xpfriend/workspace-nodejs:2.0.0 bash
 ```
 
 以下のようにイメージ名の一部を指定して起動することもできます。

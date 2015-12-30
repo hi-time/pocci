@@ -19,7 +19,7 @@ module.exports = {
     environment.SONAR_PORT            = util.getPort(url);
     environment.SONAR_SECURITY_REALM  = options.sonar.securityRealm;  // xpfriend/sonarqube
     environment.SONAR_LDAP_REAL_NAME  = options.sonar.ldapRealName;   // xpfriend/sonarqube
-    environment.SONAR_DB_USER         = options.sonar.dbUser;         // sameersbn/postgresql (sonarqubedb), jenkins-slaves (example codes)
-    environment.SONAR_DB_PASS         = options.sonar.dbPassword;     // sameersbn/postgresql (sonarqubedb), jenkins-slaves (example codes)
+    environment.SONAR_DB_USER         = options.sonar.dbUser;         // sameersbn/postgresql (sonarqubedb)
+    environment.SONAR_DB_PASS         = options.sonar.dbPassword;     // sameersbn/postgresql (sonarqubedb)
   }
 };

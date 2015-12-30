@@ -15,9 +15,9 @@ for i in $(find ${TEMPLATE_DIR}/services/ -name docker-compose.yml.template); do
 done
 
 
-# xpfriend/jenkins-slave-*
-grep JENKINS_SLAVE ${LIB_DIR}/version |tr '[:upper:]' '[:lower:]' | \
-    sed -e 's|version_|  image: xpfriend/|' -e 's/_/-/g' -e 's/=/:/' \
+# xpfriend/workspace-*
+grep WORKSPACE ${LIB_DIR}/version |tr '[:upper:]' '[:lower:]' | \
+    sed -e 's|version_workspace_|  image: xpfriend/workspace-|' -e 's/=/:/' \
     >> ${CONFIG_DIR}/all-docker-compose.txt
 
 ${LIB_DIR}/pull-images all-docker-compose.txt

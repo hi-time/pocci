@@ -59,6 +59,7 @@ The following service configuration types are provided in advance.
 Service configuration type | Services with which can be used                           | Features
 ---------------------------| --------------------------------------------------------- | -------------------------------------------------
 default                    | GitLab, Jenkins, SonarQube, Kanban board, User management | Manages tickets (Issues) with GitLab. Tickets can be handled as kanbans on a task board.
+gitlab                     | GitLab, SonarQube, Kanban board, User management          | Manages tickets (Issues) with GitLab. Uses GitLab as CI Service.
 redmine                    | GitLab, Jenkins, SonarQube, Redmine, User management      | Manages ticket (Issues) with Redmine.
 
 
@@ -86,6 +87,7 @@ the `template` directory.
 ```
 template/
   setup.default.yml
+  setup.gitlab.yml
   setup.redmine.yml
 ```
 

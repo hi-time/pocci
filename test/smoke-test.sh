@@ -9,6 +9,8 @@ ${BASE_DIR}/do-instructions-in-readme.sh ${POCCI_REPO}
 
 cd ${BASE_DIR}/temp/pocci/bin/js
 
+sleep 30
+
 sudo rm -fr ${BASE_DIR}/temp/pocci/backup/*
 ${BASE_DIR}/temp/pocci/bin/backup
 
