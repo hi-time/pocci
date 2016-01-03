@@ -18,7 +18,12 @@ describe "setup.default.yml", ->
         url = "http://gitlab.pocci.test"
         yield setup.initBrowser()
         yield gitlab.loginByAdmin(setup.browser, url)
-        @request = yield gitlab.createRequest(setup.browser, url)
+        request = yield gitlab.createRequest(setup.browser, url)
+        @ciRequest = (path) ->
+          url: url + "/ci/api/v1" + path
+          json: true
+          headers: request().headers
+        @request = request
         yield gitlab.logout(setup.browser)
 
       expect: ->
@@ -39,16 +44,13 @@ describe "setup.default.yml", ->
             path:   "/groups/#{@groupId}/members"
             sort:   {target: "body", keys: "id"}
             expected:
-              "body.length":          3
+              "body.length":          2
               "body[0].username":     "root"
               "body[0].name":         "Administrator"
               "body[0].access_level": 50
-              "body[1].username":     "jenkinsci"
-              "body[1].name":         "Jenkins"
+              "body[1].username":     "boze"
+              "body[1].name":         "BOZE, Taro"
               "body[1].access_level": 50
-              "body[2].username":     "boze"
-              "body[2].name":         "BOZE, Taro"
-              "body[2].access_level": 50
 
           projects:
             path:   "/projects"
@@ -101,8 +103,8 @@ describe "setup.default.yml", ->
             expected:
               "body.length":         5
               "body[0].name":        ".gitignore"
-              "body[1].name":        "build.sh"
-              "body[2].name":        "jenkins-config.xml"
+              "body[1].name":        ".gitlab-ci.yml"
+              "body[2].name":        "build.sh"
               "body[3].name":        "pom.xml"
               "body[4].name":        "src"
 
@@ -131,12 +133,7 @@ describe "setup.default.yml", ->
           projectJavaHooks:
             path: "/projects/#{@projectIdJava}/hooks"
             expected:
-              "body.length":          1
-              "body[0].url":          "http://jenkins.pocci.test/project/example-java"
-              "body[0].push_events":          true
-              "body[0].issues_events":        false
-              "body[0].merge_requests_events":true
-              "body[0].tag_push_events":      false
+              "body.length":          0
 
           projectNodeFiles:
             path: "/projects/#{@projectIdNode}/repository/tree"
@@ -144,11 +141,11 @@ describe "setup.default.yml", ->
             expected:
               "body.length":         9
               "body[0].name":        ".gitignore"
-              "body[1].name":        "Gruntfile.js"
-              "body[2].name":        "app"
-              "body[3].name":        "bower.json"
-              "body[4].name":        "build.sh"
-              "body[5].name":        "jenkins-config.xml"
+              "body[1].name":        ".gitlab-ci.yml"
+              "body[2].name":        "Gruntfile.js"
+              "body[3].name":        "app"
+              "body[4].name":        "bower.json"
+              "body[5].name":        "build.sh"
               "body[6].name":        "karma.conf.js"
               "body[7].name":        "package.json"
               "body[8].name":        "test"
@@ -169,12 +166,15 @@ describe "setup.default.yml", ->
           projectNodeHooks:
             path: "/projects/#{@projectIdNode}/hooks"
             expected:
-              "body.length":          1
-              "body[0].url":          "http://jenkins.pocci.test/project/example-nodejs"
-              "body[0].push_events":          true
-              "body[0].issues_events":        false
-              "body[0].merge_requests_events":true
-              "body[0].tag_push_events":      false
+              "body.length":          0
+
+        @request = @ciRequest
+        yield @assert
+          runners:
+            path:   "/runners"
+            expected:
+              "body.length":  2
+
 
   it "pocci", (done) ->
     test done,
@@ -188,6 +188,11 @@ describe "setup.default.yml", ->
             path:   "http://kanban.pocci.test"
             expected:
               "title":   "Gitlab KB - Boards"
+          jenkins:
+            path:   "http://jenkins.pocci.test"
+            thrown:
+              "code": "ENOTFOUND"
+              "hostname": "jenkins.pocci.test"
           redmine:
             path:   "http://redmine.pocci.test"
             thrown:
@@ -195,37 +200,6 @@ describe "setup.default.yml", ->
               "hostname": "redmine.pocci.test"
         chai.assert.equal(process.env.TZ, "Asia/Tokyo")
 
-  it "jenkins", (done) ->
-    test done,
-      setup: ->
-        url = "http://jenkins.pocci.test"
-        @request = (path) ->
-          url: url + path + "/api/json"
-          json: true
-        return
-
-      expect: ->
-        yield @assert
-          jobs:
-            path:   ""
-            debug: true
-            expected:
-              "body.jobs.length":   2
-              "body.jobs[0].name":  "example-java"
-              "body.jobs[0].url":   "http://jenkins.pocci.test/job/example-java/"
-              "body.jobs[1].name":  "example-nodejs"
-              "body.jobs[1].url":   "http://jenkins.pocci.test/job/example-nodejs/"
-
-          nodes:
-            path:   "/computer"
-            expected:
-              "body.computer.length":   3
-              "body.computer[0].displayName":     "master"
-              "body.computer[0].offline":         false
-              "body.computer[1].displayName":     "java"
-              "body.computer[1].offline":         false
-              "body.computer[2].displayName":     "nodejs"
-              "body.computer[2].offline":         false
 
   it "user", (done) ->
     test done,
@@ -236,7 +210,7 @@ describe "setup.default.yml", ->
         result = yield client.search "dc=example,dc=com",
           scope: "one"
           filter: "(uid=*)"
-        chai.assert.equal(result.entries.length, 2)
+        chai.assert.equal(result.entries.length, 1)
 
         attrs = []
         for entry in result.entries
@@ -246,23 +220,14 @@ describe "setup.default.yml", ->
           attrs.push(obj)
 
         console.log(attrs)
-        chai.assert.equal(attrs[0].uid, "jenkinsci")
-        chai.assert.equal(attrs[0].cn, "jenkinsci")
-        chai.assert.equal(attrs[0].sn, "CI")
-        chai.assert.equal(attrs[0].givenName, "Jenkins")
-        chai.assert.equal(attrs[0].displayName, "Jenkins")
-        chai.assert.equal(attrs[0].mail, "jenkins-ci@example.com")
-        chai.assert.equal(attrs[0].labeledURI, "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png")
-        chai.assert.match(attrs[0].userPassword, /^{SSHA}.+/)
 
-        chai.assert.equal(attrs[1].uid, "boze")
-        chai.assert.equal(attrs[1].cn, "boze")
-        chai.assert.equal(attrs[1].sn, "BOZE")
-        chai.assert.equal(attrs[1].givenName, "Taro")
-        chai.assert.equal(attrs[1].displayName, "BOZE, Taro")
-        chai.assert.equal(attrs[1].mail, "boze@example.com")
-        chai.assert.equal(attrs[1].labeledURI, undefined)
-        chai.assert.match(attrs[1].userPassword, /^{SSHA}.+/)
-        
+        chai.assert.equal(attrs[0].uid, "boze")
+        chai.assert.equal(attrs[0].cn, "boze")
+        chai.assert.equal(attrs[0].sn, "BOZE")
+        chai.assert.equal(attrs[0].givenName, "Taro")
+        chai.assert.equal(attrs[0].displayName, "BOZE, Taro")
+        chai.assert.equal(attrs[0].mail, "boze@example.com")
+        chai.assert.equal(attrs[0].labeledURI, undefined)
+        chai.assert.match(attrs[0].userPassword, /^{SSHA}.+/)
 
 

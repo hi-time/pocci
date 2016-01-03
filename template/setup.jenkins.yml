@@ -3,6 +3,7 @@ pocci:
   services:
     - gitlab
     - user
+    - jenkins
     - sonar
     - kanban
   environment:
@@ -10,12 +11,27 @@ pocci:
 
 user:
   users:
+    - uid:          jenkinsci
+      givenName:    Jenkins
+      sn:           CI
+      displayName:  Jenkins
+      mail:         jenkins-ci@example.com
+      userPassword: password
+      labeledURI:   "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png"
     - uid:          boze
       givenName:    Taro
       sn:           BOZE
       displayName:  "BOZE, Taro"
       mail:         boze@example.com
       userPassword: password
+
+jenkins:
+  jobs:
+    - example/example-java
+    - example/example-nodejs
+  nodes:
+    - java
+    - nodejs
 
 gitlab:
   smtpEnabled: true
@@ -24,16 +40,13 @@ gitlab:
       projects:
         - projectName:    users-guide
         - projectName:    example-java
-          commitMessage:  "[ci skip] import example codes (#1)"
+          commitMessage:  "import example codes (#1)"
           issues:
             - import example codes
         - projectName:    example-nodejs
-          commitMessage:  "[ci skip] import example codes (#1)"
+          commitMessage:  "import example codes (#1)"
           issues:
             - import example codes
-  runners:
-    - java
-    - nodejs
 
 kanban:
   - board: example/example-java

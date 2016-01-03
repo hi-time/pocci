@@ -17,12 +17,12 @@ URLs
 
 URL                             | Services                                                | Main applications
 ------------------------------- | ------------------------------------------------------- | ---------------------------------------------
-http://gitlab.pocci.test/       | [GitLab](https://gitlab.com/)                           | Code repository management / Ticket (Issue) management
-http://jenkins.pocci.test/      | [Jenkins](https://jenkins-ci.org/)                      | CI job management
-http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | Code quality analysis
-http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | Service user registration (LDAP)
-http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | Kanban board
-http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | Ticket (Issue) management
+http://gitlab.pocci.test/       | [GitLab](https://gitlab.com/)                           | Version Control / Issue Tracking / Continuous Integration
+http://jenkins.pocci.test/ (*)  | [Jenkins](https://jenkins-ci.org/)                      | Continuous Integration
+http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | Quality Management
+http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | User Account Management
+http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | Kanban Board
+http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | Issue Tracking
 
 (*) If the default configuration is used, access will not be possible because the services will not be started.
 

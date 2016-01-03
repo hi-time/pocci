@@ -18,18 +18,18 @@ sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_default
 ../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginDefault
 ../oneoff nodejs grunt prepare mochaTest:defaultSetup
-../oneoff nodejs grunt prepare mochaTest:gitlab
 
-echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config gitlab
+echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config jenkins
 ${BASE_DIR}/temp/pocci/bin/up-service
 
 sleep 30
 ${BASE_DIR}/temp/pocci/bin/backup
-sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_gitlab
+sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_jenkins
 
 ../oneoff nodejs grunt basic
-../oneoff nodejs grunt prepare mochaTest:loginGitlab
-../oneoff nodejs grunt prepare mochaTest:gitlabSetup
+../oneoff nodejs grunt prepare mochaTest:loginJenkins
+../oneoff nodejs grunt prepare mochaTest:jenkinsSetup
+../oneoff nodejs grunt prepare mochaTest:gitlab
 
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config redmine
 ${BASE_DIR}/temp/pocci/bin/up-service
@@ -47,7 +47,6 @@ echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_defa
 ../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginDefault
 ../oneoff nodejs grunt prepare mochaTest:defaultSetup
-../oneoff nodejs grunt prepare mochaTest:gitlab
 
 
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_redmine/*
@@ -57,8 +56,9 @@ echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_redm
 ../oneoff nodejs grunt prepare mochaTest:redmineSetup
 
 
-echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_gitlab/*
+echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_jenkins/*
 
 ../oneoff nodejs grunt basic
-../oneoff nodejs grunt prepare mochaTest:loginGitlab
-../oneoff nodejs grunt prepare mochaTest:gitlabSetup
+../oneoff nodejs grunt prepare mochaTest:loginJenkins
+../oneoff nodejs grunt prepare mochaTest:jenkinsSetup
+../oneoff nodejs grunt prepare mochaTest:gitlab

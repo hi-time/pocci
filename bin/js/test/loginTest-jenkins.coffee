@@ -6,8 +6,9 @@ assert = require("chai").assert
 webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
 loginGitLab = require("./loginTest.js").loginGitLab
+loginJenkins = require("./loginTest.js").loginJenkins
 
-describe "Login (default)", () ->
+describe "Login (jenkins)", () ->
   @timeout(120000)
   browser = null
 
@@ -22,6 +23,11 @@ describe "Login (default)", () ->
     test done,
       setup: ->
         yield browser.end()
+
+  it "jenkins", (done) ->
+    test done,
+      expect: ->
+        yield loginJenkins(browser)
 
   it "gitlab", (done) ->
     test done,

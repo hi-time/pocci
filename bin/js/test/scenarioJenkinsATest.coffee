@@ -8,7 +8,7 @@ webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
 scenarioTest = require("./scenarioTest.js")
 
-describe "Scenario A (default)", ->
+describe "Scenario A (jenkins)", ->
   @timeout(10 * 60 * 1000)
   browser = null
 

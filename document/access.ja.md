@@ -17,8 +17,8 @@ URL
 
 URL                             | サービス                                                | 主な用途
 ------------------------------- | ------------------------------------------------------- | ---------------------------------------------
-http://gitlab.pocci.test/       | [GitLab](https://gitlab.com/)                           | コードリポジトリ管理 / チケット (Issue) 管理
-http://jenkins.pocci.test/      | [Jenkins](https://jenkins-ci.org/)                      | CIジョブ管理
+http://gitlab.pocci.test/       | [GitLab](https://gitlab.com/)                           | コードリポジトリ管理 / チケット (Issue) 管理 / CI
+http://jenkins.pocci.test/ (*)  | [Jenkins](https://jenkins-ci.org/)                      | CI
 http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析
 http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | サービス利用者の登録 (LDAP)
 http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | かんばんボード
