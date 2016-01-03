@@ -19,6 +19,23 @@ module.exports.loginGitLab = (browser) ->
   text = yield browser.getValue("#user_name")
   assert.equal(text, "BOZE, Taro")
 
+module.exports.loginJenkins = (browser) ->
+  yield browser
+    .url(process.env.JENKINS_URL + "/login")
+    .call()
+    .setValue("#j_username", "boze")
+    .setValue("input[type='password'][name='j_password']", "password")
+    .save("jenkins-before-login")
+    .click("button")
+    .pause(1000)
+    .save("jenkins-after-login")
+
+  text = yield browser
+    .url(process.env.JENKINS_URL + "/")
+    .save("jenkins-assert-login")
+    .getText("#header div.login a[href='/user/boze'] > b")
+  assert.equal(text, "boze")
+
 
 describe "Login", () ->
   @timeout(120000)
@@ -51,34 +68,13 @@ describe "Login", () ->
       then: ->
         assert.ok(yield browser.isExisting("#search-form"))
 
-  it "jenkins", (done) ->
-    test done,
-      when: ->
-        yield browser
-          .url(process.env.JENKINS_URL + "/login")
-          .call()
-          .setValue("#j_username", "boze")
-          .setValue("input[type='password'][name='j_password']", "password")
-          .save("jenkins-before-login")
-          .click("button")
-          .pause(1000)
-          .save("jenkins-after-login")
-
-      then: ->
-        text = yield browser
-          .url(process.env.JENKINS_URL + "/")
-          .save("jenkins-assert-login")
-          .getText("#header div.login a[href='/user/boze'] > b")
-        assert.equal(text, "boze")
-
-
   it "sonar", (done) ->
     test done,
       when: ->
         yield browser
           .url(process.env.SONAR_URL + "/sessions/new")
           .call()
-          .setValue("#login", "jenkinsci")
+          .setValue("#login", "boze")
           .setValue("#password", "password")
           .save("sonar-before-login")
           .submitForm("form")
@@ -87,4 +83,4 @@ describe "Login", () ->
 
       then: ->
         text = yield browser.getText("nav")
-        assert.ok(text.indexOf("jenkinsci") > -1)
+        assert.ok(text.indexOf("boze") > -1)

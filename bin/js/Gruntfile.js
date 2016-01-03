@@ -48,6 +48,9 @@ module.exports = function(grunt) {
       loginDefault: {
         src: ['test/loginTest-default.js']
       },
+      loginGitlab: {
+        src: ['test/loginTest-gitlab.js']
+      },
       loginRedmine: {
         src: ['test/loginTest-redmine.js']
       },
@@ -59,6 +62,9 @@ module.exports = function(grunt) {
       },
       defaultSetup: {
         src: ['test/defaultSetupTest.js']
+      },
+      gitlabSetup: {
+        src: ['test/gitlabSetupTest.js']
       },
       redmineSetup: {
         src: ['test/redmineSetupTest.js']
