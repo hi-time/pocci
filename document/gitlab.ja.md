@@ -6,7 +6,8 @@ GitLab の設定
 *   [A. グループの作成](#a-)
 *   [B. メンバーの追加](#b-)
 *   [C. プロジェクトの作成](#c-)
-*   [D. 情報源](#d-)
+*   [D. 自動ビルドジョブ実行](#d-)
+*   [E. 情報源](#e-)
 
 
 A. グループの作成
@@ -90,8 +91,13 @@ GitLab では「プロジェクト」を作成することにより、 Git リ�
 
         ![HTTPへの切り替え](images/gitlab-09.png)
 
+D. 自動ビルドジョブ実行
+-----------------------
+GitLab は、リポジトリをプッシュした際に自動でビルドジョブを実行させる機能を持っています。
+この機能の利用方法については、[GitLab CIの利用方法](./gitlab-ci.ja.md)を参照してください。
 
-D. 情報源
+
+E. 情報源
 ---------
 *   [GitLab](https://gitlab.com/)
 *   [sameersbn/gitlab](https://github.com/sameersbn/docker-gitlab)
