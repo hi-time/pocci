@@ -6,7 +6,7 @@ cat << EOF
   type tail
   format multiline
   format_firstline /^Started/
-  format1 /Started (?<method>[^ ]+) "(?<path>[^"]+)" for (?<host>[^ ]+) at (?<time>[^ ]+ [^ ]+ [^ ]+)\n(?<log>.*)/
+  format1 /Started (?<method>[^ ]+) "(?<path>[^"]+)" for (?<host>[^ ]+) at (?<time>[^ ]+ [^ ]+ [^ ]+)(\n*)(?<log>.*)/
   time_key time
   time_format %F %T %z
   path ${POCCI_LOG_DIR}/gitlab/gitlab/production.log
@@ -49,9 +49,7 @@ cat << EOF
 </source>
 <source>
   type tail
-  format /^(?<time>[^ ]+) (?<log>.*)$/ 
-  time_format %FT%T.%NZ
-  time_key time
+  format /^(?<log>.*)$/ 
   path ${POCCI_LOG_DIR}/gitlab/gitlab/sidekiq.log
   pos_file ${POCCI_LOG_DIR}/gitlab.gitlab.sidekiq.log.pos
   tag pocci.gitlab.sidekiq
@@ -75,5 +73,10 @@ cat << EOF
   tag pocci.gitlab.nginx.error
 </source>
 
+<filter pocci.gitlab.**>
+  @type grep
+  exclude1 path /ci/api/v1/builds/register.json
+  exclude2 log /ci/api/v1/builds/register.json
+</filter>
 
 EOF
