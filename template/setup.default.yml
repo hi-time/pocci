@@ -5,6 +5,7 @@ pocci:
     - user
     - sonar
     - kanban
+  adminMailAddress: pocci@localhost.localdomain
   environment:
     TZ: Asia/Tokyo
 
@@ -14,7 +15,7 @@ user:
       givenName:    Taro
       sn:           BOZE
       displayName:  "BOZE, Taro"
-      mail:         boze@example.com
+      mail:         boze@localhost.localdomain
       userPassword: password
 
 gitlab:

@@ -113,6 +113,7 @@ pocci:
   hosts:
     - 192.168.0.11 test-01.pocci.example.com it-server
     - 192.168.0.12 test-02.pocci.example.com uat-server
+  adminMailAddress: admin@example.com
   environment:
     TZ: Asia/Tokyo
 ```
@@ -141,6 +142,7 @@ pocci:
 *   **hosts:** 各サービスが参照するサーバの名前  
     *   `IPアドレス サーバ名 別名1 別名2 ...`  の形式でIPアドレス毎に記述する
     *   ここで記述した内容は `config/althosts` に反映される
+*   **adminMailAddress:** 管理者のメールアドレス
 *   **environment:** サービスコンテナに設定する環境変数  
     任意の値を定義可能です。
 *   **logdir:** ログ出力先ディレクトリ  

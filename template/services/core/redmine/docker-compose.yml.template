@@ -19,6 +19,7 @@ redmine:
     - SMTP_DOMAIN=${REDMINE_SMTP_DOMAIN}
     - SMTP_HOST=${REDMINE_SMTP_HOST}
     - SMTP_PORT=${REDMINE_SMTP_PORT}
+    - SMTP_OPENSSL_VERIFY_MODE=none
   links:
     - redminedb:postgresql
   volumes_from:

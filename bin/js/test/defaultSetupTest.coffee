@@ -226,7 +226,7 @@ describe "setup.default.yml", ->
         chai.assert.equal(attrs[0].sn, "BOZE")
         chai.assert.equal(attrs[0].givenName, "Taro")
         chai.assert.equal(attrs[0].displayName, "BOZE, Taro")
-        chai.assert.equal(attrs[0].mail, "boze@example.com")
+        chai.assert.equal(attrs[0].mail, "boze@localhost.localdomain")
         chai.assert.equal(attrs[0].labeledURI, undefined)
         chai.assert.match(attrs[0].userPassword, /^{SSHA}.+/)
 

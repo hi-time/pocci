@@ -241,14 +241,22 @@ var addProjectMember = function*(request, projectName, login, projectMembers, us
   throw new Error('cannot find user : ' + login);
 };
 
+var showStatus = function(response) {
+  try {
+    assertStatus(response, 'response.statusCode < 300');
+  } catch(e) {
+    console.log(e);
+  }
+};
+
 var postIssue = function*(request, issue) {
   var response = yield server.post(request('/issues.json', {'issue' : issue}));
-  assertStatus(response, 'response.statusCode < 300');
+  showStatus(response);
 };
 
 var putIssue = function*(request, issue) {
   var response = yield server.put(request('/issues/' + issue.id + '.json', {'issue' : issue}));
-  assertStatus(response, 'response.statusCode < 300');
+  showStatus(response);
 };
 
 var createIssue = function*(request, projectId, issueOrSubject, projectIssues) {
@@ -428,6 +436,15 @@ var setupGitLabForGroups = function*(browser, url, groups, options) {
   }
 };
 
+var updateProfile = function*(browser, url) {
+  browser.url(url + '/my/account');
+  yield browser.save('redmine-before-updateProfile');
+  browser.setValue('#user_mail', process.env.ADMIN_MAIL_ADDRESS);  
+  yield browser.save('redmine-doing-updateProfile');
+  browser.submitForm('#my_account_form');
+  yield browser.save('redmine-after-updateProfile');
+};
+
 module.exports = {
   addDefaults: function(options) {
     options.redmine             = options.redmine             || {};
@@ -468,6 +485,7 @@ module.exports = {
     var users = (isEnabledAuth)? toArray(redmineOptions.users || userOptions.users) : [];
 
     yield loginByAdmin(browser, url);
+    yield updateProfile(browser, url);
     yield loadDefaultConfiguration(browser, url, redmineOptions.lang);
     yield enableWebService(browser, url);
     if(isEnabledAuth) {

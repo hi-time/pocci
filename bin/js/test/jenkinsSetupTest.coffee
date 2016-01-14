@@ -251,7 +251,7 @@ describe "setup.jenkins.yml", ->
         chai.assert.equal(attrs[0].sn, "CI")
         chai.assert.equal(attrs[0].givenName, "Jenkins")
         chai.assert.equal(attrs[0].displayName, "Jenkins")
-        chai.assert.equal(attrs[0].mail, "jenkins-ci@example.com")
+        chai.assert.equal(attrs[0].mail, "jenkins-ci@localhost.localdomain")
         chai.assert.equal(attrs[0].labeledURI, "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png")
         chai.assert.match(attrs[0].userPassword, /^{SSHA}.+/)
 
@@ -260,7 +260,7 @@ describe "setup.jenkins.yml", ->
         chai.assert.equal(attrs[1].sn, "BOZE")
         chai.assert.equal(attrs[1].givenName, "Taro")
         chai.assert.equal(attrs[1].displayName, "BOZE, Taro")
-        chai.assert.equal(attrs[1].mail, "boze@example.com")
+        chai.assert.equal(attrs[1].mail, "boze@localhost.localdomain")
         chai.assert.equal(attrs[1].labeledURI, undefined)
         chai.assert.match(attrs[1].userPassword, /^{SSHA}.+/)
         

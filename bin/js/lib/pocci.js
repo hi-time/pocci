@@ -21,6 +21,7 @@ module.exports = {
     options.pocci.externalServices  = options.pocci.externalServices  || [];
     options.pocci.hosts             = options.pocci.hosts             || [];
     options.pocci.logdir            = options.pocci.logdir            || path.resolve(process.env.POCCI_DIR, 'log');
+    options.pocci.adminMailAddress  = options.pocci.adminMailAddress  || 'pocci@localhost.localdomain';
   },
   addEnvironment: function(options, environment) {
     environment.POCCI_DOMAIN_NAME = options.pocci.domain;
@@ -29,5 +30,6 @@ module.exports = {
     environment.ALL_SERVICES      = [environment.INTERNAL_SERVICES, environment.EXTERNAL_SERVICES].join(' ').trim();
     environment.ALT_HOSTS         = options.pocci.hosts.join('|');
     environment.POCCI_LOG_DIR     = options.pocci.logdir;
+    environment.ADMIN_MAIL_ADDRESS = options.pocci.adminMailAddress;
   }
 };

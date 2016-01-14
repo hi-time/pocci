@@ -113,6 +113,7 @@ pocci:
   hosts:
     - 192.168.0.11 test-01.pocci.example.com it-server
     - 192.168.0.12 test-02.pocci.example.com uat-server
+  adminMailAddress: admin@example.com
   environment:
     TZ:  Asia/Tokyo
 ```
@@ -141,6 +142,7 @@ pocci:
 *   **hosts:** Name of the server referenced by each service  
     *   Define this for each IP address in the format of `IP address Server name Alias1 Alias2 ...` 
     *   The information defined here is reflected in `config/althosts`.
+*   **adminMailAddress:** Mail address of the administrator.
 *   **environment:** Environment variable to be set for the service container.  
     Any value can be defined.
 *   **logdir:** Log output destination directory  

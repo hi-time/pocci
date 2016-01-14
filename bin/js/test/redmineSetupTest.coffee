@@ -203,7 +203,7 @@ describe "setup.redmine.yml", ->
         chai.assert.equal(attrs[0].sn, "CI")
         chai.assert.equal(attrs[0].givenName, "Jenkins")
         chai.assert.equal(attrs[0].displayName, "Jenkins")
-        chai.assert.equal(attrs[0].mail, "jenkins-ci@example.com")
+        chai.assert.equal(attrs[0].mail, "jenkins-ci@localhost.localdomain")
         chai.assert.equal(attrs[0].labeledURI, "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png")
         chai.assert.match(attrs[0].userPassword, /^{SSHA}.+/)
 
@@ -212,7 +212,7 @@ describe "setup.redmine.yml", ->
         chai.assert.equal(attrs[1].sn, "BOZE")
         chai.assert.equal(attrs[1].givenName, "Taro")
         chai.assert.equal(attrs[1].displayName, "BOZE, Taro")
-        chai.assert.equal(attrs[1].mail, "boze@example.com")
+        chai.assert.equal(attrs[1].mail, "boze@localhost.localdomain")
         chai.assert.equal(attrs[1].labeledURI, undefined)
         chai.assert.match(attrs[1].userPassword, /^{SSHA}.+/)
 
@@ -274,15 +274,15 @@ describe "setup.redmine.yml", ->
               "body.users[0].login":          "admin"
               "body.users[0].firstname":      "Redmine"
               "body.users[0].lastname":       "Admin"
-              "body.users[0].mail":           "admin@example.net"
+              "body.users[0].mail":           "pocci@localhost.localdomain"
               "body.users[1].login":          "jenkinsci"
               "body.users[1].firstname":      "Jenkins"
               "body.users[1].lastname":       "CI"
-              "body.users[1].mail":           "jenkins-ci@example.com"
+              "body.users[1].mail":           "jenkins-ci@localhost.localdomain"
               "body.users[2].login":          "boze"
               "body.users[2].firstname":      "Taro"
               "body.users[2].lastname":       "BOZE"
-              "body.users[2].mail":           "boze@example.com"
+              "body.users[2].mail":           "boze@localhost.localdomain"
 
           issues:
             path:   "/issues.json"
