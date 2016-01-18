@@ -345,8 +345,8 @@ gitlab:
 *   **smtpPort:** SMTP server port number
     *   The default is `25`.
     *   Environment variable:  `GITLAB_SMTP_PORT`
-*   **mailAddress:** Mail address of this server
-    *   The default is `gitlab@[Domain name specified in pocci.domain]`.
+*   **mailAddress:** Mail address of GitLab
+    *   The default is the address specified in pocci.adminMailAddress.
     *   Environment variable:  `GITLAB_MAIL_ADDRESS`
 
 
@@ -410,8 +410,8 @@ jenkins:
 *   **smtpHost:** SMTP server host name
     *   The default is `smtp.[Domain name specified in pocci.domain]`.
     *   Environment variable:  `JENKINS_SMTP_HOST`
-*   **mailAddress:** Mail address of this server
-    *   The default is `jenkins@[Domain name specified in pocci.domain]`.
+*   **mailAddress:** Mail address of Jenkins
+    *   The default is the address specified in pocci.adminMailAddress.
     *   Environment variable:  `JENKINS_MAIL_ADDRESS`
 
 
@@ -505,8 +505,8 @@ redmine:
 *   **smtpPort:** SMTP server port number
     *   The default is `25`.
     *   Environment variable:  `REDMINE_SMTP_PORT`
-*   **mailAddress:** Mail address of this server
-    *   The default is `redmine@[Domain name specified in pocci.domain]`.
+*   **mailAddress:** Mail address of Redmine
+    *   The default is the address specified in pocci.adminMailAddress.
     *   Environment variable:  `REDMINE_MAIL_ADDRESS`
 
 

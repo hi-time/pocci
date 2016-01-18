@@ -345,8 +345,8 @@ gitlab:
 *   **smtpPort:** SMTPサーバポート番号
     *   デフォルトは `25`
     *   環境変数: `GITLAB_SMTP_PORT`
-*   **mailAddress:** このサーバのメールアドレス
-    *   デフォルトは `gitlab@[pocci.domainで指定したドメイン名]`
+*   **mailAddress:** GitLabのメールアドレス
+    *   デフォルトは pocci.adminMailAddress で指定したアドレス
     *   環境変数: `GITLAB_MAIL_ADDRESS`
 
 
@@ -410,8 +410,8 @@ jenkins:
 *   **smtpHost:** SMTPサーバホスト名
     *   デフォルトは `smtp.[pocci.domain で指定したドメイン名]`
     *   環境変数: `JENKINS_SMTP_HOST`
-*   **mailAddress:** このサーバのメールアドレス
-    *   デフォルトは `jenkins@[pocci.domainで指定したドメイン名]`
+*   **mailAddress:** Jenkinsのメールアドレス
+    *   デフォルトは pocci.adminMailAddress で指定したアドレス
     *   環境変数: `JENKINS_MAIL_ADDRESS`
 
 
@@ -505,8 +505,8 @@ redmine:
 *   **smtpPort:** SMTPサーバポート番号
     *   デフォルトは `25`
     *   環境変数: `REDMINE_SMTP_PORT`
-*   **mailAddress:** このサーバのメールアドレス
-    *   デフォルトは `redmine@[pocci.domainで指定したドメイン名]`
+*   **mailAddress:** Redmineのメールアドレス
+    *   デフォルトは pocci.adminMailAddress で指定したアドレス
     *   環境変数: `REDMINE_MAIL_ADDRESS`
 
 

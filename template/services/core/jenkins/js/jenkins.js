@@ -230,7 +230,7 @@ module.exports = {
     options.jenkins.url         = options.jenkins.url         || 'http://jenkins.' + options.pocci.domain;
     options.jenkins.jnlpPort    = options.jenkins.jnlpPort    || '50000';
     options.jenkins.smtpHost    = options.jenkins.smtpHost    || 'smtp.' + options.pocci.domain;
-    options.jenkins.mailAddress = options.jenkins.mailAddress || 'jenkins@'  + options.pocci.domain;
+    options.jenkins.mailAddress = options.jenkins.mailAddress || options.pocci.adminMailAddress;
     // options.jenkins.nodes = options.jenkins.nodes;
     // options.jenkins.user = options.jenkins.user;
   },
