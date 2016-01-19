@@ -1,0 +1,30 @@
+TEMP_REPO_DIR=${TEMP_DIR}/repo
+
+if [ -d ${TEMPLATE_DIR} ]; then
+    rm -rf ${TEMPLATE_DIR}
+fi
+mkdir -p ${TEMPLATE_DIR}
+
+if [ -z "${POCCI_TEMPLATE}" ]; then
+    POCCI_TEMPLATE="template"
+fi
+
+for i in ${POCCI_TEMPLATE}; do
+    if [ -d ${TEMP_REPO_DIR} ]; then
+        rm -rf ${TEMP_REPO_DIR}
+    fi
+
+    if [ `echo $i | grep '://' | wc -l` -eq 1 ]; then
+        git clone $i ${TEMP_REPO_DIR}
+        cp -pr ${TEMP_REPO_DIR}/* ${TEMPLATE_DIR}
+    else
+        if [ `echo $i | grep '^/' | wc -l` -ne 1 ]; then
+            i="${BASE_DIR}/$i"
+        fi
+        if [ ! -d $i ]; then
+            echo "Not Found : $i"
+            exit 1
+        fi
+        cp -pr $i/* ${TEMPLATE_DIR}
+    fi
+done

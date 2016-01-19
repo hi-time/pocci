@@ -1,8 +1,21 @@
 
-SETUP_FILE=setup.default.yml
+PARAM=setup.default.yml
 if [ -n "$1" ]; then
-    SETUP_FILE=setup.$1.yml
+    PARAM=$1
 fi
 
-echo "${SETUP_FILE} --> setup.yml"
-cp ${TEMPLATE_DIR}/${SETUP_FILE} ${CONFIG_DIR}/setup.yml
+if [ `echo ${PARAM} | grep '://' | wc -l` -eq 1 ]; then
+    echo "${PARAM} --> setup.yml"
+    curl -L ${PARAM} >${CONFIG_DIR}/setup.yml
+else
+    if [ `echo ${PARAM} | grep '^/' | wc -l` -eq 1 ]; then
+        SETUP_FILE=${PARAM}
+    elif [ -f ${TEMPLATE_DIR}/setup.${PARAM}.yml ]; then
+        SETUP_FILE=${TEMPLATE_DIR}/setup.${PARAM}.yml
+    else
+        SETUP_FILE=${TEMPLATE_DIR}/${PARAM}
+    fi
+
+    echo "${SETUP_FILE} --> setup.yml"
+    cp ${SETUP_FILE} ${CONFIG_DIR}/setup.yml
+fi

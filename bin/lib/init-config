@@ -6,6 +6,7 @@ BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
 echo "Create '${CONFIG_DIR} ...'"
+source ${LIB_DIR}/create-template-dir
 source ${LIB_DIR}/copy-js-file-to-node_modules
 source ${LIB_DIR}/clean-config-dir
 source ${LIB_DIR}/copy-setup-file-to-config-dir $1

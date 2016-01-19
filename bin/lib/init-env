@@ -11,7 +11,8 @@ BIN_DIR=${BASE_DIR}/bin
 LIB_DIR=${BIN_DIR}/lib
 JS_DIR=${BIN_DIR}/js
 TEMP_CONFIG_DIR=${JS_DIR}/config
-TEMPLATE_DIR=${BASE_DIR}/template
+TEMP_DIR=${BASE_DIR}/temp
+TEMPLATE_DIR=${TEMP_DIR}/template
 CONFIG_DIR=${BASE_DIR}/config
 
 if [ -z "${COMPOSE_HTTP_TIMEOUT}" ]; then
@@ -28,7 +29,6 @@ assert ${BASE_DIR}
 assert ${BIN_DIR}
 assert ${LIB_DIR}
 assert ${JS_DIR}
-assert ${TEMPLATE_DIR}
 
 source ${LIB_DIR}/version
 NODEJS_IMAGE=xpfriend/workspace-nodejs:${VERSION_WORKSPACE_NODEJS}
