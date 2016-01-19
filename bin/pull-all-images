@@ -4,6 +4,10 @@ set -e
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
+if [ ! -d ${TEMPLATE_DIR} ]; then
+    source ${LIB_DIR}/create-template-dir
+fi
+
 if [ ! -d ${CONFIG_DIR} ];then
     mkdir ${CONFIG_DIR}
 fi
