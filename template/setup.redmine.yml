@@ -8,7 +8,7 @@ pocci:
     - redmine
   adminMailAddress: pocci@localhost.localdomain
   environment:
-    TZ: Asia/Tokyo
+    TZ: Etc/UTC
 
 user:
   users:
@@ -27,6 +27,9 @@ user:
       userPassword: password
 
 jenkins:
+  jobs:
+    - example/example-java
+    - example/example-nodejs
   nodes:
     - java
     - nodejs
@@ -42,7 +45,7 @@ gitlab:
           commitMessage:  "refs #1 (import example codes)"
 
 redmine:
-  lang: ja
+  lang: en
   smtpEnabled: true
   projects:
     - projectId: example

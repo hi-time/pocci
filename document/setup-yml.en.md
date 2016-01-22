@@ -1,6 +1,6 @@
 Setup File Reference
 ====================
-Setup files (`setup.*.yml`) are definition files used
+Setup files are definition files used
 when the `bin/create-config` command configures the initial settings of each service.
 
 

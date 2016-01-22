@@ -22,7 +22,7 @@ if [ `docker ps -a |grep "pocci[s|n|r|d]_" |wc -l` -gt 0 ]; then
 fi
 
 if [ -d ${TEMP_DIR} ]; then
-    rm -fr ${TEMP_DIR}
+    sudo rm -fr ${TEMP_DIR}
 fi
 
 assert poccis_

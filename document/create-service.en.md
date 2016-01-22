@@ -79,10 +79,9 @@ If `create-config` is executed without specifying an argument, setup files with 
 #### Editing the setup files
 
 The service configuration can be customized or a unique configuration can be defined
-by creating setup files (`setup.*.yml`) and then editing them.
+by creating setup files.
 
-Setup files (`setup.*.yml`) exist in
-the `template` directory.
+Standard setup files exist in the `template` directory.
 
 ```
 template/
@@ -91,12 +90,12 @@ template/
   setup.redmine.yml
 ```
 
-Editing these files in a text editor allows you to
+Creating a new setup file allows you to
 customize the service configuration type.
 
-You can also create a new file such as `setup.myservices.yml`.
-In this case, if you specify the `./create-config myservices` argument,
-`create-config` will read `setup.myservices.yml` and then be executed.
+You can create a new file such as `/tmp/setup.myservices.yml`.
+In this case, if you specify the `./create-config /tmp/setup.myservices.yml`,
+`create-config` will read `/tmp/setup.myservices.yml` and then be executed.
 
 For details on the description information of the setup files,
 refer to [Setup File Reference](./setup-yml.en.md). 

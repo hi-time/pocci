@@ -7,7 +7,7 @@ pocci:
     - kanban
   adminMailAddress: pocci@localhost.localdomain
   environment:
-    TZ: Asia/Tokyo
+    TZ: Etc/UTC
 
 user:
   users:

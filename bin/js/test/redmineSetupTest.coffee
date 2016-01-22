@@ -100,7 +100,12 @@ describe "setup.redmine.yml", ->
           projectJavaHooks:
             path: "/projects/#{@projectIdJava}/hooks"
             expected:
-              "body.length":          0
+              "body.length":          1
+              "body[0].url":          "http://jenkins.pocci.test/project/example-java"
+              "body[0].push_events":          true
+              "body[0].issues_events":        false
+              "body[0].merge_requests_events":true
+              "body[0].tag_push_events":      false
 
           projectNodeFiles:
             path: "/projects/#{@projectIdNode}/repository/tree"
@@ -130,7 +135,12 @@ describe "setup.redmine.yml", ->
           projectNodeHooks:
             path: "/projects/#{@projectIdNode}/hooks"
             expected:
-              "body.length":          0
+              "body.length":          1
+              "body[0].url":          "http://jenkins.pocci.test/project/example-nodejs"
+              "body[0].push_events":          true
+              "body[0].issues_events":        false
+              "body[0].merge_requests_events":true
+              "body[0].tag_push_events":      false
 
   it "pocci", (done) ->
     test done,
@@ -149,7 +159,7 @@ describe "setup.redmine.yml", ->
             thrown:
               "code": "ENOTFOUND"
               "hostname": "kanban.pocci.test"
-        chai.assert.equal(process.env.TZ, "Asia/Tokyo")
+        chai.assert.equal(process.env.TZ, "Etc/UTC")
 
   it "jenkins", (done) ->
     test done,
@@ -166,7 +176,11 @@ describe "setup.redmine.yml", ->
             path:   ""
             debug: true
             expected:
-              "body.jobs.length":   0
+              "body.jobs.length":   2
+              "body.jobs[0].name":  "example-java"
+              "body.jobs[0].url":   "http://jenkins.pocci.test/job/example-java/"
+              "body.jobs[1].name":  "example-nodejs"
+              "body.jobs[1].url":   "http://jenkins.pocci.test/job/example-nodejs/"
 
           nodes:
             path:   "/computer"

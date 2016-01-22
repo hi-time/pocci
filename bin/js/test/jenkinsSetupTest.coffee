@@ -193,7 +193,7 @@ describe "setup.jenkins.yml", ->
             thrown:
               "code": "ENOTFOUND"
               "hostname": "redmine.pocci.test"
-        chai.assert.equal(process.env.TZ, "Asia/Tokyo")
+        chai.assert.equal(process.env.TZ, "Etc/UTC")
 
   it "jenkins", (done) ->
     test done,
