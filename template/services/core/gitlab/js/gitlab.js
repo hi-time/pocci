@@ -40,12 +40,18 @@ var updateProfileSettings = function*(browser, url, user) {
   }
   if(user.labeledURI) {
     try {
-      var fileName = './config/screen/avatar-' + user.uid + path.extname(user.labeledURI);
-      var res = yield server({
-        url: user.labeledURI,
-        encoding : null
-      });
-      fs.writeFileSync(fileName, res.body, {encoding:'binary'});
+      var fileName;
+      var parsedUrl = parse(user.labeledURI);
+      if(parsedUrl.protocol === 'file:') {
+        fileName = path.join('./config', parsedUrl.pathname);
+      } else {
+        fileName = './config/screen/avatar-' + user.uid + path.extname(user.labeledURI);
+        var res = yield server({
+          url: user.labeledURI,
+          encoding : null
+        });
+        fs.writeFileSync(fileName, res.body, {encoding:'binary'});
+      }
       yield browser.chooseFile('#user_avatar', fileName);
     } catch(e) {
       console.log('WARNING: cannot download: ' + user.labeledURI + ' --> ' + fileName);
