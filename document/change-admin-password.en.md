@@ -19,9 +19,13 @@ And change the password by **Profile Settings - Password**.
 
 SonarQube
 ---------
-Log in with **admin** user, 
-and open user management form by **Administration - Security - Users**.
-You can change the password by **Change password** link (lock icon) of **admin** row.
+Call [api/users/change_password](https://nemo.sonarqube.org/api_documentation/api/users/change_password).
+
+For example:
+
+```
+curl -u admin:admin -X POST "http://sonar.pocci.test/api/users/change_password?login=admin&previousPassword=admin&password=abcd1234"
+```
 
 Redmine
 -------
