@@ -171,6 +171,8 @@ user:
         specify `uid` (user ID), `userPassword` (password), `givenName` (given name), `sn` (surname), 
         and `mail` (mail address) as shown in the definition example above.
         Use these values to perform user registration.
+    *   `uid` and `mail` must be unique.
+        And values of `mail` and a value of `pocci.adminMailAddress` must be different.
 *   **url:** URL for accessing the user administration screen
     *   The default is `http://user.[Domain name specified in pocci.domain]`
     *   Environment variables: `USER_URL`, `USER_PROTOCOL`, `USER_HOST`, `USER_PORT`

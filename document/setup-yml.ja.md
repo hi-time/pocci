@@ -171,6 +171,8 @@ user:
         上記定義例のように `uid` (ユーザーID), `userPassword` (パスワード), 
         `givenName` (名), `sn` (姓), `mail` (メールアドレス) を指定してください。
         これらの値を利用してユーザー登録が行われます。
+     *  `uid` (ユーザーID) および `mail` (メールアドレス) は重複しないようにしてください。
+        `mail` は `pocci.adminMailAddress` とも重複しないようにしてください。
 *   **url:** ユーザー管理画面アクセス時のURL
     *   デフォルトは `http://user.[pocci.domainで指定したドメイン名]`
     *   環境変数: `USER_URL`, `USER_PROTOCOL`, `USER_HOST`, `USER_PORT`
