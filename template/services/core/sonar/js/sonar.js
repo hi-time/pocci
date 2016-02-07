@@ -2,11 +2,21 @@
 var util = require('pocci/util.js');
 var parse = require('url').parse;
 
+var isEnabledUserService = function(options) {
+  if(options.pocci.services.indexOf('user') > -1) {
+    return true;
+  }
+  if(options.pocci.externalServices.indexOf('user') > -1) {
+    return true;
+  }
+  return false;
+};
+
 module.exports = {
   addDefaults: function(options) {
     options.sonar               = options.sonar               || {};
     options.sonar.url           = options.sonar.url           || 'http://sonar.' + options.pocci.domain;
-    options.sonar.securityRealm = options.sonar.securityRealm || 'LDAP';
+    options.sonar.securityRealm = options.sonar.securityRealm || (isEnabledUserService(options)? 'LDAP' : '');
     options.sonar.ldapRealName  = options.sonar.ldapRealName  || 'cn';
     options.sonar.dbUser        = options.sonar.dbUser        || 'sonarqube';
     options.sonar.dbPassword    = options.sonar.dbPassword    || 'sonarqubepass';
