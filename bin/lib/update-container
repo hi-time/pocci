@@ -9,7 +9,8 @@ SECONDS=0
 
 for i in ${INTERNAL_SERVICES}; do
     if [ -f ${TEMPLATE_DIR}/services/core/$i/update-container.sh ]; then
-        source ${TEMPLATE_DIR}/services/core/$i/update-container.sh
+        cd ${TEMPLATE_DIR}/services/core/$i
+        source ./update-container.sh
     fi
 done
 
