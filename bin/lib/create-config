@@ -1,0 +1,40 @@
+LOG_FILE=${BASE_DIR}/config.log
+
+function handle_error() {
+  if [ ${PIPESTATUS[0]} -ne 0 ]; then
+    echo ""                 | tee -a ${LOG_FILE}
+    echo ""                 | tee -a ${LOG_FILE}
+    echo "*** ERROR!! ***"  | tee -a ${LOG_FILE}
+    ${BIN_DIR}/stop-service
+    ${LIB_DIR}/start-document-server
+    exit 1
+  fi
+}
+
+echo ""                                 | tee ${LOG_FILE}
+echo "*** STEP 1 ***"                   | tee -a ${LOG_FILE}
+${BIN_DIR}/destroy-service 2>&1         | tee -a ${LOG_FILE} && handle_error
+
+echo ""                                 | tee -a ${LOG_FILE}
+echo "*** STEP 2 ***"                   | tee -a ${LOG_FILE}
+${LIB_DIR}/init-config $1 2>&1          | tee -a ${LOG_FILE} && handle_error
+
+echo ""                                 | tee -a ${LOG_FILE}
+echo "*** STEP 3 ***"                   | tee -a ${LOG_FILE}
+${BIN_DIR}/up-service 2>&1              | tee -a ${LOG_FILE} && handle_error
+
+echo ""                                 | tee -a ${LOG_FILE}
+echo "*** STEP 4 ***"                   | tee -a ${LOG_FILE}
+${LIB_DIR}/update-container 2>&1        | tee -a ${LOG_FILE} && handle_error
+
+echo ""                                 | tee -a ${LOG_FILE}
+echo "*** STEP 5 ***"                   | tee -a ${LOG_FILE}
+${LIB_DIR}/setup 2>&1                   | tee -a ${LOG_FILE} && handle_error
+
+echo ""                                 | tee -a ${LOG_FILE}
+echo "*** STEP 6 ***"                   | tee -a ${LOG_FILE}
+${BIN_DIR}/stop-service 2>&1            | tee -a ${LOG_FILE} && handle_error
+
+echo ""                                 | tee -a ${LOG_FILE}
+echo ""                                 | tee -a ${LOG_FILE}
+echo "*** Done. ***"                    | tee -a ${LOG_FILE}

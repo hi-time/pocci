@@ -28,6 +28,12 @@ bash ./build
 詳細については、[サービス開始・利用方法](./create-service.ja.md) を参照してください。
 
 
+### bin/create-service (サービスの初期設定と起動)
+サービスの初期設定 (create-config) と起動 (up-service) の呼び出しを行います。
+
+コマンドの引数は create-config と同一です。
+
+
 起動・停止
 ----------
 ### bin/up-service (サービス起動)

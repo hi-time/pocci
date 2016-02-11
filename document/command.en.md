@@ -28,6 +28,10 @@ The service configuration type can be specified as an argument.
 For details, refer to [How to Start and Use Services](./create-service.en.md).
 
 
+### bin/create-config (Service initial setup)
+Call `create-config` and `up-service`.
+
+
 Starting and Stopping
 ---------------------
 ### bin/up-service (Starts services)

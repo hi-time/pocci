@@ -6,4 +6,4 @@ source ${BASE_DIR}/bin/lib/init-env
 
 source ${LIB_DIR}/create-config
 
-${LIB_DIR}/start-document-server
+${BIN_DIR}/up-service
