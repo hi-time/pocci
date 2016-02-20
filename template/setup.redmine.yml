@@ -6,6 +6,7 @@ pocci:
     - jenkins
     - sonar
     - redmine
+  https: false
   adminMailAddress: pocci@localhost.localdomain
   environment:
     TZ: Etc/UTC

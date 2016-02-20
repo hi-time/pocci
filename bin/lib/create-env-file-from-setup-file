@@ -13,6 +13,13 @@ if [ -z "${DOCKER_HOST_ADDRESS}" ]; then
 fi
 export DOCKER_HOST_ADDRESS
 
+DOCKER_NETWORK=`docker network inspect bridge |grep Subnet | sed -E 's/.*Subnet": *"(.*)"/\1/'`
+if [ -z "${DOCKER_NETWORK}" ]; then
+    DOCKER_NETWORK=172.17.0.0/16
+fi
+export DOCKER_NETWORK
+
+
 cd ${JS_DIR}
 POCCIR_OPTS="-e POCCI_DIR=${BASE_DIR}" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} node -e "require('pocci/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/tmp.env
 RC=$?
@@ -29,3 +36,4 @@ rm ${CONFIG_DIR}/tmp.env
 
 echo "DOCKER_HOST_ADDRESS=${DOCKER_HOST_ADDRESS}" >>${CONFIG_DIR}/.env
 echo "DNS_ADDRESS=${DOCKER_HOST_ADDRESS}" >>${CONFIG_DIR}/.env
+echo "DOCKER_NETWORK=${DOCKER_NETWORK}" >>${CONFIG_DIR}/.env

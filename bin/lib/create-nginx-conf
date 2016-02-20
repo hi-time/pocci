@@ -1,0 +1,36 @@
+cat << EOF
+server {
+    listen       80 ${DEFAULT_SERVER};
+    server_name  ${SERVER_NAME};
+    client_max_body_size 20M;
+EOF
+
+if [ "${POCCI_HTTPS}" = "true" ]; then
+cat << EOF
+    if (\$external_network) {
+        return 301 https://\$host\$request_uri;
+    }
+EOF
+fi
+
+cat << EOF
+    location / {
+        proxy_pass http://${PROXY_PASS};
+    }
+}
+EOF
+
+if [ "${POCCI_HTTPS}" = "true" ]; then
+cat << EOF
+server {
+    listen       443 ${DEFAULT_SERVER};
+    server_name  ${SERVER_NAME};
+
+    ssl on;
+
+    location / {
+        proxy_pass http://${PROXY_PASS};
+    }
+}
+EOF
+fi

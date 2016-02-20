@@ -16,7 +16,7 @@ if [ `grep smtp ${CONFIG_DIR}/althosts | wc -l` -eq 0 ]; then
 fi
 
 if [ `ls ${CONFIG_DIR}/nginx/ |wc -l` -ne 0 ]; then
-    for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
+    for i in $(grep -d skip -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
         PUBLIC_SERVICE_NAME=`basename ${i%.*}`
         PUBLIC_NAMES="${PUBLIC_NAMES} ${PUBLIC_SERVICE_NAME}.${POCCI_DOMAIN_NAME}"
     done

@@ -1,17 +1,5 @@
-cat << EOF
-server {
-    listen       80 ${DEFAULT_SERVER};
-    server_name  ${SONAR_HOST} sonar sonar.*;
+SERVICE_HOST="${SONAR_HOST}"
+SERVER_NAME="${SERVICE_HOST} sonar sonar.*"
+PROXY_PASS="sonar:9000"
 
-    proxy_set_header X-Real-IP        \$remote_addr;
-    proxy_set_header X-Forwarded-For  \$proxy_add_x_forwarded_for;
-    proxy_set_header Host             \$host;
-
-    proxy_read_timeout      300;
-    proxy_connect_timeout   300;
-
-    location / {
-        proxy_pass http://sonar:9000;
-    }
-}
-EOF
+source ${LIB_DIR}/create-nginx-conf

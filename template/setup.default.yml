@@ -5,6 +5,7 @@ pocci:
     - user
     - sonar
     - kanban
+  https: false
   adminMailAddress: pocci@localhost.localdomain
   environment:
     TZ: Etc/UTC

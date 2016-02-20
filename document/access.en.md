@@ -8,7 +8,7 @@ connected to the started CI services (machine that will be a client of the CI se
 Setting example (the acutual IP address must be the IP address of the machine that started the CI services):
 
 ```
-192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test
+192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test cert.pocci.test
 ```
 
 
@@ -23,6 +23,7 @@ http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)        
 http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | User Account Management
 http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | Kanban Board
 http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | Issue Tracking
+http://cert.pocci.test/         | -                                                       | Download page of Root Certificate and Server Certificate
 
 (*) If the default configuration is used, access will not be possible because the services will not be started.
 

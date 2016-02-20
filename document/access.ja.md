@@ -8,7 +8,7 @@ hosts ファイル (Windowsマシンの場合は `C:\Windows\System32\drivers\et
 設定例 (実際のIPアドレスはCIサービスを起動したマシンのものを使用すること) :
 
 ```
-192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test
+192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test cert.pocci.test
 ```
 
 
@@ -23,9 +23,13 @@ http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)        
 http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | サービス利用者の登録 (LDAP)
 http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | かんばんボード
 http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | チケット (Issue) 管理
+http://cert.pocci.test/         | -                                                       | ルート証明書およびサーバ証明書のダウンロードページ
 
 (*) デフォルトの構成を利用した場合は起動しないためアクセスできません。
 
+HTTP接続を行う構成にしている場合は、最初に **http://cert.pocci.test/** からルート証明書 (Root Certificate)
+をダウンロードし、「信頼されたルート証明機関」にインポートしてください。
+詳細については[httpsアクセスの方法](./https.ja.md)を参照してください。
 
 アカウント
 ----------

@@ -1,17 +1,5 @@
-cat << EOF
-server {
-    listen       80 ${DEFAULT_SERVER};
-    server_name  ${JENKINS_HOST} jenkins jenkins.*;
+SERVICE_HOST="${JENKINS_HOST}"
+SERVER_NAME="${SERVICE_HOST} jenkins jenkins.*"
+PROXY_PASS="jenkins:8080"
 
-    proxy_set_header X-Real-IP        \$remote_addr;
-    proxy_set_header X-Forwarded-For  \$proxy_add_x_forwarded_for;
-    proxy_set_header Host             \$host;
-
-    proxy_read_timeout      300;
-    proxy_connect_timeout   300;
-
-    location / {
-        proxy_pass http://jenkins:8080;
-    }
-}
-EOF
+source ${LIB_DIR}/create-nginx-conf

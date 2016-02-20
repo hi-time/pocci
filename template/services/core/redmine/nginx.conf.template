@@ -1,18 +1,5 @@
-cat << EOF
-server {
-    listen       80 ${DEFAULT_SERVER};
-    server_name  ${REDMINE_HOST} redmine redmine.*;
-    client_max_body_size 20M;
+SERVICE_HOST="${REDMINE_HOST}"
+SERVER_NAME="${SERVICE_HOST} redmine redmine.*"
+PROXY_PASS="redmine"
 
-    proxy_set_header X-Real-IP        \$remote_addr;
-    proxy_set_header X-Forwarded-For  \$proxy_add_x_forwarded_for;
-    proxy_set_header Host             \$host;
-
-    proxy_read_timeout      300;
-    proxy_connect_timeout   300;
-
-    location / {
-        proxy_pass http://redmine;
-    }
-}
-EOF
+source ${LIB_DIR}/create-nginx-conf

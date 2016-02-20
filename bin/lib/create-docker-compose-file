@@ -7,11 +7,13 @@ if [ -f ${CONFIG_DIR}/core-services.yml ]; then
 fi
 for i in ${INTERNAL_SERVICES}; do
     if [ -f ${TEMP_CONFIG_DIR}/services/core/$i/docker-compose.yml.template ]; then
-        source ${TEMP_CONFIG_DIR}/services/core/$i/docker-compose.yml.template >>${CONFIG_DIR}/core-services.yml
+        cd ${TEMP_CONFIG_DIR}/services/core/$i
+        source ./docker-compose.yml.template >>${CONFIG_DIR}/core-services.yml
     fi
 done
 if [ -f ${CONFIG_DIR}/core-services.yml ]; then
-    source ${TEMP_CONFIG_DIR}/services/core/nginx/docker-compose.yml.template >>${CONFIG_DIR}/core-services.yml
+    cd ${TEMP_CONFIG_DIR}/services/core/nginx
+    source ./docker-compose.yml.template >>${CONFIG_DIR}/core-services.yml
 fi
 
 # backend-services.yml
@@ -40,6 +42,7 @@ fi
 # workspace
 for i in ${INTERNAL_SERVICES}; do
     if [ -f ${TEMP_CONFIG_DIR}/services/core/$i/setup-workspace.sh ]; then
-        source ${TEMP_CONFIG_DIR}/services/core/$i/setup-workspace.sh
+        cd ${TEMP_CONFIG_DIR}/services/core/$i
+        source ./setup-workspace.sh
     fi
 done

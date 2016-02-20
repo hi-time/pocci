@@ -15,6 +15,7 @@ pocci:
     - jenkins
     - sonar
     - redmine
+  https: true
   environment:
     TZ:  Asia/Tokyo
 
@@ -113,6 +114,9 @@ pocci:
   hosts:
     - 192.168.0.11 test-01.pocci.example.com it-server
     - 192.168.0.12 test-02.pocci.example.com uat-server
+  https: true
+  certificate:
+    subject: "/C=JP/ST=Tokyo/L=Chiyodaku/O=Pocci/CN=*.pocci.example.com/"
   adminMailAddress: admin@example.com
   environment:
     TZ:  Asia/Tokyo
@@ -142,7 +146,15 @@ pocci:
 *   **hosts:** Name of the server referenced by each service  
     *   Define this for each IP address in the format of `IP address Server name Alias1 Alias2 ...` 
     *   The information defined here is reflected in `config/althosts`.
+*   **https:** Whether or not to enable HTTPS connection
+    *   The default is `false`
+    *   Environment variable: `POCCI_HTTPS`
+*   **certificate.subject:** Subject of the server certificate
+    *   The default is `/C=JP/ST=Chiba/L=Chiba/O=Pocci/CN=*.[Domain name specified in pocci.domain]/`
+    *   Environment variable: `CERTIFICATE_SUBJECT`
 *   **adminMailAddress:** Mail address of the administrator.
+    *   The default is `pocci@localhost.localdomain`.
+    *   Environment variable: `ADMIN_MAIL_ADDRESS`
 *   **environment:** Environment variable to be set for the service container.  
     Any value can be defined.
 *   **logdir:** Log output destination directory  
@@ -250,7 +262,6 @@ Definition example:
 
 ```yaml
 gitlab:
-  topPage:  /example/example-java/blob/master/README.md
   groups:
     -
       groupName:  example
@@ -269,7 +280,6 @@ gitlab:
         from: centos:7.1.1503
 ```
 
-*   **topPage:** Page displayed when only a host name is specified. The default is the login page.
 *   **groups:** Information of groups to be registered
     *   **groupName:** Group names
 *   **projects:** Information of projects to be registered

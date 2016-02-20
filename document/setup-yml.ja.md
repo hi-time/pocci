@@ -15,6 +15,7 @@ pocci:
     - jenkins
     - sonar
     - redmine
+  https: true
   environment:
     TZ: Asia/Tokyo
 
@@ -113,6 +114,9 @@ pocci:
   hosts:
     - 192.168.0.11 test-01.pocci.example.com it-server
     - 192.168.0.12 test-02.pocci.example.com uat-server
+  https: true
+  certificate:
+    subject: "/C=JP/ST=Tokyo/L=Chiyodaku/O=Pocci/CN=*.pocci.example.com/"
   adminMailAddress: admin@example.com
   environment:
     TZ: Asia/Tokyo
@@ -142,7 +146,18 @@ pocci:
 *   **hosts:** 各サービスが参照するサーバの名前  
     *   `IPアドレス サーバ名 別名1 別名2 ...`  の形式でIPアドレス毎に記述する
     *   ここで記述した内容は `config/althosts` に反映される
+*   **https:** サービスに対して https アクセスを行うかどうか  
+    `true` を指定すれば https アクセスが可能になります。詳細については[httpsアクセスの方法](./https.ja.md)
+    を参照してください。
+    *   デフォルトは `false`
+    *   環境変数: `POCCI_HTTPS`
+*   **certificate.subject:** サーバ証明書のサブジェクト  
+    デフォルトのサブジェクトを変更したい場合に指定してください。
+    *   デフォルトは `/C=JP/ST=Chiba/L=Chiba/O=Pocci/CN=*.[pocci.domainで指定したドメイン名]/`
+    *   環境変数: `CERTIFICATE_SUBJECT`
 *   **adminMailAddress:** 管理者のメールアドレス
+    *   デフォルトは `pocci@localhost.localdomain`
+    *   環境変数: `ADMIN_MAIL_ADDRESS`
 *   **environment:** サービスコンテナに設定する環境変数  
     任意の値を定義可能です。
 *   **logdir:** ログ出力先ディレクトリ  
@@ -250,7 +265,6 @@ GitLab 関連定義。
 
 ```yaml
 gitlab:
-  topPage: /example/example-java/blob/master/README.md
   groups:
     -
       groupName: example
@@ -269,7 +283,6 @@ gitlab:
         from: centos:7.1.1503
 ```
 
-*   **topPage:** ホスト名のみを指定した時に表示されるページ。デフォルトはログインページ
 *   **groups:** 登録するグループの情報
     *   **groupName:** グループ名
 *   **projects:** 登録するプロジェクトの情報

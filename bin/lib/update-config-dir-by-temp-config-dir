@@ -40,6 +40,10 @@ for i in ${INTERNAL_SERVICES}; do
 done
 echo "POCCI_PUBLIC_CONTAINERS=${POCCI_PUBLIC_CONTAINERS}" >>${CONFIG_DIR}/.env
 
+if [ -n "${INTERNAL_SERVICES}" ]; then
+    cd ${TEMP_CONFIG_DIR}/services/core/nginx
+    source ./create-config.sh
+fi
 
 source ${LIB_DIR}/update-dns-entries
 ${LIB_DIR}/create-proxy-env >>${CONFIG_DIR}/.env

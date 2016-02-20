@@ -66,7 +66,7 @@ add_no_proxy core-services.yml
 
 if [ -d ${CONFIG_DIR}/nginx/ ]; then
     if [ `ls ${CONFIG_DIR}/nginx/ |wc -l` -gt 0 ]; then
-        for i in $(grep -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
+        for i in $(grep -d skip -lE "proxy_pass\s+http://" ${CONFIG_DIR}/nginx/*); do
             CONTAINER_NAME=`basename ${i%.conf}`
             default_no_proxy="${default_no_proxy},${CONTAINER_NAME}.${POCCI_DOMAIN_NAME}"
         done
