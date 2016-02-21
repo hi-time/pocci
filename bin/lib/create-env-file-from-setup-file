@@ -13,7 +13,7 @@ if [ -z "${DOCKER_HOST_ADDRESS}" ]; then
 fi
 export DOCKER_HOST_ADDRESS
 
-DOCKER_NETWORK=`docker network inspect bridge |grep Subnet | sed -E 's/.*Subnet": *"(.*)"/\1/'`
+DOCKER_NETWORK=`docker network inspect bridge |grep Subnet | sed -E 's/.*"Subnet": *"(.*)"(.*)/\1/'`
 if [ -z "${DOCKER_NETWORK}" ]; then
     DOCKER_NETWORK=172.17.0.0/16
 fi
