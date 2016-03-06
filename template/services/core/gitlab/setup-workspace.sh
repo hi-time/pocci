@@ -1,9 +1,9 @@
 if [ ! -f ${CONFIG_DIR}/workspaces.yml ]; then
-    exit
+    return
 fi
 
 if [ $(grep "CI_SERVER_URL" ${CONFIG_DIR}/workspaces.yml | wc -l) -eq 0 ]; then
-    exit
+    return
 fi
 
 if [ -d ${CONFIG_DIR}/volumes/gitlab-runner ]; then
