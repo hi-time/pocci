@@ -1,7 +1,7 @@
 cat << EOF
 # GitLab
 gitlabdb:
-  image: sameersbn/postgresql:${VERSION_POSTGRESQL}
+  image: sameersbn/postgresql:9.4-11
   env_file:
     - ./.env
   environment:
@@ -10,12 +10,12 @@ gitlabdb:
     - DB_NAME=${GITLAB_DB_NAME}
 
 gitlabredis:
-  image: sameersbn/redis:${VERSION_REDIS}
+  image: sameersbn/redis:latest
   env_file:
     - ./.env
 
 gitlab:
-  image: sameersbn/gitlab:${VERSION_GITLAB}
+  image: sameersbn/gitlab:8.2.3
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}

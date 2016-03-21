@@ -1,7 +1,7 @@
 cat << EOF
 # nginx
 nginx:
-  image: nginx:${VERSION_NGINX}
+  image: nginx:1.9.9
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}

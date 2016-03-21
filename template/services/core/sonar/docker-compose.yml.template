@@ -1,7 +1,7 @@
 cat << EOF
 # SonarQube
 sonarqubedb:
-  image: sameersbn/postgresql:${VERSION_POSTGRESQL}
+  image: sameersbn/postgresql:9.4-11
   env_file:
     - ./.env
   environment:
@@ -10,7 +10,7 @@ sonarqubedb:
     - DB_NAME=sonarqubedb
 
 sonar:
-  image: xpfriend/sonarqube:${VERSION_SONARQUBE}
+  image: xpfriend/sonarqube:1.4.1
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}

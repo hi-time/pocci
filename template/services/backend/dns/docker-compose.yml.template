@@ -1,6 +1,6 @@
 cat << EOF
 dns:
-  image: devries/dnsmasq:${VERSION_DNSMASQ}
+  image: devries/dnsmasq:latest
   volumes:
     - ${CONFIG_DIR}/althosts:/etc/althosts
   ports:

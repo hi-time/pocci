@@ -1,7 +1,7 @@
 cat << EOF
 # LDAP
 ldap:
-  image: osixia/openldap:${VERSION_OPENLDAP}
+  image: osixia/openldap:1.0.9
   env_file:
     - ./.env
   environment:
@@ -13,7 +13,7 @@ ldap:
     - ./volumes/user:/tools
 
 user:
-  image: xpfriend/pocci-account-center:${VERSION_ACCOUNT_CENTER}
+  image: xpfriend/pocci-account-center:1.0.2
   env_file:
     - ./.env
   links:
