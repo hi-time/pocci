@@ -329,7 +329,7 @@ var getGitlabTimezone = function(timezone) {
 };
 
 var setupRunners = function*(browser, url, runners) {
-  browser.url(url + '/ci/admin/runners');
+  browser.url(url + '/admin/runners');
   yield browser.save('gitlab-getToken');
   var token = yield browser.getText('code');
 

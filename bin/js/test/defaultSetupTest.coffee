@@ -18,12 +18,7 @@ describe "setup.default.yml", ->
         url = "http://gitlab.pocci.test"
         yield setup.initBrowser()
         yield gitlab.loginByAdmin(setup.browser, url)
-        request = yield gitlab.createRequest(setup.browser, url)
-        @ciRequest = (path) ->
-          url: url + "/ci/api/v1" + path
-          json: true
-          headers: request().headers
-        @request = request
+        @request = yield gitlab.createRequest(setup.browser, url)
         yield gitlab.logout(setup.browser)
 
       expect: ->
@@ -168,10 +163,9 @@ describe "setup.default.yml", ->
             expected:
               "body.length":          0
 
-        @request = @ciRequest
         yield @assert
           runners:
-            path:   "/runners"
+            path:   "/runners/all"
             expected:
               "body.length":  2
 
