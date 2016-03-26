@@ -21,6 +21,7 @@ echo $(date): TEST_1 default >> ${LOG_FILE}
 ../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginDefault
 ../oneoff nodejs grunt prepare mochaTest:defaultSetup
+${BASE_DIR}/build-test.sh
 
 echo $(date): SETUP jenkins >> ${LOG_FILE}
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config jenkins
@@ -36,6 +37,7 @@ echo $(date): TEST_1 jenkins >> ${LOG_FILE}
 ../oneoff nodejs grunt prepare mochaTest:loginJenkins
 ../oneoff nodejs grunt prepare mochaTest:jenkinsSetup
 ../oneoff nodejs grunt prepare mochaTest:gitlab
+${BASE_DIR}/build-test.sh
 
 echo $(date): SETUP redmine >> ${LOG_FILE}
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config redmine
@@ -50,6 +52,7 @@ echo $(date): TEST_1 redmine >> ${LOG_FILE}
 ../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginRedmine
 ../oneoff nodejs grunt prepare mochaTest:redmineSetup
+${BASE_DIR}/build-test.sh
 
 echo $(date): RESTORE default >> ${LOG_FILE}
 echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_default/*
@@ -58,6 +61,7 @@ echo $(date): TEST_2 default >> ${LOG_FILE}
 ../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginDefault
 ../oneoff nodejs grunt prepare mochaTest:defaultSetup
+${BASE_DIR}/build-test.sh
 
 
 echo $(date): RESTORE redmine >> ${LOG_FILE}
@@ -67,6 +71,7 @@ echo $(date): TEST_2 redmine >> ${LOG_FILE}
 ../oneoff nodejs grunt basic
 ../oneoff nodejs grunt prepare mochaTest:loginRedmine
 ../oneoff nodejs grunt prepare mochaTest:redmineSetup
+${BASE_DIR}/build-test.sh
 
 
 echo $(date): RESTORE jenkins >> ${LOG_FILE}
@@ -77,3 +82,4 @@ echo $(date): TEST_2 jenkins >> ${LOG_FILE}
 ../oneoff nodejs grunt prepare mochaTest:loginJenkins
 ../oneoff nodejs grunt prepare mochaTest:jenkinsSetup
 ../oneoff nodejs grunt prepare mochaTest:gitlab
+${BASE_DIR}/build-test.sh
