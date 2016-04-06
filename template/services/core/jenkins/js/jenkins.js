@@ -209,7 +209,7 @@ var configureGitLab = function*(browser, url, gitlabUrl) {
     .setValue('input[type="text"][name="_.gitlabHostUrl"]', gitlabUrl)
     .setValue('input[type="text"][name="_.gitlabApiToken"]', apiToken);
   yield browser.save('jenkins-doing-configureGitLab');
-  yield browser.click('#yui-gen17-button');
+  yield browser.click('.submit-button.primary button');
   yield browser.save('jenkins-after-configureGitLab');
 };
 
@@ -220,7 +220,7 @@ var configureMail = function*(browser, url) {
     .setValue('input[type="text"][name="_.smtpServer"]', process.env.JENKINS_SMTP_HOST)
     .setValue('input[type="text"][name="_.adminAddress"]', process.env.JENKINS_MAIL_ADDRESS);
   yield browser.save('jenkins-doing-configureMail');
-  yield browser.click('#yui-gen17-button');
+  yield browser.click('.submit-button.primary button');
   yield browser.save('jenkins-after-configureMail');
 };
 

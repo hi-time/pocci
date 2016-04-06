@@ -1,10 +1,11 @@
 cat << EOF
 # GitLab
 gitlabdb:
-  image: sameersbn/postgresql:9.4-17
+  image: sameersbn/postgresql:9.4-18
   env_file:
     - ./.env
   environment:
+    - DB_EXTENSION=pg_trgm
     - DB_USER=${GITLAB_DB_USER}
     - DB_PASS=${GITLAB_DB_PASS}
     - DB_NAME=${GITLAB_DB_NAME}
@@ -15,7 +16,7 @@ gitlabredis:
     - ./.env
 
 gitlab:
-  image: sameersbn/gitlab:8.5.8-1
+  image: sameersbn/gitlab:8.6.4
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}

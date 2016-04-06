@@ -59,7 +59,7 @@ var updateProfileSettings = function*(browser, url, user) {
     }
   }
   yield browser.save('gitlab-doing-updateProfileSettings-of-' + user.uid);
-  yield browser.submitForm('form.edit_user');
+  yield browser.submitForm('form.edit-user');
   yield browser.save('gitlab-after-updateProfileSettings-of-' + user.uid);
 };
 
