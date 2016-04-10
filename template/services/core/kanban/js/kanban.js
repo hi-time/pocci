@@ -28,9 +28,8 @@ var registerOauth = function*(browser, url, keys) {
 var updateComposeFile = function(keys) {
   var file = './config/services/core/kanban/docker-compose.yml.template';
   var text = fs.readFileSync(file, 'utf8')
-              .replace(/GITLAB_API_TOKEN=.*/g, 'GITLAB_API_TOKEN=' + keys.apiToken)
-              .replace(/GITLAB_OAUTH_CLIENT_ID=.*/g, 'GITLAB_OAUTH_CLIENT_ID=' + keys.clientId)
-              .replace(/GITLAB_OAUTH_CLIENT_SECRET=.*/g, 'GITLAB_OAUTH_CLIENT_SECRET=' + keys.secret);
+              .replace(/KANBAN_GITLAB_CLIENT=.*/g, 'KANBAN_GITLAB_CLIENT=' + keys.clientId)
+              .replace(/KANBAN_GITLAB_SECRET=.*/g, 'KANBAN_GITLAB_SECRET=' + keys.secret);
   fs.writeFileSync(file, text);
 };
 
@@ -83,18 +82,12 @@ module.exports = {
   },
   edit: function(yamlFile) {
     var yamlText = fs.readFileSync(yamlFile, 'utf8')
-                  .replace('proxy:', 'kanban:')
+                  .replace('proxy:', 'kanbanproxy:')
                   .replace(/\.\/build/g,'./volumes/kanban/build')
-                  .replace(/^client:/m, 'kanbanclient:')
-                  .replace(/^backend:/m, 'kanbanbackend:')
-                  .replace(/^wsserver:/m, 'kanbanwsserver:')
+                  .replace(/http:\/\/kanban.gitlab.com/g, 'http://kanban.${POCCI_DOMAIN_NAME}')
+                  .replace(/KANBAN_SECURITY_SECRET=qwerty/g, 'KANBAN_SECURITY_SECRET=' + Math.random().toString(36).slice(-15))
                   .replace(/^redis:/m, 'kanbanredis:')
-                  .replace(/^rabbitmq:/m, 'kanbanrabbitmq:')
-                  .replace(/client:client/g, 'kanbanclient:client')
-                  .replace(/backend:backend/g, 'kanbanbackend:backend')
-                  .replace(/wsserver:wsserver/g, 'kanbanwsserver:wsserver')
                   .replace(/redis:redis/g, 'kanbanredis:redis')
-                  .replace(/rabbitmq:rabbitmq/g, 'kanbanrabbitmq:rabbitmq')
                   .replace(/https:\/\/gitlab.com/g, 'http://gitlab.${POCCI_DOMAIN_NAME}');
     var containers = yaml.safeLoad(yamlText);
     var names = Object.keys(containers);
@@ -103,15 +96,9 @@ module.exports = {
       var container = containers[name];
       container.dns = '${DNS_ADDRESS}';
       container.env_file = ['./.env'];
-      if(name === 'kanban') {
+      if(name === 'kanbanproxy') {
         delete container.ports;
         container.volumes.push('/var/log/nginx');
-      }
-      if(name === 'kanbanbackend') {
-        container.volumes = ['/var/log'];
-      }
-      if(name === 'kanbanwsserver') {
-        container.volumes = ['/usr/local/leanlabs/wsserver/rel/wsserver/log'];
       }
       if(name === 'kanbanredis') {
         container.volumes = ['/data'];
@@ -123,9 +110,7 @@ module.exports = {
     var url = process.env.GITLAB_URL;
     yield gitlab.loginByAdmin(browser, url);
 
-    var token = yield gitlab.getPrivateToken(browser, url);
     var keys = {};
-    keys.apiToken = token;
     yield registerOauth(browser, url, keys);
     updateComposeFile(keys);
     if(options.kanban) {

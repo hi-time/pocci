@@ -1,5 +1,5 @@
 
-KANBAN_VERSION=1.3.0
+KANBAN_VERSION=1.5.1
 SERVICES_DIR=${TEMP_CONFIG_DIR}/services/core
 KANBAN_DIR=${SERVICES_DIR}/kanban/volumes
 KANBAN_COMPOSE_FILE=${SERVICES_DIR}/kanban/docker-compose.yml.template
