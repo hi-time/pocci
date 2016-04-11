@@ -25,6 +25,7 @@ sonar:
     - sonarqubedb:sonarqubedb
   volumes:
     - ${POCCI_LOG_DIR}/sonar:/opt/sonar/logs
+    - /dev/urandom:/dev/random
   restart: always
 
 EOF
