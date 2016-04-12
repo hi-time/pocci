@@ -19,7 +19,7 @@ And change the password by **Profile Settings - Password**.
 
 SonarQube
 ---------
-Call [api/users/change_password](https://nemo.sonarqube.org/api_documentation/api/users/change_password).
+Call [api/users/change_password](https://nemo.sonarqube.org/web_api/api/users/change_password).
 
 For example:
 

@@ -22,7 +22,7 @@ standard タブから root アカウントでサインインし、
 
 SonarQube
 ---------
-[api/users/change_password](https://nemo.sonarqube.org/api_documentation/api/users/change_password)
+[api/users/change_password](https://nemo.sonarqube.org/web_api/api/users/change_password)
 の呼び出しにより変更を行ってください。
 
 実行例:
