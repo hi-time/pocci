@@ -6,6 +6,15 @@ var urlformat = require('url').format;
 var escape = require('querystring').escape;
 
 module.exports = {
+  getRandomString: function(size) {
+    var s = new Array((size)? size : 40);
+    var c = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+    for(var i = 0; i < s.length; i++) {
+        s[i] = c.charAt(Math.floor(Math.random() * c.length));
+    }
+    return s.join('');
+  },
   toArray: function(obj){
     if(Array.isArray(obj)) {
       return obj;

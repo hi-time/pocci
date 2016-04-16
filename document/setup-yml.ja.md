@@ -363,6 +363,15 @@ gitlab:
 *   **mailAddress:** GitLabのメールアドレス
     *   デフォルトは pocci.adminMailAddress で指定したアドレス
     *   環境変数: `GITLAB_MAIL_ADDRESS`
+*   **dbName:** GitLab が内部的に使用するデータベースの名前
+    *   デフォルトは `gitlabhq_production`
+    *   環境変数: `GITLAB_DB_NAME`
+*   **dbUser:** GitLab が内部的に使用するデータベース接続時のユーザー名
+    *   デフォルトは `gitlab`
+    *   環境変数: `GITLAB_DB_USER`
+*   **dbPassword:** GitLab が内部的に使用するデータベース接続時のパスワード
+    *   デフォルトはランダムな文字列
+    *   環境変数: `GITLAB_DB_PASS`
 
 
 jenkins:
@@ -523,6 +532,15 @@ redmine:
 *   **mailAddress:** Redmineのメールアドレス
     *   デフォルトは pocci.adminMailAddress で指定したアドレス
     *   環境変数: `REDMINE_MAIL_ADDRESS`
+*   **dbName:** Redmine が内部的に使用するデータベースの名前
+    *   デフォルトは `redmine_production`
+    *   環境変数: `REDMINE_DB_NAME`
+*   **dbUser:** Redmine が内部的に使用するデータベース接続時のユーザー名
+    *   デフォルトは `redmine`
+    *   環境変数: `REDMINE_DB_USER`
+*   **dbPassword:** Redmine が内部的に使用するデータベース接続時のパスワード
+    *   デフォルトはランダムな文字列
+    *   環境変数: `REDMINE_DB_PASS`
 
 
 sonar:
@@ -536,7 +554,7 @@ SonarQube 関連定義。
     *   デフォルトは `sonarqube`
     *   環境変数: `SONAR_DB_USER`
 *   **dbPassword:** SonarQube が内部的に使用するデータベース接続時のパスワード
-    *   デフォルトは `sonarqubepass`
+    *   デフォルトはランダムな文字列
     *   環境変数: `SONAR_DB_PASS`
 
 kanban:

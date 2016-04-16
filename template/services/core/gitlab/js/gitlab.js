@@ -347,7 +347,7 @@ module.exports = {
     options.gitlab.ldapMethod           = options.gitlab.ldapMethod           || 'plain';
     options.gitlab.ldapActiveDirectory  = options.gitlab.ldapActiveDirectory  || 'false';
     options.gitlab.dbUser               = options.gitlab.dbUser               || 'gitlab';
-    options.gitlab.dbPassword           = options.gitlab.dbPassword           || 'secretpassword';
+    options.gitlab.dbPassword           = options.gitlab.dbPassword           || util.getRandomString();
     options.gitlab.dbName               = options.gitlab.dbName               || 'gitlabhq_production';
     options.gitlab.sshPort              = options.gitlab.sshPort              || '10022';
     options.gitlab.smtpEnabled          = options.gitlab.smtpEnabled          || 'false';
@@ -356,7 +356,7 @@ module.exports = {
     options.gitlab.smtpPort             = options.gitlab.smtpPort             || '25';
     options.gitlab.mailAddress          = options.gitlab.mailAddress          || options.pocci.adminMailAddress;
     options.gitlab.timezone             = options.gitlab.timezone             || getGitlabTimezone(options.pocci.environment.TZ);
-    options.gitlab.secretsDbKeyBase     = options.gitlab.secretsDbKeyBase     || 'long-and-random-alphanumeric-string';
+    options.gitlab.secretsDbKeyBase     = options.gitlab.secretsDbKeyBase     || util.getRandomString();
     // options.gitlab.users = options.gitlab.users;
     // options.gitlab.groups = options.gitlab.groups;
   },

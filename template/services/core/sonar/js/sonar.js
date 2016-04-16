@@ -19,7 +19,7 @@ module.exports = {
     options.sonar.securityRealm = options.sonar.securityRealm || (isEnabledUserService(options)? 'LDAP' : '');
     options.sonar.ldapRealName  = options.sonar.ldapRealName  || 'cn';
     options.sonar.dbUser        = options.sonar.dbUser        || 'sonarqube';
-    options.sonar.dbPassword    = options.sonar.dbPassword    || 'sonarqubepass';
+    options.sonar.dbPassword    = options.sonar.dbPassword    || util.getRandomString();
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.sonar.url);

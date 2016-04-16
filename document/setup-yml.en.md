@@ -360,6 +360,15 @@ gitlab:
 *   **mailAddress:** Mail address of GitLab
     *   The default is the address specified in pocci.adminMailAddress.
     *   Environment variable:  `GITLAB_MAIL_ADDRESS`
+*   **dbName:** Name of the database to be used internally by GitLab
+    *   The default is `gitlabhq_production`.
+    *   Environment variable:  `GITLAB_DB_NAME`
+*   **dbUser:** User name for connecting to the database to be used internally by GitLab
+    *   The default is `gitlab`.
+    *   Environment variable:  `GITLAB_DB_USER`
+*   **dbPassword:** Password for connecting to the database to be used internally by GitLab
+    *   The default is a random alpha-numeric string.
+    *   Environment variable:  `GITLAB_DB_PASS`
 
 
 jenkins:
@@ -520,6 +529,15 @@ redmine:
 *   **mailAddress:** Mail address of Redmine
     *   The default is the address specified in pocci.adminMailAddress.
     *   Environment variable:  `REDMINE_MAIL_ADDRESS`
+*   **dbName:** Name of the database to be used internally by Redmine
+    *   The default is `redmine_production`.
+    *   Environment variable:  `REDMINE_DB_NAME`
+*   **dbUser:** User name for connecting to the database to be used internally by Redmine
+    *   The default is `redmine`.
+    *   Environment variable:  `REDMINE_DB_USER`
+*   **dbPassword:** Password for connecting to the database to be used internally by Redmine
+    *   The default is a random alpha-numeric string.
+    *   Environment variable:  `REDMINE_DB_PASS`
 
 
 sonar:
@@ -533,7 +551,7 @@ SonarQube related definitions.
     *   The default is `sonarqube`.
     *   Environment variable:  `SONAR_DB_USER`
 *   **dbPassword:** Password for connecting to the database to be used internally by SonarQube
-    *   The default is `sonarqubepass`.
+    *   The default is a random alpha-numeric string.
     *   Environment variable:  `SONAR_DB_PASS`
 
 kanban:
