@@ -1,22 +1,22 @@
 #!/bin/bash
 set -e
 
-if [ `docker ps |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -eq 0 ]; then
-    exit
-fi
-
 BASE_DIR=$(cd $(dirname $0)/..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
+
+if [ `get_pocci_container |wc -l` -eq 0 ]; then
+    exit
+fi
 
 SECONDS=0
 set +e
 ${BIN_DIR}/close-workspace
 ${LIB_DIR}/docker-compose core-services.yml -p ${POCCI_SERVICE_PREFIX} stop
-${LIB_DIR}/docker-compose backend-services.yml -p ${POCCI_SERVICE_PREFIX} stop
+${LIB_DIR}/docker-compose backend-services.yml -p ${POCCI_BACKEND_SERVICE_PREFIX} stop
 
 set -e
-if [ `docker ps |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -gt 0 ]; then
-    `docker ps |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
+if [ `get_pocci_container |wc -l` -gt 0 ]; then
+    `get_pocci_container |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
 fi
 
 echo "#__ stop-service: ${SECONDS}"

@@ -11,14 +11,18 @@ assert()
     fi
 }
 
+get_pocci_container() {
+    docker ps $1 |grep "pocci[s|b|n|r|d]_"
+}
+
 BASE_DIR=$(cd $(dirname $0); pwd)
 TEMP_DIR=${BASE_DIR}/temp
 
-if [ `docker ps |grep "pocci[s|n|r|d]_" |wc -l` -gt 0 ]; then
-    `docker ps |grep "pocci[s|n|r|d]_" |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
+if [ `get_pocci_container |wc -l` -gt 0 ]; then
+    `get_pocci_container |awk 'BEGIN{printf "docker stop "}{printf $1" "}'`
 fi
-if [ `docker ps -a |grep "pocci[s|n|r|d]_" |wc -l` -gt 0 ]; then
-    `docker ps -a |grep "pocci[s|n|r|d]_" |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
+if [ `get_pocci_container -a |wc -l` -gt 0 ]; then
+    `get_pocci_container -a |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
 fi
 
 if [ -d ${TEMP_DIR} ]; then
@@ -26,6 +30,7 @@ if [ -d ${TEMP_DIR} ]; then
 fi
 
 assert poccis_
+assert poccib_
 assert poccin_
 assert poccir_
 assert poccid_

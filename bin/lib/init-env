@@ -7,6 +7,10 @@ assert()
     fi
 }
 
+get_pocci_container() {
+    docker ps $1 |grep -e "${POCCI_SERVICE_PREFIX}_"  -e "${POCCI_BACKEND_SERVICE_PREFIX}_" -e "pocci[n|r]_"
+}
+
 BIN_DIR=${BASE_DIR}/bin
 LIB_DIR=${BIN_DIR}/lib
 JS_DIR=${BIN_DIR}/js
@@ -23,7 +27,11 @@ if [ -z "${POCCI_SERVICE_PREFIX}" ]; then
     export POCCI_SERVICE_PREFIX="poccis"
 fi
 
-export DNS_CONTAINER=${POCCI_SERVICE_PREFIX}_dns_1
+if [ -z "${POCCI_BACKEND_SERVICE_PREFIX}" ]; then
+    export POCCI_BACKEND_SERVICE_PREFIX="poccib"
+fi
+
+export DNS_CONTAINER=${POCCI_BACKEND_SERVICE_PREFIX}_dns_1
 
 assert ${BASE_DIR}
 assert ${BIN_DIR}

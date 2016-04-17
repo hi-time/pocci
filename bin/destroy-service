@@ -6,7 +6,7 @@ source ${BASE_DIR}/bin/lib/init-env
 
 ${LIB_DIR}/stop-document-server
 
-if [ `docker ps -a |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -eq 0 ]; then
+if [ `get_pocci_container -a |wc -l` -eq 0 ]; then
     exit
 fi
 
@@ -27,11 +27,11 @@ SECONDS=0
 set +e
 ${LIB_DIR}/docker-compose workspaces.yml -p poccin rm -v --force
 ${LIB_DIR}/docker-compose core-services.yml -p ${POCCI_SERVICE_PREFIX} rm -v --force
-${LIB_DIR}/docker-compose backend-services.yml -p ${POCCI_SERVICE_PREFIX} rm -v --force
+${LIB_DIR}/docker-compose backend-services.yml -p ${POCCI_BACKEND_SERVICE_PREFIX} rm -v --force
 
 set -e
-if [ `docker ps -a |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |wc -l` -gt 0 ]; then
-    `docker ps -a |grep -e "${POCCI_SERVICE_PREFIX}_" -e "pocci[n|r]_" |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
+if [ `get_pocci_container -a |wc -l` -gt 0 ]; then
+    `get_pocci_container -a |awk 'BEGIN{printf "docker rm -v "}{printf $1" "}'`
 fi
 
 echo "#__ destroy-service: ${SECONDS}"
