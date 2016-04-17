@@ -87,7 +87,7 @@ var loadDefaultConfiguration = function*(browser, url, lang) {
 };
 
 var enableWebService = function*(browser, url) {
-  browser.url(url + '/settings?tab=authentication');
+  browser.url(url + '/settings?tab=api');
   yield browser.save('redmine-before-enableWebService');
 
   var isSelected = yield browser.isSelected('#settings_rest_api_enabled');
@@ -95,7 +95,7 @@ var enableWebService = function*(browser, url) {
     yield browser.save('redmine-doing-enableWebService');
     yield browser.click('#settings_rest_api_enabled');
     yield browser.save('redmine-doing-enableWebService');
-    yield browser.click('#tab-content-authentication > form > input[type="submit"]');
+    yield browser.click('#tab-content-api > form > input[type="submit"]');
     yield browser.save('redmine-after-enableWebService');
   }
 };

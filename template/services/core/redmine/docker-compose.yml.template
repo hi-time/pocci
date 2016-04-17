@@ -1,7 +1,7 @@
 cat << EOF
 # Redmine
 redminedb:
-  image: sameersbn/postgresql:9.4-18
+  image: sameersbn/postgresql:9.4-19
   env_file:
     - ./.env
   environment:
@@ -10,7 +10,7 @@ redminedb:
     - DB_NAME=${REDMINE_DB_NAME}
 
 redmine:
-  image: sameersbn/redmine:3.1.4-2
+  image: sameersbn/redmine:3.2.1-3
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}
