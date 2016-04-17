@@ -8,7 +8,7 @@ LOG_FILE=${BASE_DIR}/temp/test.log
 
 trap "date |tee -a ${LOG_FILE}" EXIT
 
-step1() {
+stage1() {
     ${BASE_DIR}/do-instructions-in-readme.sh ${POCCI_REPO}
 
     sleep 30
@@ -16,9 +16,7 @@ step1() {
     sudo rm -fr ${BASE_DIR}/temp/pocci/backup/*
     ${BASE_DIR}/temp/pocci/bin/backup
     sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_default
-}
 
-step2() {
     echo $(date): TEST_1 default >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
     ../oneoff nodejs grunt basic
@@ -27,7 +25,7 @@ step2() {
     ${BASE_DIR}/build-test.sh
 }
 
-step3() {
+stage2() {
     echo $(date): SETUP jenkins >> ${LOG_FILE}
     echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config jenkins
     ${BASE_DIR}/temp/pocci/bin/up-service
@@ -36,9 +34,7 @@ step3() {
     echo $(date): BACKUP jenkins >> ${LOG_FILE}
     ${BASE_DIR}/temp/pocci/bin/backup
     sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_jenkins
-}
 
-step4() {
     echo $(date): TEST_1 jenkins >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
     ../oneoff nodejs grunt basic
@@ -48,7 +44,7 @@ step4() {
     ${BASE_DIR}/build-test.sh
 }
 
-step5() {
+stage3() {
     echo $(date): SETUP redmine >> ${LOG_FILE}
     echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config redmine
     ${BASE_DIR}/temp/pocci/bin/up-service
@@ -57,9 +53,7 @@ step5() {
     echo $(date): BACKUP redmine >> ${LOG_FILE}
     ${BASE_DIR}/temp/pocci/bin/backup
     sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_redmine
-}
 
-step6() {
     echo $(date): TEST_1 redmine >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
     ../oneoff nodejs grunt basic
@@ -68,12 +62,10 @@ step6() {
     ${BASE_DIR}/build-test.sh
 }
 
-step7() {
+stage4() {
     echo $(date): RESTORE default >> ${LOG_FILE}
     echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_default/*
-}
 
-step8() {
     echo $(date): TEST_2 default >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
     ../oneoff nodejs grunt basic
@@ -82,12 +74,10 @@ step8() {
     ${BASE_DIR}/build-test.sh
 }
 
-step9() {
+stage5() {
     echo $(date): RESTORE redmine >> ${LOG_FILE}
     echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_redmine/*
-}
 
-step10() {
     echo $(date): TEST_2 redmine >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
     ../oneoff nodejs grunt basic
@@ -96,12 +86,10 @@ step10() {
     ${BASE_DIR}/build-test.sh
 }
 
-step11() {
+stage6() {
     echo $(date): RESTORE jenkins >> ${LOG_FILE}
     echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_jenkins/*
-}
 
-step12() {
     echo $(date): TEST_2 jenkins >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
     ../oneoff nodejs grunt basic
@@ -111,7 +99,7 @@ step12() {
     ${BASE_DIR}/build-test.sh
 }
 
-step13() {
+stage7() {
     echo "Done" | tee -a ${LOG_FILE}
 }
 
@@ -120,10 +108,11 @@ if [ -n "$1" ]; then
     START=$2
 fi
 
-for i in `seq ${START} 13`; do
+for i in `seq ${START} 7`; do
     if [ -f ${LOG_FILE} ]; then
-        echo "step$i" | tee -a ${LOG_FILE}
+        echo "" | tee -a ${LOG_FILE}
+        echo "# stage$i" | tee -a ${LOG_FILE}
     fi
-  step$i
+    stage$i
 done
 
