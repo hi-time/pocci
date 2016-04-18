@@ -13,9 +13,7 @@ cat << EOF
 </source>
 <source>
   type tail
-  format /^((?<time>.+? .+?) (?<log>.*))$/
-  time_format %Y.%m.%d %T
-  time_key time
+  format /^(?<log>.*)$/
   path ${POCCI_LOG_DIR}/sonar/sonar.log
   pos_file ${POCCI_LOG_DIR}/sonar.sonar.log.pos
   tag pocci.sonar.sonar

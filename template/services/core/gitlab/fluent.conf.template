@@ -4,11 +4,7 @@ cat << EOF
 #
 <source>
   type tail
-  format multiline
-  format_firstline /^Started/
-  format1 /Started (?<method>[^ ]+) "(?<path>[^"]+)" for (?<host>[^ ]+) at (?<time>[^ ]+ [^ ]+ [^ ]+)(\n*)(?<log>.*)/
-  time_key time
-  time_format %F %T %z
+  format /^(?<log>.*)$/
   path ${POCCI_LOG_DIR}/gitlab/gitlab/production.log
   pos_file ${POCCI_LOG_DIR}/gitlab.gitlab.production.log.pos
   tag pocci.gitlab.production
