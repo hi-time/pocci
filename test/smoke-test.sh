@@ -8,6 +8,13 @@ LOG_FILE=${BASE_DIR}/temp/test.log
 
 trap "date |tee -a ${LOG_FILE}" EXIT
 
+move_backup_dir() {
+    if [ -d ${BASE_DIR}/temp/pocci/backup_$1 ]; then
+        sudo rm -fr ${BASE_DIR}/temp/pocci/backup_$1
+    fi
+    sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_$1
+}
+
 stage1() {
     ${BASE_DIR}/do-instructions-in-readme.sh ${POCCI_REPO}
 
@@ -15,7 +22,7 @@ stage1() {
     echo $(date): BACKUP default >> ${LOG_FILE}
     sudo rm -fr ${BASE_DIR}/temp/pocci/backup/*
     ${BASE_DIR}/temp/pocci/bin/backup
-    sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_default
+    move_backup_dir default
 
     echo $(date): TEST_1 default >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
@@ -33,7 +40,7 @@ stage2() {
     sleep 30
     echo $(date): BACKUP jenkins >> ${LOG_FILE}
     ${BASE_DIR}/temp/pocci/bin/backup
-    sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_jenkins
+    move_backup_dir jenkins
 
     echo $(date): TEST_1 jenkins >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
@@ -52,7 +59,7 @@ stage3() {
     sleep 30
     echo $(date): BACKUP redmine >> ${LOG_FILE}
     ${BASE_DIR}/temp/pocci/bin/backup
-    sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_redmine
+    move_backup_dir redmine
 
     echo $(date): TEST_1 redmine >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
