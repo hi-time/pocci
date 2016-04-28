@@ -10,6 +10,13 @@ echo "Apply user settings..."
 cd ${JS_DIR}
 ${BIN_DIR}/oneoff nodejs node ./app.js
 
+for i in ${INTERNAL_SERVICES}; do
+    if [ -f ${TEMPLATE_DIR}/services/core/$i/setup.sh ]; then
+        cd ${TEMPLATE_DIR}/services/core/$i
+        source ./setup.sh
+    fi
+done
+
 source ${LIB_DIR}/create-docker-compose-file
 ${LIB_DIR}/save-config "Update configuration files"
 echo "#__ setup: ${SECONDS}"

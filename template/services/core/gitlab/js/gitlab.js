@@ -32,35 +32,39 @@ var login = function*(browser, url, user, password) {
   yield browser.save('gitlab-after-login-by-' + user);
 };
 
-var updateProfileSettings = function*(browser, url, user) {
-  browser.url(url + '/profile');
-  yield browser.save('gitlab-before-updateProfileSettings-of-' + user.uid);
-  if(user.displayName) {
-    browser.setValue('#user_name', user.displayName);
-  }
-  if(user.labeledURI) {
+var createAvatarImage = function*(user) {
+    var fileName = './config/avatar/' + user.uid + path.extname(user.labeledURI);
     try {
-      var fileName;
       var parsedUrl = parse(user.labeledURI);
       if(parsedUrl.protocol === 'file:') {
-        fileName = path.join('./config', parsedUrl.pathname);
+        var src = path.join('./config', parsedUrl.pathname);
+        fs.createReadStream(src).pipe(fs.createWriteStream(fileName));
       } else {
-        fileName = './config/screen/avatar-' + user.uid + path.extname(user.labeledURI);
         var res = yield server({
           url: user.labeledURI,
           encoding : null
         });
         fs.writeFileSync(fileName, res.body, {encoding:'binary'});
       }
-      yield browser.chooseFile('#user_avatar', fileName);
     } catch(e) {
       console.log('WARNING: cannot download: ' + user.labeledURI + ' --> ' + fileName);
       console.log(e);
     }
+};
+
+var updateProfileSettings = function*(browser, url, user) {
+  browser.url(url + '/profile');
+  yield browser.save('gitlab-before-updateProfileSettings-of-' + user.uid);
+  if(user.displayName) {
+    browser.setValue('#user_name', user.displayName);
   }
   yield browser.save('gitlab-doing-updateProfileSettings-of-' + user.uid);
   yield browser.submitForm('form.edit-user');
   yield browser.save('gitlab-after-updateProfileSettings-of-' + user.uid);
+
+  if(user.labeledURI) {
+    yield createAvatarImage(user);
+  }
 };
 
 var newPassword = function*(browser, url, password) {
@@ -312,7 +316,19 @@ var setupGroups = function*(request, groups, users, repositories) {
   }
 };
 
+var cleanAvatarImages = function() {
+  var avatarDir = './config/avatar';
+  if(fs.existsSync(avatarDir)) {
+    fs.readdirSync(avatarDir).forEach(function(file) {
+      fs.unlinkSync(path.join(avatarDir, file));
+    });
+  } else {
+    fs.mkdirSync(avatarDir);
+  }
+};
+
 var addUsers = function*(browser, url, users) {
+  cleanAvatarImages();
   for(var i = 0; i < users.length; i++) {
     yield login(browser, url, users[i].uid, users[i].userPassword);
     yield updateProfileSettings(browser, url, users[i]);

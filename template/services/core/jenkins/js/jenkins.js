@@ -206,8 +206,9 @@ var configureGitLab = function*(browser, url, gitlabUrl) {
   browser.url(url + '/configure');
   yield browser.save('jenkins-before-configureGitLab');
   browser
-    .setValue('input[type="text"][name="_.gitlabHostUrl"]', gitlabUrl)
-    .setValue('input[type="text"][name="_.gitlabApiToken"]', apiToken);
+    .setValue('input[type="text"][checkurl="/descriptorByName/com.dabsquared.gitlabjenkins.connection.GitLabConnectionConfig/checkName"]', 'default')
+    .setValue('input[type="text"][checkurl="/descriptorByName/com.dabsquared.gitlabjenkins.connection.GitLabConnectionConfig/checkUrl"]', gitlabUrl)
+    .setValue('input[type="password"][checkurl="/descriptorByName/com.dabsquared.gitlabjenkins.connection.GitLabConnectionConfig/checkApiToken"]', apiToken);
   yield browser.save('jenkins-doing-configureGitLab');
   yield browser.click('.submit-button.primary button');
   yield browser.save('jenkins-after-configureGitLab');

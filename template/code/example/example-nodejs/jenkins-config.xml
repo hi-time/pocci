@@ -2,15 +2,21 @@
 <project>
   <actions/>
   <description></description>
-  <logRotator class="hudson.tasks.LogRotator">
-    <daysToKeep>-1</daysToKeep>
-    <numToKeep>10</numToKeep>
-    <artifactDaysToKeep>-1</artifactDaysToKeep>
-    <artifactNumToKeep>-1</artifactNumToKeep>
-  </logRotator>
   <keepDependencies>false</keepDependencies>
-  <properties/>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.0">
+  <properties>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.2.0">
+      <gitLabConnection>default</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>10</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.4">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -32,7 +38,7 @@
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers>
-    <com.dabsquared.gitlabjenkins.GitLabPushTrigger plugin="gitlab-plugin@1.1.28">
+    <com.dabsquared.gitlabjenkins.GitLabPushTrigger plugin="gitlab-plugin@1.2.0">
       <spec></spec>
       <triggerOnPush>true</triggerOnPush>
       <triggerOnMergeRequest>true</triggerOnMergeRequest>
@@ -40,11 +46,12 @@
       <ciSkip>true</ciSkip>
       <setBuildDescription>true</setBuildDescription>
       <addNoteOnMergeRequest>true</addNoteOnMergeRequest>
-      <addCiMessage>true</addCiMessage>
+      <addCiMessage>false</addCiMessage>
       <addVoteOnMergeRequest>true</addVoteOnMergeRequest>
-      <allowAllBranches>true</allowAllBranches>
+      <branchFilterType>All</branchFilterType>
       <includeBranchesSpec></includeBranchesSpec>
       <excludeBranchesSpec></excludeBranchesSpec>
+      <targetBranchRegex></targetBranchRegex>
       <acceptMergeRequestOnSuccess>false</acceptMergeRequestOnSuccess>
     </com.dabsquared.gitlabjenkins.GitLabPushTrigger>
   </triggers>
@@ -55,7 +62,7 @@
     </hudson.tasks.Shell>
   </builders>
   <publishers>
-    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.10">
+    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.12">
       <testResults>test-results/*.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <healthScaleFactor>1.0</healthScaleFactor>

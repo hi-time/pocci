@@ -8,6 +8,7 @@ gitlab = require("pocci/gitlab.js")
 test = require("./resq.js")
 chai = require("chai")
 LdapClient = require("promised-ldap")
+loginJenkins = require("./loginTest.js").loginJenkins
 
 describe "setup.jenkins.yml", ->
   @timeout(10 * 60 * 1000)
@@ -15,10 +16,10 @@ describe "setup.jenkins.yml", ->
   it "gitlab", (done) ->
     test done,
       setup: ->
-        url = "http://gitlab.pocci.test"
+        @url = "http://gitlab.pocci.test"
         yield setup.initBrowser()
-        yield gitlab.loginByAdmin(setup.browser, url)
-        @request = yield gitlab.createRequest(setup.browser, url)
+        yield gitlab.loginByAdmin(setup.browser, @url)
+        @request = yield gitlab.createRequest(setup.browser, @url)
         yield gitlab.logout(setup.browser)
 
       expect: ->
@@ -176,6 +177,13 @@ describe "setup.jenkins.yml", ->
               "body[0].merge_requests_events":true
               "body[0].tag_push_events":      false
 
+        yield gitlab.login(setup.browser, @url, "jenkinsci", "password")
+        src = yield setup.browser
+          .save("gitlab-login-by-jenkinsci")
+          .getAttribute("img.avatar", "src")
+        yield gitlab.logout(setup.browser)
+        chai.assert.ok(src.indexOf("jenkinsci.png") > -1, "Invalid avatar of jenkinsci")
+
   it "pocci", (done) ->
     test done,
       expect: ->
@@ -226,6 +234,17 @@ describe "setup.jenkins.yml", ->
               "body.computer[1].offline":         false
               "body.computer[2].displayName":     "nodejs"
               "body.computer[2].offline":         false
+
+        yield loginJenkins(setup.browser)
+        forms = yield setup.browser
+          .url(process.env.JENKINS_URL + "/manage")
+          .save("jenkins-manage")
+          .getAttribute("form", "name")
+
+        chai.assert.ok(forms.length > 0)
+        for entry in forms
+          chai.assert.notEqual(entry, "OldData")
+
 
   it "user", (done) ->
     test done,
