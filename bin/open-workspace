@@ -6,5 +6,4 @@ source ${BASE_DIR}/bin/lib/init-env
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
 ${LIB_DIR}/docker-compose workspaces.yml -p poccin build
-source ${LIB_DIR}/force-recreate
-${LIB_DIR}/docker-compose workspaces.yml -p poccin up -d ${FORCE_RECREATE}
+${LIB_DIR}/docker-compose workspaces.yml -p poccin up -d
