@@ -2,7 +2,7 @@
 DEFAULT_IFS="${IFS}"
 IFS=$'\n'
 
-for i in $(cat $1 |tr -d '\r'); do
+for i in $(tr -d "\r" < "$1"); do
     export $i
 done
 IFS="${DEFAULT_IFS}"
