@@ -7,3 +7,4 @@ if [ -z "$1" ]; then
     ${BASE_DIR}/clean-containers.sh
 fi
 ${BASE_DIR}/smoke-test.sh ${BASE_DIR}/../.git $1
+${BASE_DIR}/unit/coverage.sh
