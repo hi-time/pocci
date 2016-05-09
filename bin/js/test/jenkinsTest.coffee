@@ -1,5 +1,6 @@
 ###global describe, it, before, beforeEach, after###
 ###jshint quotmark:true###
+###jshint unused:false###
 "use strict"
 
 assert = require("chai").assert

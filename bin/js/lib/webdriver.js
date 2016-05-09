@@ -16,42 +16,29 @@ module.exports.init = function*() {
   var browser = webdriver.remote({desiredCapabilities:{browserName:'chrome'}}).init();
   browser.originalClick = browser.click;
   browser
-    .addCommand('save', function(){
-      var name = arguments[0];
-      var callback = arguments[arguments.length - 1];
+    .addCommand('save', function async (name){
       var fileName = ('00' + (++num)).slice(-3) + '-' + name + '.png';
       console.log('-   Take screenshot : ' + fileName);
-      this.call();
-      //this.saveScreenshot(ssdir + '/' + fileName).call(callback);
-      function retry(maxRetries, browser) {
-        browser.saveScreenshot(ssdir + '/' + fileName).catch(function(err){
-          if (maxRetries <= 0) {
-            throw err;
-          }
-          console.log('-   Retry:' + maxRetries);
-          retry(maxRetries - 1, browser); 
-        });
-      }
-      retry(10, this);
-      this.call(callback);
-    }.bind(browser))
-    .addCommand('click', function(){
-      var selector = arguments[0];
-      var callback = arguments[arguments.length - 1];
-      browser.originalClick(selector).catch(function() {
-        this.execute(
+      return browser.saveScreenshot(ssdir + '/' + fileName).catch(function(){
+        console.log('-   Retry : ' + fileName);
+        return browser.saveScreenshot(ssdir + '/' + fileName);
+      });
+    });
+
+  browser
+    .addCommand('click', function async (selector){
+      return browser.originalClick(selector).catch(function() {
+        return browser.execute(
           function(selector) {
             document.querySelector(selector).click();
           }, selector);
       });
-      this.call(callback);
-    }.bind(browser));
+    }, true);
 
   yield browser.timeouts('script', 60 * 1000)
     .timeouts('implicit', 10 * 1000)
     .timeouts('page load', 120 * 1000)
-    .windowHandleMaximize()
-    .call();
+    .windowHandleMaximize();
 
   module.exports.browser = browser;
 };

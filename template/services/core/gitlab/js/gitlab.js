@@ -13,23 +13,20 @@ var adminPassword = process.env.GITLAB_ROOT_PASSWORD;
 var firstLogin = true;
 
 var logout = function*(browser) {
-  browser.url(process.env.GITLAB_URL + '/profile');
-  yield browser.save('gitlab-before-logout');
-  yield browser.click('a[href="/users/sign_out"]');
-  yield browser.save('gitlab-after-logout');
+  yield browser.url(process.env.GITLAB_URL + '/profile')
+    .save('gitlab-before-logout')
+    .click('a[href="/users/sign_out"]')
+    .save('gitlab-after-logout');
 };
 
 var login = function*(browser, url, user, password) {
-  browser.url(url + '/users/sign_in');
-  yield browser.save('gitlab-before-login-by-' + user);
-
-  browser
+  yield browser.url(url + '/users/sign_in')
+    .save('gitlab-before-login-by-' + user)
     .setValue('#username', user)
-    .setValue('#password', password);
-  yield browser.save('gitlab-doing-login-by-' + user);
-
-  yield browser.submitForm('#new_ldap_user');
-  yield browser.save('gitlab-after-login-by-' + user);
+    .setValue('#password', password)
+    .save('gitlab-doing-login-by-' + user)
+    .submitForm('#new_ldap_user')
+    .save('gitlab-after-login-by-' + user);
 };
 
 var createAvatarImage = function*(user) {
@@ -53,14 +50,14 @@ var createAvatarImage = function*(user) {
 };
 
 var updateProfileSettings = function*(browser, url, user) {
-  browser.url(url + '/profile');
-  yield browser.save('gitlab-before-updateProfileSettings-of-' + user.uid);
+  yield browser.url(url + '/profile')
+    .save('gitlab-before-updateProfileSettings-of-' + user.uid);
   if(user.displayName) {
-    browser.setValue('#user_name', user.displayName);
+    yield browser.setValue('#user_name', user.displayName);
   }
-  yield browser.save('gitlab-doing-updateProfileSettings-of-' + user.uid);
-  yield browser.submitForm('form.edit-user');
-  yield browser.save('gitlab-after-updateProfileSettings-of-' + user.uid);
+  yield browser.save('gitlab-doing-updateProfileSettings-of-' + user.uid)
+    .submitForm('form.edit-user')
+    .save('gitlab-after-updateProfileSettings-of-' + user.uid);
 
   if(user.labeledURI) {
     yield createAvatarImage(user);
@@ -68,34 +65,27 @@ var updateProfileSettings = function*(browser, url, user) {
 };
 
 var newPassword = function*(browser, url, password) {
-  browser.url(url + '/profile/password/new');
-  yield browser.save('gitlab-before-newPassword');
-
-  browser
+  yield browser.url(url + '/profile/password/new')
+    .save('gitlab-before-newPassword')
     .setValue('#user_current_password', password)
     .setValue('#user_password', password)
-    .setValue('#user_password_confirmation', password);
-  yield browser.save('gitlab-doing-newPassword');
-
-  browser.submitForm('#edit_user_1');
-  yield browser.save('gitlab-after-newPassword');
+    .setValue('#user_password_confirmation', password)
+    .save('gitlab-doing-newPassword')
+    .submitForm('#edit_user_1')
+    .save('gitlab-after-newPassword');
 };
 
 
 var loginByAdmin = function*(browser, url) {
-  browser.url(url + '/users/sign_in');
-  yield browser.save('gitlab-before-loginByAdmin');
-
-  yield browser.click('a[href="#tab-signin"]');
-  yield browser.save('gitlab-loginByAdmin-siginin-tab-clicked');
-
-  browser
+  yield browser.url(url + '/users/sign_in')
+    .save('gitlab-before-loginByAdmin')
+    .click('a[href="#tab-signin"]')
+    .save('gitlab-loginByAdmin-siginin-tab-clicked')
     .setValue('#user_login', 'root')
-    .setValue('#user_password', adminPassword);
-  yield browser.save('gitlab-doing-loginByAdmin');
-
-  browser.submitForm('#new_user');
-  yield browser.save('gitlab-after-loginByAdmin');
+    .setValue('#user_password', adminPassword)
+    .save('gitlab-doing-loginByAdmin')
+    .submitForm('#new_user')
+    .save('gitlab-after-loginByAdmin');
 };
 
 var firstLoginByAdmin = function*(browser, url) {
@@ -108,9 +98,9 @@ var firstLoginByAdmin = function*(browser, url) {
 };
 
 var getPrivateToken = function*(browser, url) {
-  browser.url(url + '/profile/account');
-  yield browser.save('gitlab-getPrivateToken');
-  return yield browser.getValue('#token');
+  return yield browser.url(url + '/profile/account')
+    .save('gitlab-getPrivateToken')
+    .getValue('#token');
 };
 
 var createRequest = function*(browser, url) {
@@ -345,9 +335,9 @@ var getGitlabTimezone = function(timezone) {
 };
 
 var setupRunners = function*(browser, url, runners) {
-  browser.url(url + '/admin/runners');
-  yield browser.save('gitlab-getToken');
-  var token = yield browser.getText('code');
+  var token = yield browser.url(url + '/admin/runners')
+    .save('gitlab-getToken')
+    .getText('code');
 
   for(var i = 0; i < runners.length; i++) {
     workspace.writeConfiguration('./config/services/core/gitlab/runner', runners[i], token);

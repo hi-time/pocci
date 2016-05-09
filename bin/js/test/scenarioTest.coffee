@@ -9,7 +9,6 @@ module.exports.user =
       when: ->
         yield browser
           .url(process.env.USER_URL)
-          .call()
           .setValue("#login-cn", "boze")
           .setValue("#login-userPassword", "password")
           .save("user-not-admin-berore-autherize")
@@ -17,8 +16,8 @@ module.exports.user =
           .save("user-not-admin-after-autherize")
 
       then: ->
-        assert.ok(yield browser.isEnabled("#userPassword"))
-        assert.notOk(yield browser.isExisting("#search-form"))
+        assert.isOk(yield browser.isEnabled("#userPassword"))
+        assert.isNotOk(yield browser.isExisting("#search-form"))
 
   changePassword: (done, test, browser) ->
     test done,
@@ -30,7 +29,7 @@ module.exports.user =
           .save("user-after-change-password")
 
       then: ->
-        assert.ok(yield browser.isVisible("#login-cn"))
+        assert.isOk(yield browser.isVisible("#login-cn"))
 
 module.exports.gitlab =
   signinAsBoze: (done, test, browser) ->

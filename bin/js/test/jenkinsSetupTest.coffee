@@ -182,7 +182,7 @@ describe "setup.jenkins.yml", ->
           .save("gitlab-login-by-jenkinsci")
           .getAttribute("img.avatar", "src")
         yield gitlab.logout(setup.browser)
-        chai.assert.ok(src.indexOf("jenkinsci.png") > -1, "Invalid avatar of jenkinsci")
+        chai.assert.isOk(src.indexOf("jenkinsci.png") > -1, "Invalid avatar of jenkinsci")
 
   it "pocci", (done) ->
     test done,
@@ -241,7 +241,7 @@ describe "setup.jenkins.yml", ->
           .save("jenkins-manage")
           .getAttribute("form", "name")
 
-        chai.assert.ok(forms.length > 0)
+        chai.assert.isOk(forms.length > 0)
         for entry in forms
           chai.assert.notEqual(entry, "OldData")
 

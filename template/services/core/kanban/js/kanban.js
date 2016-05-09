@@ -8,18 +8,16 @@ var gitlab = require('pocci/gitlab.js');
 var server = require('co-request');
 
 var registerOauth = function*(browser, url, keys) {
-  browser.url(url + '/oauth/applications/new');
-  yield browser.save('kanban-before-registerOauth');
   var redirectPath = '/assets/html/user/views/oauth.html';
-  browser
+  yield browser.url(url + '/oauth/applications/new')
+    .save('kanban-before-registerOauth')
     .setValue('#doorkeeper_application_name', 'Kanban')
     .setValue('#doorkeeper_application_redirect_uri',
         process.env.KANBAN_URL + redirectPath + '\n' +
-        'http://kanban' + redirectPath);
-  yield browser.save('kanban-doing-registerOauth');
-
-  browser.submitForm('#new_doorkeeper_application');
-  yield browser.save('kanban-after-registerOauth');
+        'http://kanban' + redirectPath)
+    .save('kanban-doing-registerOauth')
+    .submitForm('#new_doorkeeper_application')
+    .save('kanban-after-registerOauth');
 
   keys.clientId = yield browser.getText('#application_id');
   keys.secret = yield browser.getText('#secret');

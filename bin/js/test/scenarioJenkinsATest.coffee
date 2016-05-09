@@ -37,7 +37,7 @@ describe "Scenario A (jenkins)", ->
     test done,
       setup: ->
         yield browser.url(process.env.GITLAB_URL + "/profile/keys")
-        assert.notOk(yield browser.isExisting("table"))
+        assert.isNotOk(yield browser.isExisting("table"))
 
       when: ->
         text = fs.readFileSync("/tmp/user_home/.ssh/id_rsa.pub", "utf8").replace("\n", "")
@@ -52,7 +52,7 @@ describe "Scenario A (jenkins)", ->
 
       then: ->
         yield browser.url(process.env.GITLAB_URL + "/profile/keys")
-        assert.ok(yield browser.isExisting("table"))
+        assert.isOk(yield browser.isExisting("table"))
 
   it "gitlab - assert repository url", (done) ->
     test done,
@@ -145,5 +145,5 @@ describe "Scenario A (jenkins)", ->
           .save("kanban-after-move-issue")
 
       then: ->
-        assert.ok(yield browser.isExisting("div.stage-container:nth-child(2) div.stage div[data-as-sortable] div"))
+        assert.isOk(yield browser.isExisting("div.stage-container:nth-child(2) div.stage div[data-as-sortable] div"))
   ###

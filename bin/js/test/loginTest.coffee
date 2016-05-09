@@ -7,22 +7,18 @@ webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
 
 module.exports.loginGitLab = (browser) ->
-  browser
+  yield browser
     .url(process.env.GITLAB_URL + "/users/sign_in")
     .setValue("#username", "boze")
     .setValue("#password", "password")
     .submitForm("#new_ldap_user")
-
-  yield browser.call()
-
-  browser.url(process.env.GITLAB_URL + "/profile/")
+    .url(process.env.GITLAB_URL + "/profile/")
   text = yield browser.getValue("#user_name")
   assert.equal(text, "BOZE, Taro")
 
 module.exports.loginJenkins = (browser) ->
   yield browser
     .url(process.env.JENKINS_URL + "/login")
-    .call()
     .setValue("#j_username", "boze")
     .setValue("input[type='password'][name='j_password']", "password")
     .save("jenkins-before-login")
@@ -58,7 +54,6 @@ describe "Login", () ->
       when: ->
         yield browser
           .url(process.env.USER_URL)
-          .call()
           .setValue("#login-cn", "admin")
           .setValue("#login-userPassword", "admin")
           .save("user-admin-berore-autherize")
@@ -66,14 +61,13 @@ describe "Login", () ->
           .save("user-admin-after-autherize")
 
       then: ->
-        assert.ok(yield browser.isExisting("#search-form"))
+        assert.isOk(yield browser.isExisting("#search-form"))
 
   it "sonar", (done) ->
     test done,
       when: ->
         yield browser
           .url(process.env.SONAR_URL + "/sessions/new")
-          .call()
           .setValue("#login", "boze")
           .setValue("#password", "password")
           .save("sonar-before-login")
@@ -83,4 +77,4 @@ describe "Login", () ->
 
       then: ->
         text = yield browser.getText("nav")
-        assert.ok(text.indexOf("boze") > -1)
+        assert.isOk(text.indexOf("boze") > -1)

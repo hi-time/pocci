@@ -38,16 +38,13 @@ describe "Login (redmine)", () ->
     test done,
       when: ->
         yield browser.url(process.env.REDMINE_URL + "/login")
-          .call()
           .setValue("#username", "jenkinsci")
           .setValue("#password", "password")
           .submitForm("#login-form form")
-          .call()
 
       then: ->
         text = yield browser.url(process.env.REDMINE_URL + "/")
-          .call()
           .getText("#loggedas")
 
-        assert.ok(text.indexOf("jenkinsci") > -1)
+        assert.isOk(text.indexOf("jenkinsci") > -1)
 

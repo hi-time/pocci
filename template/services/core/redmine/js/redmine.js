@@ -11,22 +11,19 @@ var gitlab = require('pocci/gitlab.js');
 
 var logout = function*(browser, user) {
   user = user || 'unknown';
-  yield browser.save('redmine-before-logout-by-' + user);
-  yield browser.click('a.logout');
-  yield browser.save('redmine-after-logout-by-' + user);
+  yield browser.save('redmine-before-logout-by-' + user)
+    .click('a.logout')
+    .save('redmine-after-logout-by-' + user);
 };
 
 var login = function*(browser, url, user, password) {
-  browser.url(url + '/login');
-  yield browser.save('redmine-before-login-by-' + user);
-  browser
+  yield browser.url(url + '/login')
+    .save('redmine-before-login-by-' + user)
     .setValue('#username', user)
-    .setValue('#password', password);
-
-  yield browser.save('redmine-doing-login-by-' + user);
-  browser.submitForm('#login-form form');
-
-  yield browser.save('redmine-after-login-by-' + user);
+    .setValue('#password', password)
+    .save('redmine-doing-login-by-' + user)
+    .submitForm('#login-form form')
+    .save('redmine-after-login-by-' + user);
 };
 
 var loginByAdmin = function*(browser, url) {
@@ -34,7 +31,6 @@ var loginByAdmin = function*(browser, url) {
 };
 
 var exists = function*(browser, selector) {
-  yield browser.call();
   try {
     yield browser.element(selector);
     return true;
@@ -44,71 +40,70 @@ var exists = function*(browser, selector) {
 };
 
 var loadDefaultConfiguration = function*(browser, url, lang) {
-  browser.url(url + '/admin');
-  yield browser.save('redmine-before-loadDefaultConfiguration');
+  yield browser.url(url + '/admin')
+    .save('redmine-before-loadDefaultConfiguration');
 
   if(yield exists(browser, '#admin-index form')) {
     if(lang) {
-      browser.selectByValue('#lang', lang).pause(1000);
+      yield browser.selectByValue('#lang', lang).pause(1000);
     }
-    yield browser.save('redmine-doing-loadDefaultConfiguration');
-    browser.submitForm('#admin-index form');
-    yield browser.save('redmine-after-loadDefaultConfiguration');
+    yield browser.save('redmine-doing-loadDefaultConfiguration')
+      .submitForm('#admin-index form')
+      .save('redmine-after-loadDefaultConfiguration');
   }
 
-  browser.url(url + '/settings');
-  yield browser.save('redmine-before-configureHostname');
   var hostName = process.env.REDMINE_HOST;
   if(process.env.REDMINE_PORT !== '80') {
     hostName = hostName + ':' + process.env.REDMINE_PORT;
   }
-  browser.setValue('#settings_host_name', hostName);
-  yield browser.save('redmine-doing-configureHostname');
-  yield browser.click('#tab-content-general > form > input[type="submit"]');
-  yield browser.save('redmine-after-configureHostname');
 
-  browser.url(url + '/settings?tab=notifications');
-  yield browser.save('redmine-before-configureNotifications');
+  yield browser.url(url + '/settings')
+    .save('redmine-before-configureHostname')
+    .setValue('#settings_host_name', hostName)
+    .save('redmine-doing-configureHostname')
+    .click('#tab-content-general > form > input[type="submit"]')
+    .save('redmine-after-configureHostname')
+    .url(url + '/settings?tab=notifications')
+    .save('redmine-before-configureNotifications');
   if(yield exists(browser, '#settings_mail_from')) {
-    browser.setValue('#settings_mail_from', process.env.REDMINE_MAIL_ADDRESS);
-    yield browser.save('redmine-doing-configureNotifications');
-    yield browser.click('#tab-content-notifications > form > input[type="submit"]');
-    yield browser.save('redmine-after-configureNotifications');
+    yield browser.setValue('#settings_mail_from', process.env.REDMINE_MAIL_ADDRESS)
+      .save('redmine-doing-configureNotifications')
+      .click('#tab-content-notifications > form > input[type="submit"]')
+      .save('redmine-after-configureNotifications');
   }
 
   if(lang) {
-    browser.url(url + '/settings?tab=display');
-    yield browser.save('redmine-before-configureLang');
-    browser.selectByValue('#settings_default_language', lang).pause(1000);
-    yield browser.save('redmine-doing-configureLang');
-    yield browser.click('#tab-content-display > form > input[type="submit"]');
-    yield browser.save('redmine-after-configureLang');
+    yield browser.url(url + '/settings?tab=display')
+      .save('redmine-before-configureLang')
+      .selectByValue('#settings_default_language', lang).pause(1000)
+      .save('redmine-doing-configureLang')
+      .click('#tab-content-display > form > input[type="submit"]')
+      .save('redmine-after-configureLang');
   }
 };
 
 var enableWebService = function*(browser, url) {
-  browser.url(url + '/settings?tab=api');
-  yield browser.save('redmine-before-enableWebService');
+  yield browser.url(url + '/settings?tab=api')
+    .save('redmine-before-enableWebService');
 
   var isSelected = yield browser.isSelected('#settings_rest_api_enabled');
   if (!isSelected) {
-    yield browser.save('redmine-doing-enableWebService');
-    yield browser.click('#settings_rest_api_enabled');
-    yield browser.save('redmine-doing-enableWebService');
-    yield browser.click('#tab-content-api > form > input[type="submit"]');
-    yield browser.save('redmine-after-enableWebService');
+    yield browser.save('redmine-doing-enableWebService')
+      .click('#settings_rest_api_enabled')
+      .save('redmine-doing-enableWebService')
+      .click('#tab-content-api > form > input[type="submit"]')
+      .save('redmine-after-enableWebService');
   }
 };
 
 var enableLdap = function*(browser, url) {
-  browser.url(url + '/auth_sources/1/edit');
+  yield browser.url(url + '/auth_sources/1/edit');
 
   if(!(yield exists(browser, '#auth_source_name'))) {
-    browser.url(url + '/auth_sources/new');
+    yield browser.url(url + '/auth_sources/new');
   }
 
-  yield browser.save('redmine-before-enableLdap');
-  browser
+  yield browser.save('redmine-before-enableLdap')
     .setValue('#auth_source_name', 'ldap')
     .setValue('#auth_source_host', process.env.LDAP_HOST)
     .setValue('#auth_source_port', process.env.LDAP_PORT)
@@ -123,17 +118,17 @@ var enableLdap = function*(browser, url) {
 
   var isSelected = yield browser.isSelected('#auth_source_onthefly_register');
   if (!isSelected) {
-    yield browser.save('redmine-doing-enableLdap');
-    yield browser.click('#auth_source_onthefly_register');
+    yield browser.save('redmine-doing-enableLdap')
+      .click('#auth_source_onthefly_register');
   }
-  yield browser.save('redmine-doing-enableLdap');
-  yield browser.click('#auth_source_form > input[type="submit"]');
-  yield browser.save('redmine-after-enableLdap');
+  yield browser.save('redmine-doing-enableLdap')
+    .click('#auth_source_form > input[type="submit"]')
+    .save('redmine-after-enableLdap');
 };
 
 var createRequest = function*(browser, url) {
-  browser.url(url + '/my/api_key');
-  yield browser.save('redmine-before-createRequest');
+  yield browser.url(url + '/my/api_key')
+    .save('redmine-before-createRequest');
 
   var key = yield browser.getHTML('#content pre', false);
   yield browser.save('redmine-after-createRequest');
@@ -165,32 +160,26 @@ var getProject = function*(request, projectName) {
 };
 
 var createProject = function*(browser, url, projectName) {
-  browser.url(url + '/projects/new');
-  yield browser.save('redmine-before-createProject-' + projectName);
-
-  browser
+  yield browser.url(url + '/projects/new')
+    .save('redmine-before-createProject-' + projectName)
     .setValue('#project_name', projectName)
-    .setValue('#project_identifier', projectName);
-
-  yield browser.save('redmine-doing-createProject-' + projectName);
-  yield browser.click('input[type="submit"][name="commit"]');
-  yield browser.save('redmine-after-createProject-' + projectName);
+    .setValue('#project_identifier', projectName)
+    .save('redmine-doing-createProject-' + projectName)
+    .click('input[type="submit"][name="commit"]')
+    .save('redmine-after-createProject-' + projectName);
 };
 
 var createRepository = function*(browser, url, projectName, repository) {
-  browser.url(url + '/projects/' + projectName + '/repositories/new');
-  yield browser.save('redmine-before-createRepository-' + projectName + '-' + repository.projectName);
-
-  browser.selectByValue('#repository_scm', 'Git').pause(1000);
-
-  yield browser.save('redmine-doing-createRepository-' + projectName + '-' + repository.projectName);
-  browser
+  yield browser.url(url + '/projects/' + projectName + '/repositories/new')
+    .save('redmine-before-createRepository-' + projectName + '-' + repository.projectName)
+    .selectByValue('#repository_scm', 'Git')
+    .pause(1000)
+    .save('redmine-doing-createRepository-' + projectName + '-' + repository.projectName)
     .setValue('#repository_url', '/home/git/data/repositories/' + projectName + '/' + repository.projectName + '.git')
-    .setValue('#repository_identifier', repository.projectName);
-
-  yield browser.save('redmine-doing-createRepository-' + projectName + '-' + repository.projectName);
-  browser.submitForm('#repository-form');
-  yield browser.save('redmine-after-createRepository-' + projectName + '-' + repository.projectName);
+    .setValue('#repository_identifier', repository.projectName)
+    .save('redmine-doing-createRepository-' + projectName + '-' + repository.projectName)
+    .submitForm('#repository-form')
+    .save('redmine-after-createRepository-' + projectName + '-' + repository.projectName);
 };
 
 var getUsers = function*(request) {
@@ -355,8 +344,6 @@ var setupProject = function*(browser, url, request, options, users, gitlabOption
     yield createRepositories(browser, url, options.projectId, toArray(gitlabGroup.projects));
   }
 
-  yield browser.call();
-
   var members = toArray(options.members || addDefaultMembers(users));
   if(members.length > 0) {
     yield addProjectMembers(request, options.projectId, members);
@@ -384,25 +371,23 @@ var setupGitLab = function*(browser, url, groupName, project) {
   var projectName = project.projectName;
   var id = groupName + '_' + projectName;
 
-  browser.url(url + '/' + groupName + '/' + projectName + '/services');
-  yield browser.save('redmine-before-setupGitLab-' + id);
-
-  browser.url(url + '/' + groupName + '/' + projectName + '/services/redmine/edit');
-  yield browser.save('redmine-before-setupGitLab-' + id);
+  yield browser.url(url + '/' + groupName + '/' + projectName + '/services')
+    .save('redmine-before-setupGitLab-' + id)
+    .url(url + '/' + groupName + '/' + projectName + '/services/redmine/edit')
+    .save('redmine-before-setupGitLab-' + id);
 
   var isSelected = yield browser.isSelected('#service_active');
   if (!isSelected) {
     yield browser.click('#service_active');
   }
 
-  browser
+  yield browser
     .setValue('#service_project_url', process.env.REDMINE_URL + '/projects/' + groupName)
     .setValue('#service_issues_url', process.env.REDMINE_URL + '/issues/:id')
-    .setValue('#service_new_issue_url', process.env.REDMINE_URL + '/projects/' + groupName + '/issues/new');
-
-  yield browser.save('redmine-doing-setupGitLab-' + id);
-  browser.submitForm('#edit_service');
-  yield browser.save('redmine-after-setupGitLab-' + id);
+    .setValue('#service_new_issue_url', process.env.REDMINE_URL + '/projects/' + groupName + '/issues/new')
+    .save('redmine-doing-setupGitLab-' + id)
+    .submitForm('#edit_service')
+    .save('redmine-after-setupGitLab-' + id);
 };
 
 var setupGitLabForProjects = function*(browser, url, groupName, projects) {
@@ -437,12 +422,12 @@ var setupGitLabForGroups = function*(browser, url, groups, options) {
 };
 
 var updateProfile = function*(browser, url) {
-  browser.url(url + '/my/account');
-  yield browser.save('redmine-before-updateProfile');
-  browser.setValue('#user_mail', process.env.ADMIN_MAIL_ADDRESS);  
-  yield browser.save('redmine-doing-updateProfile');
-  browser.submitForm('#my_account_form');
-  yield browser.save('redmine-after-updateProfile');
+  yield browser.url(url + '/my/account')
+    .save('redmine-before-updateProfile')
+    .setValue('#user_mail', process.env.ADMIN_MAIL_ADDRESS)
+    .save('redmine-doing-updateProfile')
+    .submitForm('#my_account_form')
+    .save('redmine-after-updateProfile');
 };
 
 module.exports = {
