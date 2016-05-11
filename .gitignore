@@ -13,3 +13,4 @@ config/
 temp/
 backup/
 *.d.ts
+coverage/

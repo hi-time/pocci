@@ -181,7 +181,7 @@ describe "setup.default.yml", ->
           kanban:
             path:   "http://kanban.pocci.test"
             expected:
-              "title":   "Gitlab KB - Boards"
+              "title":   "GitLab KB - Boards"
           jenkins:
             path:   "http://jenkins.pocci.test"
             thrown:

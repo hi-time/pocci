@@ -1,4 +1,3 @@
-###global describe, it, before, after###
 ###jshint quotmark:true###
 "use strict"
 
@@ -32,49 +31,24 @@ module.exports.loginJenkins = (browser) ->
     .getText("#header div.login a[href='/user/boze'] > b")
   assert.equal(text, "boze")
 
+module.exports.loginUser = (browser) ->
+  yield browser
+    .url(process.env.USER_URL)
+    .setValue("#login-cn", "admin")
+    .setValue("#login-userPassword", "admin")
+    .save("user-admin-berore-autherize")
+    .click("#login button")
+    .save("user-admin-after-autherize")
+  assert.isOk(yield browser.isExisting("#search-form"))
 
-describe "Login", () ->
-  @timeout(120000)
-  browser = null
-
-  before (done) ->
-    test done,
-      setup: ->
-        yield webdriver.init()
-        browser = webdriver.browser
-        return
-
-  after (done) ->
-    test done,
-      setup: ->
-        yield browser.end()
-
-  it "user", (done) ->
-    test done,
-      when: ->
-        yield browser
-          .url(process.env.USER_URL)
-          .setValue("#login-cn", "admin")
-          .setValue("#login-userPassword", "admin")
-          .save("user-admin-berore-autherize")
-          .click("#login button")
-          .save("user-admin-after-autherize")
-
-      then: ->
-        assert.isOk(yield browser.isExisting("#search-form"))
-
-  it "sonar", (done) ->
-    test done,
-      when: ->
-        yield browser
-          .url(process.env.SONAR_URL + "/sessions/new")
-          .setValue("#login", "boze")
-          .setValue("#password", "password")
-          .save("sonar-before-login")
-          .submitForm("form")
-          .pause(2000)
-          .save("sonar-after-login")
-
-      then: ->
-        text = yield browser.getText("nav")
-        assert.isOk(text.indexOf("boze") > -1)
+module.exports.loginSonar = (browser) ->
+  yield browser
+    .url(process.env.SONAR_URL + "/sessions/new")
+    .setValue("#login", "boze")
+    .setValue("#password", "password")
+    .save("sonar-before-login")
+    .submitForm("form")
+    .pause(2000)
+    .save("sonar-after-login")
+  text = yield browser.getText("nav")
+  assert.isOk(text.indexOf("boze") > -1)

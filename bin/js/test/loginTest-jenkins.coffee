@@ -7,6 +7,8 @@ webdriver = require("pocci/webdriver.js")
 test = require("./resq.js")
 loginGitLab = require("./loginTest.js").loginGitLab
 loginJenkins = require("./loginTest.js").loginJenkins
+loginUser = require("./loginTest.js").loginUser
+loginSonar = require("./loginTest.js").loginSonar
 
 describe "Login (jenkins)", () ->
   @timeout(120000)
@@ -23,6 +25,16 @@ describe "Login (jenkins)", () ->
     test done,
       setup: ->
         yield browser.end()
+
+  it "user", (done) ->
+    test done,
+      expect: ->
+        yield loginUser(browser)
+
+  it "sonar", (done) ->
+    test done,
+      expect: ->
+        yield loginSonar(browser)
 
   it "jenkins", (done) ->
     test done,

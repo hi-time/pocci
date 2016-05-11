@@ -42,9 +42,6 @@ module.exports = function(grunt) {
       git: {
         src: ['test/gitTest.js']
       },
-      login: {
-        src: ['test/loginTest.js']
-      },
       loginDefault: {
         src: ['test/loginTest-default.js']
       },

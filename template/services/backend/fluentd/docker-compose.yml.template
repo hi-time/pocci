@@ -1,6 +1,6 @@
 cat << EOF
 fluentd:
-  image: xpfriend/fluentd:0.12.21
+  image: xpfriend/fluentd:0.12.23
   user: root
   env_file:
     - ./.env

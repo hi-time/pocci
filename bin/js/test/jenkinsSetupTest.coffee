@@ -195,7 +195,7 @@ describe "setup.jenkins.yml", ->
           kanban:
             path:   "http://kanban.pocci.test"
             expected:
-              "title":   "Gitlab KB - Boards"
+              "title":   "GitLab KB - Boards"
           redmine:
             path:   "http://redmine.pocci.test"
             thrown:
