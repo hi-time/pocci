@@ -68,6 +68,7 @@
       <healthScaleFactor>1.0</healthScaleFactor>
       <allowEmptyResults>false</allowEmptyResults>
     </hudson.tasks.junit.JUnitResultArchiver>
+    <com.dabsquared.gitlabjenkins.publisher.GitLabCommitStatusPublisher plugin="gitlab-plugin@1.2.0"/>
   </publishers>
   <buildWrappers/>
 </project>

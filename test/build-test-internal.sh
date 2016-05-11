@@ -24,8 +24,21 @@ timeout -sKILL 600 node /tmp/server.js
 SONAR_PRJ_NM=`curl "http://sonar.pocci.test/api/projects/index?format=json&key=$2" |jq .[0].sc`
 
 if [ "${SONAR_PRJ_NM}" = "null" ]; then
-     echo "sonar: cannot find project: $1"
-     exit 1
+    echo "sonar: cannot find project: $1"
+    exit 1
+fi
+
+sleep 5
+
+GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1" | grep "ci-status ci-success" | wc -l`
+
+if [ "${GITLAB_BUILD_STATUS}" -eq 0 ]; then
+    GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1" | grep "ci-status ci-failed" | wc -l`
+    if [ "${GITLAB_BUILD_STATUS}" -eq 0 ]; then
+        echo "gitlab: invalid build status: $1"
+        exit 2
+    fi
+    echo "(warning) gitlab: build: failed"
 fi
 
 exit 0
