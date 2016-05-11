@@ -1,7 +1,7 @@
 Pocci
 =====
 
-Try building CI services using Docker containers.
+A template system to compose CI services.
 
 [日本語](./README.ja.md)
 

@@ -1,7 +1,7 @@
 Pocci
 =====
 
-Docker コンテナを使った CIサービス構築の試作。
+CIサービスを構成するためのテンプレートシステム。
 
 [English](./README.md)
 
