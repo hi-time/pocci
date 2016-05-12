@@ -324,3 +324,18 @@ describe "setup.redmine.yml", ->
               "body.memberships[1].roles[1].id":    4
               
 
+  it "redmine (defalut user language)", (done) ->
+    url = "http://redmine.pocci.test"
+    test done,
+      setup: ->
+        yield redmine.login(setup.browser, url, "boze", "password")
+        return
+
+      cleanup: ->
+        yield redmine.logout(setup.browser)
+
+      expect: ->
+        value = yield setup.browser.url("#{url}/my/account")
+          .getText("#user_language [selected]")
+
+        chai.assert.equal(value, "(auto)")

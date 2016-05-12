@@ -39,14 +39,11 @@ var exists = function*(browser, selector) {
   }
 };
 
-var loadDefaultConfiguration = function*(browser, url, lang) {
+var loadDefaultConfiguration = function*(browser, url) {
   yield browser.url(url + '/admin')
     .save('redmine-before-loadDefaultConfiguration');
 
   if(yield exists(browser, '#admin-index form')) {
-    if(lang) {
-      yield browser.selectByValue('#lang', lang).pause(1000);
-    }
     yield browser.save('redmine-doing-loadDefaultConfiguration')
       .submitForm('#admin-index form')
       .save('redmine-after-loadDefaultConfiguration');
@@ -70,15 +67,6 @@ var loadDefaultConfiguration = function*(browser, url, lang) {
       .save('redmine-doing-configureNotifications')
       .click('#tab-content-notifications > form > input[type="submit"]')
       .save('redmine-after-configureNotifications');
-  }
-
-  if(lang) {
-    yield browser.url(url + '/settings?tab=display')
-      .save('redmine-before-configureLang')
-      .selectByValue('#settings_default_language', lang).pause(1000)
-      .save('redmine-doing-configureLang')
-      .click('#tab-content-display > form > input[type="submit"]')
-      .save('redmine-after-configureLang');
   }
 };
 
@@ -360,9 +348,21 @@ var setupProjects = function*(browser, url, request, projects, users, gitlabOpti
   }
 };
 
+
+var updateUserLanguage = function*(browser, url, user) {
+  yield browser.url(url + '/my/account')
+    .save('redmine-before-updateUserLanguage-' + user)
+    .selectByIndex('#user_language', 0)
+    .pause(2000)
+    .save('redmine-doing-updateUserLanguage-' + user)
+    .submitForm('#my_account_form')
+    .save('redmine-after-updateUserLanguage-' + user);
+};
+
 var addUsers = function*(browser, url, users) {
   for(var i = 0; i < users.length; i++) {
     yield login(browser, url, users[i].uid, users[i].userPassword);
+    yield updateUserLanguage(browser, url, users[i].uid);
     yield logout(browser, users[i].uid);
   }
 };
@@ -444,7 +444,6 @@ module.exports = {
     options.redmine.mailAddress = options.redmine.mailAddress || options.pocci.adminMailAddress;
     // options.redmine.users = options.redmine.users;
     // options.redmine.projects = options.redmine.projects;
-    // options.redmine.lang = options.redmine.lang;
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.redmine.url);
@@ -471,7 +470,7 @@ module.exports = {
 
     yield loginByAdmin(browser, url);
     yield updateProfile(browser, url);
-    yield loadDefaultConfiguration(browser, url, redmineOptions.lang);
+    yield loadDefaultConfiguration(browser, url);
     yield enableWebService(browser, url);
     if(isEnabledAuth) {
       yield enableLdap(browser, url);
@@ -492,6 +491,7 @@ module.exports = {
       yield gitlab.logout(browser);
     }
   },
+  login: login,
   loginByAdmin: loginByAdmin,
   logout: logout,
   createRequest: createRequest

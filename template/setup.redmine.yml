@@ -46,7 +46,6 @@ gitlab:
           commitMessage:  "refs #1 (import example codes)"
 
 redmine:
-  lang: en
   smtpEnabled: true
   projects:
     - projectId: example

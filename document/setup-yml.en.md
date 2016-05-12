@@ -47,7 +47,6 @@ gitlab:
           commitMessage:   "refs #1 (import example codes)"
 
 redmine:
-  lang:  ja
   projects:
     - projectId:  example
       issues:
@@ -471,7 +470,6 @@ redmine:
   users:
     - uid:           boze
       userPassword:  password
-  lang:  ja
 ```
 
 *   **projects:** Project information
@@ -513,7 +511,6 @@ redmine:
 
     *   A user defined in `users:` or `user.users:`
         is set as the administrator and developer of the projects defined in `projects:`.
-*   **lang:** Language to be used in the default settings.
 *   **url:** URL of Redmine server
     *   The default is `http://redmine.[Domain name specified in pocci.domain]`.
     *   Environment variables:  `REDMINE_URL`, `REDMINE_PROTOCOL`, `REDMINE_HOST`, `REDMINE_PORT`

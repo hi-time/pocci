@@ -47,7 +47,6 @@ gitlab:
           commitMessage:  "refs #1 (import example codes)"
 
 redmine:
-  lang: ja
   projects:
     - projectId: example
       issues:
@@ -474,7 +473,6 @@ redmine:
   users:
     - uid:          boze
       userPassword: password
-  lang: ja
 ```
 
 *   **projects:** プロジェクト情報
@@ -516,7 +514,6 @@ redmine:
 
     *   `users:` または `user.users:` で定義したユーザーは、
         `projects:` で定義したプロジェクトの管理者および開発者として設定されます。
-*   **lang:** デフォルト設定で利用する言語
 *   **url:** Redmine サーバのURL
     *   デフォルトは `http://redmine.[pocci.domainで指定したドメイン名]`
     *   環境変数: `REDMINE_URL`, `REDMINE_PROTOCOL`, `REDMINE_HOST`, `REDMINE_PORT`
