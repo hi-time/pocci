@@ -28,7 +28,7 @@ if [ "${SONAR_PRJ_NM}" = "null" ]; then
     exit 1
 fi
 
-sleep 5
+sleep 10
 
 GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1" | grep "ci-status ci-success" | wc -l`
 

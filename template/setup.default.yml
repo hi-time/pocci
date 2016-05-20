@@ -1,14 +1,9 @@
 pocci:
-  domain: pocci.test
   services:
     - gitlab
     - user
     - sonar
     - kanban
-  https: false
-  adminMailAddress: pocci@localhost.localdomain
-  environment:
-    TZ: Etc/UTC
 
 user:
   users:

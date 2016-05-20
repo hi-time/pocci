@@ -1,15 +1,10 @@
 pocci:
-  domain: pocci.test
   services:
     - gitlab
     - user
     - jenkins
     - sonar
     - redmine
-  https: false
-  adminMailAddress: pocci@localhost.localdomain
-  environment:
-    TZ: Etc/UTC
 
 user:
   users:

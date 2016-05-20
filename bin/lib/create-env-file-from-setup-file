@@ -21,7 +21,10 @@ export DOCKER_NETWORK
 
 
 cd ${JS_DIR}
-POCCIR_OPTS="-e POCCI_DIR=${BASE_DIR}" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} node -e "require('pocci/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/tmp.env
+POCCIR_OPTS="-e POCCI_DIR=${BASE_DIR} -e TZ=${TZ} -e POCCI_DOMAIN_NAME=${POCCI_DOMAIN_NAME} \
+            -e POCCI_HTTPS=${POCCI_HTTPS} -e ADMIN_MAIL_ADDRESS=${ADMIN_MAIL_ADDRESS}" \
+    ${BIN_DIR}/oneoff ${NODEJS_IMAGE} \
+    node -e "require('pocci/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/tmp.env
 RC=$?
 
 set -e

@@ -8,16 +8,12 @@
 
 ```yaml
 pocci:
-  domain: pocci.test
   services:
     - gitlab
     - user
     - jenkins
     - sonar
     - redmine
-  https: true
-  environment:
-    TZ: Asia/Tokyo
 
 user:
   users:
@@ -117,8 +113,6 @@ pocci:
   certificate:
     subject: "/C=JP/ST=Tokyo/L=Chiyodaku/O=Pocci/CN=*.pocci.example.com/"
   adminMailAddress: admin@example.com
-  environment:
-    TZ: Asia/Tokyo
 ```
 
 *   **domain:** サービスのドメイン名  
