@@ -13,7 +13,7 @@ ldap:
     - ./volumes/user:/tools
 
 user:
-  image: xpfriend/pocci-account-center:1.0.14
+  image: xpfriend/pocci-account-center:1.0.16
   env_file:
     - ./.env
   links:
