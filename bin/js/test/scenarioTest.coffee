@@ -1,17 +1,19 @@
 ###jshint quotmark:true###
+###jshint eqnull:true###
 "use strict"
 
 assert = require("chai").assert
 
 module.exports.user =
-  loginAsBoze: (done, test, browser) ->
+  loginAsBoze: (done, test, browser, url = process.env.USER_URL) ->
     test done,
       when: ->
         yield browser
-          .url(process.env.USER_URL)
+          .url(url)
+          .save("user-not-admin-berore-autherize")
           .setValue("#login-cn", "boze")
           .setValue("#login-userPassword", "password")
-          .save("user-not-admin-berore-autherize")
+          .save("user-not-admin-doing-autherize")
           .click("#login button")
           .save("user-not-admin-after-autherize")
 

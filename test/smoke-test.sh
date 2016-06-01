@@ -15,8 +15,13 @@ move_backup_dir() {
     sudo mv ${BASE_DIR}/temp/pocci/backup ${BASE_DIR}/temp/pocci/backup_$1
 }
 
-stage1() {
+stage0() {
     ${BASE_DIR}/do-instructions-in-readme.sh ${POCCI_REPO}
+}
+
+stage1() {
+    echo $(date): SETUP default >> ${LOG_FILE}
+    echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-service
 
     sleep 30
     echo $(date): BACKUP default >> ${LOG_FILE}
@@ -107,15 +112,31 @@ stage6() {
 }
 
 stage7() {
-    echo "Done" | tee -a ${LOG_FILE}
+    echo $(date): SETUP https >> ${LOG_FILE}
+    echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config ${BASE_DIR}/test-https/setup.https.yml
+    ${BASE_DIR}/temp/pocci/bin/up-service
+
+    echo $(date): TEST_1 https >> ${LOG_FILE}
+    cd ${BASE_DIR}/temp/pocci/bin/js
+    ../oneoff nodejs grunt basic
+    ../oneoff nodejs grunt prepare mochaTest:httpsSetup
+
+    echo $(date): TEST_2 https >> ${LOG_FILE}
+    cd ${BASE_DIR}/test-https
+    ${BASE_DIR}/temp/pocci/bin/oneoff nodejs bash /app/test-https.sh
 }
 
-START=1
-if [ -n "$1" ]; then
+START=0
+END=7
+
+if [ -n "$2" ]; then
     START=$2
 fi
+if [ -n "$3" ]; then
+    END=$3
+fi
 
-for i in `seq ${START} 7`; do
+for i in `seq ${START} ${END}`; do
     if [ -f ${LOG_FILE} ]; then
         echo "" | tee -a ${LOG_FILE}
         echo "# stage$i" | tee -a ${LOG_FILE}
@@ -123,3 +144,4 @@ for i in `seq ${START} 7`; do
     stage$i
 done
 
+echo "Done" | tee -a ${LOG_FILE}

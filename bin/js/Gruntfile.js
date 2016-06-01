@@ -66,6 +66,9 @@ module.exports = function(grunt) {
       redmineSetup: {
         src: ['test/redmineSetupTest.js']
       },
+      httpsSetup: {
+        src: ['test/httpsSetupTest.js']
+      },
       scenarioJenkinsA: {
         src: ['test/scenarioJenkinsATest.js']
       },

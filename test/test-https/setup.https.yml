@@ -1,0 +1,13 @@
+pocci:
+  https: true
+  services:
+    - user
+
+user:
+  users:
+    - uid:          boze
+      givenName:    Taro
+      sn:           BOZE
+      displayName:  "BOZE, Taro"
+      mail:         boze@localhost.localdomain
+      userPassword: password

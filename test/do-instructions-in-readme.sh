@@ -19,6 +19,3 @@ git clone ${POCCI_REPO} pocci
 cd pocci
 cd bin
 bash ./build
-echo $(date): SETUP default >> ${LOG_FILE}
-./create-config
-./up-service
