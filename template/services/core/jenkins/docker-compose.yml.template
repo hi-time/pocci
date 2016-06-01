@@ -1,7 +1,7 @@
 cat << EOF
 # Jenkins
 jenkins:
-  image: xpfriend/jenkins:1.27.0
+  image: xpfriend/jenkins:1.28.0
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}
