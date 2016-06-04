@@ -1,17 +1,13 @@
 Pocci
 =====
 
-開発環境向けサービスを構成するためのテンプレートシステム。
-
-[English](./README.md)
-
-Pocciとは
----------
 Gitリポジトリ管理 (GitLab), CIシステム (Jenkins), チケット管理 (Redmine), 品質分析 (SonarQube)
 といったサービスを手軽に構築するための仕組みです。
 
-Pocciの特徴
------------
+[English](./README.md)
+
+特徴
+----
 ### オールインワン
 GitLab, Jenkins, Redmine, SonarQube
 などの様々なソフトウェアを1台のマシンにセットアップすることができます。
@@ -23,38 +19,8 @@ GitLab, Jenkins, Redmine, SonarQube
 ![ソフトウェア連携図](./pocci.ja.png)
 
 ### 自由にカスタマイズ
-サービス構成のカスタマイズには4種類の方法があります。
-
-#### Step 1. サービス構成の選択
-標準で3タイプのサービス構成を用意しています。
-
-サービス構成タイプ | コード管理 | CI        | チケット管理           | 品質分析
------------------- | ---------- | --------- | ---------------------- | ---------
-**default**        | GitLab     | GitLab CI | GitLab + GitLab Kanban | SonarQube
-**jenkins**        | GitLab     | Jenkins   | GitLab + GitLab Kanban | SonarQube
-**redmine**        | GitLab     | Jenkins   | Redmine                | SonarQube
-
-[初期セットアップ実行時に好みのタイプを指定するだけ](./document/create-service.ja.md)
-で手軽にセットアップ可能です。
-
-
-#### Step 2. サービス構成の修正
-[サービス構成はとてもシンプルなyamlファイルで定義されている](./document/setup-yml.ja.md)ため、
-ファイルの書き換えによるカスタマイズが簡単にできます。
-
-例えば「不要なサービスの起動をやめてメモリ消費量を減らしたい」
-といったことはとても簡単で、不要なサービス名が書かれている行を削除するだけです。
-
-#### Step 3. テンプレートで追加ソフトウェアを利用
-[追加テンプレート](https://github.com/xpfriend/pocci-template-examples/blob/master/README.ja.md)
-を利用することにより、
-[Nexus](http://www.sonatype.org/nexus/)や[Taiga](https://taiga.io/)
-といった標準のサービス構成に含まれていないソフトウェアもセットアップ可能です。
-
-#### Step 4. テンプレートを独自に作成
-少し手間がかかりますが、
-[独自のテンプレートを作成する](./document/pocci-template.ja.md)ことも可能です。
-
+[サービス構成の選択やテンプレートの作成](./document/create-service.ja.md)などにより、
+ソフトウェア構成を自由にカスタマイズできます。
 
 ### 手軽に再セットアップ
 一度作成した構成に不満がある場合には、
@@ -63,8 +29,8 @@ GitLab, Jenkins, Redmine, SonarQube
 といった場合にも便利です。
 
 
-Pocci導入方法
--------------
+導入方法
+--------
 ### Pocci-box を利用する場合
 [Pocci-box](https://atlas.hashicorp.com/xpfriend/boxes/pocci)は
 Pocciを動作させるために必要なOSとソフトウェアを搭載したVMイメージです。
