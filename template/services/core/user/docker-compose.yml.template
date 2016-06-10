@@ -1,7 +1,7 @@
 cat << EOF
 # LDAP
 ldap:
-  image: osixia/openldap:1.1.2
+  image: osixia/openldap:1.1.3
   env_file:
     - ./.env
   environment:
@@ -11,6 +11,8 @@ ldap:
     - "${LDAP_PORT}:389"
   volumes:
     - ./volumes/user:/tools
+    - /var/lib/ldap
+    - /etc/ldap/slapd.d
 
 user:
   image: xpfriend/pocci-account-center:1.0.21
