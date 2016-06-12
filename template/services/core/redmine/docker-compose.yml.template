@@ -1,7 +1,7 @@
 cat << EOF
 # Redmine
 redminedb:
-  image: sameersbn/postgresql:9.4-21
+  image: sameersbn/postgresql:9.4-22
   env_file:
     - ./.env
   environment:
