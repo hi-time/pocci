@@ -1,5 +1,5 @@
 
-KANBAN_VERSION=1.6.1
+KANBAN_VERSION=1.6.2
 KANBAN_DIR=/tmp/kanban
 KANBAN_REPOSITORY=${KANBAN_REPOSITORY:-"https://github.com/leanlabsio/kanban.git"}
 
