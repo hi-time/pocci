@@ -31,12 +31,7 @@ var loginByAdmin = function*(browser, url) {
 };
 
 var exists = function*(browser, selector) {
-  try {
-    yield browser.element(selector);
-    return true;
-  } catch(e) {
-    return false;
-  }
+  return yield browser.isExisting(selector);
 };
 
 var loadDefaultConfiguration = function*(browser, url) {
