@@ -529,6 +529,9 @@ redmine:
 *   **dbPassword:** Password for connecting to the database to be used internally by Redmine
     *   The default is a random alpha-numeric string.
     *   Environment variable:  `REDMINE_DB_PASS`
+*   **adminPassword:** Password of admin user
+    *   The default is `abcd1234`.
+    *   Environment variable:  `REDMINE_ADMIN_PASSWORD`
 
 
 sonar:

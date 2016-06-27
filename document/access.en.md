@@ -36,7 +36,7 @@ Service               | User name                  | Password    | Remark
 --------------------- | -------------------------- | ----------- | ------------------
 GitLab                | root                       | 5iveL!fe    | From Standard tab
 SonarQube             | admin                      | admin       |
-Redmine               | admin                      | admin       |
+Redmine               | admin                      | abcd1234    |
 Account Center (LDAP) | admin                      | admin       |
 
 *   For GitLab, sign in from the **Standard** tab.

@@ -39,7 +39,7 @@ HTTP接続を行う構成にしている場合は、最初に **http://cert.pocc
 --------------------- | -------------------------- | ----------- | ------------------
 GitLab                | root                       | 5iveL!fe    | Standard タブから
 SonarQube             | admin                      | admin       |
-Redmine               | admin                      | admin       |
+Redmine               | admin                      | abcd1234    |
 Account Center (LDAP) | admin                      | admin       |
 
 *   GitLab は **Standard**タブから Sign in します。

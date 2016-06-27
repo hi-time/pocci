@@ -532,6 +532,9 @@ redmine:
 *   **dbPassword:** Redmine が内部的に使用するデータベース接続時のパスワード
     *   デフォルトはランダムな文字列
     *   環境変数: `REDMINE_DB_PASS`
+*   **adminPassword:** admin のパスワード
+    *   デフォルトは `abcd1234`
+    *   環境変数: `REDMINE_ADMIN_PASSWORD`
 
 
 sonar:

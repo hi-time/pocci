@@ -26,12 +26,23 @@ var login = function*(browser, url, user, password) {
     .save('redmine-after-login-by-' + user);
 };
 
-var loginByAdmin = function*(browser, url) {
-  yield login(browser, url, 'admin', 'admin');
-};
-
 var exists = function*(browser, selector) {
   return yield browser.isExisting(selector);
+};
+
+var loginByAdmin = function*(browser, url) {
+  yield login(browser, url, 'admin', process.env.REDMINE_ADMIN_PASSWORD);
+  if(yield exists(browser, '#login-form')) {
+    yield login(browser, url, 'admin', 'admin');
+    yield browser
+      .save('redmine-before-change-password')
+      .setValue('#password', 'admin')
+      .setValue('#new_password', process.env.REDMINE_ADMIN_PASSWORD)
+      .setValue('#new_password_confirmation', process.env.REDMINE_ADMIN_PASSWORD)
+      .save('redmine-doing-change-password-by')
+      .submitForm('form[action="/my/password"]')
+      .save('redmine-after-change-password');
+  }
 };
 
 var loadDefaultConfiguration = function*(browser, url) {
@@ -437,6 +448,7 @@ module.exports = {
     options.redmine.smtpHost    = options.redmine.smtpHost    || 'smtp.' + options.pocci.domain;
     options.redmine.smtpPort    = options.redmine.smtpPort    || '25';
     options.redmine.mailAddress = options.redmine.mailAddress || options.pocci.adminMailAddress;
+    options.redmine.adminPassword = options.redmine.adminPassword  || 'abcd1234';
     // options.redmine.users = options.redmine.users;
     // options.redmine.projects = options.redmine.projects;
   },
@@ -454,6 +466,7 @@ module.exports = {
     environment.REDMINE_SMTP_HOST     = options.redmine.smtpHost;     // sameersbn/redmine
     environment.REDMINE_SMTP_PORT     = options.redmine.smtpPort;     // sameersbn/redmine
     environment.REDMINE_MAIL_ADDRESS  = options.redmine.mailAddress;  // redmine.js
+    environment.REDMINE_ADMIN_PASSWORD  = options.redmine.adminPassword;  // redmine.js
   },
   setup: function*(browser, options) {
     var url = process.env.REDMINE_URL;
