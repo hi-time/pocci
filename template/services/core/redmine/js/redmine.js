@@ -494,7 +494,8 @@ module.exports = {
       this.request = yield createRequest(browser, url);
       yield setupProjects(browser, url, this.request, toArray(redmineOptions.projects), users, gitlabOptions);
       var gitlabUrl = process.env.GITLAB_URL;
-      yield gitlab.loginByAdmin(browser, gitlabUrl);
+      var loginUser = util.getUser(redmineOptions.user, users);
+      yield gitlab.loginAs(browser, gitlabUrl, loginUser);
       yield setupGitLabForGroups(browser, gitlabUrl, toArray(gitlabOptions.groups), redmineOptions);
       yield gitlab.logout(browser);
     }

@@ -1,4 +1,6 @@
 build_job:
-  script: bash ./build.sh
+  script:
+    - export SONAR_ANALYSIS_MODE=publish
+    - bash ./build.sh
   tags:
     - java

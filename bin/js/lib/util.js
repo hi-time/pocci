@@ -37,22 +37,12 @@ module.exports = {
     return obj;
   },
   getUser: function(user, ldapUsers) {
-    var defaultUser = {
-      uid: 'root',
-      userPassword: process.env.GITLAB_ROOT_PASSWORD,
-      mail: process.env.GITLAB_MAIL_ADDRESS
-    };
-
-    if(typeof user === 'object') {
-      return user;
-    }
-
-    if(!Array.isArray(ldapUsers) && typeof ldapUsers === 'object') {
-      return ldapUsers;
-    }
-
     if(!Array.isArray(ldapUsers) || ldapUsers.length === 0) {
-      return defaultUser;
+      return {
+        uid: 'root',
+        userPassword: process.env.GITLAB_ROOT_PASSWORD,
+        mail: process.env.GITLAB_MAIL_ADDRESS
+      };
     }
 
     for(var i = 0; i < ldapUsers.length; i++) {

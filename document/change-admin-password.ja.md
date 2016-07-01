@@ -11,13 +11,9 @@ standard タブから root アカウントでサインインし、
 
 SonarQube
 ---------
-[api/users/change_password](https://nemo.sonarqube.org/web_api/api/users/change_password)
-の呼び出しにより変更を行ってください。
-
-実行例:
-```
-curl -u admin:admin -X POST "http://sonar.pocci.test/api/users/change_password?login=admin&previousPassword=admin&password=abcd1234"
-```
+1.  admin でログインする。
+1.  **Administrator - 個人設定** をクリックする。
+1.  **セキュリティ** をクリックする。
 
 Redmine
 -------

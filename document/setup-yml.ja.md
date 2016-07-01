@@ -375,9 +375,7 @@ Jenkins 関連定義。
 
 ```yaml
 jenkins:
-  user:
-    uid:          boze
-    userPassword: password
+  user: jenkinsci
   jobs:
     - example/example-java
   nodes:
@@ -403,21 +401,8 @@ jenkins:
     *   `template/code/GitLabグループ名/GitLabプロジェクト名` (上の設定例の場合は `template/code/example/example-java`)
         ディレクトリ内に `jenkins-config.xml` を格納してください。
 *   **user:** Jenkins の設定を行う際に利用するユーザー
-    *   ユーザーID (`uid`) およびパスワード (`userPassword`) の指定が必要です。
-    *   以下のように `user:` に `users:` が指定されている場合は省略可能です。
-
-        ```yaml
-        user:
-          users:
-            - uid:          boze
-              userPassword: password
-              ...
-
-        gitlab:
-          groups:
-            ...
-        ```
-
+    *   `user.users` に指定されているユーザーID (`uid`) を指定します。
+    *   指定しなかった場合は、`user.users` に指定されている最初のユーザーが利用されます。
 *   **url:** Jenkins サーバのURL
     *   デフォルトは `http://jenkins.[pocci.domainで指定したドメイン名]`
     *   環境変数: `JENKINS_URL`, `JENKINS_PROTOCOL`, `JENKINS_HOST`, `JENKINS_PORT`
@@ -508,6 +493,9 @@ redmine:
 
     *   `users:` または `user.users:` で定義したユーザーは、
         `projects:` で定義したプロジェクトの管理者および開発者として設定されます。
+*   **user:** GitLab連携ユーザー
+    *   GitLab連携で使用するユーザーを指定します。
+    *   指定しない場合は、`users:` または `user.users:` の一番最初のユーザーとなります。
 *   **url:** Redmine サーバのURL
     *   デフォルトは `http://redmine.[pocci.domainで指定したドメイン名]`
     *   環境変数: `REDMINE_URL`, `REDMINE_PROTOCOL`, `REDMINE_HOST`, `REDMINE_PORT`
@@ -541,6 +529,14 @@ sonar:
 ------
 SonarQube 関連定義。
 
+*   **users:** 初期登録ユーザー
+    *   ユーザーID (`uid`) およびパスワード (`userPassword`) の指定が必要です。
+    *   `user.users:` が指定されている場合は省略可能です。
+    *   `users:` または `user.users:` で定義したユーザーは、
+        `power-users` グループのユーザーとして設定されます。
+*   **user:** GitLab連携ユーザー
+    *   GitLab連携で使用するユーザーを指定します。
+    *   指定しない場合は、`users:` または `user.users:` の一番最初のユーザーとなります。
 *   **url:** SonarQube サーバのURL
     *   デフォルトは `http://sonar.[pocci.domainで指定したドメイン名]`
     *   環境変数: `SONAR_URL`, `SONAR_PROTOCOL`, `SONAR_HOST`, `SONAR_PORT`
@@ -550,6 +546,16 @@ SonarQube 関連定義。
 *   **dbPassword:** SonarQube が内部的に使用するデータベース接続時のパスワード
     *   デフォルトはランダムな文字列
     *   環境変数: `SONAR_DB_PASS`
+*   **smtpHost:** SMTPサーバホスト名
+    *   デフォルトは `smtp.[pocci.domain で指定したドメイン名]`
+    *   環境変数: `SONAR_SMTP_HOST`
+*   **smtpPort:** SMTPサーバポート番号
+    *   デフォルトは `25`
+    *   環境変数: `SONAR_SMTP_PORT`
+*   **mailAddress:** SonarQubeのメールアドレス
+    *   デフォルトは pocci.adminMailAddress で指定したアドレス
+    *   環境変数: `SONAR_MAIL_ADDRESS`
+
 
 kanban:
 ------

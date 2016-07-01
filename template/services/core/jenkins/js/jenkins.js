@@ -254,7 +254,8 @@ module.exports = {
     var jobs = jenkinsOptions.jobs || [];
     var isEnabledAuth = process.env.ALL_SERVICES.indexOf('user') > -1;
     var isEnabledGitLab = process.env.ALL_SERVICES.indexOf('gitlab') > -1;
-    var loginUser = util.getUser(jenkinsOptions.user, userOptions.users);
+    var users = util.toArray(jenkinsOptions.users || userOptions.users);
+    var loginUser = util.getUser(jenkinsOptions.user, users);
 
     var isDisabledSecurity = false;
     if(isEnabledAuth) {
@@ -278,11 +279,7 @@ module.exports = {
 
     if(isEnabledGitLab) {
       var gitlabUrl = process.env.GITLAB_URL;
-      if(loginUser.uid === 'root') {
-        yield gitlab.loginByAdmin(browser, gitlabUrl);
-      } else {
-        yield gitlab.login(browser, gitlabUrl, loginUser.uid, loginUser.userPassword);
-      }
+      yield gitlab.loginAs(browser, gitlabUrl, loginUser);
       yield configureGitLab(browser, url, gitlabUrl);
       yield createJobs(browser, jenkins, jobs, gitlabUrl);
       yield gitlab.logout(browser);

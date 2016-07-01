@@ -15,6 +15,14 @@ module.exports = function(grunt) {
           debug: true,
           separator: '\n',
           sonar: {
+            analysis: {
+              mode: process.env.SONAR_ANALYSIS_MODE || 'publish'
+            },
+            gitlab: {
+              project_id: 'example/example-nodejs',
+              commit_sha: process.env.CI_BUILD_REF,
+              ref_name: process.env.CI_BUILD_REF_NAME
+            },
             host: {
               url: process.env.SONAR_URL
             },

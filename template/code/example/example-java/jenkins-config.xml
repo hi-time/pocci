@@ -58,7 +58,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>bash ./build.sh</command>
+      <command>export SONAR_ANALYSIS_MODE=publish
+bash ./build.sh</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>

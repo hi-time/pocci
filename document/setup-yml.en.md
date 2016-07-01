@@ -372,9 +372,7 @@ Definition example:
 
 ```yaml
 jenkins:
-  user:
-    uid:           boze
-    userPassword:  password
+  user: jenkinsci
   jobs:
     - example/example-java
   nodes:
@@ -400,21 +398,8 @@ jenkins:
     *   `template/code/GitLab group name/GitLab project name` (`template/code/example/example-java` in the case of the setting example above)
         Place `jenkins-config.xml` in the directory.
 *   **user:** User to use when configuring the settings of Jenkins.
-    *   The user ID (`uid`) and password (`userPassword`) must be specified.
-    *   This can be skipped when `users:` is specified in `user:` as shown below.
-
-        ```yaml
-        user:
-          users:
-            - uid:           boze
-              userPassword:  password
-              ...
-
-        gitlab:
-          groups:
-            ...
-        ```
-
+    *   The ID (`uid`) of a user defined in `user.users` must be specified.
+    *   The default is a first user defined in `user.users`.
 *   **url:** URL of Jenkins server
     *   The default is `http://jenkins.[Domain name specified in pocci.domain]`.
     *   Environment variables:  `JENKINS_URL`, `JENKINS_PROTOCOL`, `JENKINS_HOST`, `JENKINS_PORT`
@@ -505,6 +490,8 @@ redmine:
 
     *   A user defined in `users:` or `user.users:`
         is set as the administrator and developer of the projects defined in `projects:`.
+*   **user:** A user to operate GitLab.
+    *   The default is a first user defined in `users:` or `user.users`.
 *   **url:** URL of Redmine server
     *   The default is `http://redmine.[Domain name specified in pocci.domain]`.
     *   Environment variables:  `REDMINE_URL`, `REDMINE_PROTOCOL`, `REDMINE_HOST`, `REDMINE_PORT`
@@ -538,6 +525,12 @@ sonar:
 ------
 SonarQube related definitions.
 
+*   **users:** First user registered
+    *   The user ID (`uid`) and password (`userPassword`) must be specified.
+    *   This can be skipped when `user.users` is specified.
+    *   A user defined in `users:` or `user.users:` is belong to the `power-users` group.
+*   **user:** A user to operate GitLab.
+    *   The default is a first user defined in `users:` or `user.users`.
 *   **url:** URL of SonarQube server
     *   The default is `http://sonar.[Domain name specified in pocci.domain]`.
     *   Environment variables:  `SONAR_URL`, `SONAR_PROTOCOL`, `SONAR_HOST`, `SONAR_PORT`
@@ -547,6 +540,15 @@ SonarQube related definitions.
 *   **dbPassword:** Password for connecting to the database to be used internally by SonarQube
     *   The default is a random alpha-numeric string.
     *   Environment variable:  `SONAR_DB_PASS`
+*   **smtpHost:** SMTP server host name
+    *   The default is `smtp.[Domain name specified in pocci.domain]`.
+    *   Environment variable:  `SONAR_SMTP_HOST`
+*   **smtpPort:** SMTP server port number
+    *   The default is `25`.
+    *   Environment variable:  `SONAR_SMTP_PORT`
+*   **mailAddress:** Mail address of SonarQube
+    *   The default is the address specified in pocci.adminMailAddress.
+    *   Environment variable:  `SONAR_MAIL_ADDRESS`
 
 kanban:
 ------

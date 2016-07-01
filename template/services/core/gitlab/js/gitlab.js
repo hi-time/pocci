@@ -421,6 +421,13 @@ module.exports = {
       yield logout(browser);
     }
   },
+  loginAs: function*(browser, url, loginUser) {
+    if(loginUser.uid === 'root') {
+      yield loginByAdmin(browser, url);
+    } else {
+      yield login(browser, url, loginUser.uid, loginUser.userPassword);
+    }
+  },
   getPrivateToken: getPrivateToken,
   loginByAdmin: loginByAdmin,
   login: login,
