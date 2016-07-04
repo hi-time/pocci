@@ -41,4 +41,24 @@ if [ "${GITLAB_BUILD_STATUS}" -eq 0 ]; then
     echo "(warning) gitlab: build: failed"
 fi
 
+sed -ie "3a export SONAR_ANALYSIS_MODE=preview" build.sh
+if [ "$1" = "example-java" ]; then
+    sed -ie "3a private String test1;" src/main/java/com/example/Greeting.java
+else
+    sed -ie "2a var test1;" app/index.js
+fi
+
+git commit -am "SonarQube preview mode"
+git push origin master
+
+timeout -sKILL 600 node /tmp/server.js
+
+COMMIT_PATH=`curl -s http://gitlab.pocci.test/example/$1 | grep commit_short_id | sed -E 's|^.+href="(.+)".+|\1|'`
+SONARQUBE_COMMENT=`curl -s http://gitlab.pocci.test${COMMIT_PATH} |grep unused | wc -l`
+
+if [ "${SONARQUBE_COMMENT}" -ne 1 ]; then
+    echo "SONARQUBE_COMMENT=${SONARQUBE_COMMENT}"
+    exit 1
+fi
+
 exit 0
