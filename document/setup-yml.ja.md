@@ -499,6 +499,9 @@ redmine:
 *   **url:** Redmine サーバのURL
     *   デフォルトは `http://redmine.[pocci.domainで指定したドメイン名]`
     *   環境変数: `REDMINE_URL`, `REDMINE_PROTOCOL`, `REDMINE_HOST`, `REDMINE_PORT`
+*   **smtpEnabled:** SMTPサーバへのメール送信を有効にするかどうか
+    *   デフォルトは `false`
+    *   環境変数: `REDMINE_SMTP_ENABLED`
 *   **smtpDomain:** SMTPドメイン
     *   デフォルトは pocci.domain で指定したドメイン名
     *   環境変数: `REDMINE_SMTP_DOMAIN`
@@ -586,3 +589,17 @@ kanban:
 *   **board:** 工程を定義するボード
     *   `GitLabグループ名/GitLabプロジェクト名` の形式で指定してください。
 *   **stages:** 工程
+
+
+smtp:
+------
+メール送信関連定義。
+
+*   **url:** SMTP サーバのURL
+    *   デフォルトは `http://smtp.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `SMTP_URL`, `SMTP_PROTOCOL`, `SMTP_HOST`, `SMTP_PORT`
+*   **relayhost:** メール転送先ホスト
+    *   デフォルトは環境変数 `SMTP_RELAYHOST` の値
+*   **password:** SMTP認証パスワード
+    *   デフォルトは環境変数 `SMTP_PASSWORD` の値
+    

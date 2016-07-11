@@ -4,6 +4,7 @@ var parse = require('url').parse;
 var server = require('co-request');
 var assertStatus = require('pocci/util.js').assertStatus;
 var gitlab = require('pocci/gitlab.js');
+var smtp = require('pocci/smtp.js');
 
 var login = function*(browser, url, user, password) {
   yield browser.url(url + '/sessions/new')
@@ -112,8 +113,8 @@ module.exports = {
     options.sonar.ldapRealName  = options.sonar.ldapRealName  || 'cn';
     options.sonar.dbUser        = options.sonar.dbUser        || 'sonarqube';
     options.sonar.dbPassword    = options.sonar.dbPassword    || util.getRandomString();
-    options.sonar.smtpHost      = options.sonar.smtpHost      || 'smtp.' + options.pocci.domain;
-    options.sonar.smtpPort      = options.sonar.smtpPort      || '25';
+    options.sonar.smtpHost      = options.sonar.smtpHost      || smtp.getHost(options);
+    options.sonar.smtpPort      = options.sonar.smtpPort      || smtp.getPort(options);
     options.sonar.mailAddress   = options.sonar.mailAddress   || options.pocci.adminMailAddress;
   },
   addEnvironment: function(options, environment) {

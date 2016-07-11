@@ -31,7 +31,7 @@ GitLab, Jenkins, Redmine, SonarQube
 
 導入方法
 --------
-### Pocci-box を利用する場合
+### A. Pocci-box を利用する場合
 [Pocci-box](https://atlas.hashicorp.com/xpfriend/boxes/pocci)は
 Pocciを動作させるために必要なOSとソフトウェアを搭載したVMイメージです。
 
@@ -43,11 +43,24 @@ VirtualBox と Vagrant が利用できる環境であれば、
 をご参照ください。
 
 
-### Pocciをそのまま使う場合
+### B. Pocciをそのまま使う場合
 #### 必須環境
 *   起動するVMに5GB以上割り当て可能な空きメモリをもつマシン
 *   [Docker](https://www.docker.com/)
 *   [Docker Compose](https://github.com/docker/compose/)
+*   デフォルトの構成の場合、以下のポートが使用されます。
+    これらのポートを使用するソフトウェアが起動している場合は、
+    事前に停止しておく必要があります。
+
+    ポート番号 | 用途
+    ---------- | ----------------
+    **25**     | SMTPサービス
+    **53**     | 内部DNS
+    **80**     | Web UI
+    **389**    | LDAPサービス
+    **10022**  | GitLab SSH接続
+    **50000**  | Jenkins JNLP接続
+
 
 #### インストール方法
 1.  uid=1000 のユーザーに現在のユーザーを変更する。

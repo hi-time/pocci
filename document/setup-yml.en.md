@@ -495,6 +495,9 @@ redmine:
 *   **url:** URL of Redmine server
     *   The default is `http://redmine.[Domain name specified in pocci.domain]`.
     *   Environment variables:  `REDMINE_URL`, `REDMINE_PROTOCOL`, `REDMINE_HOST`, `REDMINE_PORT`
+*   **smtpEnabled:** Whether or not to enable the sending of mail to the SMTP server
+    *   The default is `false`.
+    *   Environment variable:  `REDMINE_SMTP_ENABLED`
 *   **smtpDomain:** SMTP domain
     *   The default is the domain name specified in pocci.domain.
     *   Environment variable:  `REDMINE_SMTP_DOMAIN`
@@ -579,3 +582,16 @@ kanban:
 *   **board:** Board to define stages
     *   Specify this in the format of `GitLab group name/GitLab project name`.
 *   **stages:** Stages
+
+
+smtp:
+------
+SMTP Service related defintions.
+
+*   **url:** URL of SMTP server
+    *   The default is `http://smtp.[Domain name specified in pocci.domain]`.
+    *   Environment variables:  `SMTP_URL`, `SMTP_PROTOCOL`, `SMTP_HOST`, `SMTP_PORT`
+*   **relayhost:** Relay host
+    *   The default is a value of environment variable `SMTP_RELAYHOST`
+*   **password:** SMTP password
+    *   The default is a value of environment variable `SMTP_PASSWORD`

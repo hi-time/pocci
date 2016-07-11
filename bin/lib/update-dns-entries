@@ -11,8 +11,8 @@ IFS="${DEFAULT_IFS}"
 
 PUBLIC_NAMES="${DOCKER_HOST_ADDRESS} docker-host"
 
-if [ `grep smtp ${CONFIG_DIR}/althosts | wc -l` -eq 0 ]; then
-    PUBLIC_NAMES="${PUBLIC_NAMES} smtp.${POCCI_DOMAIN_NAME}"
+if [ `grep ${SMTP_HOST} ${CONFIG_DIR}/althosts | wc -l` -eq 0 ]; then
+    PUBLIC_NAMES="${PUBLIC_NAMES} ${SMTP_HOST}"
 fi
 
 if [ `grep cert ${CONFIG_DIR}/althosts | wc -l` -eq 0 ]; then

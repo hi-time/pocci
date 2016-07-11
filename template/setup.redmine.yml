@@ -5,6 +5,7 @@ pocci:
     - jenkins
     - sonar
     - redmine
+    - smtp
 
 user:
   users:

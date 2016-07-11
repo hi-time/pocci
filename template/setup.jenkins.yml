@@ -5,6 +5,7 @@ pocci:
     - jenkins
     - sonar
     - kanban
+    - smtp
 
 user:
   users:

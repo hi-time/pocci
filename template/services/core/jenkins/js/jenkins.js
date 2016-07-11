@@ -8,6 +8,7 @@ var gitlab = require('pocci/gitlab.js');
 var util = require('pocci/util.js');
 var workspace = require('pocci/workspace.js');
 var parse = require('url').parse;
+var smtp = require('pocci/smtp.js');
 
 var registerGitLab = function*(browser, url, job) {
   var jenkinsJobUrl = process.env.JENKINS_URL + '/project/' + job.jobName;
@@ -229,7 +230,7 @@ module.exports = {
     options.jenkins             = options.jenkins             || {};
     options.jenkins.url         = options.jenkins.url         || 'http://jenkins.' + options.pocci.domain;
     options.jenkins.jnlpPort    = options.jenkins.jnlpPort    || '50000';
-    options.jenkins.smtpHost    = options.jenkins.smtpHost    || 'smtp.' + options.pocci.domain;
+    options.jenkins.smtpHost    = options.jenkins.smtpHost    || smtp.getHost(options);
     options.jenkins.mailAddress = options.jenkins.mailAddress || options.pocci.adminMailAddress;
     // options.jenkins.nodes = options.jenkins.nodes;
     // options.jenkins.user = options.jenkins.user;

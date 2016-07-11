@@ -4,6 +4,7 @@ pocci:
     - user
     - sonar
     - kanban
+    - smtp
 
 user:
   users:
