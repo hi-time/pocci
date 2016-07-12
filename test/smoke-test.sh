@@ -23,7 +23,7 @@ stage1() {
     echo $(date): SETUP default >> ${LOG_FILE}
     echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-service
 
-    sleep 30
+    sleep 60
     echo $(date): BACKUP default >> ${LOG_FILE}
     sudo rm -fr ${BASE_DIR}/temp/pocci/backup/*
     ${BASE_DIR}/temp/pocci/bin/backup
@@ -42,7 +42,7 @@ stage2() {
     echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config jenkins
     ${BASE_DIR}/temp/pocci/bin/up-service
 
-    sleep 30
+    sleep 60
     echo $(date): BACKUP jenkins >> ${LOG_FILE}
     ${BASE_DIR}/temp/pocci/bin/backup
     move_backup_dir jenkins
@@ -61,7 +61,7 @@ stage3() {
     echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config redmine
     ${BASE_DIR}/temp/pocci/bin/up-service
 
-    sleep 30
+    sleep 60
     echo $(date): BACKUP redmine >> ${LOG_FILE}
     ${BASE_DIR}/temp/pocci/bin/backup
     move_backup_dir redmine
