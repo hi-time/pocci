@@ -63,13 +63,16 @@ var getAliasesInternal = function(mydestination, users, adminMailAddress) {
 };
 
 var getAliases = function(options) {
+  var users;
   if(!options.user || !options.user.users) {
-    return;
+    users = [];
+  } else {
+    users = options.user.users;
   }
 
   return getAliasesInternal(
       options.smtp.mydestination,
-      toArray(options.user.users),
+      toArray(users),
       options.pocci.adminMailAddress
   );
 };
