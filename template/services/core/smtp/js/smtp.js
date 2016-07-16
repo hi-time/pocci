@@ -84,6 +84,10 @@ var getUrl = function(options) {
   return parse(options.smtp.url);
 };
 
+var getPortInternal = function(options) {
+  return '25';
+};
+
 module.exports = {
   getDomain: function(options) {
     var hostname = getUrl(options).hostname;
@@ -94,7 +98,7 @@ module.exports = {
     return getUrl(options).hostname;
   },
   getPort: function(options) {
-    return '25';
+    return getPortInternal(options);
   },
   addDefaults: function(options) {
     getUrl(options);
@@ -107,7 +111,7 @@ module.exports = {
   addEnvironment: function(options, environment) {
     var url = parse(options.smtp.url);
     environment.SMTP_HOST           = url.hostname;
-    environment.SMTP_PORT           = util.getPort(url);
+    environment.SMTP_PORT           = getPortInternal(options);
     environment.SMTP_RELAYHOST      = options.smtp.relayhost;
     environment.SMTP_PASSWORD       = options.smtp.password;
     environment.SMTP_MYNETWORKS     = options.smtp.mynetworks;
