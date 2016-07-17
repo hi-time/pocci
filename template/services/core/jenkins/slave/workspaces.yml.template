@@ -8,7 +8,7 @@ __NAME:
   labels:
     com.xpfriend.pocci.backup-ignore: "/tmp"
   env_file:
-    - ./.env
+    - ${CONFIG_DIR}/workspace.env
   dns: ${DNS_ADDRESS}
   environment:
     - JENKINS_SLAVE_SECRET=__SECRET

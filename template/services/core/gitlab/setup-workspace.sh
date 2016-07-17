@@ -1,3 +1,5 @@
+WORKSPACE_CONTAINER=poccin_docker_1
+
 if [ ! -f ${CONFIG_DIR}/workspaces.yml ]; then
     return
 fi
@@ -18,4 +20,8 @@ done
 
 ${BIN_DIR}/open-workspace
 sleep 10
-sudo chmod -R +r ${CONFIG_DIR}/volumes/gitlab-runner
+docker exec ${WORKSPACE_CONTAINER} gitlab-runner register --executor docker --non-interactive
+sudo chmod -R +rw ${CONFIG_DIR}/volumes/gitlab-runner
+
+WORKSPACE_ENV=`awk '{printf "\"%s\", ",$0}' ${CONFIG_DIR}/workspace.env | sed -E 's/, $//'`
+sed -e "s|\"DUMMY\"|${WORKSPACE_ENV}|" -i ${CONFIG_DIR}/volumes/gitlab-runner/docker/config.toml

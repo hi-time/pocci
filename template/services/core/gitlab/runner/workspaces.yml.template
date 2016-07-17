@@ -1,24 +1,17 @@
 cat << EOF
-__NAME:
-  __IMAGE
+docker:
+  image: gitlab/gitlab-runner:alpine-v1.3.3
   volumes:
-    - /tmp
-    - /var/workspace
-    - ${CONFIG_DIR}/.ssh:/tmp/user_home/.ssh
-    - ${CONFIG_DIR}/volumes/gitlab-runner/__NAME:/var/workspace/.gitlab-runner
-  labels:
-    com.xpfriend.pocci.backup-ignore: "/tmp"
-  env_file:
-    - ./.env
+    - ${CONFIG_DIR}/volumes/gitlab-runner/docker:/etc/gitlab-runner
+    - /var/run/docker.sock:/var/run/docker.sock
   dns: ${DNS_ADDRESS}
   environment:
+    - DOCKER_DNS=${DNS_ADDRESS}
+    - DOCKER_IMAGE=xpfriend/workspace-nodejs:2.20.1
     - CI_SERVER_URL=${GITLAB_URL}/ci
     - REGISTRATION_TOKEN=__SECRET
-    - RUNNER_NAME=__NAME
-    - RUNNER_TAG_LIST=__NAME
-    - CONFIG_FILE=/var/workspace/.gitlab-runner/config.toml
-    - RUNNER_BUILDS_DIR=/var/workspace/builds
-    - RUNNER_CACHE_DIR=/var/workspace/cache
-  command: /config/start-gitlab-ci-runner.sh run
+    - RUNNER_NAME=docker
+    - RUNNER_TAG_LIST=docker
+    - RUNNER_ENV=DUMMY
 
 EOF

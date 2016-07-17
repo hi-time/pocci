@@ -31,14 +31,9 @@ fi
 sleep 10
 
 GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1" | grep "ci-status ci-success" | wc -l`
-
 if [ "${GITLAB_BUILD_STATUS}" -eq 0 ]; then
-    GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1" | grep "ci-status ci-failed" | wc -l`
-    if [ "${GITLAB_BUILD_STATUS}" -eq 0 ]; then
-        echo "gitlab: invalid build status: $1"
-        exit 2
-    fi
-    echo "(warning) gitlab: build: failed"
+    echo "gitlab: invalid build status: $1"
+    exit 2
 fi
 
 sed -ie "3a export SONAR_ANALYSIS_MODE=preview" build.sh

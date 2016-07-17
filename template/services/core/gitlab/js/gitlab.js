@@ -335,14 +335,12 @@ var getGitlabTimezone = function(timezone) {
   }
 };
 
-var setupRunners = function*(browser, url, runners) {
+var setupRunner = function*(browser, url) {
   var token = yield browser.url(url + '/admin/runners')
     .save('gitlab-getToken')
     .getText('code');
 
-  for(var i = 0; i < runners.length; i++) {
-    workspace.writeConfiguration('./config/services/core/gitlab/runner', runners[i], token);
-  }
+  workspace.writeConfiguration('./config/services/core/gitlab/runner', {name:'', image:''}, token);
 };
 
 module.exports = {
@@ -415,10 +413,9 @@ module.exports = {
       yield git.handleSetup(browser, options);
     }
 
-    if(gitlabOptions.runners) {
+    if(process.env.ALL_SERVICES.indexOf('jenkins') === -1) {
       yield firstLoginByAdmin(browser, url);
-      var runners = workspace.normalize(gitlabOptions.runners);
-      yield setupRunners(browser, url, runners);
+      yield setupRunner(browser, url);
       yield logout(browser);
     }
   },

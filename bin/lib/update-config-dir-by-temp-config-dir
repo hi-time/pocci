@@ -47,3 +47,8 @@ fi
 
 source ${LIB_DIR}/update-dns-entries
 ${LIB_DIR}/create-proxy-env >>${CONFIG_DIR}/.env
+
+grep '_URL=' ${CONFIG_DIR}/.env >${CONFIG_DIR}/workspace.env || :
+grep '_HOST=' ${CONFIG_DIR}/.env >>${CONFIG_DIR}/workspace.env || :
+grep '_PORT=' ${CONFIG_DIR}/.env >>${CONFIG_DIR}/workspace.env || :
+grep 'proxy' ${CONFIG_DIR}/.env >>${CONFIG_DIR}/workspace.env || :

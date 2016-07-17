@@ -167,7 +167,7 @@ describe "setup.default.yml", ->
           runners:
             path:   "/runners/all"
             expected:
-              "body.length":  2
+              "body.length":  1
 
 
   it "pocci", (done) ->
