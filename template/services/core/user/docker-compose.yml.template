@@ -15,7 +15,7 @@ ldap:
     - /etc/ldap/slapd.d
 
 user:
-  image: xpfriend/pocci-account-center:1.0.26
+  image: xpfriend/pocci-account-center:1.0.27
   env_file:
     - ./.env
   links:
