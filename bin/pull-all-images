@@ -17,6 +17,9 @@ echo "" >${CONFIG_DIR}/all-docker-compose.txt
 for i in $(find ${TEMPLATE_DIR}/services/ -name docker-compose.yml.template); do
     source $i >>${CONFIG_DIR}/all-docker-compose.txt
 done
+for i in $(find ${TEMPLATE_DIR}/services/ -name workspaces.yml.template); do
+    source $i >>${CONFIG_DIR}/all-docker-compose.txt
+done
 
 
 # xpfriend/workspace-*

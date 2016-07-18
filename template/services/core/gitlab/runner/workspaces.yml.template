@@ -7,7 +7,7 @@ docker:
   dns: ${DNS_ADDRESS}
   environment:
     - DOCKER_DNS=${DNS_ADDRESS}
-    - DOCKER_IMAGE=xpfriend/workspace-nodejs:2.20.1
+    - DOCKER_IMAGE=xpfriend/workspace-nodejs:3.0.0
     - CI_SERVER_URL=${GITLAB_URL}/ci
     - REGISTRATION_TOKEN=__SECRET
     - RUNNER_NAME=docker
