@@ -19,7 +19,7 @@ client_max_body_size 20M;
 
 geo \$external_network {
     default 1;
-    ${DOCKER_NETWORK} 0;
+    ${POCCI_NETWORK} 0;
 }
 
 server {

@@ -3,8 +3,7 @@ dns:
   image: devries/dnsmasq:latest
   volumes:
     - ${CONFIG_DIR}/althosts:/etc/althosts
-  ports:
-    - "53:53"
-    - "53:53/udp"
-
+  networks:
+    default:
+      ipv4_address: ${DNS_ADDRESS}
 EOF

@@ -48,9 +48,13 @@ if [ -d "${CONFIG_DIR}/.ssh" ]; then
 fi
 
 set +e
+POCCI_NETWORK_NAME=${POCCI_BACKEND_SERVICE_PREFIX}_default
+if [ `docker network ls | grep ${POCCI_NETWORK_NAME} | wc -l` -eq 1 ]; then
+    NET_OPTION="--net ${POCCI_NETWORK_NAME}"
+fi
 docker run --name ${CONTAINER_NAME} --privileged -w /app \
     -v ${PWD}:/app ${POCCIR_OPTS} \
-    -v /dev/urandom:/dev/random ${MOUNT_SSH_DIR} \
+    -v /dev/urandom:/dev/random ${MOUNT_SSH_DIR} ${NET_OPTION} \
     --rm ${TTY_OPTION} ${IMAGE} "$@"
 RC=$?
 

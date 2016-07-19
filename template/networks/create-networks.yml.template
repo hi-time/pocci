@@ -1,0 +1,8 @@
+cat << EOF
+default:
+  driver: bridge
+  ipam:
+    config:
+      - subnet: ${POCCI_NETWORK}
+        gateway: ${POCCI_GATEWAY}
+EOF

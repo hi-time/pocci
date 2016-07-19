@@ -1,0 +1,5 @@
+cat << EOF
+default:
+  external:
+    name: ${POCCI_BACKEND_SERVICE_PREFIX}_default
+EOF

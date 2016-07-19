@@ -26,6 +26,9 @@ module.exports = {
     options.pocci.timezone          = options.pocci.timezone          || process.env.TZ || options.pocci.environment.TZ || 'Etc/UTC';
     options.pocci.certificate       = options.pocci.certificate       || {};
     options.pocci.certificate.subject = options.pocci.certificate.subject || '/C=JP/ST=Chiba/L=Chiba/O=Pocci/CN=*.' + options.pocci.domain + '/';
+    options.pocci.network           = options.pocci.network           || '172.20.0.0/16';
+    options.pocci.gateway           = options.pocci.gateway           || '172.20.0.1';
+    options.pocci.dnsAddress        = options.pocci.dnsAddress        || '172.20.0.254';
   },
   addEnvironment: function(options, environment) {
     environment.POCCI_DOMAIN_NAME = options.pocci.domain;
@@ -38,5 +41,8 @@ module.exports = {
     environment.POCCI_HTTPS         = options.pocci.https;
     environment.TZ                  = options.pocci.timezone;
     environment.CERTIFICATE_SUBJECT = options.pocci.certificate.subject;
+    environment.POCCI_NETWORK       = options.pocci.network;
+    environment.POCCI_GATEWAY       = options.pocci.gateway;
+    environment.DNS_ADDRESS         = options.pocci.dnsAddress;
   }
 };

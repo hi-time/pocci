@@ -20,6 +20,11 @@ redmine:
     - SMTP_HOST=${REDMINE_SMTP_HOST}
     - SMTP_PORT=${REDMINE_SMTP_PORT}
     - SMTP_OPENSSL_VERIFY_MODE=none
+    - DB_ADAPTER=postgresql
+    - DB_HOST=redminedb
+    - DB_USER=${REDMINE_DB_USER}
+    - DB_PASS=${REDMINE_DB_PASS}
+    - DB_NAME=${REDMINE_DB_NAME}
   links:
     - redminedb:postgresql
   volumes_from:

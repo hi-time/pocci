@@ -31,6 +31,13 @@ gitlab:
     - SMTP_HOST=${GITLAB_SMTP_HOST}
     - SMTP_PORT=${GITLAB_SMTP_PORT}
     - GITLAB_EMAIL=${GITLAB_MAIL_ADDRESS}
+    - DB_ADAPTER=postgresql
+    - DB_HOST=gitlabdb
+    - DB_USER=${GITLAB_DB_USER}
+    - DB_PASS=${GITLAB_DB_PASS}
+    - DB_NAME=${GITLAB_DB_NAME}
+    - REDIS_HOST=gitlabredis
+    - REDIS_PORT=6379
   ports:
     - "${GITLAB_SSH_PORT}:22"
   links:

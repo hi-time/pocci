@@ -9,7 +9,7 @@ for i in ${ALT_HOSTS}; do
 done
 IFS="${DEFAULT_IFS}"
 
-PUBLIC_NAMES="${DOCKER_HOST_ADDRESS} docker-host"
+PUBLIC_NAMES="${POCCI_GATEWAY} docker-host"
 
 if [ `grep ${SMTP_HOST} ${CONFIG_DIR}/althosts | wc -l` -eq 0 ]; then
     PUBLIC_NAMES="${PUBLIC_NAMES} ${SMTP_HOST}"

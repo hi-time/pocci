@@ -1,32 +1,53 @@
 
+indent() {
+    sed -E 's/^.+$/  \0/g'
+}
+
+create_compose_file() {
+    TARGET=${CONFIG_DIR}/$1
+    echo "version: '2'" >${TARGET}
+
+    echo "networks:" >>${TARGET}
+    cd ${TEMP_CONFIG_DIR}/networks
+    if [ "$2" = "create_networks" ]; then
+        source ./create-networks.yml.template | indent >>${TARGET}
+    else
+        source ./use-networks.yml.template | indent >>${TARGET}
+    fi
+
+    echo "services:" >>${TARGET}
+}
+
+write_services() {
+    cd $1
+    source ./$2 | indent >>${CONFIG_DIR}/$3
+}
+
 source ${LIB_DIR}/export-env ${CONFIG_DIR}/.env
 
 # core-services.yml
-if [ -f ${CONFIG_DIR}/core-services.yml ]; then
-    rm ${CONFIG_DIR}/core-services.yml
-fi
+create_compose_file core-services.yml
+
 for i in ${INTERNAL_SERVICES}; do
     if [ -f ${TEMP_CONFIG_DIR}/services/core/$i/docker-compose.yml.template ]; then
-        cd ${TEMP_CONFIG_DIR}/services/core/$i
-        source ./docker-compose.yml.template >>${CONFIG_DIR}/core-services.yml
+        write_services ${TEMP_CONFIG_DIR}/services/core/$i docker-compose.yml.template core-services.yml
     fi
 done
 if [ -f ${CONFIG_DIR}/core-services.yml ]; then
-    cd ${TEMP_CONFIG_DIR}/services/core/nginx
-    source ./docker-compose.yml.template >>${CONFIG_DIR}/core-services.yml
+    write_services ${TEMP_CONFIG_DIR}/services/core/nginx docker-compose.yml.template core-services.yml
 fi
 
 # backend-services.yml
-if [ -f ${CONFIG_DIR}/backend-services.yml ]; then
-    rm ${CONFIG_DIR}/backend-services.yml
-fi
+create_compose_file backend-services.yml create_networks
+
 for i in $(find ${TEMP_CONFIG_DIR}/services/backend/ -name docker-compose.yml.template); do
-    source $i >>${CONFIG_DIR}/backend-services.yml
+    source $i | indent >>${CONFIG_DIR}/backend-services.yml
 done
 
 # workspaces.yml
 if [ -f ${TEMP_CONFIG_DIR}/workspaces.yml.template ]; then
-    source ${TEMP_CONFIG_DIR}/workspaces.yml.template >${CONFIG_DIR}/workspaces.yml
+    create_compose_file workspaces.yml
+    write_services ${TEMP_CONFIG_DIR} workspaces.yml.template workspaces.yml
     rm ${TEMP_CONFIG_DIR}/workspaces.yml.template
 fi
 

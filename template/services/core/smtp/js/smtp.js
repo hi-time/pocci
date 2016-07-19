@@ -103,7 +103,7 @@ module.exports = {
     getUrl(options);
     options.smtp.relayhost      = options.smtp.relayhost      || process.env.SMTP_RELAYHOST || '';
     options.smtp.password       = options.smtp.password       || process.env.SMTP_PASSWORD || '';
-    options.smtp.mynetworks     = options.smtp.mynetworks     || process.env.SMTP_MYNETWORKS || '172.17.0.0/16';
+    options.smtp.mynetworks     = options.smtp.mynetworks     || process.env.SMTP_MYNETWORKS || options.pocci.network;
     options.smtp.mydestination  = options.smtp.mydestination  || getMydestination(parse(options.smtp.url));
     options.smtp.aliases        = options.smtp.aliases        || getAliases(options);
   },
