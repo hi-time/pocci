@@ -63,17 +63,13 @@ var getAliasesInternal = function(mydestination, users, adminMailAddress) {
 };
 
 var getAliases = function(options) {
-  var users;
-  if(!options.user || !options.user.users) {
-    users = [];
-  } else {
-    users = options.user.users;
+  var users = [{mail: 'admin@example.net'}];
+  if(options.user && options.user.users) {
+    users = users.concat(toArray(options.user.users));
   }
 
   return getAliasesInternal(
-      options.smtp.mydestination,
-      toArray(users),
-      options.pocci.adminMailAddress
+      options.smtp.mydestination, users, options.pocci.adminMailAddress
   );
 };
 
