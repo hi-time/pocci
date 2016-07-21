@@ -10,7 +10,7 @@ redminedb:
     - DB_NAME=${REDMINE_DB_NAME}
 
 redmine:
-  image: sameersbn/redmine:3.3.0
+  image: sameersbn/redmine:3.3.0-1
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}
