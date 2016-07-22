@@ -29,9 +29,6 @@ gitlab:
           commitMessage:  "[ci skip] import example codes (#1)"
           issues:
             - import example codes
-  runners:
-    - java
-    - nodejs
 
 kanban:
   - board: example/example-java

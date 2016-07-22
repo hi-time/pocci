@@ -13,11 +13,10 @@ var deleteFile = function(file) {
 };
 
 var selectCIConfigFile = function(localPath, options) {
-  if(!options.gitlab || !options.gitlab.runners) {
-    deleteFile(path.join(localPath, '.gitlab-ci.yml'));
-  }
   if(options.pocci.services.indexOf('jenkins') === -1) {
     deleteFile(path.join(localPath, 'jenkins-config.xml'));
+  } else {
+    deleteFile(path.join(localPath, '.gitlab-ci.yml'));
   }
 };
 
