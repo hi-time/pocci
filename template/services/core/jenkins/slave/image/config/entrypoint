@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 if [ `locale -a |grep C.UTF-8 |wc -l` -eq 1 ]; then

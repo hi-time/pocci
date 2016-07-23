@@ -11,6 +11,14 @@ if [ $? -ne 0 ]; then
 fi
 
 if [ -n "${INSTALL_PACKAGE}" ]; then
+    type apk
+    if [ $? -eq 0 ]; then
+        INSTALL_PACKAGE=`echo ${INSTALL_PACKAGE} | sed -e "s/java/openjdk8/"`
+        echo "set -e \
+               && . /config/proxy.env \
+               && apk add --no-cache ${INSTALL_PACKAGE}" >./install-packages.sh
+    fi
+
     type apt-get
     if [ $? -eq 0 ]; then
         INSTALL_PACKAGE=`echo ${INSTALL_PACKAGE} | sed -e "s/java/openjdk-8-jre-headless/"`
@@ -34,11 +42,11 @@ if [ -n "${INSTALL_PACKAGE}" ]; then
 
     set -e
     if [ ! -f ./install-packages.sh ]; then
-      echo "cannot find apt-get or yum"
+      echo "cannot find apk, apt-get or yum"
       exit 1
     fi
 
-    bash ./install-packages.sh
+    sh ./install-packages.sh
 fi
 
 exit 0
