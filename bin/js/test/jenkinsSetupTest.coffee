@@ -180,7 +180,7 @@ describe "setup.jenkins.yml", ->
         yield gitlab.login(setup.browser, @url, "jenkinsci", "password")
         src = yield setup.browser
           .save("gitlab-login-by-jenkinsci")
-          .getAttribute("img.avatar", "src")
+          .getAttribute("img.header-user-avatar", "src")
         yield gitlab.logout(setup.browser)
         chai.assert.isOk(src.indexOf("jenkinsci.png") > -1, "Invalid avatar of jenkinsci")
 
