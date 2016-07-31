@@ -1,7 +1,7 @@
 cat << EOF
 # SonarQube
 sonarqubedb:
-  image: sameersbn/postgresql:9.4-23
+  image: sameersbn/postgresql:9.4-24
   env_file:
     - ./.env
   environment:
