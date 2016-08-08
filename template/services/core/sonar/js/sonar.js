@@ -13,6 +13,7 @@ var login = function*(browser, url, user, password) {
     .setValue('#password', password)
     .save('sonar-doing-login-by-' + user)
     .submitForm('#login_form')
+    .pause(5000)
     .save('sonar-after-login-by-' + user);
 };
 
@@ -65,16 +66,16 @@ var createRequest = function(url, path, body) {
       pass: 'admin',
       sendImmediately: true
     },
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: body
+    form: body
   };
 };
 
 var post = function*(url, path, body) {
   var request = createRequest(url, path, body);
   var response = yield server.post(request);
+  if(response.body) {
+    console.log(JSON.stringify(response.body));
+  }
   assertStatus(response, 'response.statusCode < 300');
 };
 
