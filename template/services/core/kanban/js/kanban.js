@@ -98,6 +98,9 @@ module.exports = {
         delete container.ports;
         container.volumes.push('/var/log/nginx');
       }
+      if(name === 'kanban') {
+        container.restart= 'always';
+      }
       if(name === 'kanbanredis') {
         container.volumes = ['/data'];
       }
