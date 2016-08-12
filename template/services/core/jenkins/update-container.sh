@@ -1,7 +1,5 @@
-echo "Update Jenkins plugins..."
+echo "Update Jenkins container..."
 JENKINS_CONTAINER=${POCCI_SERVICE_PREFIX}_jenkins_1
-
-${LIB_DIR}/docker-exec ${JENKINS_CONTAINER} /config/update-plugins.sh
 
 KEY_PAIR_DIR=${CONFIG_DIR}/.ssh
 echo "Get key pair --> ${KEY_PAIR_DIR}"

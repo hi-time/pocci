@@ -1,9 +1,11 @@
 cat << EOF
 # Jenkins
 jenkins:
-  image: xpfriend/jenkins:1.60.0
+  image: xpfriend/jenkins:2.0.1
   env_file:
     - ./.env
+  environment:
+    - JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
   dns: ${DNS_ADDRESS}
   ports:
     - "${JENKINS_JNLP_PORT}:50000"

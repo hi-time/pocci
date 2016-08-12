@@ -201,7 +201,7 @@ var configureGitLab = function*(browser, url, gitlabUrl) {
     .setValue('input[type="text"][checkurl="/descriptorByName/com.dabsquared.gitlabjenkins.connection.GitLabConnectionConfig/checkUrl"]', gitlabUrl)
     .click('#yui-gen3-button')
     .pause(1000)
-    .click('#yui-gen27')
+    .click('#yui-gen17')
     .pause(5000)
     .selectByValue('#credentials-dialog-form select.setting-input.dropdownList', '1')
     .pause(1000)
