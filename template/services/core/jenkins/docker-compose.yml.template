@@ -1,7 +1,7 @@
 cat << EOF
 # Jenkins
 jenkins:
-  image: xpfriend/jenkins:2.0.1
+  image: xpfriend/jenkins:2.1.0
   env_file:
     - ./.env
   environment:
