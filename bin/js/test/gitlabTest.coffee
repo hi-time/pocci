@@ -113,7 +113,7 @@ describe "GitLab", ->
               "body[0].title":        "issue01"
               "body[0].description":  "test"
               "body[1].title":        "issue02"
-              "body[1].description":  "Line 1\nLine 2\nLine 3\n"
+              "body[1].description":  "Line 1\nLine 2\nLine 3"
 
           project02:
             path:   "/projects/search/project02"

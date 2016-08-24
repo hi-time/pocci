@@ -361,7 +361,9 @@ module.exports = {
     options.gitlab.smtpPort             = options.gitlab.smtpPort             || smtp.getPort(options);
     options.gitlab.mailAddress          = options.gitlab.mailAddress          || options.pocci.adminMailAddress;
     options.gitlab.timezone             = options.gitlab.timezone             || getGitlabTimezone(options.pocci.environment.TZ);
-    options.gitlab.secretsDbKeyBase     = options.gitlab.secretsDbKeyBase     || util.getRandomString();
+    options.gitlab.secretsDbKeyBase     = options.gitlab.secretsDbKeyBase     || util.getRandomString(64);
+    options.gitlab.secretsSecretKeyBase = options.gitlab.secretsSecretKeyBase || util.getRandomString(64);
+    options.gitlab.secretsOtpKeyBase    = options.gitlab.secretsOtpKeyBase    || util.getRandomString(64);
     // options.gitlab.users = options.gitlab.users;
     // options.gitlab.groups = options.gitlab.groups;
   },
@@ -388,6 +390,8 @@ module.exports = {
     environment.GITLAB_MAIL_ADDRESS   = options.gitlab.mailAddress;                 // sameersbn/gitlab
     environment.GITLAB_TIMEZONE       = options.gitlab.timezone;                    // sameersbn/gitlab
     environment.GITLAB_SECRETS_DB_KEY_BASE = options.gitlab.secretsDbKeyBase;       // sameersbn/gitlab
+    environment.GITLAB_SECRETS_SECRET_KEY_BASE = options.gitlab.secretsSecretKeyBase;       // sameersbn/gitlab
+    environment.GITLAB_SECRETS_OTP_KEY_BASE = options.gitlab.secretsOtpKeyBase;       // sameersbn/gitlab
   },
   setup: function*(browser, options) {
     var url = process.env.GITLAB_URL;
