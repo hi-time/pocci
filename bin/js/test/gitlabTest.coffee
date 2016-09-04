@@ -14,6 +14,7 @@ describe "GitLab", ->
   it "can setup a group", (done) ->
     spec01 =
       setup: ->
+        process.env.ALL_SERVICES = "jenkins" # for skip to execute 'setupRunner' method
         url = process.env.GITLAB_URL
         yield setup.initBrowser()
         yield gitlab.loginByAdmin(setup.browser, url)
@@ -124,22 +125,22 @@ describe "GitLab", ->
 
           group01Members:
             path:   "/groups/#{@groupId}/members"
-            sort:   {target: "body", keys: "id"}
+            sort:   {target: "body", keys: "username"}
             expected:
               "body.length":          3
-              "body[0].username":     "root"
+              "body[0].username":     "boze"
               "body[0].access_level": 50
               "body[1].username":     "jenkinsci"
               "body[1].access_level": 50
-              "body[2].username":     "boze"
+              "body[2].username":     "root"
               "body[2].access_level": 50
 
           group02Members:
             path:   "/groups/#{group02Id}/members"
-            sort:   {target: "body", keys: "id"}
+            sort:   {target: "body", keys: "username"}
             expected:
               "body.length":          2
-              "body[0].username":     "root"
+              "body[0].username":     "boze"
               "body[0].access_level": 50
-              "body[1].username":     "boze"
+              "body[1].username":     "root"
               "body[1].access_level": 50

@@ -28,7 +28,7 @@ you need to add the following description to the hosts file
 (`C:\Windows\System32\drivers\etc\hosts`) of the PC that you are using.
 
 ```
-XXX.XXX.XXX.XXX user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test
+XXX.XXX.XXX.XXX user.pocci.test gitlab.pocci.test sonar.pocci.test
 ```
 
 Configuring this setting allows you to access the services using the following URLs.
@@ -37,7 +37,6 @@ URL                        | Service                                            
 -------------------------- | ------------------------------------------------------- | ---------------------------------------------
 http://user.pocci.test/    | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | Change password
 http://gitlab.pocci.test/  | [GitLab](https://gitlab.com/)                           | Code repository management / Ticket (issue) management
-http://jenkins.pocci.test/ | [Jenkins](https://jenkins-ci.org/)                      | CI job management
 http://sonar.pocci.test/   | [SonarQube](http://www.sonarqube.org/)                  | Code quality analysis
 
 

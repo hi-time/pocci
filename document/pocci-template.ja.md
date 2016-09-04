@@ -27,11 +27,10 @@
 
 *   セットアップファイル (setup.*.yml)
     *   setup.default.yml
-    *   setup.jenkins.yml
     *   setup.redmine.yml
 *   サービス定義ディレクトリ (services)
     *   バックエンドサービス: dns, fluentd
-    *   一般サービス: gitlab, jenkins, nginx, redmine, sonar, user
+    *   一般サービス: gitlab, jenkins, nginx, redmine, smtp, sonar, user
 *   ソースコード (code)
     *   example-java
     *   example-nodejs

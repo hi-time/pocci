@@ -34,26 +34,12 @@ stage1() {
     ../oneoff nodejs grunt basic
     ../oneoff nodejs grunt prepare mochaTest:loginDefault
     ../oneoff nodejs grunt prepare mochaTest:defaultSetup
+    ../oneoff nodejs grunt prepare mochaTest:gitlab
     ${BASE_DIR}/build-test.sh
 }
 
 stage2() {
-    echo $(date): SETUP jenkins >> ${LOG_FILE}
-    echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config jenkins
-    ${BASE_DIR}/temp/pocci/bin/up-service
-
-    sleep 60
-    echo $(date): BACKUP jenkins >> ${LOG_FILE}
-    ${BASE_DIR}/temp/pocci/bin/backup
-    move_backup_dir jenkins
-
-    echo $(date): TEST_1 jenkins >> ${LOG_FILE}
-    cd ${BASE_DIR}/temp/pocci/bin/js
-    ../oneoff nodejs grunt basic
-    ../oneoff nodejs grunt prepare mochaTest:loginJenkins
-    ../oneoff nodejs grunt prepare mochaTest:jenkinsSetup
-    ../oneoff nodejs grunt prepare mochaTest:gitlab
-    ${BASE_DIR}/build-test.sh
+    echo "skip stage2..."
 }
 
 stage3() {
@@ -83,6 +69,7 @@ stage4() {
     ../oneoff nodejs grunt basic
     ../oneoff nodejs grunt prepare mochaTest:loginDefault
     ../oneoff nodejs grunt prepare mochaTest:defaultSetup
+    ../oneoff nodejs grunt prepare mochaTest:gitlab
     ${BASE_DIR}/build-test.sh
 }
 
@@ -99,16 +86,7 @@ stage5() {
 }
 
 stage6() {
-    echo $(date): RESTORE jenkins >> ${LOG_FILE}
-    echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_jenkins/*
-
-    echo $(date): TEST_2 jenkins >> ${LOG_FILE}
-    cd ${BASE_DIR}/temp/pocci/bin/js
-    ../oneoff nodejs grunt basic
-    ../oneoff nodejs grunt prepare mochaTest:loginJenkins
-    ../oneoff nodejs grunt prepare mochaTest:jenkinsSetup
-    ../oneoff nodejs grunt prepare mochaTest:gitlab
-    ${BASE_DIR}/build-test.sh
+    echo "skip stage6..."
 }
 
 stage7() {

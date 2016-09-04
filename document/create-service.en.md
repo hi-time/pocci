@@ -59,7 +59,6 @@ The following service configuration types are provided in advance.
 Service configuration type | Version Control | Continuous Integration | Issue Tracking | Quality Management | User Account Management
 -------------------------- | --------------- | ---------------------- | -------------- | ------------------ | -----------------------
 **default**                | GitLab          | GitLab                 | GitLab         | SonarQube          | Account Center
-**jenkins**                | GitLab          | Jenkins                | GitLab         | SonarQube          | Account Center
 **redmine**                | GitLab          | Jenkins                | Redmine        | SonarQube          | Account Center
 
 
@@ -86,7 +85,6 @@ Standard setup files exist in the `template` directory.
 ```
 template/
   setup.default.yml
-  setup.jenkins.yml
   setup.redmine.yml
 ```
 

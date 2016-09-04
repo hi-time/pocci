@@ -1,6 +1,17 @@
 pocci:
   services:
     - gitlab
+    - user
+
+user:
+  users:
+    - uid:          jenkinsci
+      givenName:    Jenkins
+      sn:           CI
+      displayName:  Jenkins
+      mail:         jenkins-ci@localhost.localdomain
+      userPassword: password
+      labeledURI:   "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png"
 
 gitlab:
   users:

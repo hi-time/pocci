@@ -60,7 +60,6 @@ cd bin
 サービス構成タイプ | コード管理 | CI      | チケット管理 | 品質分析  | ユーザー管理
 ------------------ | ---------- | ------- | ------------ | --------- | --------------
 **default**        | GitLab     | GitLab  | GitLab       | SonarQube | Account Center
-**jenkins**        | GitLab     | Jenkins | GitLab       | SonarQube | Account Center
 **redmine**        | GitLab     | Jenkins | Redmine      | SonarQube | Account Center
 
 
@@ -87,7 +86,6 @@ cd bin
 ```
 template/
   setup.default.yml
-  setup.jenkins.yml
   setup.redmine.yml
 ```
 
