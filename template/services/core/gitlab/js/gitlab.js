@@ -369,7 +369,7 @@ module.exports = {
   },
   addEnvironment: function(options, environment) {
     var url = parse(options.gitlab.url);
-    environment.GITLAB_URL            = util.getHref(url);                          // gitlab.js, jenkins.js, kanban.js, redmine.js, git.js
+    environment.GITLAB_URL            = util.getHref(url);                          // gitlab.js, jenkins.js, redmine.js, git.js
     environment.GITLAB_PROTOCOL       = url.protocol;
     environment.GITLAB_HOST           = url.hostname;                               // sameersbn/gitlab
     environment.GITLAB_PORT           = util.getPort(url);

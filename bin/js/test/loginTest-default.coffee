@@ -39,26 +39,3 @@ describe "Login (default)", () ->
     test done,
       expect: ->
         yield loginGitLab(browser)
-
-  it "kanban", (done) ->
-    test done,
-      when: ->
-        yield browser
-          .url(process.env.KANBAN_URL + "/")
-          .save("kanban-before-Oauth")
-          .click("[data-ng-click='oauth()']")
-          .save("kanban-after-Oauth")
-
-        handles = yield browser.windowHandles()
-        console.log(handles)
-
-        yield browser.switchTab(handles.value[1])
-          .save("kanban-before-autherize")
-          .click("input[value='Authorize']")
-          .switchTab(handles.value[0])
-          .pause(10000)
-          .save("kanban-after-autherize")
-
-      then: ->
-        url = yield browser.url();
-        assert.equal(url.value, process.env.KANBAN_URL + "/boards/")

@@ -8,7 +8,7 @@ connected to the started CI services (machine that will be a client of the CI se
 Setting example (the acutual IP address must be the IP address of the machine that started the CI services):
 
 ```
-192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test cert.pocci.test
+192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test redmine.pocci.test cert.pocci.test
 ```
 
 
@@ -21,7 +21,6 @@ http://gitlab.pocci.test/       | [GitLab](https://gitlab.com/)                 
 http://jenkins.pocci.test/ (*)  | [Jenkins](https://jenkins-ci.org/)                      | Continuous Integration
 http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | Quality Management
 http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | User Account Management
-http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | Kanban Board
 http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | Issue Tracking
 http://cert.pocci.test/         | -                                                       | Download page of Root Certificate and Server Certificate
 
@@ -51,6 +50,3 @@ jenkinsci  | password
 bouze      | password
 
 *   For GitLab, sign in from the **LDAP** tab.
-*   For kanban board, you can click `with http://gitlab.pocci.test/` to log in using the
-    OAuth authentication function of GitLab without entering a user name and password.
-

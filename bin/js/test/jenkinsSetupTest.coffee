@@ -117,17 +117,8 @@ describe "setup.jenkins.yml", ->
 
           projectJavaLabels:
             path: "/projects/#{@projectIdJava}/labels"
-            sort:   {target: "body", keys: "name"}
             expected:
-              "body.length":          4
-              "body[0].name":         "KB[stage][0][BACKLOG]"
-              "body[0].color":        "#F5F5F5"
-              "body[1].name":         "KB[stage][1][TODO]"
-              "body[1].color":        "#F5F5F5"
-              "body[2].name":         "KB[stage][2][DOING]"
-              "body[2].color":        "#F5F5F5"
-              "body[3].name":         "KB[stage][3][DONE]"
-              "body[3].color":        "#F5F5F5"
+              "body.length":          0
 
           projectJavaHooks:
             path: "/projects/#{@projectIdJava}/hooks"
@@ -192,10 +183,6 @@ describe "setup.jenkins.yml", ->
             path:   "http://sonar.pocci.test"
             expected:
               "h1":   "Home"
-          kanban:
-            path:   "http://kanban.pocci.test"
-            expected:
-              "title":   "GitLab KB - Boards"
           redmine:
             path:   "http://redmine.pocci.test"
             thrown:

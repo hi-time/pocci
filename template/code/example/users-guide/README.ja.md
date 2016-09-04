@@ -27,7 +27,7 @@ A. 最初にやること
 に以下の記述を追加する必要があります。
 
 ```
-XXX.XXX.XXX.XXX user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test
+XXX.XXX.XXX.XXX user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test
 ```
 
 この設定を行うことにより、以下の URL でサービスにアクセスできます。
@@ -38,7 +38,6 @@ http://user.pocci.test/    | [Account Center (LDAP)](https://github.com/xpfriend
 http://gitlab.pocci.test/  | [GitLab](https://gitlab.com/)                           | コードリポジトリ管理 / チケット (Issue) 管理
 http://jenkins.pocci.test/ | [Jenkins](https://jenkins-ci.org/)                      | CIジョブ管理
 http://sonar.pocci.test/   | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析
-http://kanban.pocci.test/  | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | かんばんボード
 
 
 ### 2. パスワードの変更

@@ -1,5 +1,0 @@
-SERVICE_HOST="${KANBAN_HOST}"
-SERVER_NAME="${SERVICE_HOST} kanban kanban.*"
-PROXY_PASS="kanban"
-
-source ${LIB_DIR}/create-nginx-conf

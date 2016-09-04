@@ -57,11 +57,11 @@ cd bin
 
 あらかじめ用意されているサービス構成には以下のものがあります。
 
-サービス構成タイプ | コード管理 | CI      | チケット管理           | 品質分析  | ユーザー管理
------------------- | ---------- | ------- | ---------------------- | --------- | --------------
-**default**        | GitLab     | GitLab  | GitLab + GitLab Kanban | SonarQube | Account Center
-**jenkins**        | GitLab     | Jenkins | GitLab + GitLab Kanban | SonarQube | Account Center
-**redmine**        | GitLab     | Jenkins | Redmine                | SonarQube | Account Center
+サービス構成タイプ | コード管理 | CI      | チケット管理 | 品質分析  | ユーザー管理
+------------------ | ---------- | ------- | ------------ | --------- | --------------
+**default**        | GitLab     | GitLab  | GitLab       | SonarQube | Account Center
+**jenkins**        | GitLab     | Jenkins | GitLab       | SonarQube | Account Center
+**redmine**        | GitLab     | Jenkins | Redmine      | SonarQube | Account Center
 
 
 #### 実行例

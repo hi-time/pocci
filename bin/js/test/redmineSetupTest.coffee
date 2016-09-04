@@ -154,11 +154,6 @@ describe "setup.redmine.yml", ->
             path:   "http://redmine.pocci.test"
             expected:
               "title":   "Redmine"
-          kanban:
-            path:   "http://kanban.pocci.test"
-            thrown:
-              "code": "ENOTFOUND"
-              "hostname": "kanban.pocci.test"
         chai.assert.equal(process.env.TZ, "Etc/UTC")
 
   it "jenkins", (done) ->

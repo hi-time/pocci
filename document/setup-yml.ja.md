@@ -122,14 +122,11 @@ pocci:
     *   デフォルトは `pocci.test`
     *   環境変数: `POCCI_DOMAIN_NAME`
 *   **services:** 利用するサービス  
-    gitlab, jenkins, sonar, user, kanban, redmine, slave
+    gitlab, jenkins, sonar, user, redmine, slave
     の中から利用したいものを選んでください。
     *   組み合わせに関する注意:
-        *   redmine と kanban は併用できません。
         *   redmine を指定する場合は必ず services に gitlab の指定が必要です。
             (別マシン上に起動する gitlab と連携することはできません)
-        *   kanban を指定する場合は services に gitlab を指定するか
-            GITLAB_URL 環境変数に接続可能な gitlab の URL が設定されている必要があります。
         *   slave を指定する場合は、JENKINS_URL 環境変数に接続可能な
             jenkins の URL が設定されている必要があります。
         *   外部の LDAP サーバを利用する場合は user の指定はできません。
@@ -542,37 +539,6 @@ SonarQube 関連定義。
 *   **mailAddress:** SonarQubeのメールアドレス
     *   デフォルトは pocci.adminMailAddress で指定したアドレス
     *   環境変数: `SONAR_MAIL_ADDRESS`
-
-
-kanban:
-------
-かんばんボード関連定義。
-
-定義例:
-
-```yaml
-kanban:
-  - board: example/example-board
-    stages:
-      - あとで
-      - 今週
-      - 調査中
-      - 対応中
-      - リリース待ち
-  - board: example/example-java
-    stages:
-      - TODO
-      - 要件定義
-      - 実装
-      - 受け入れテスト
-```
-
-*   **url:** かんばんボードサーバのURL
-    *   デフォルトは `http://kanban.[pocci.domainで指定したドメイン名]`
-    *   環境変数: `KANBAN_URL`, `KANBAN_PROTOCOL`, `KANBAN_HOST`, `KANBAN_PORT`
-*   **board:** 工程を定義するボード
-    *   `GitLabグループ名/GitLabプロジェクト名` の形式で指定してください。
-*   **stages:** 工程
 
 
 smtp:

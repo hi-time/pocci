@@ -31,7 +31,7 @@
     *   setup.redmine.yml
 *   サービス定義ディレクトリ (services)
     *   バックエンドサービス: dns, fluentd
-    *   一般サービス: gitlab, jenkins, kanban, nginx, redmine, sonar, user
+    *   一般サービス: gitlab, jenkins, nginx, redmine, sonar, user
 *   ソースコード (code)
     *   example-java
     *   example-nodejs

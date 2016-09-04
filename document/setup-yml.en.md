@@ -123,13 +123,10 @@ pocci:
     *   Environment variables:  `POCCI_DOMAIN_NAME`
 *   **services:** Services to be used  
     Select the services you wish to use from 
-    gitlab, jenkins, sonar, user, kanban, redmine, and slave.
+    gitlab, jenkins, sonar, user, redmine, and slave.
     *   Notes regarding combinations:
-        *   redmine and kanban cannot be used together.
         *   If redmine is specified, gitlab must be specified for services.
             (It is not possible to link with gitlab running on another machine.)
-        *   If kanban is specified, gitlab must be specified for services or
-            the URL of a connectible gitlab must be set in the GITLAB_URL environment variable.
         *   If slave is specified, the URL of a connectible jenkins
             must be set in the JENKINS_URL environment variable.
         *   If an external LDAP server will be used, user cannot be specified.
@@ -536,37 +533,6 @@ SonarQube related definitions.
 *   **mailAddress:** Mail address of SonarQube
     *   The default is the address specified in pocci.adminMailAddress.
     *   Environment variable:  `SONAR_MAIL_ADDRESS`
-
-kanban:
-------
-Kanban board related defintions.
-
-Definition example:
-
-```yaml
-kanban:
-  - board:  example/example-board
-    stages:
-      - Later
-      - This week
-      - Under investigation
-      - Responding
-      - Waiting for release
-  - board:  example/example-java
-    stages:
-      - BACKLOG
-      - TODO
-      - DEVELOPMENT
-      - QA
-```
-
-*   **url:** URL of kanban board server
-    *   The default is `http://kanban.[Domain name specified in pocci.domain]`.
-    *   Environment variables:  `KANBAN_URL`, `KANBAN_PROTOCOL`, `KANBAN_HOST`, `KANBAN_PORT`
-*   **board:** Board to define stages
-    *   Specify this in the format of `GitLab group name/GitLab project name`.
-*   **stages:** Stages
-
 
 smtp:
 ------

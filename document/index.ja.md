@@ -14,7 +14,6 @@ CIサービス構築・利用手引き
 *   [利用者の登録](./add-user.ja.md)
 *   [GitLab の設定](./gitlab.ja.md)
 *   [Jenkins の設定](./jenkins.ja.md)
-*   [かんばんボードの設定](./kanban.ja.md)
 *   [SonarQube の設定](./sonar.ja.md)
 *   [Redmine の設定](./redmine.ja.md)
 
@@ -34,6 +33,5 @@ Pocci               | <https://github.com/xpfriend/pocci>
 GitLab              | <https://gitlab.com/>, <https://github.com/sameersbn/docker-gitlab>
 Jenkins             | <https://jenkins-ci.org/>
 SonarQube           | <http://www.sonarqube.org/>
-GitLab Kanban Board | <http://kanban.leanlabs.io/>
 Redmine             | <http://www.redmine.org/>, <https://github.com/sameersbn/docker-redmine/>
 Open LDAP           | <http://www.openldap.org/>, <https://github.com/osixia/docker-openldap>

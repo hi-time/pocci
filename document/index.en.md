@@ -14,7 +14,6 @@ Setting Procedures after Introduction
 *   [Registering Users](./add-user.en.md)
 *   [GitLab Setup](./gitlab.en.md)
 *   [Jenkins Setup](./jenkins.en.md)
-*   [Kanban Board Setup](./kanban.en.md)
 *   [SonarQube Setup](./sonar.en.md)
 *   [Redmine Setup](./redmine.en.md)
 
@@ -33,6 +32,5 @@ Pocci               | <https://github.com/xpfriend/pocci>
 GitLab              | <https://gitlab.com/>, <https://github.com/sameersbn/docker-gitlab>
 Jenkins             | <https://jenkins-ci.org/>
 SonarQube           | <http://www.sonarqube.org/>
-GitLab Kanban Board | <http://kanban.leanlabs.io/>
 Redmine             | <http://www.redmine.org/>, <https://github.com/sameersbn/docker-redmine/>
 Open LDAP           | <http://www.openldap.org/>, <https://github.com/osixia/docker-openldap>

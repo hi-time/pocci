@@ -57,10 +57,10 @@ be performed by adding an argument to
 The following service configuration types are provided in advance.
 
 Service configuration type | Version Control | Continuous Integration | Issue Tracking | Quality Management | User Account Management
--------------------------- | --------------- | ---------------------- | ---------------------- | ---------- | -----------------------
-**default**                | GitLab          | GitLab                 | GitLab + GitLab Kanban | SonarQube  | Account Center
-**jenkins**                | GitLab          | Jenkins                | GitLab + GitLab Kanban | SonarQube  | Account Center
-**redmine**                | GitLab          | Jenkins                | Redmine                | SonarQube  | Account Center
+-------------------------- | --------------- | ---------------------- | -------------- | ------------------ | -----------------------
+**default**                | GitLab          | GitLab                 | GitLab         | SonarQube          | Account Center
+**jenkins**                | GitLab          | Jenkins                | GitLab         | SonarQube          | Account Center
+**redmine**                | GitLab          | Jenkins                | Redmine        | SonarQube          | Account Center
 
 
 #### Execution example

@@ -8,7 +8,7 @@ hosts ファイル (Windowsマシンの場合は `C:\Windows\System32\drivers\et
 設定例 (実際のIPアドレスはCIサービスを起動したマシンのものを使用すること) :
 
 ```
-192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test kanban.pocci.test redmine.pocci.test cert.pocci.test
+192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test redmine.pocci.test cert.pocci.test
 ```
 
 
@@ -21,7 +21,6 @@ http://gitlab.pocci.test/       | [GitLab](https://gitlab.com/)                 
 http://jenkins.pocci.test/ (*)  | [Jenkins](https://jenkins-ci.org/)                      | CI
 http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析
 http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | サービス利用者の登録 (LDAP)
-http://kanban.pocci.test/       | [GitLab Kanban Board](http://kanban.leanlabs.io/)       | かんばんボード
 http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | チケット (Issue) 管理
 http://cert.pocci.test/         | -                                                       | ルート証明書およびサーバ証明書のダウンロードページ
 
@@ -54,5 +53,3 @@ jenkinsci  | password
 boze       | password
 
 *   GitLab は **LDAP**タブから Sign in します。
-*   かんばんボードは `with http://gitlab.pocci.test/` をクリックすることで、
-    GitLab の OAuth 認証機能を利用してユーザー名、パスワードの入力無しでログインできます。

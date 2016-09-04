@@ -31,7 +31,7 @@ ${LIB_DIR}/pull-images all-docker-compose.txt
 rm ${CONFIG_DIR}/all-docker-compose.txt
 
 
-# kanban etc...
+# template serivces
 for i in $(find ${TEMPLATE_DIR}/services/ -name pull-images.sh); do
     source $i
 done
