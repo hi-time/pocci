@@ -207,7 +207,7 @@ var configureGitLab = function*(browser, url, gitlabUrl) {
     .selectByValue('#credentials-dialog-form select.setting-input.dropdownList', '1')
     .pause(1000)
     .setValue('#credentials-dialog-form input[name="_.apiToken"]', apiToken)
-    .setValue('#credentials-dialog-form input[name="_.id"][checkurl="/descriptorByName/com.dabsquared.gitlabjenkins.connection.GitLabApiTokenImpl/checkId"]', 'default')
+    .setValue('#credentials-dialog-form tr:not([field-disabled]) > td > input[name="_.id"]', 'default')
     .click('#credentials-add-submit-button')
     .pause(2000)
     .selectByIndex('select[checkurl="/descriptorByName/com.dabsquared.gitlabjenkins.connection.GitLabConnectionConfig/checkApiTokenId"]', 1)
