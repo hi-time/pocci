@@ -154,6 +154,11 @@ describe "setup.redmine.yml", ->
             path:   "http://redmine.pocci.test"
             expected:
               "title":   "Redmine"
+          taiga:
+            path:   "http://taiga.pocci.test"
+            thrown:
+              "code": "ENOTFOUND"
+              "hostname": "taiga.pocci.test"
         chai.assert.equal(process.env.TZ, "Etc/UTC")
 
   it "jenkins", (done) ->

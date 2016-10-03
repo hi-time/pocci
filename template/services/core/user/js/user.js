@@ -1,11 +1,54 @@
 'use strict';
+var fs = require('fs');
 var LdapClient = require('promised-ldap');
 var ssha = require('ssha');
 var toArray = require('pocci/util.js').toArray;
 var util = require('pocci/util.js');
 var parse = require('url').parse;
+var path = require('path');
+var server = require('co-request');
+
+var getAvatarImageDirectory = function() {
+  return './config/avatar';
+};
+
+var getAvatarImageFileName = function(user) {
+  return getAvatarImageDirectory() + '/' + user.uid + path.extname(user.labeledURI);
+};
+
+var cleanAvatarImages = function() {
+  var avatarDir = getAvatarImageDirectory();
+  if(fs.existsSync(avatarDir)) {
+    fs.readdirSync(avatarDir).forEach(function(file) {
+      fs.unlinkSync(path.join(avatarDir, file));
+    });
+  } else {
+    fs.mkdirSync(avatarDir);
+  }
+};
+
+var createAvatarImage = function*(user) {
+  var fileName = getAvatarImageFileName(user);
+  try {
+    var parsedUrl = parse(user.labeledURI);
+    if(parsedUrl.protocol === 'file:') {
+      var src = path.join('./config', parsedUrl.pathname);
+      fs.createReadStream(src).pipe(fs.createWriteStream(fileName));
+    } else {
+      var res = yield server({
+        url: user.labeledURI,
+        encoding : null
+      });
+      fs.writeFileSync(fileName, res.body, {encoding:'binary'});
+    }
+  } catch(e) {
+    console.log('WARNING: cannot download: ' + user.labeledURI + ' --> ' + fileName);
+    console.log(e);
+  }
+};
 
 var addUsers = function*(client, users, baseDn) {
+  cleanAvatarImages();
   for(var i = 0; i < users.length; i++) {
     var user = users[i];
     var plainPassword = user.userPassword;
@@ -24,6 +67,10 @@ var addUsers = function*(client, users, baseDn) {
     }
     yield client.add(dn, user);
     user.userPassword = plainPassword;
+
+    if(user.labeledURI) {
+      yield createAvatarImage(user);
+    }
   }
 };
 
@@ -52,5 +99,7 @@ module.exports = {
     }
     var client = yield bind();
     yield addUsers(client, toArray(options.user.users), process.env.LDAP_BASE_DN);
-  }
+  },
+  getAvatarImageDirectory: getAvatarImageDirectory,
+  getAvatarImageFileName: getAvatarImageFileName
 };

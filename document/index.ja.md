@@ -16,6 +16,7 @@ CIサービス構築・利用手引き
 *   [Jenkins の設定](./jenkins.ja.md)
 *   [SonarQube の設定](./sonar.ja.md)
 *   [Redmine の設定](./redmine.ja.md)
+*   [Taiga の設定](./taiga.ja.md)
 
 リファレンス
 ------------
@@ -34,4 +35,5 @@ GitLab              | <https://gitlab.com/>, <https://github.com/sameersbn/docke
 Jenkins             | <https://jenkins-ci.org/>
 SonarQube           | <http://www.sonarqube.org/>
 Redmine             | <http://www.redmine.org/>, <https://github.com/sameersbn/docker-redmine/>
+Taiga               | <https://taiga.io/>
 Open LDAP           | <http://www.openldap.org/>, <https://github.com/osixia/docker-openldap>

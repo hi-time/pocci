@@ -57,10 +57,11 @@ cd bin
 
 あらかじめ用意されているサービス構成には以下のものがあります。
 
-サービス構成タイプ | コード管理 | CI      | チケット管理 | 品質分析  | ユーザー管理
------------------- | ---------- | ------- | ------------ | --------- | --------------
-**default**        | GitLab     | GitLab  | GitLab       | SonarQube | Account Center
-**redmine**        | GitLab     | Jenkins | Redmine      | SonarQube | Account Center
+サービス構成タイプ | コード管理 | CI      | チケット管理 | タスクボード | 品質分析  | ユーザー管理
+------------------ | ---------- | ------- | ------------ | ------------ | --------- | --------------
+**default**        | GitLab     | GitLab  | GitLab       | GitLab       | SonarQube | Account Center
+**taiga**          | GitLab     | GitLab  | GitLab/Taiga | Taiga        | SonarQube | Account Center
+**redmine**        | GitLab     | Jenkins | Redmine      | -            | SonarQube | Account Center
 
 
 #### 実行例
@@ -87,6 +88,7 @@ cd bin
 template/
   setup.default.yml
   setup.redmine.yml
+  setup.taiga.yml
 ```
 
 これらのファイルを参考にしてセットアップファイルを作成することにより、
@@ -112,7 +114,7 @@ create-config はそのセットアップファイルの内容を読み込んで
 
 ### 5.  独自テンプレートを作成する
 独自のテンプレートを作成することも可能です。
-詳細は[テンプレート作成手引き](./document/pocci-template.ja.md)
+詳細は[テンプレート作成手引き](./pocci-template.ja.md)
 を参照してください。
 
 

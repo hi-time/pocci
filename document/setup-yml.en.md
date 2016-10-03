@@ -545,3 +545,64 @@ SMTP Service related defintions.
     *   The default is a value of environment variable `SMTP_RELAYHOST`
 *   **password:** SMTP password
     *   The default is a value of environment variable `SMTP_PASSWORD`
+
+taiga:
+--------
+Taiga related defintions.
+
+Definition example:
+
+```yaml
+taiga:
+  projects:
+    - name: example
+      description: example project
+```
+
+*   **projects:** Project information
+    *   **name:** Project name
+    *   **description:** Project description
+*   **users:** First user registered
+    *   The user ID (`uid`), password (`userPassword`), and mail address (`mail`) must be specified.
+    *   This can be skipped when `users:` is specified in `user:` as shown below.
+
+        ```yaml
+        user:
+          users:
+            - uid:           boze
+              userPassword:  password
+              ...
+
+        taiga:
+          projects:
+            ...
+        ```
+
+    *   A user defined in `users:` or `user.users:`
+        is set as the "Product Onwer" of the projects defined in `projects:`.
+*   **user:** A user of the project owner.
+    *   The default is a first user defined in `users:` or `user.users`.
+*   **url:** URL of Taiga server
+    *   The default is `http://taiga.[Domain name specified in pocci.domain]`.
+    *   Environment variables:  `TAIGA_URL`, `TAIGA_PROTOCOL`, `TAIGA_HOST`, `TAIGA_PORT`
+*   **smtpDomain:** SMTP domain
+    *   The default is the domain name specified in pocci.domain.
+    *   Environment variable:  `TAIGA_SMTP_DOMAIN`
+*   **smtpHost:** SMTP server host name
+    *   The default is `smtp.[Domain name specified in pocci.domain]`.
+    *   Environment variable:  `TAIGA_SMTP_HOST`
+*   **smtpPort:** SMTP server port number
+    *   The default is `25`.
+    *   Environment variable:  `TAIGA_SMTP_PORT`
+*   **mailAddress:** Mail address of Taiga
+    *   The default is the address specified in pocci.adminMailAddress.
+    *   Environment variable:  `TAIGA_MAIL_ADDRESS`
+*   **dbName:** Name of the database to be used internally by Taiga
+    *   The default is `taiga_production`.
+    *   Environment variable:  `TAIGA_DB_NAME`
+*   **dbUser:** User name for connecting to the database to be used internally by Taiga
+    *   The default is `taiga`.
+    *   Environment variable:  `TAIGA_DB_USER`
+*   **dbPassword:** Password for connecting to the database to be used internally by Taiga
+    *   The default is a random alpha-numeric string.
+    *   Environment variable:  `TAIGA_DB_PASS`

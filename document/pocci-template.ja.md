@@ -28,9 +28,10 @@
 *   セットアップファイル (setup.*.yml)
     *   setup.default.yml
     *   setup.redmine.yml
+    *   setup.taiga.yml
 *   サービス定義ディレクトリ (services)
     *   バックエンドサービス: dns, fluentd
-    *   一般サービス: gitlab, jenkins, nginx, redmine, smtp, sonar, user
+    *   一般サービス: gitlab, jenkins, nginx, redmine, smtp, sonar, taiga, user
 *   ソースコード (code)
     *   example-java
     *   example-nodejs

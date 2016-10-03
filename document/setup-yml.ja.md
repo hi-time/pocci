@@ -552,4 +552,66 @@ smtp:
     *   デフォルトは環境変数 `SMTP_RELAYHOST` の値
 *   **password:** SMTP認証パスワード
     *   デフォルトは環境変数 `SMTP_PASSWORD` の値
-    
+
+
+taiga:
+------
+Taiga 関連定義。
+
+定義例:
+
+```yaml
+taiga:
+  projects:
+    - name: example
+      description: example project
+```
+
+*   **projects:** プロジェクト情報
+    *   **name:** プロジェクト名
+    *   **description:** プロジェクト説明
+*   **users:** 初期登録ユーザー
+    *   ユーザーID (`uid`) 、パスワード (`userPassword`) 、メールアドレス (`mail`) の指定が必要です。
+    *   以下のように `user:` に `users:` が指定されている場合は省略可能です。
+
+        ```yaml
+        user:
+          users:
+            - uid:          boze
+              userPassword: password
+              ...
+
+        taiga:
+          projects:
+            ...
+        ```
+
+    *   `users:` または `user.users:` で定義したユーザーは、
+        `projects:` で定義したプロジェクトの Product Owner として設定されます。
+*   **user:** プロジェクト管理者
+    *   作成するプロジェクトの管理者を指定します。
+    *   指定しない場合は、`users:` または `user.users:` の一番最初のユーザーとなります。
+*   **url:** Taiga サーバのURL
+    *   デフォルトは `http://taiga.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `TAIGA_URL`, `TAIGA_PROTOCOL`, `TAIGA_HOST`, `TAIGA_PORT`
+*   **smtpDomain:** SMTPドメイン
+    *   デフォルトは pocci.domain で指定したドメイン名
+    *   環境変数: `TAIGA_SMTP_DOMAIN`
+*   **smtpHost:** SMTPサーバホスト名
+    *   デフォルトは `smtp.[pocci.domain で指定したドメイン名]`
+    *   環境変数: `TAIGA_SMTP_HOST`
+*   **smtpPort:** SMTPサーバポート番号
+    *   デフォルトは `25`
+    *   環境変数: `TAIGA_SMTP_PORT`
+*   **mailAddress:** Taigaのメールアドレス
+    *   デフォルトは pocci.adminMailAddress で指定したアドレス
+    *   環境変数: `TAIGA_MAIL_ADDRESS`
+*   **dbName:** Taiga が内部的に使用するデータベースの名前
+    *   デフォルトは `taiga_production`
+    *   環境変数: `TAIGA_DB_NAME`
+*   **dbUser:** Taiga が内部的に使用するデータベース接続時のユーザー名
+    *   デフォルトは `taiga`
+    *   環境変数: `TAIGA_DB_USER`
+*   **dbPassword:** Taiga が内部的に使用するデータベース接続時のパスワード
+    *   デフォルトはランダムな文字列
+    *   環境変数: `TAIGA_DB_PASS`

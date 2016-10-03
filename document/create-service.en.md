@@ -56,10 +56,11 @@ be performed by adding an argument to
 
 The following service configuration types are provided in advance.
 
-Service configuration type | Version Control | Continuous Integration | Issue Tracking | Quality Management | User Account Management
--------------------------- | --------------- | ---------------------- | -------------- | ------------------ | -----------------------
-**default**                | GitLab          | GitLab                 | GitLab         | SonarQube          | Account Center
-**redmine**                | GitLab          | Jenkins                | Redmine        | SonarQube          | Account Center
+Service configuration type | Version Control | Continuous Integration | Issue Tracking | Task Board | Quality Management | User Account Management
+-------------------------- | --------------- | ---------------------- | -------------- | ---------- | ------------------ | -----------------------
+**default**                | GitLab          | GitLab                 | GitLab         | GitLab     | SonarQube          | Account Center
+**taiga**                  | GitLab          | GitLab                 | GitLab/Taiga   | Taiga      | SonarQube          | Account Center
+**redmine**                | GitLab          | Jenkins                | Redmine        | -          | SonarQube          | Account Center
 
 
 #### Execution example
@@ -86,6 +87,7 @@ Standard setup files exist in the `template` directory.
 template/
   setup.default.yml
   setup.redmine.yml
+  setup.taiga.yml
 ```
 
 Creating a new setup file allows you to

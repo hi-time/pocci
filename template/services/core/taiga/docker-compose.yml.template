@@ -1,0 +1,37 @@
+cat << EOF
+# Taiga
+taigadb:
+  image: sameersbn/postgresql:latest
+  env_file:
+    - ./.env
+  environment:
+    - DB_NAME=${TAIGA_DB_NAME}
+    - DB_USER=${TAIGA_DB_USER}
+    - DB_PASS=${TAIGA_DB_PASS}
+
+taigaback:
+  image: xpfriend/taiga-back:1.0.0
+  dns: ${DNS_ADDRESS}
+  env_file:
+    - ./.env
+  environment:
+    - DEBUG=True
+  links:
+    - taigadb:postgres
+  volumes:
+    - ${POCCI_LOG_DIR}/taiga/back:/taiga/logs
+
+taiga:
+  image: xpfriend/taiga-front:1.0.0
+  hostname: ${TAIGA_HOST}
+  dns: ${DNS_ADDRESS}
+  env_file:
+    - ./.env
+  environment:
+    - DEBUG=true
+  links:
+    - taigaback:taigaback
+  volumes_from:
+    - taigaback
+
+EOF

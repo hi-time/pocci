@@ -22,6 +22,7 @@ http://jenkins.pocci.test/ (*)  | [Jenkins](https://jenkins-ci.org/)            
 http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | Quality Management
 http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | User Account Management
 http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | Issue Tracking
+http://taiga.pocci.test/ (*)    | [Taiga](https://taiga.io/)                              | Agile Project Management
 http://cert.pocci.test/         | -                                                       | Download page of Root Certificate and Server Certificate
 
 (*) If the default configuration is used, access will not be possible because the services will not be started.

@@ -8,7 +8,7 @@ hosts ファイル (Windowsマシンの場合は `C:\Windows\System32\drivers\et
 設定例 (実際のIPアドレスはCIサービスを起動したマシンのものを使用すること) :
 
 ```
-192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test redmine.pocci.test cert.pocci.test
+192.168.1.2 user.pocci.test gitlab.pocci.test jenkins.pocci.test sonar.pocci.test redmine.pocci.test cert.pocci.test taiga.pocci.test
 ```
 
 
@@ -22,6 +22,7 @@ http://jenkins.pocci.test/ (*)  | [Jenkins](https://jenkins-ci.org/)            
 http://sonar.pocci.test/        | [SonarQube](http://www.sonarqube.org/)                  | コード品質分析
 http://user.pocci.test/         | [Account Center (LDAP)](https://github.com/xpfriend/pocci-account-center)    | サービス利用者の登録 (LDAP)
 http://redmine.pocci.test/ (*)  | [Redmine](http://www.redmine.org/)                      | チケット (Issue) 管理
+http://taiga.pocci.test/ (*)    | [Taiga](https://taiga.io/)                              | アジャイル開発プロジェクト管理
 http://cert.pocci.test/         | -                                                       | ルート証明書およびサーバ証明書のダウンロードページ
 
 (*) デフォルトの構成を利用した場合は起動しないためアクセスできません。

@@ -1,20 +1,40 @@
-###global describe, it###
+###global describe, it, before, after###
 ###jshint quotmark:true###
 "use strict"
 
 path = require("path")
 setup = require("pocci/setup.js")
 gitlab = require("pocci/gitlab.js")
+taiga = require("pocci/taiga.js")
 test = require("./resq.js")
 chai = require("chai")
 LdapClient = require("promised-ldap")
 
-describe "setup.default.yml", ->
+createTaigaRequest = () ->
+  yield taiga.createRequest "http://taiga.pocci.test", 
+      uid: "boze"
+      userPassword: "password"
+
+describe "setup.taiga.yml", ->
   @timeout(10 * 60 * 1000)
+
+  before (done) ->
+    test done,
+      setup: ->
+        yield setup.initBrowser()
+
+  after (done) ->
+    test done,
+      cleanup: ->
+        yield setup.browser.end()
 
   it "gitlab", (done) ->
     test done,
       setup: ->
+        @request = yield createTaigaRequest()
+        taigaProjectId = yield @get("body.id@/projects/by_slug?slug=boze-example", true)
+        @hookUrl = yield @get("body.gitlab.webhooks_url@/projects/#{taigaProjectId}/modules", true)
+
         url = "http://gitlab.pocci.test"
         yield setup.initBrowser()
         yield gitlab.loginByAdmin(setup.browser, url)
@@ -39,13 +59,16 @@ describe "setup.default.yml", ->
             path:   "/groups/#{@groupId}/members"
             sort:   {target: "body", keys: "id"}
             expected:
-              "body.length":          2
+              "body.length":          3
               "body[0].username":     "root"
               "body[0].name":         "Administrator"
               "body[0].access_level": 50
               "body[1].username":     "boze"
               "body[1].name":         "BOZE, Taro"
               "body[1].access_level": 50
+              "body[2].username":     "hamada"
+              "body[2].name":         "HAMADA, Kawao"
+              "body[2].access_level": 50
 
           projects:
             path:   "/projects"
@@ -90,7 +113,13 @@ describe "setup.default.yml", ->
           projectGuideHooks:
             path: "/projects/#{@projectIdGuide}/hooks"
             expected:
-              "body.length":          0
+              "body.length":                  1
+              "body[0].url":                  @hookUrl
+              "body[0].push_events":          true
+              "body[0].issues_events":        true
+              "body[0].note_events":          true
+              "body[0].merge_requests_events":false
+              "body[0].tag_push_events":      false
 
           projectJavaFiles:
             path: "/projects/#{@projectIdJava}/repository/tree"
@@ -119,7 +148,13 @@ describe "setup.default.yml", ->
           projectJavaHooks:
             path: "/projects/#{@projectIdJava}/hooks"
             expected:
-              "body.length":          0
+              "body.length":                  1
+              "body[0].url":                  @hookUrl
+              "body[0].push_events":          true
+              "body[0].issues_events":        true
+              "body[0].note_events":          true
+              "body[0].merge_requests_events":false
+              "body[0].tag_push_events":      false
 
           projectNodeFiles:
             path: "/projects/#{@projectIdNode}/repository/tree"
@@ -152,14 +187,19 @@ describe "setup.default.yml", ->
           projectNodeHooks:
             path: "/projects/#{@projectIdNode}/hooks"
             expected:
-              "body.length":          0
+              "body.length":                  1
+              "body[0].url":                  @hookUrl
+              "body[0].push_events":          true
+              "body[0].issues_events":        true
+              "body[0].note_events":          true
+              "body[0].merge_requests_events":false
+              "body[0].tag_push_events":      false
 
         yield @assert
           runners:
             path:   "/runners/all"
             expected:
               "body.length":  1
-
 
   it "pocci", (done) ->
     test done,
@@ -169,6 +209,10 @@ describe "setup.default.yml", ->
             path:   "http://sonar.pocci.test"
             expected:
               "h1":   "Home"
+          taiga:
+            path:   "http://taiga.pocci.test"
+            expected:
+              "title":   "Taiga"
           jenkins:
             path:   "http://jenkins.pocci.test"
             thrown:
@@ -179,13 +223,7 @@ describe "setup.default.yml", ->
             thrown:
               "code": "ENOTFOUND"
               "hostname": "redmine.pocci.test"
-          taiga:
-            path:   "http://taiga.pocci.test"
-            thrown:
-              "code": "ENOTFOUND"
-              "hostname": "taiga.pocci.test"
         chai.assert.equal(process.env.TZ, "Etc/UTC")
-
 
   it "user", (done) ->
     test done,
@@ -196,7 +234,7 @@ describe "setup.default.yml", ->
         result = yield client.search "dc=example,dc=com",
           scope: "one"
           filter: "(uid=*)"
-        chai.assert.equal(result.entries.length, 1)
+        chai.assert.equal(result.entries.length, 2)
 
         attrs = []
         for entry in result.entries
@@ -206,14 +244,84 @@ describe "setup.default.yml", ->
           attrs.push(obj)
 
         console.log(attrs)
-
         chai.assert.equal(attrs[0].uid, "boze")
         chai.assert.equal(attrs[0].cn, "boze")
         chai.assert.equal(attrs[0].sn, "BOZE")
         chai.assert.equal(attrs[0].givenName, "Taro")
         chai.assert.equal(attrs[0].displayName, "BOZE, Taro")
         chai.assert.equal(attrs[0].mail, "boze@localhost.localdomain")
-        chai.assert.equal(attrs[0].labeledURI, undefined)
+        chai.assert.equal(attrs[0].labeledURI, "file:///users/boze.png")
         chai.assert.match(attrs[0].userPassword, /^{SSHA}.+/)
 
+        chai.assert.equal(attrs[1].uid, "hamada")
+        chai.assert.equal(attrs[1].cn, "hamada")
+        chai.assert.equal(attrs[1].sn, "HAMADA")
+        chai.assert.equal(attrs[1].givenName, "Kawao")
+        chai.assert.equal(attrs[1].displayName, "HAMADA, Kawao")
+        chai.assert.equal(attrs[1].mail, "hamada@localhost.localdomain")
+        chai.assert.equal(attrs[1].labeledURI, "file:///users/hamada.png")
+        chai.assert.match(attrs[1].userPassword, /^{SSHA}.+/)
 
+  it "taiga", (done) ->
+    test done,
+      setup: ->
+        @request = yield createTaigaRequest()
+        return
+
+      expect: ->
+        @taigaProjectId = yield @get("body.id@/projects/by_slug?slug=boze-example", true)
+
+        yield @assert
+          projects:
+            path: "/projects"
+            expected:
+              "body.length":            1
+              "body[0].name":           "example"
+              "body[0].description":    "example project"
+              "body[0].slug":           "boze-example"
+              "body[0].owner.username": "boze"
+              "body[0].members.length": 2
+
+          users:
+            path: "/users"
+            sort:   {target: "body", keys: "id"}
+            expected:
+              "body.length":            2
+              "body[0].username":       "boze"
+              "body[0].full_name":      "BOZE, Taro"
+              "body[0].is_active":      true
+              "body[0].photo":          /boze.png/
+              "body[0].big_photo":      /boze.png/
+              "body[0].roles.length":   1
+              "body[0].roles[0]":       "Product Owner"
+              "body[0].projects_with_me.length":    1
+              "body[0].projects_with_me[0].slug":   "boze-example"
+              "body[0].projects_with_me[0].name":   "example"
+              "body[1].username":       "hamada"
+              "body[1].full_name":      "HAMADA, Kawao"
+              "body[1].is_active":      true
+              "body[1].photo":          /hamada.png/
+              "body[1].big_photo":      /hamada.png/
+              "body[1].roles.length":   1
+              "body[1].roles[0]":       "Product Owner"
+              "body[1].projects_with_me.length":    1
+              "body[1].projects_with_me[0].slug":   "boze-example"
+              "body[1].projects_with_me[0].name":   "example"
+
+          memberships:
+            path: "/memberships"
+            sort:   {target: "body", keys: "id"}
+            expected:
+              "body.length":            2
+              "body[0].project_name":   "example"
+              "body[0].full_name":      "BOZE, Taro"
+              "body[0].role_name":      "Product Owner"
+              "body[0].is_owner":       true
+              "body[0].is_admin":       true
+              "body[0].invited_by":     null
+              "body[1].project_name":   "example"
+              "body[1].full_name":      "HAMADA, Kawao"
+              "body[1].role_name":      "Product Owner"
+              "body[1].is_owner":       false
+              "body[1].is_admin":       false
+              "body[1].invited_by.username": "boze"

@@ -1,0 +1,5 @@
+SERVICE_HOST="${TAIGA_HOST}"
+SERVER_NAME="${SERVICE_HOST} taiga taiga.*"
+PROXY_PASS="taiga"
+
+source ${LIB_DIR}/create-nginx-conf

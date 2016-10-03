@@ -1,0 +1,44 @@
+pocci:
+  services:
+    - gitlab
+    - user
+    - sonar
+    - taiga
+    - smtp
+
+user:
+  users:
+    - uid:          boze
+      givenName:    Taro
+      sn:           BOZE
+      displayName:  "BOZE, Taro"
+      mail:         boze@localhost.localdomain
+      userPassword: password
+      labeledURI:   "file:///users/boze.png"
+    - uid:          hamada
+      givenName:    Kawao
+      sn:           HAMADA
+      displayName:  "HAMADA, Kawao"
+      mail:         hamada@localhost.localdomain
+      userPassword: password
+      labeledURI:   "file:///users/hamada.png"
+
+gitlab:
+  smtpEnabled: true
+  groups:
+    - groupName: example
+      projects:
+        - projectName:    users-guide
+        - projectName:    example-java
+          commitMessage:  "[ci skip] import example codes (#1)"
+          issues:
+            - import example codes
+        - projectName:    example-nodejs
+          commitMessage:  "[ci skip] import example codes (#1)"
+          issues:
+            - import example codes
+
+taiga:
+  projects:
+    - name: example
+      description: example project

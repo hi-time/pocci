@@ -2,7 +2,8 @@
 ###jshint unused:false###
 "use strict"
 
-assert = require("chai").assert
+chai = require("chai")
+assert = chai.assert
 cheerio = require("cheerio")
 co = require("co")
 getPathValue = require("chai/lib/chai/utils/getPathValue")
@@ -57,7 +58,10 @@ assertJsonValue = (response, spec, expected) ->
     if typeof value is "undefined"
       assert.notDeepProperty(response, key)
     else
-      assert.deepPropertyVal(response, key, value)
+      if typeof value is "object" and value isnt null
+        new chai.Assertion(response).to.have.deep.property(key).and.match(value)
+      else
+        assert.deepPropertyVal(response, key, value)
 
   return
 

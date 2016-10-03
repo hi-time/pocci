@@ -16,6 +16,7 @@ Setting Procedures after Introduction
 *   [Jenkins Setup](./jenkins.en.md)
 *   [SonarQube Setup](./sonar.en.md)
 *   [Redmine Setup](./redmine.en.md)
+*   [Taiga Setup](./taiga.en.md)
 
 References
 ----------
@@ -33,4 +34,5 @@ GitLab              | <https://gitlab.com/>, <https://github.com/sameersbn/docke
 Jenkins             | <https://jenkins-ci.org/>
 SonarQube           | <http://www.sonarqube.org/>
 Redmine             | <http://www.redmine.org/>, <https://github.com/sameersbn/docker-redmine/>
+Taiga               | <https://taiga.io/>
 Open LDAP           | <http://www.openldap.org/>, <https://github.com/osixia/docker-openldap>

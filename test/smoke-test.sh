@@ -39,7 +39,21 @@ stage1() {
 }
 
 stage2() {
-    echo "skip stage2..."
+    echo $(date): SETUP taiga >> ${LOG_FILE}
+    echo 'y' | ${BASE_DIR}/temp/pocci/bin/create-config taiga
+    ${BASE_DIR}/temp/pocci/bin/up-service
+
+    sleep 60
+    echo $(date): BACKUP taiga >> ${LOG_FILE}
+    ${BASE_DIR}/temp/pocci/bin/backup
+    move_backup_dir taiga
+
+    echo $(date): TEST_1 taiga >> ${LOG_FILE}
+    cd ${BASE_DIR}/temp/pocci/bin/js
+    ../oneoff nodejs grunt basic
+    ../oneoff nodejs grunt prepare mochaTest:loginTaiga
+    ../oneoff nodejs grunt prepare mochaTest:taigaSetup
+    ${BASE_DIR}/build-test.sh
 }
 
 stage3() {
@@ -86,7 +100,15 @@ stage5() {
 }
 
 stage6() {
-    echo "skip stage6..."
+    echo $(date): RESTORE taiga >> ${LOG_FILE}
+    echo 'y' | ${BASE_DIR}/temp/pocci/bin/restore ${BASE_DIR}/temp/pocci/backup_taiga/*
+
+    echo $(date): TEST_2 taiga >> ${LOG_FILE}
+    cd ${BASE_DIR}/temp/pocci/bin/js
+    ../oneoff nodejs grunt basic
+    ../oneoff nodejs grunt prepare mochaTest:loginTaiga
+    ../oneoff nodejs grunt prepare mochaTest:taigaSetup
+    ${BASE_DIR}/build-test.sh
 }
 
 stage7() {

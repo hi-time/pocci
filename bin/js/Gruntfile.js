@@ -51,6 +51,9 @@ module.exports = function(grunt) {
       loginRedmine: {
         src: ['test/loginTest-redmine.js']
       },
+      loginTaiga: {
+        src: ['test/loginTest-taiga.js']
+      },
       jenkinsJavaBuild: {
         src: ['test/jenkinsJavaBuildTest.js']
       },
@@ -65,6 +68,9 @@ module.exports = function(grunt) {
       },
       redmineSetup: {
         src: ['test/redmineSetupTest.js']
+      },
+      taigaSetup: {
+        src: ['test/taigaSetupTest.js']
       },
       httpsSetup: {
         src: ['test/httpsSetupTest.js']
