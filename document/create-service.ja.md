@@ -105,7 +105,7 @@ create-config はそのセットアップファイルの内容を読み込んで
 
 ### 4.  追加テンプレートを利用する
 追加テンプレートを利用することにより、
-[Nexus](http://www.sonatype.org/nexus/)や[Taiga](https://taiga.io/)
+[Nexus](http://www.sonatype.org/nexus/)や[Zabbix](http://www.zabbix.com/)
 といった標準のサービス構成に含まれていないソフトウェアをセットアップすることも可能です。
 詳細は、
 [pocci-template-examples](https://github.com/xpfriend/pocci-template-examples/blob/master/README.ja.md)
