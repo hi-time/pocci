@@ -1,7 +1,7 @@
 cat << EOF
 # Taiga
 taigadb:
-  image: sameersbn/postgresql:latest
+  image: sameersbn/postgresql:9.5-2
   env_file:
     - ./.env
   environment:
