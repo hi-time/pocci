@@ -39,10 +39,13 @@ var updateGitLabSetting = function*(browser, url, gitlabUrl, apiToken) {
   yield login(browser, url, 'admin', 'admin');
   yield browser.url(url + '/settings?category=gitlab')
     .save('sonar-before-updateGitLabSetting')
-    .setValue('[id="input_sonar.gitlab.url"]', gitlabUrl)
-    .setValue('[id="input_sonar.gitlab.user_token"]', apiToken)
+    .setValue('[name="settings[sonar.gitlab.url]"]', gitlabUrl)
     .save('sonar-doing-updateGitLabSetting')
-    .submitForm('form')
+    .click('button.js-save-changes')
+    .save('sonar-doing-updateGitLabSetting')
+    .setValue('[name="settings[sonar.gitlab.user_token]"]', apiToken)
+    .save('sonar-doing-updateGitLabSetting')
+    .click('button.js-save-changes')
     .save('sonar-after-updateGitLabSetting');
   yield logout(browser, url, 'admin');
 };
