@@ -14,7 +14,7 @@ ${LIB_DIR}/create-proxy-env >/tmp/proxy.env
 cd ${JS_DIR}
 source ${LIB_DIR}/version
 NODEJS_IMAGE=xpfriend/workspace-nodejs:${VERSION_WORKSPACE_NODEJS}
-POCCIR_OPTS="--env-file=/tmp/proxy.env" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} npm install --no-bin-links
+POCCIR_OPTS="--env-file=/tmp/proxy.env" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} yarn install
 POCCIR_OPTS="--env-file=/tmp/proxy.env" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} /app/node_modules/selenium-standalone/bin/selenium-standalone install
 POCCIR_OPTS="--env-file=/tmp/proxy.env" ${BIN_DIR}/oneoff ${NODEJS_IMAGE} bower install
 
