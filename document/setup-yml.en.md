@@ -123,7 +123,7 @@ pocci:
     *   Environment variables:  `POCCI_DOMAIN_NAME`
 *   **services:** Services to be used  
     Select the services you wish to use from 
-    gitlab, jenkins, sonar, user, redmine, and slave.
+    gitlab, jenkins, nexus, redmine, smtp, sonar, taiga, user, and slave.
     *   Notes regarding combinations:
         *   If redmine is specified, gitlab must be specified for services.
             (It is not possible to link with gitlab running on another machine.)
@@ -132,6 +132,12 @@ pocci:
         *   If an external LDAP server will be used, user cannot be specified.
     *   When a connection is established using the IP address (e.g., `http://192.168.0.2),
         the connection will be to the service specified at the beginning here.
+    *   You can change the selection of services by arguments of `./create-config` command.
+        For example, when you define "gitlab, jenkins, sonar" as services, 
+        if you run the command by `./create-config +nexus` then the services is changed to
+        "gitlab, jenkins, sonar, nexus". If you run the command by `./create-config -sonar` 
+        then the services is changed to "gitlab, jenkins". And you can use +option and 
+        -option in the same time. For example, `./create-config +nexus -sonar`.
     *   Environment variables:  `INTERNAL_SERVICES`
 *   **hosts:** Name of the server referenced by each service  
     *   Define this for each IP address in the format of `IP address Server name Alias1 Alias2 ...` 
@@ -606,3 +612,12 @@ taiga:
 *   **dbPassword:** Password for connecting to the database to be used internally by Taiga
     *   The default is a random alpha-numeric string.
     *   Environment variable:  `TAIGA_DB_PASS`
+
+
+nexus:
+------
+Nexus related defintions.
+
+*   **url:** URL of Nexus
+    *   The default is `http://nexus.[Domain name specified in pocci.domain]`.
+    *   Environment variables: `NEXUS_URL`, `NEXUS_PROTOCOL`, `NEXUS_HOST`, `NEXUS_PORT`

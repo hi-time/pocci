@@ -1,0 +1,5 @@
+SERVICE_HOST="${NEXUS_HOST}"
+SERVER_NAME="${SERVICE_HOST} nexus nexus.*"
+PROXY_PASS="nexus:8081"
+
+source ${LIB_DIR}/create-nginx-conf

@@ -29,6 +29,7 @@ module.exports = {
     options.pocci.network           = options.pocci.network           || '172.20.0.0/16';
     options.pocci.gateway           = options.pocci.gateway           || '172.20.0.1';
     options.pocci.dnsAddress        = options.pocci.dnsAddress        || '172.20.0.254';
+    options.pocci.allServices       = options.pocci.services.concat(options.pocci.externalServices);
   },
   addEnvironment: function(options, environment) {
     environment.POCCI_DOMAIN_NAME = options.pocci.domain;

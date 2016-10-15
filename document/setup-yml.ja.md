@@ -122,7 +122,7 @@ pocci:
     *   デフォルトは `pocci.test`
     *   環境変数: `POCCI_DOMAIN_NAME`
 *   **services:** 利用するサービス  
-    gitlab, jenkins, sonar, user, redmine, slave
+    gitlab, jenkins, nexus, redmine, smtp, sonar, taiga, user, slave
     の中から利用したいものを選んでください。
     *   組み合わせに関する注意:
         *   redmine を指定する場合は必ず services に gitlab の指定が必要です。
@@ -132,6 +132,13 @@ pocci:
         *   外部の LDAP サーバを利用する場合は user の指定はできません。
     *   IPアドレスを使って接続する場合（例：`http://192.168.0.2`）、
         ここで先頭に指定したサービスに接続されます。
+    *   ここで指定したサービスは `./create-config` コマンドの引数指定により、
+        実行時に変更することができます。
+        例えば、gitlab, jenkins, sonar の3つが指定されている場合に、
+        `./create-config +nexus` とすれば、nexus サービスを加えた4つのサービスが起動し、
+        `./create-config -sonar` とすれば、sonar サービスを引いた2つのサービスで起動します。
+        また、`./create-config +nexus -sonar` と指定すれば gitlab, jenkins, nexus
+        の構成で起動します。
     *   環境変数: `INTERNAL_SERVICES`
 *   **hosts:** 各サービスが参照するサーバの名前  
     *   `IPアドレス サーバ名 別名1 別名2 ...`  の形式でIPアドレス毎に記述する
@@ -615,3 +622,12 @@ taiga:
 *   **dbPassword:** Taiga が内部的に使用するデータベース接続時のパスワード
     *   デフォルトはランダムな文字列
     *   環境変数: `TAIGA_DB_PASS`
+
+
+nexus:
+------
+Nexus 関連定義。
+
+*   **url:** Nexus サーバのURL
+    *   デフォルトは `http://nexus.[pocci.domainで指定したドメイン名]`
+    *   環境変数: `NEXUS_URL`, `NEXUS_PROTOCOL`, `NEXUS_HOST`, `NEXUS_PORT`
