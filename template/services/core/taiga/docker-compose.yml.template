@@ -1,7 +1,7 @@
 cat << EOF
 # Taiga
 taigadb:
-  image: sameersbn/postgresql:9.5-2
+  image: sameersbn/postgresql:9.5-3
   env_file:
     - ./.env
   environment:
@@ -22,7 +22,7 @@ taigaback:
     - ${POCCI_LOG_DIR}/taiga/back:/taiga/logs
 
 taiga:
-  image: xpfriend/taiga-front:1.3.0
+  image: xpfriend/taiga-front:1.4.0
   hostname: ${TAIGA_HOST}
   dns: ${DNS_ADDRESS}
   env_file:
