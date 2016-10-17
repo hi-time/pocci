@@ -10,6 +10,7 @@ set +e
 cd ${JS_DIR}
 POCCIR_OPTS="-e POCCI_DIR=${BASE_DIR} -e TZ=${TZ} -e POCCI_DOMAIN_NAME=${POCCI_DOMAIN_NAME} \
             -e POCCI_HTTPS=${POCCI_HTTPS} -e ADMIN_MAIL_ADDRESS=${ADMIN_MAIL_ADDRESS} \
+            -e EXTRA_SERVICES=$1 \
             -e SMTP_RELAYHOST=${SMTP_RELAYHOST} -e SMTP_PASSWORD=${SMTP_PASSWORD}" \
     ${BIN_DIR}/oneoff ${NODEJS_IMAGE} \
     node -e "require('pocci/yaml2env.js')('config/setup.yml')" >${CONFIG_DIR}/tmp.env
@@ -22,5 +23,6 @@ if [ $RC -ne 0 ]; then
     exit ${RC}
 fi
 
+cp ${JS_DIR}/config/setup.yml ${CONFIG_DIR}
 cat ${CONFIG_DIR}/tmp.env | tr -d '\r' >${CONFIG_DIR}/.env
 rm ${CONFIG_DIR}/tmp.env

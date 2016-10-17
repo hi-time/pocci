@@ -5,13 +5,28 @@ SECONDS=0
 BASE_DIR=$(cd $(dirname $0)/../..; pwd)
 source ${BASE_DIR}/bin/lib/init-env
 
+SERVICE_TYPE=""
+EXTRA_SERVICES=""
+
+while (( $# > 0 )); do
+  case "$1" in
+    -* | +* )
+      EXTRA_SERVICES="${EXTRA_SERVICES},$1"
+      ;;
+    * )
+      SERVICE_TYPE="$1"
+      ;;
+  esac
+  shift
+done
+
 echo "Create '${CONFIG_DIR} ...'"
 source ${LIB_DIR}/create-template-dir
 source ${LIB_DIR}/copy-js-file-to-node_modules
 source ${LIB_DIR}/clean-config-dir
-source ${LIB_DIR}/copy-setup-file-to-config-dir $1
+source ${LIB_DIR}/copy-setup-file-to-config-dir "${SERVICE_TYPE}"
 source ${LIB_DIR}/prepare-temp-config-dir
-${LIB_DIR}/create-env-file-from-setup-file
+${LIB_DIR}/create-env-file-from-setup-file "${EXTRA_SERVICES}"
 source ${LIB_DIR}/update-config-dir-by-temp-config-dir
 source ${LIB_DIR}/create-docker-compose-file
 

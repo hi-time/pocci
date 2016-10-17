@@ -1,7 +1,7 @@
 
 PARAM=setup.default.yml
-if [ -n "$1" ]; then
-    PARAM=$1
+if [ -n "${SERVICE_TYPE}" ]; then
+    PARAM=${SERVICE_TYPE}
 fi
 
 if [ `echo ${PARAM} | grep '://' | wc -l` -eq 1 ]; then

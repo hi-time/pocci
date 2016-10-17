@@ -23,8 +23,27 @@ var addUrl = function(environment, services, serviceUrl, allServiceUrl) {
   }
 };
 
+var addExtraServices = function(pocciServices, extraServices) {
+  var services = extraServices.split(',');
+  for(var i = 0; i < services.length; i++) {
+    if(services[i] && services[i].length > 1) {
+      var operator = services[i].substring(0, 1);
+      var service = services[i].substring(1);
+      var index = pocciServices.indexOf(service);
+      if(operator === '+' && index === -1) {
+        pocciServices.push(service);
+      } else if(operator === '-' && index > -1) {
+        pocciServices.splice(index, 1);
+      }
+    }
+  }
+};
+
 module.exports = function(yamlFile) {
-  var options = yaml(yamlFile);
+  var options = yaml.load(yamlFile);
+  addExtraServices(options.pocci.services, process.env.EXTRA_SERVICES);
+  yaml.save(options, yamlFile);
+
   var modules = fs.readdirSync(__dirname);
   var config = [pocci];
   for(var i = 0; i < modules.length; i++) {

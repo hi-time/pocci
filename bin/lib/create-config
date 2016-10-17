@@ -17,7 +17,7 @@ ${BIN_DIR}/destroy-service 2>&1         | tee -a ${LOG_FILE} && handle_error
 
 echo ""                                 | tee -a ${LOG_FILE}
 echo "*** STEP 2 ***"                   | tee -a ${LOG_FILE}
-${LIB_DIR}/init-config $1 2>&1          | tee -a ${LOG_FILE} && handle_error
+${LIB_DIR}/init-config "$@" 2>&1        | tee -a ${LOG_FILE} && handle_error
 
 echo ""                                 | tee -a ${LOG_FILE}
 echo "*** STEP 3 ***"                   | tee -a ${LOG_FILE}

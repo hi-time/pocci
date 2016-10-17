@@ -13,7 +13,7 @@ var initBrowser = function*() {
 };
 
 var setup = function*(yamlFile, keepOpenBrowser) {
-  var options = yaml(yamlFile);
+  var options = yaml.load(yamlFile);
 
   if(!options.pocci || !options.pocci.services) {
     return;
