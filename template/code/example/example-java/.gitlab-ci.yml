@@ -1,5 +1,5 @@
 build_job:
-  image: xpfriend/workspace-java:3.10.1
+  image: xpfriend/workspace-java:3.11.0
   script:
     - export SONAR_ANALYSIS_MODE=publish
     - bash ./build.sh

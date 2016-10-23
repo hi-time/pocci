@@ -1,13 +1,13 @@
 cat << EOF
 docker:
-  image: gitlab/gitlab-runner:alpine-v1.6.1
+  image: gitlab/gitlab-runner:alpine-v1.7.0
   volumes:
     - ${CONFIG_DIR}/volumes/gitlab-runner/docker:/etc/gitlab-runner
     - /var/run/docker.sock:/var/run/docker.sock
   dns: ${DNS_ADDRESS}
   environment:
     - DOCKER_DNS=${DNS_ADDRESS}
-    - DOCKER_IMAGE=xpfriend/workspace-nodejs:3.10.2
+    - DOCKER_IMAGE=xpfriend/workspace-nodejs:3.11.0
     - DOCKER_DISABLE_CACHE=true
     - DOCKER_NETWORK_MODE=${POCCI_BACKEND_SERVICE_PREFIX}_default
     - CI_SERVER_URL=${GITLAB_URL}/ci
