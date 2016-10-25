@@ -22,7 +22,7 @@ taigaback:
     - ${POCCI_LOG_DIR}/taiga/back:/taiga/logs
 
 taiga:
-  image: xpfriend/taiga-front:1.4.0
+  image: xpfriend/taiga-front:1.5.0
   hostname: ${TAIGA_HOST}
   dns: ${DNS_ADDRESS}
   env_file:
