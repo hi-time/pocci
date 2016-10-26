@@ -1996,8 +1996,8 @@ sax@^1.1.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
 
 selenium-standalone@^5.1.0:
-  version "5.7.2"
-  resolved "https://registry.yarnpkg.com/selenium-standalone/-/selenium-standalone-5.7.2.tgz#cc7c59172a04b2d28b10ab992fa40f181ab69c81"
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/selenium-standalone/-/selenium-standalone-5.8.0.tgz#0506ca50a60d58e6f3256df102964deef6147ed3"
   dependencies:
     async "1.2.1"
     commander "2.6.0"
