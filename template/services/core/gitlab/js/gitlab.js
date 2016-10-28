@@ -55,7 +55,7 @@ var newPassword = function*(browser, url, password) {
 var loginByAdmin = function*(browser, url) {
   yield browser.url(url + '/users/sign_in')
     .save('gitlab-before-loginByAdmin')
-    .click('a[href="#tab-signin"]')
+    .click('a[href="#ldap-standard"]')
     .save('gitlab-loginByAdmin-siginin-tab-clicked')
     .setValue('#user_login', 'root')
     .setValue('#user_password', adminPassword)
