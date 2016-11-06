@@ -3,6 +3,30 @@
 var parse = require('url').parse;
 var util = require('pocci/util.js');
 
+var login = function*(browser, url) {
+  yield browser.url(url)
+    .pause(12000)
+    .click('a[data-qtip="Sign in"]')
+    .save('nexus-before-login')
+    .pause(2000)
+    .setValue('input[name="username"]', 'admin')
+    .setValue('input[name="password"]', 'admin123')
+    .click('a.x-btn-nx-primary-small')
+    .save('nexus-after-login');
+};
+
+var addNpmRealm = function*(browser, url) {
+  yield browser.url(url + '/#admin/security/realms')
+    .pause(1000)
+    .click('li=npm Bearer Token Realm')
+    .click('a[data-qtip="Add to Selected"]')
+    .pause(1000)
+    .save('nexus-before-addNpmRealm')
+    .click('a.x-btn-nx-primary-small')
+    .pause(1000)
+    .save('nexus-after-addNpmRealm');
+};
+
 module.exports = {
   addDefaults: function(options) {
     options.nexus                         = options.nexus                         || {};
@@ -31,5 +55,10 @@ module.exports = {
       environment.BOWER_REGISTRY_URL          = options.nexus.bowerRegistryUrl;
       environment.BOWER_PRIVATE_REGISTRY_URL  = options.nexus.bowerPrivateRegistryUrl;
     }
+  },
+  setup: function*(browser) {
+    var url = process.env.NEXUS_URL;
+    yield login(browser, url);
+    yield addNpmRealm(browser, url);
   }
 };

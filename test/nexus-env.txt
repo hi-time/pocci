@@ -1,0 +1,7 @@
+MAVEN_DEPLOY_USERNAME=admin
+MAVEN_DEPLOY_PASSWORD=admin123
+BUILD_TRIGGER_OF_JAVA_APP=http://jenkinsci:password@jenkins.pocci.test/job/java-app/build
+NPM_USER=admin
+NPM_PASS=admin123
+NPM_EMAIL=admin@example.org
+BUILD_TRIGGER_OF_NODEJS_APP=http://jenkinsci:password@jenkins.pocci.test/job/nodejs-app/build

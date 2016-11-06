@@ -1,15 +1,7 @@
 #!/bin/bash
 set -e
 
-cat << EOF >/tmp/server.js
-require('http').createServer(function (req, res) {
-  var url = require('url').parse(req.url);
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('OK');
-  process.exit(url.path.substring(1));
-}).listen(9898);
-EOF
-
+cp ./server.js /tmp
 
 git clone http://boze:password@gitlab.pocci.test/example/$1.git
 cd $1

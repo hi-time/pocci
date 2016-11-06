@@ -54,6 +54,9 @@ module.exports = function(grunt) {
       loginTaiga: {
         src: ['test/loginTest-taiga.js']
       },
+      loginNexus: {
+        src: ['test/loginTest-nexus.js']
+      },
       jenkinsJavaBuild: {
         src: ['test/jenkinsJavaBuildTest.js']
       },
@@ -74,6 +77,9 @@ module.exports = function(grunt) {
       },
       httpsSetup: {
         src: ['test/httpsSetupTest.js']
+      },
+      nexusSetup: {
+        src: ['test/nexusSetupTest.js']
       },
       scenarioJenkinsA: {
         src: ['test/scenarioJenkinsATest.js']

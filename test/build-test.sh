@@ -4,6 +4,7 @@ set -e
 cd $(dirname $0)
 
 cp build-test-internal.sh temp
+cp js/*.js temp
 cd temp
 if [ -d example-nodejs ]; then
     rm -fr example-nodejs

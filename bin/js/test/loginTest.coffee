@@ -52,3 +52,19 @@ module.exports.loginSonar = (browser) ->
     .save("sonar-after-login")
   text = yield browser.getText("nav")
   assert.isOk(text.indexOf("boze") > -1)
+
+module.exports.loginNexus = (browser) ->
+  yield browser.url(process.env.NEXUS_URL)
+    .pause(12000)
+    .click("a[data-qtip='Sign in']")
+    .save("nexus-before-login")
+    .pause(2000)
+    .setValue("input[name='username']", "admin")
+    .setValue("input[name='password']", "admin123")
+    .click("a.x-btn-nx-primary-small")
+
+  text = yield browser
+    .save("nexus-after-login")
+    .pause(2000)
+    .getText("[data-name='user']")
+  assert.isOk(text.indexOf("admin") > -1)
