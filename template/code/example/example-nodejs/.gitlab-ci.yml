@@ -1,5 +1,5 @@
 build_job:
-  image: xpfriend/workspace-nodejs:3.12.1
+  image: xpfriend/workspace-nodejs:3.13.0
   script:
     - export SONAR_ANALYSIS_MODE=publish
     - bash ./build.sh
