@@ -393,7 +393,7 @@ var setupGitLab = function*(browser, url, groupName, project) {
     .setValue('#service_issues_url', process.env.REDMINE_URL + '/issues/:id')
     .setValue('#service_new_issue_url', process.env.REDMINE_URL + '/projects/' + groupName + '/issues/new')
     .save('redmine-doing-setupGitLab-' + id)
-    .submitForm('#edit_service')
+    .submitForm('#new_service')
     .save('redmine-after-setupGitLab-' + id);
 };
 

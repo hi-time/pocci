@@ -22,7 +22,7 @@ fi
 
 sleep 10
 
-GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1" | grep "ci-status ci-success" | wc -l`
+GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1/pipelines" | grep "ci-status ci-success" | wc -l`
 if [ "${GITLAB_BUILD_STATUS}" -eq 0 ]; then
     echo "gitlab: invalid build status: $1"
     exit 2
@@ -40,10 +40,11 @@ git push origin master
 
 timeout -sKILL 600 node /tmp/server.js
 
-COMMIT_PATH=`curl -s http://gitlab.pocci.test/example/$1 | grep commit_short_id | sed -E 's|^.+href="(.+)".+|\1|'`
+COMMIT_PATH=`curl -s http://gitlab.pocci.test/example/$1/pipelines | grep commit-id | sed -E 's|^.+href="(.+)".+|\1|'  | head -1`
 SONARQUBE_COMMENT=`curl -s http://gitlab.pocci.test${COMMIT_PATH} |grep unused | wc -l`
 
 if [ "${SONARQUBE_COMMENT}" -ne 1 ]; then
+    echo "COMMIT_PATH=${COMMIT_PATH}"
     echo "SONARQUBE_COMMENT=${SONARQUBE_COMMENT}"
     exit 1
 fi

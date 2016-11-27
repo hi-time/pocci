@@ -76,7 +76,7 @@ var firstLoginByAdmin = function*(browser, url) {
 var getPrivateToken = function*(browser, url) {
   return yield browser.url(url + '/profile/account')
     .save('gitlab-getPrivateToken')
-    .getValue('#token');
+    .getValue('#private-token');
 };
 
 var createRequest = function*(browser, url) {
