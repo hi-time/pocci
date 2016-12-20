@@ -208,7 +208,7 @@ describe "setup.taiga.yml", ->
           sonar:
             path:   "http://sonar.pocci.test"
             expected:
-              "h1":   "Home"
+              "title":   "SonarQube"
           taiga:
             path:   "http://taiga.pocci.test"
             expected:

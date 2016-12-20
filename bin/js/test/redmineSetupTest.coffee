@@ -149,7 +149,7 @@ describe "setup.redmine.yml", ->
           sonar:
             path:   "http://sonar.pocci.test"
             expected:
-              "h1":   "Home"
+              "title":   "SonarQube"
           redmine:
             path:   "http://redmine.pocci.test"
             expected:

@@ -168,7 +168,7 @@ describe "setup.default.yml", ->
           sonar:
             path:   "http://sonar.pocci.test"
             expected:
-              "h1":   "Home"
+              "title":   "SonarQube"
           jenkins:
             path:   "http://jenkins.pocci.test"
             thrown:
