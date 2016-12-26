@@ -2,6 +2,7 @@
 'use strict';
 var fs = require('fs');
 var server = require('co-request');
+var retry = require('co-retry');
 var git = require('pocci/git.js');
 var toArray = require('pocci/util.js').toArray;
 var assertStatus = require('pocci/util.js').assertStatus;
@@ -22,6 +23,8 @@ var logout = function*(browser) {
 var login = function*(browser, url, user, password) {
   yield browser.url(url + '/users/sign_in')
     .save('gitlab-before-login-by-' + user)
+    .click('a[href="#ldapmain"]')
+    .save('gitlab-loginBy-' + user + '-siginin-tab-clicked')
     .setValue('#username', user)
     .setValue('#password', password)
     .save('gitlab-doing-login-by-' + user)
@@ -99,8 +102,12 @@ var createRequest = function*(browser, url) {
 
 var getProjectId = function*(request, projectName) {
   var names = projectName.split('/');
-  var response = yield server.get(request('/projects/search/' + names[1] + '?per_page=100'));
-  assertStatus(response, 'response.statusCode < 300');
+  var response;
+  yield retry(function*(){
+    response = yield server.get(request('/projects/search/' + names[1] + '?per_page=100'));
+    assertStatus(response, 'response.statusCode < 300');
+  }, {retries: 10});
+
   for(var i = 0; i < response.body.length; i++) {
     if(response.body[i].path_with_namespace === projectName) {
       return response.body[i].id;
