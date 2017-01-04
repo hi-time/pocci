@@ -129,7 +129,7 @@ var enableLdap = function*(browser, url, loginUser) {
       .setValue('input[type="password"][name="_.managerPasswordSecret"]', process.env.LDAP_BIND_PASSWORD)
       .setValue('input[type="text"][name="_.displayNameAttributeName"]', uid)
       .save('jenkins-doing-enableSecurity-4')
-      .click('#yui-gen7-button')
+      .click('#yui-gen9-button')
       .save('jenkins-after-enableSecurity');
   };
 
@@ -146,22 +146,26 @@ var enableLdap = function*(browser, url, loginUser) {
     yield enableSecurity();
   }
 
-  yield browser.url(url + '/login')
-    .save('jenkins-before-login-by-' + loginUser.uid)
-    .setValue('#j_username', loginUser.uid)
-    .setValue('input[type="password"][name="j_password"]', loginUser.userPassword)
-    .save('jenkins-doing-login-by-' + loginUser.uid)
-    .click('button')
-    .save('jenkins-after-login-by-' + loginUser.uid);
+  var login = function*() {
+    yield browser.url(url + '/login')
+      .save('jenkins-before-login-by-' + loginUser.uid)
+      .setValue('#j_username', loginUser.uid)
+      .setValue('input[type="password"][name="j_password"]', loginUser.userPassword)
+      .save('jenkins-doing-login-by-' + loginUser.uid)
+      .click('button')
+      .save('jenkins-after-login-by-' + loginUser.uid);
+  };
 
   if(isDisabledSecurity) {
+    yield login();
     yield browser.url(url + '/configureSecurity/')
       .save('jenkins-before-configureSecurity')
       .click('#radio-block-8')
       .save('jenkins-doing-configureSecurity')
-      .click('#yui-gen7-button')
+      .click('#yui-gen9-button')
       .save('jenkins-after-configureSecurity');
   }
+  yield login();
   return isDisabledSecurity;
 };
 
@@ -170,7 +174,7 @@ var enableMasterToSlaveAccessControl = function*(browser, url) {
     .save('jenkins-before-enableMasterToSlaveAccessControl')
     .click('input[type="checkbox"][name="_.masterToSlaveAccessControl"]')
     .save('jenkins-doing-enableMasterToSlaveAccessControl')
-    .click('#yui-gen7-button')
+    .click('#yui-gen9-button')
     .save('jenkins-after-enableMasterToSlaveAccessControl');
 };
 

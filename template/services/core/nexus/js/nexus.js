@@ -12,6 +12,7 @@ var login = function*(browser, url) {
     .setValue('input[name="username"]', 'admin')
     .setValue('input[name="password"]', 'admin123')
     .click('a.x-btn-nx-primary-small')
+    .pause(2000)
     .save('nexus-after-login');
 };
 
