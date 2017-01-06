@@ -26,9 +26,9 @@ describe "setup.redmine.yml", ->
   it "gitlab", (done) ->
     test done,
       setup: ->
-        url = "http://gitlab.pocci.test"
-        yield gitlab.loginByAdmin(setup.browser, url)
-        @request = yield gitlab.createRequest(setup.browser, url)
+        @url = "http://gitlab.pocci.test"
+        yield gitlab.loginByAdmin(setup.browser, @url)
+        @request = yield gitlab.createRequest(setup.browser, @url)
         yield gitlab.logout(setup.browser)
 
       expect: ->
@@ -141,6 +141,14 @@ describe "setup.redmine.yml", ->
               "body[0].issues_events":        false
               "body[0].merge_requests_events":true
               "body[0].tag_push_events":      false
+
+        yield gitlab.login(setup.browser, @url, "jenkinsci", "password")
+        src = yield setup.browser
+          .save("gitlab-login-by-jenkinsci")
+          .getAttribute("img.header-user-avatar", "src")
+        yield gitlab.logout(setup.browser)
+        chai.assert.isOk(src.indexOf("jenkinsci.png") > -1, "Invalid avatar of jenkinsci")
+
 
   it "pocci", (done) ->
     test done,
