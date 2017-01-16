@@ -127,14 +127,16 @@ stage7() {
 }
 
 stage8() {
-    echo "$(date): SETUP_1 setup.nexus.yml" >> ${LOG_FILE}
+    echo "$(date): SETUP setup.nexus.yml" >> ${LOG_FILE}
     echo 'y' | POCCI_TEMPLATE="template https://github.com/xpfriend/pocci-template-examples.git" \
                 ${BASE_DIR}/temp/pocci/bin/create-service setup-files/extra/setup.nexus.yml
 
-    echo "$(date): TEST_1 setup.nexus.yml" >> ${LOG_FILE}
+    echo "$(date): TEST setup.nexus.yml" >> ${LOG_FILE}
     ${BASE_DIR}/build-test-with-nexus.sh gitlab
+}
 
-    echo "$(date): SETUP_2 setup.nexus.yml +jenkins" >> ${LOG_FILE}
+stage9() {
+    echo "$(date): SETUP setup.nexus.yml +jenkins" >> ${LOG_FILE}
     echo 'y' | POCCI_TEMPLATE="template https://github.com/xpfriend/pocci-template-examples.git" \
                 ${BASE_DIR}/temp/pocci/bin/create-config setup-files/extra/setup.nexus.yml +jenkins
     cat ${BASE_DIR}/temp/pocci/config/.env ${BASE_DIR}/nexus-env.txt > /tmp/.env
@@ -143,14 +145,16 @@ stage8() {
     cp /tmp/workspace.env ${BASE_DIR}/temp/pocci/config/
     ${BASE_DIR}/temp/pocci/bin/up-service
 
-    echo "$(date): TEST_2 setup.nexus.yml +jenkins" >> ${LOG_FILE}
+    echo "$(date): TEST setup.nexus.yml +jenkins" >> ${LOG_FILE}
     ${BASE_DIR}/build-test-with-nexus.sh
+}
 
-    echo "$(date): SETUP_3 redmine +nexus +proxy -redmine" >> ${LOG_FILE}
+stage10() {
+    echo "$(date): SETUP redmine +nexus +proxy -redmine" >> ${LOG_FILE}
     echo 'y' | POCCI_TEMPLATE="template https://github.com/xpfriend/pocci-template-examples.git" \
                 ${BASE_DIR}/temp/pocci/bin/create-service redmine +nexus +proxy -redmine
 
-    echo "$(date): TEST_3 redmine +nexus +proxy -redmine" >> ${LOG_FILE}
+    echo "$(date): TEST redmine +nexus +proxy -redmine" >> ${LOG_FILE}
     cd ${BASE_DIR}/temp/pocci/bin/js
     ../oneoff nodejs grunt basic
     ../oneoff nodejs grunt prepare mochaTest:loginNexus
@@ -159,7 +163,7 @@ stage8() {
 }
 
 START=0
-END=8
+END=10
 
 if [ -n "$2" ]; then
     START=$2
