@@ -22,8 +22,8 @@ build_lib() {
 }
 
 verify_job() {
-  GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example-nexus/$1/pipelines" | grep "ci-status ci-success" | wc -l`
-  if [ "${GITLAB_BUILD_STATUS}" -eq 0 ]; then
+  GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example-nexus/$1/pipelines.json" | jq .pipelines[0].details.status.group  | sed 's/"//g'`
+  if [ "${GITLAB_BUILD_STATUS}" != "success" ]; then
       echo "gitlab: invalid build status: $1"
       exit 2
   fi

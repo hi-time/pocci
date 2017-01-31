@@ -13,7 +13,7 @@ var smtp = require('pocci/smtp.js');
 var registerGitLab = function*(browser, url, job) {
   var jenkinsJobUrl = process.env.JENKINS_URL + '/project/' + job.jobName;
 
-  yield browser.url(url + '/hooks')
+  yield browser.url(url + '/settings/integrations')
     .save('jenkins-after-registerGitLab')
     .setValue('#hook_url', jenkinsJobUrl);
 

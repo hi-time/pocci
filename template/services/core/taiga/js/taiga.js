@@ -102,7 +102,7 @@ var addProjectMembers = function*(request, id, members, owner) {
 
 var updateGitLabSetting = function*(browser, url, apiToken, taiga) {
 
-  yield browser.url(url + '/hooks')
+  yield browser.url(url + '/settings/integrations')
     .save('taiga-before-updateGitLabSetting')
     .setValue('#hook_url', taiga.webhooks_url);
 

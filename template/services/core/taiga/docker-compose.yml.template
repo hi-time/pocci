@@ -10,7 +10,7 @@ taigadb:
     - DB_PASS=${TAIGA_DB_PASS}
 
 taigaback:
-  image: xpfriend/taiga-back:1.22.0
+  image: xpfriend/taiga-back:1.23.0
   dns: ${DNS_ADDRESS}
   env_file:
     - ./.env
