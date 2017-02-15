@@ -24,13 +24,14 @@ var logout = function*(browser, url, user) {
 
 var updateMailSetting = function*(browser, url) {
   yield login(browser, url, 'admin', 'admin');
-  yield browser.url(url + '/email_configuration')
+  yield browser.url(url + '/settings')
     .save('sonar-before-updateMailSetting')
-    .setValue('#smtp_host', process.env.SONAR_SMTP_HOST)
-    .setValue('#smtp_port', process.env.SONAR_SMTP_PORT)
-    .setValue('#email_from', process.env.SONAR_MAIL_ADDRESS)
-    .save('sonar-doing-updateMailSetting')
-    .click('#submit_save')
+    .setValue('[name="settings[email.smtp_host.secured]"]', process.env.SONAR_SMTP_HOST)
+    .click('button.js-save-changes')
+    .setValue('[name="settings[email.smtp_port.secured]"]', process.env.SONAR_SMTP_PORT)
+    .click('button.js-save-changes')
+    .setValue('[name="settings[email.from]"]', process.env.SONAR_MAIL_ADDRESS)
+    .click('button.js-save-changes')
     .save('sonar-after-updateMailSetting');
   yield logout(browser, url, 'admin');
 };
