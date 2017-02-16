@@ -1,7 +1,7 @@
 cat << EOF
 # LDAP
 ldap:
-  image: osixia/openldap:1.1.7
+  image: osixia/openldap:1.1.8
   env_file:
     - ./.env
   environment:
