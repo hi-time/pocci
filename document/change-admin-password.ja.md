@@ -59,11 +59,12 @@ GitLab, Redmine, SonarQube は内部的に PostgreSQL データベースを使�
 `create-config` 実行時に作成されたランダムな文字列です。
 
 この文字列は以下の手順で変更できます。
+
 1.  `config/core-services.yml` の `DB_PASS` の値を新しいパスワードに変更する。
     (DB_PASS設定は **gitlabdb**, **redminedb**, **sonarqubedb** のいずれかの下にある)
 1.  `config/.env` の `*_DB_PASS` の値を新しいパスワードに変更する
-     (`*` は **GITLAB**, **REDMINE**, **SONAR*** のいずれか)。
-1   実行中のデータベースコンテナ上で `alter user ...` SQL を実行し、
+    (`*` は **GITLAB**, **REDMINE**, **SONAR*** のいずれか)。
+1.  実行中のデータベースコンテナ上で `alter user ...` SQL を実行し、
     パスワード変更を行う。
 
     実行例:
