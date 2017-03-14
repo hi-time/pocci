@@ -11,7 +11,7 @@ GitLab に登録したプロジェクト (リポジトリ) に
 
 ```yaml
 build_job:
-  image: xpfriend/workspace-java:3.18.1
+  image: xpfriend/workspace-java:3.19.0
   script: bash ./build.sh
   tags:
     - docker

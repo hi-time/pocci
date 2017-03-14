@@ -86,7 +86,7 @@ var addProjectMembers = function*(request, id, members, owner) {
     if(owner.username !== members[i].uid) {
       memberships.push({
         role_id: role,
-        email: members[i].mail
+        username: members[i].mail
       });
     }
   }

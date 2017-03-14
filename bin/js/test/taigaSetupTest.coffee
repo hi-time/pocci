@@ -294,9 +294,6 @@ describe "setup.taiga.yml", ->
               "body[0].big_photo":      /boze.png/
               "body[0].roles.length":   1
               "body[0].roles[0]":       "Product Owner"
-              "body[0].projects_with_me.length":    1
-              "body[0].projects_with_me[0].slug":   "boze-example"
-              "body[0].projects_with_me[0].name":   "example"
               "body[1].username":       "hamada"
               "body[1].full_name":      "HAMADA, Kawao"
               "body[1].is_active":      true
@@ -304,9 +301,6 @@ describe "setup.taiga.yml", ->
               "body[1].big_photo":      /hamada.png/
               "body[1].roles.length":   1
               "body[1].roles[0]":       "Product Owner"
-              "body[1].projects_with_me.length":    1
-              "body[1].projects_with_me[0].slug":   "boze-example"
-              "body[1].projects_with_me[0].name":   "example"
 
           memberships:
             path: "/memberships"
