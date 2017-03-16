@@ -116,9 +116,12 @@ var enableLdap = function*(browser, url, loginUser) {
   var enableSecurity = function*() {
     var uid = process.env.LDAP_ATTR_LOGIN;
     yield browser.save('jenkins-doing-enableSecurity-1')
+      .save('jenkins-doing-enableSecurity-a')
       .click('input[type="checkbox"][name="_.useSecurity"]')
+      .pause(2000)
+      .save('jenkins-doing-enableSecurity-b')
       .click('[name="slaveAgentPort.type"][value="fixed"]')
-      .pause(1000)
+      .save('jenkins-doing-enableSecurity-c')
       .setValue('#slaveAgentPortId', process.env.JENKINS_JNLP_PORT)
       .save('jenkins-doing-enableSecurity-2')
       .click('#radio-block-2')

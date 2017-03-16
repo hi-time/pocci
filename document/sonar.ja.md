@@ -64,5 +64,4 @@ B. 情報源
 ---------
 *   [SonarQube](http://www.sonarqube.org/)
 *   [SonarQube - Analyzing with SonarQube Scanner for Maven](http://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Maven)
-*   [SonarQube Maven Plugin](http://www.mojohaus.org/sonar-maven-plugin/)
 *   [grunt-sonar-runner](https://www.npmjs.com/package/grunt-sonar-runner)
