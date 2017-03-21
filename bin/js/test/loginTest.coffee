@@ -34,7 +34,9 @@ module.exports.loginJenkins = (browser) ->
 module.exports.loginUser = (browser) ->
   yield browser
     .url(process.env.USER_URL)
+    .pause(1000)
     .setValue("#login-cn", "admin")
+    .pause(1000)
     .setValue("#login-userPassword", "admin")
     .save("user-admin-berore-autherize")
     .click("#login button")

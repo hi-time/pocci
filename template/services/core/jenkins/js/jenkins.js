@@ -115,16 +115,19 @@ var createNodes = function*(jenkins, nodes) {
 var enableLdap = function*(browser, url, loginUser) {
   var enableSecurity = function*() {
     var uid = process.env.LDAP_ATTR_LOGIN;
-    yield browser.save('jenkins-doing-enableSecurity-1')
-      .save('jenkins-doing-enableSecurity-a')
-      .click('input[type="checkbox"][name="_.useSecurity"]')
-      .save('jenkins-doing-enableSecurity-b')
-      .click('input[type="checkbox"][name="_.useSecurity"]')
-      .save('jenkins-doing-enableSecurity-c')
-      .click('input[type="checkbox"][name="_.useSecurity"]')
-      .save('jenkins-doing-enableSecurity-d')
+    yield browser.save('jenkins-doing-enableSecurity-a');
+
+    var useSecurity = 'input[type="checkbox"][name="_.useSecurity"]'; 
+    for(var i = 0; i < 10; i++) {
+        if(!(yield browser.isSelected(useSecurity))) {
+            yield browser.pause(1000).click(useSecurity)
+                .save('jenkins-doing-enableSecurity-b-' + i);
+        }
+    }
+
+    yield browser
       .click('[name="slaveAgentPort.type"][value="fixed"]')
-      .save('jenkins-doing-enableSecurity-e')
+      .save('jenkins-doing-enableSecurity-c')
       .setValue('#slaveAgentPortId', process.env.JENKINS_JNLP_PORT)
       .save('jenkins-doing-enableSecurity-2')
       .click('#radio-block-2')
