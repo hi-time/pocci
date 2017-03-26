@@ -41,6 +41,8 @@ git push origin master
 
 timeout -sKILL 600 node /tmp/server.js
 
+sleep 10
+
 COMMIT_ID=`curl "http://gitlab.pocci.test/example/$1/pipelines.json" | jq .pipelines[0].commit.id | sed 's/"//g'`
 SONARQUBE_COMMENT=`curl -s http://gitlab.pocci.test/example/$1/commit/${COMMIT_ID} |grep unused | wc -l`
 
