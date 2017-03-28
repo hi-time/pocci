@@ -20,10 +20,15 @@ if [ "${SONAR_PRJ_NM}" = "null" ]; then
     exit 1
 fi
 
-sleep 10
+for i in {1..30}; do
+    sleep 5
+    GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1/pipelines.json" | jq .pipelines[0].details.status.group  | sed 's/"//g'`
+    echo "${GITLAB_BUILD_STATUS}"
+    if [ "${GITLAB_BUILD_STATUS}" != "running" ]; then
+        break
+    fi
+done
 
-GITLAB_BUILD_STATUS=`curl "http://gitlab.pocci.test/example/$1/pipelines.json" | jq .pipelines[0].details.status.group  | sed 's/"//g'`
-echo "${GITLAB_BUILD_STATUS}"
 if [ "${GITLAB_BUILD_STATUS}" != "success" ]; then
     echo "gitlab: invalid build status: $1"
     exit 2
