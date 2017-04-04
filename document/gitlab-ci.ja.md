@@ -22,7 +22,7 @@ build_job:
 *   **script:** 実行するスクリプト
 
 記述方法の詳細については、
-[Quick Start - Creating a .gitlab-ci.yml file](http://doc.gitlab.com/ce/ci/quick_start/README.html#creating-a-.gitlab-ci.yml-file),
-[Configuration of your builds with .gitlab-ci.yml](http://doc.gitlab.com/ce/ci/yaml/README.html), 
+[Quick Start - Creating a .gitlab-ci.yml file](http://docs.gitlab.com/ce/ci/quick_start/README.html#creating-a-.gitlab-ci.yml-file),
+[Configuration of your builds with .gitlab-ci.yml](http://docs.gitlab.com/ce/ci/yaml/README.html), 
 [Docker integration](http://docs.gitlab.com/ce/ci/docker/README.html)
 を参照してください。
