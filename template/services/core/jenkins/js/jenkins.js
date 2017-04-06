@@ -1,4 +1,5 @@
 /*jshint camelcase: false */
+/*global document*/
 'use strict';
 var fs = require('fs');
 var thunkify = require('thunkify');
@@ -124,10 +125,17 @@ var enableLdap = function*(browser, url, loginUser) {
                 .save('jenkins-doing-enableSecurity-b-' + i);
         }
     }
+    var slaveAgentPortType = '[name="slaveAgentPort.type"][value="fixed"]';
+    if(!(yield browser.isVisible(slaveAgentPortType))) {
+        var refid = yield browser.getAttribute(useSecurity, 'id');
+        yield browser.execute(function(selector) {
+            document.querySelectorAll(selector).forEach(function(e){e.style = '';});
+        }, '[nameref="' + refid + '"]').save('jenkins-doing-enableSecurity-c');
+    }
 
     yield browser
-      .click('[name="slaveAgentPort.type"][value="fixed"]')
-      .save('jenkins-doing-enableSecurity-c')
+      .click(slaveAgentPortType)
+      .save('jenkins-doing-enableSecurity-d')
       .setValue('#slaveAgentPortId', process.env.JENKINS_JNLP_PORT)
       .save('jenkins-doing-enableSecurity-2')
       .click('#radio-block-2')
