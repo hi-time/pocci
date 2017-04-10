@@ -148,7 +148,7 @@ var enableLdap = function*(browser, url, loginUser) {
       .setValue('input[type="password"][name="_.managerPasswordSecret"]', process.env.LDAP_BIND_PASSWORD)
       .setValue('input[type="text"][name="_.displayNameAttributeName"]', uid)
       .save('jenkins-doing-enableSecurity-4')
-      .click('#yui-gen10-button')
+      .click('[name="Submit"] button')
       .save('jenkins-after-enableSecurity');
   };
 
@@ -181,7 +181,7 @@ var enableLdap = function*(browser, url, loginUser) {
       .save('jenkins-before-configureSecurity')
       .click('#radio-block-8')
       .save('jenkins-doing-configureSecurity')
-      .click('#yui-gen10-button')
+      .click('[name="Submit"] button')
       .save('jenkins-after-configureSecurity');
   }
   yield login();
@@ -193,7 +193,7 @@ var enableMasterToSlaveAccessControl = function*(browser, url) {
     .save('jenkins-before-enableMasterToSlaveAccessControl')
     .click('input[type="checkbox"][name="_.masterToSlaveAccessControl"]')
     .save('jenkins-doing-enableMasterToSlaveAccessControl')
-    .click('#yui-gen10-button')
+    .click('[name="Submit"] button')
     .save('jenkins-after-enableMasterToSlaveAccessControl');
 };
 
