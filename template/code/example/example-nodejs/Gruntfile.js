@@ -20,8 +20,8 @@ module.exports = function(grunt) {
             },
             gitlab: {
               project_id: 'example/example-nodejs',
-              commit_sha: process.env.CI_BUILD_REF,
-              ref_name: process.env.CI_BUILD_REF_NAME
+              commit_sha: process.env.CI_COMMIT_SHA,
+              ref_name: process.env.CI_COMMIT_REF_NAME
             },
             host: {
               url: process.env.SONAR_URL
