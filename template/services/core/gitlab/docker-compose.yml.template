@@ -16,7 +16,7 @@ gitlabredis:
     - ./.env
 
 gitlab:
-  image: sameersbn/gitlab:9.1.2
+  image: sameersbn/gitlab:9.1.3
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}
