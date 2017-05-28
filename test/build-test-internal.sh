@@ -51,7 +51,7 @@ sleep 10
 COMMIT_ID=`curl "http://gitlab.pocci.test/example/$1/pipelines.json" | jq .pipelines[0].commit.id | sed 's/"//g'`
 SONARQUBE_COMMENT=`curl -s http://gitlab.pocci.test/example/$1/commit/${COMMIT_ID} |grep unused | wc -l`
 
-if [ "${SONARQUBE_COMMENT}" -ne 1 ]; then
+if [ "${SONARQUBE_COMMENT}" -eq 0 ]; then
     echo "COMMIT_ID=${COMMIT_ID}"
     echo "SONARQUBE_COMMENT=${SONARQUBE_COMMENT}"
     exit 1
