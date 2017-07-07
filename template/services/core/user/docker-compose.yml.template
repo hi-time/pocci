@@ -1,7 +1,7 @@
 cat << EOF
 # LDAP
 ldap:
-  image: osixia/openldap:1.1.9-dev
+  image: osixia/openldap:1.1.9
   env_file:
     - ./.env
   environment:
@@ -15,7 +15,7 @@ ldap:
     - /etc/ldap/slapd.d
 
 user:
-  image: xpfriend/pocci-account-center:2.0.5
+  image: xpfriend/pocci-account-center:2.0.6
   env_file:
     - ./.env
   links:

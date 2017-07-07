@@ -12,13 +12,16 @@ var login = function*(browser, url) {
     .setValue('input[name="username"]', 'admin')
     .setValue('input[name="password"]', 'admin123')
     .click('a.x-btn-nx-primary-small')
-    .pause(2000)
+    .pause(3000)
+    .save('nexus-after-login')
+    .url(url + '/#admin/repository')
+    .pause(3000)
     .save('nexus-after-login');
 };
 
 var addNpmRealm = function*(browser, url) {
   yield browser.url(url + '/#admin/security/realms')
-    .pause(1000)
+    .save('nexus-before-addNpmRealm')
     .click('li=npm Bearer Token Realm')
     .click('a[data-qtip="Add to Selected"]')
     .pause(1000)

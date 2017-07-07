@@ -1,7 +1,7 @@
 cat << EOF
 # Nexus
 nexus:
-  image: sonatype/nexus3:3.3.1
+  image: sonatype/nexus3:3.4.0
   dns: ${DNS_ADDRESS}
   env_file:
     - ./.env

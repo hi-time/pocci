@@ -10,7 +10,7 @@ taigadb:
     - DB_PASS=${TAIGA_DB_PASS}
 
 taigaback:
-  image: xpfriend/taiga-back:1.34.0
+  image: xpfriend/taiga-back:1.35.0
   dns: ${DNS_ADDRESS}
   env_file:
     - ./.env
@@ -22,7 +22,7 @@ taigaback:
     - ${POCCI_LOG_DIR}/taiga/back:/taiga/logs
 
 taiga:
-  image: xpfriend/taiga-front:1.22.0
+  image: xpfriend/taiga-front:1.23.0
   hostname: ${TAIGA_HOST}
   dns: ${DNS_ADDRESS}
   env_file:

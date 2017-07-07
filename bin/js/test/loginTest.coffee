@@ -51,9 +51,10 @@ module.exports.loginSonar = (browser) ->
     .save("sonar-before-login")
     .submitForm("form")
     .pause(2000)
+    .click("a.navbar-avatar")
+    .pause(1000)
     .save("sonar-after-login")
-  text = yield browser.getText("nav")
-  assert.isOk(text.indexOf("boze") > -1)
+  assert.isOk(yield browser.isExisting("[title=boze]"))
 
 module.exports.loginNexus = (browser) ->
   yield browser.url(process.env.NEXUS_URL)

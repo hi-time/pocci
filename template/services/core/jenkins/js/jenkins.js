@@ -140,13 +140,15 @@ var enableLdap = function*(browser, url, loginUser) {
       .save('jenkins-doing-enableSecurity-2')
       .click('#radio-block-2')
       .save('jenkins-doing-enableSecurity-3')
-      .click('#yui-gen2-button')
+      .click('#yui-gen4-button')
       .setValue('input[type="text"][name="_.server"]', process.env.LDAP_URL)
       .setValue('input[type="text"][name="_.rootDN"]', process.env.LDAP_BASE_DN)
       .setValue('input[type="text"][name="_.userSearch"]', uid + '={0}')
       .setValue('input[type="text"][name="_.managerDN"]', process.env.LDAP_BIND_DN)
       .setValue('input[type="password"][name="_.managerPasswordSecret"]', process.env.LDAP_BIND_PASSWORD)
       .setValue('input[type="text"][name="_.displayNameAttributeName"]', uid)
+      .click('input[name="_.enabled"]')
+      .scroll('input[name="authorization"][type="radio"][value="0"]')
       .save('jenkins-doing-enableSecurity-4')
       .click('[name="Submit"] button')
       .save('jenkins-after-enableSecurity');
@@ -171,7 +173,7 @@ var enableLdap = function*(browser, url, loginUser) {
       .setValue('#j_username', loginUser.uid)
       .setValue('input[type="password"][name="j_password"]', loginUser.userPassword)
       .save('jenkins-doing-login-by-' + loginUser.uid)
-      .click('button')
+      .click('[name="Submit"] button')
       .save('jenkins-after-login-by-' + loginUser.uid);
   };
 
@@ -180,6 +182,9 @@ var enableLdap = function*(browser, url, loginUser) {
     yield browser.url(url + '/configureSecurity/')
       .save('jenkins-before-configureSecurity')
       .click('#radio-block-8')
+      .click('input[name="authorization"][type="radio"][value="2"]')
+      .waitForSelected('input[name="authorization"][type="radio"]', '2')
+      .scroll('input[name="authorization"][type="radio"][value="0"]')
       .save('jenkins-doing-configureSecurity')
       .click('[name="Submit"] button')
       .save('jenkins-after-configureSecurity');
