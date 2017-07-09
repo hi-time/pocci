@@ -24,9 +24,9 @@
     "mkdirp": "^0.5.1",
     "promised-ldap": "^0.3.0",
     "requestretry": "^1.7.0",
-    "selenium-standalone": "^5.1.0",
+    "selenium-standalone": "^6.5.0",
     "ssha": "^1.0.1",
     "thunkify": "^2.1.2",
-    "webdriverio": "^4.0.7"
+    "webdriverio": "^4.8.0"
   }
 }

@@ -21,6 +21,7 @@ var login = function*(browser, url) {
 
 var addNpmRealm = function*(browser, url) {
   yield browser.url(url + '/#admin/security/realms')
+    .pause(10000)
     .save('nexus-before-addNpmRealm')
     .click('li=npm Bearer Token Realm')
     .click('a[data-qtip="Add to Selected"]')
