@@ -269,11 +269,11 @@ describe "setup.redmine.yml", ->
           issueJava:
             path: "/issues/1"
             expected:
-              "#issue-changesets .changeset.odd a": new RegExp(@revisionJava)
+              "#issue-changesets .changeset:nth-child(even) a": new RegExp(@revisionJava)
           issueNode:
             path: "/issues/1"
             expected:
-              "#issue-changesets .changeset.even a": new RegExp(@revisionNode)
+              "#issue-changesets .changeset:nth-child(odd) a": new RegExp(@revisionNode)
 
         @request = yield redmine.createRequest(setup.browser, url)
         yield @assert
