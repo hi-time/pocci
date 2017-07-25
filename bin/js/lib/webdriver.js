@@ -13,7 +13,7 @@ module.exports.init = function*() {
   var num = 0;
 
   yield thunkify(selenium.start.bind(selenium))({spawnOptions: {stdio: 'inherit'}});
-  var browser = webdriver.remote({desiredCapabilities:{browserName:'chrome'}}).init();
+  var browser = webdriver.remote({desiredCapabilities:{browserName:'chrome', chromeOptions:{args:['disable-gpu']}}}).init();
   browser.originalClick = browser.click;
   browser
     .addCommand('save', function async (name){
@@ -37,8 +37,7 @@ module.exports.init = function*() {
 
   yield browser.timeouts('script', 60 * 1000)
     .timeouts('implicit', 10 * 1000)
-    .timeouts('page load', 120 * 1000)
-    .windowHandleMaximize();
+    .timeouts('page load', 120 * 1000);
 
   module.exports.browser = browser;
 };
