@@ -10,7 +10,7 @@ sonarqubedb:
     - DB_NAME=sonarqubedb
 
 sonar:
-  image: xpfriend/sonarqube:1.42.0
+  image: xpfriend/sonarqube:1.43.0
   env_file:
     - ./.env
   dns: ${DNS_ADDRESS}
