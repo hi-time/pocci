@@ -12,9 +12,14 @@ var login = function*(browser, url, user, password) {
     .setValue('#login', user)
     .setValue('#password', password)
     .save('sonar-doing-login-by-' + user)
-    .submitForm('#login_form')
+    .submitForm('#login_form form')
     .pause(5000)
-    .save('sonar-after-login-by-' + user);
+    .save('sonar-doing-login-by-' + user);
+  try {
+    yield browser.click('a.js-skip.text-muted')
+      .save('sonar-after-login-by-' + user);
+  } catch(e) {
+  }
 };
 
 var logout = function*(browser, url, user) {
@@ -25,6 +30,7 @@ var logout = function*(browser, url, user) {
 var updateMailSetting = function*(browser, url) {
   yield login(browser, url, 'admin', 'admin');
   yield browser.url(url + '/settings')
+    .pause(5000)
     .save('sonar-before-updateMailSetting')
     .setValue('[name="settings[email.smtp_host.secured]"]', process.env.SONAR_SMTP_HOST)
     .click('button.js-save-changes')
